@@ -1,0 +1,29 @@
+/* pages/cate/cate.wxss */
+.cate {
+  padding: 20rpx 13rpx 0 20rpx;
+  height: 180rpx;
+  position: relative;
+  display: flex;
+  border-bottom: 1rpx solid #CDCDCD;
+}
+.cate image{
+  width: 160rpx;
+  height: 160rpx;
+  margin-right: 20rpx;
+}
+.message {
+  display: flex;
+  height: 160rpx;
+  flex-direction: column;
+  justify-content: space-around;
+  font-size: 23rpx;
+  color: #666666;
+  width: 380rpx;
+}
+.message text:nth-of-type(1) {
+  font-size: 29rpx;
+  color: #333333;
+}
+.message text:nth-of-type(n) {
+  width: 380rpx;
+}

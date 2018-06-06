@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>echarts</title>
+  <link rel="stylesheet" href="css/">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    /*去掉logo和版权*/
+
+    .anchorBL {
+      display: none;
+    }
+
+    /*echarts 需要准备宽高*/
+
+    #echartsMap {
+      width: 1000px;
+      height: 500px;
+      border: 1px solid red;
+      margin: 50px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="echartsMap"></div>
+  <!-- <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-stat/ecStat.min.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts.min.js"></script>
+  <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script> -->
+  <script src="js/jquery.min.js"></script>
+  <script src="http://api.map.baidu.com/api?v=2.0&ak=GBprGT6glyONIqGxpVLU6P184jamaWW5"></script>
+  <script src="js/echarts.min.js"></script>
+  <script src="js/bmap.min.js"></script>
+  <script>
+    $(function () {
+      var data = [
+        { name: '廊坊', value: 193 },
+        { name: '菏泽', value: 194 },
+        { name: '合肥', value: 229 },
+        { name: '武汉', value: 273 },
+        { name: '大庆', value: 279 }
+      ];
+      var geoCoordMap = {
+        '廊坊': [116.7, 39.53],
+        '菏泽': [115.480656, 35.23375],
+        '合肥': [117.27, 31.86],
+        '武汉': [114.31, 30.52],
+        '大庆': [125.03, 46.58]
+      };
+      var convertData = function (data) { // 数据组装
+        var res = [];
+        for (var i = 0; i < data.length; i++) {
+          var geoCoord = geoCoordMap[data[i].name]; // 当前位置
+          if (geoCoord) {
+            res.push({
+              name: data[i].name, // 名字
+              value: geoCoord.concat(data[i].value) // 当前位置 当前值 
+            });
+          }
+        }
+        return res;
+      };
+      option = {
+        title: {
+          text: '全国主要城市空气质量 - 百度地图',
+          subtext: '小标题', // 小标题
+          sublink: 'http://www.baidu.com', // 小标题链接
+          left: 'center' // 文本居中
+        },
+        tooltip: { // 是否显示提示工具
+          trigger: 'item'
+        },
+        bmap: {
+          center: [104.114129, 37.550339], // 地图中心
+          zoom: 5, // 地图级别
+          roam: true, // 是否开启 可拖拽 可缩放
+          mapStyle: {
+            styleJson: [
+              {
+                "featureType": "all",
+                "elementType": "all",
+                "stylers": {
+                  "color": "#313745",
+                  "hue": "#313745"
+                }
+              },
+              {
+                "featureType": "building",
+                "elementType": "geometry",
+                "stylers": {
+                  "color": "#2b2b2b",
+                  "visibility": "off"
+                }
+              },
+              {
+                "featureType": "highway",
+                "elementType": "all",
+                "stylers": {
+                  "lightness": -42,
+                  "saturation": -91,
+                  "visibility": "off"
+                }
+              },
+              {
+                "featureType": "water",
+                "elementType": "all",
+                "stylers": {
+                  "color": "#222931",
+                  "weight": "0.6",
+                  "lightness": 8,
+                  "saturation": 20
+                }
+              },
+              {
+                "featureType": "green",
+                "elementType": "geometry",
+                "stylers": {
+                  "color": "#1b1b1b",
+                  "visibility": "off"
+                }
+              },
+              {
+                "featureType": "water",
+                "elementType": "geometry",
+                "stylers": {
+                  "color": "#181818"
+                }
+              },
+              {
+                "featureType": "subway",
+                "elementType": "geometry.stroke",
+                "stylers": {
+                  "color": "#181818"
+                }
+              },
+              {
+                "featureType": "railway",
+                "elementType": "geometry",
+                "stylers": {
+                  "lightness": -52
+                }
+              },
+              {
+                "featureType": "all",
+                "elementType": "labels.text.stroke",
+                "stylers": {
+                  "color": "#313131"
+                }
+              },
+              {
+                "featureType": "all",
+                "elementType": "labels.text.fill",
+                "stylers": {
+                  "color": "#ffffff"
+                }
+              },
+              {
+                "featureType": "manmade",
+                "elementType": "geometry",
+                "stylers": {
+                  "color": "#1b1b1b"
+                }
+              },
+              {
+                "featureType": "local",
+                "elementType": "geometry",
+                "stylers": {
+                  "lightness": -75,
+                  "saturation": -91
+                }
+              },
+              {
+                "featureType": "subway",
+                "elementType": "geometry",
+                "stylers": {
+                  "lightness": -65
+                }
+              },
+              {
+                "featureType": "railway",
+                "elementType": "all",
+                "stylers": {}
+              },
+              {
+                "featureType": "boundary",
+                "elementType": "geometry",
+                "stylers": {
+                  "color": "#8b8787",
+                  "weight": "0.6",
+                  "lightness": -29
+                }
+              }
+            ]
+          }
+        },
+        series: [
+          { // 设置提示工具的
+            name: 'pm2.5',
+            type: 'scatter',
+            coordinateSystem: 'bmap', // 渲染到bmap上
+            data: convertData(data), // 组装的数据 [name:'',value:[104.114, 37.550, 25]]
+            symbolSize: function (val) { // 圆的大小
+              return val[2] / 10;
+            },
+            symbol: "arrow", // 箭状物
+            label: {
+              normal: {
+                // formatter: '{b}', // {a}：系列名 {b}：数据名 {c}：数据值
+                // position: 'right', // 圆文本的位置
+                color: 'blue',
+                show: true // 显示文本
+              },
+              emphasis: {
+                show: true // 提示文本是否显示
+              }
+            },
+            itemStyle: { // 每个小球的样式
+              normal: {
+                color: 'red' // 紫色
+              }
+            }
+          },
+          {
+            name: 'Top 5', // 前5
+            type: 'effectScatter', // 扩散式的
+            coordinateSystem: 'bmap',
+            data: convertData(data.sort(function (a, b) { // 数组中的每一项从大到小排序 取前5个
+              return b.value - a.value;
+            }).splice(0, 5)),
+            symbolSize: function (val) {
+              return val[2] / 10;
+            },
+            showEffectOn: 'render', // 配置何时显示特效 绘制完成后显示特效
+            rippleEffect: {
+              brushType: 'stroke' // 波纹的绘制方式 敲击式
+            },
+            hoverAnimation: true,
+            label: {
+              normal: {
+                formatter: '{b}',
+                position: 'right',
+                show: false
+              }
+            },
+            itemStyle: {
+              normal: {
+                color: 'purple',
+                shadowBlur: 10, // 阴影大小 和 颜色
+                shadowColor: '#333'
+              }
+            },
+            zlevel: 1 // canvas的层级 覆盖在低层级的上面
+          }
+        ]
+      };
+      var myChart = echarts.init($('#echartsMap')[0]); // 初始化实例 dom元素
+      myChart.setOption(option); // 配置图表
+
+      var map = myChart.getModel().getComponent('bmap').getBMap(); // 在echarts与百度地图结合中 获取百度地图实例
+      map.addControl(new BMap.NavigationControl()); // 移动 缩放 控件
+    });
+  </script>
+</body>
+
+</html>

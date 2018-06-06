@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>fatherIframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            height: 100px;
+            background-color: blueviolet;
+        }
+
+        footer {
+            height: 100px;
+            background-color: brown;
+        }
+        /* 容器 flex 布局*/
+        #container {
+            /* display: flex; */
+            overflow: hidden;
+        }
+        #broadside {
+            float: left;
+            width: 350px;
+            background-color: blue;
+        }
+        iframe {
+            vertical-align: top;
+            overflow: hidden;
+            width: auto;
+        }
+    </style>
+    <!-- 兼容H5标签 和 响应式布局 -->
+    <!--[if lt IE 9]>
+        <script src="./js/html5shiv.min.js"></script>
+        <script src="./js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <header></header>
+    <section id="container">
+        <aside id="broadside">
+            <button id="gain">获取子级页面</button>
+        </aside>
+        <iframe src="http://127.0.0.1:3000/iframe/sonIframe.html" id="ifr" name="sonIframe" scrolling="no" frameborder="0" marginheight="0"></iframe>
+        <!-- <iframe src="./跨域中间页.html" frameborder="0" width="0" height="0"></iframe> -->
+        <!-- <iframe src="./sonIframe.html" id="ifr" name="sonIframe" scrolling="no" frameborder="0" marginheight="0"></iframe> -->
+    </section>
+    <footer></footer>
+    
+    <script src="./js/jquery.min.js"></script>
+    <!-- 解决iframe高度随内容自动调节 不出现滚动条 即使嵌入的是第三方页面 -->
+    <!-- 父页面使用iframeResizer.min.js 子页面使用iframeResizer.contentWindow.min.js -->
+    <script src="./js/iframeResizer.min.js"></script>
+    <script>
+        // 同域访问（父子iframe都处在同一个协议、域名（ip）、端口） 父子iframe 通信
+        // $('#gain').click(function () {
+        //     console.log(window.sonIframe.$('#content'), window.sonIframe.son()); // 由于父级页面先执行完在执行子级页面 顾拿不到$ 实际使用中 使用 延时器 或者 按钮点击的形式 按钮渲染出来了才能点击子级页面已经加载完成了
+        // });
+        // function father() {
+        //     console.log('father');
+        // }
+        
+        // 跨域访问(2个域都是你自己可以操作的 否则没有办法实现跨域访问 因为要在跨域的文件下 创建中间页) 父 http://localhost:3000/iframe/fatherIframe.html 子 http://127.0.0.1:3000/iframe/sonIframe.html  （localhost 与 127.0.0.1 已经跨域 只是为了方便测试）
+        // $('#gain').click(function () {
+        //     if (typeof(exec_obj)=='undefined') { // 第一次创建 以后更新
+        //         exec_obj = document.createElement('iframe');  
+        //         exec_obj.name = 'tmp_frame';  
+        //         exec_obj.src = 'http://127.0.0.1:3000/iframe/middlePage.html';  
+        //         exec_obj.style.display = 'none';  
+        //         document.body.appendChild(exec_obj);  
+        //     } else {
+        //         exec_obj.src = 'http://127.0.0.1:3000/iframe/middlePage.html?' + new Date().getTime(); 
+        //     } 
+        // });
+    </script>
+    <script>
+        $(function () {
+            window.onresize = function () { // 监听窗口改变
+                $('body').hide(); // 为了防止滚动条占据位置带来的差异 先隐藏在显示 那么隐藏时不占据位置
+                $('#ifr').css({
+                    'width': getClient().width - $('#broadside').width()
+                });
+                $('#broadside,#ifr').css({ // 重置 aside侧栏 和 iframe 高度
+                    'min-height': getClient().height - $('header').height() - $('footer').height()
+                });
+                $('body').show()
+            }
+            window.onresize(); // 初始调用
+
+            $('#ifr').iFrameResize({
+                lgo: false, // 启用控制台日志记录
+                checkOrigin: false
+                // enablePublicMethods: true // 在iframe托管页面中启用方法
+            });
+        });
+        // 获取浏览器宽高兼容 // 配合window.onresize事件
+        function getClient() {
+            return {
+                'width': document.documentElement.clientWidth || window.innerWidth || document.body.clientWidth || 0,
+                'height': document.documentElement.clientHeight || window.innerHeight || document.body.clientHeight || 0
+            };
+        }
+    </script>
+</body>
+
+</html>

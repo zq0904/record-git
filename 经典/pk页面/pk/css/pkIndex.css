@@ -1,0 +1,387 @@
+/* 倒计时 */
+
+.count {
+  padding-top: 1.84rem;
+  text-align: center;
+}
+
+.count img {
+  width: 1.46rem;
+  margin-bottom: 0.23rem;
+}
+
+.count p {
+  width: 2.48rem;
+  margin: 0 auto;
+  color: #fff;
+}
+
+.count p span {
+  float: left;
+  width: 0.58rem;
+  height: 0.45rem;
+  line-height: 0.45rem;
+  font-size: 0.36rem;
+  box-shadow: 0 0 0.05rem 0.01rem #fff;
+  border-radius: 0.05rem;
+}
+
+.count p em {
+  float: left;
+  width: 0.37rem;
+  height: 0.45rem;
+  box-sizing: border-box;
+  padding-top: 0.12rem;
+}
+
+.count p em::before {
+  content: '';
+  display: block;
+  width: 0.05rem;
+  height: 0.05rem;
+  border-radius: 50%;
+  background-color: #7A7F8E;
+  margin: 0 auto;
+  margin-bottom: 0.07rem;
+}
+
+.count p em::after {
+  content: '';
+  display: block;
+  width: 0.05rem;
+  height: 0.05rem;
+  border-radius: 50%;
+  background-color: #7A7F8E;
+  margin: 0 auto;
+}
+
+
+/* 奖励list */
+
+section {
+  color: #fff;
+}
+
+.yellow {
+  color: #ffff22;
+}
+
+.grey {
+  color: rgba(255, 255, 255, 0.44);
+}
+
+section {
+  padding-bottom: 0.48rem;
+}
+
+section h4 {
+  font-weight: normal;
+  height: 0.47rem;
+  padding-left: 0.03rem;
+  font-size: 0.24rem;
+}
+
+section h4 span {
+  padding: 0.03rem 0 0 0.08rem;
+  font-size: 0.2rem;
+}
+
+section.award li {
+  margin-bottom: 0.04rem;
+  height: 0.88rem;
+  background-color: rgba(18, 69, 130, 0.85);
+}
+
+.portrait {
+  border-radius: 50%;
+  background-color: #fff;
+  width: 0.66rem;
+  height: 0.66rem;
+  margin: .13rem .24rem 0 .34rem;
+}
+
+.describe .text {
+  font-size: 0.22rem;
+  height: 0.22rem;
+  padding: .15rem 0 .13rem
+}
+
+.describe .date {
+  font-size: 0.18rem;
+  color: #737373;
+}
+
+.money {
+  padding: .13rem .34rem 0 0;
+}
+
+.money p:nth-child(1) {
+  padding-bottom: .11rem;
+  height: 0.3rem;
+}
+
+.money p:nth-child(1) span:nth-child(1) {
+  color: #ff3e5d;
+  font-weight: 700;
+  font-size: 0.3rem;
+  padding-right: 0.12rem;
+}
+
+.money p:nth-child(1) span:nth-child(2) {
+  padding-top: .09rem;
+  color: #a8a8a8;
+  font-size: 0.18rem;
+}
+
+.money p:nth-child(2) {
+  padding-left: .06rem;
+  color: #FFFF00;
+  height: 0.16rem;
+}
+
+.money p:nth-child(2) span.icon-huangguan {
+  font-size: 0.16rem;
+  width: 0.19rem;
+  height: 0.15rem;
+  float: left;
+  margin: 0.04rem 0.05rem 0 0;
+}
+
+.money p:nth-child(2) span:nth-child(2) {
+  font-size: 0.16rem;
+  float: left;
+}
+
+
+/* 进度 */
+
+.plan {
+  color: #fff;
+  width: 2.38rem;
+  height: 2.38rem;
+  border-radius: 50%;
+  border: 1px solid #ff3366;
+  position: absolute;
+  top: 3.17rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  overflow: hidden;
+}
+
+.plan .content {
+  width: 4.76rem;
+  height: 2.9rem;
+  background: url(../images/5_04.png) repeat-x left top/2.38rem;
+  position: absolute;
+  left: 0;
+  bottom: -90%;
+  animation: leftMove 0.9s linear infinite;
+  -webkit-animation: leftMove 0.9s linear infinite;
+  /* 最小-122%  最大-12% */
+}
+
+@keyframes leftMove {
+  0% {
+    left: 0%;
+  }
+  100% {
+    left: -100%;
+  }
+}
+
+.plan>span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  font-size: 0.24rem;
+}
+
+.plan p {
+  position: absolute;
+  top: 1.48rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  height: 0.38rem;
+  font-size: 0.45rem;
+  white-space: nowrap;
+}
+
+.plan p span:nth-child(2) {
+  padding-top: 0.16rem;
+  font-size: 0.24rem;
+}
+
+.residue {
+  position: absolute;
+  top: 5.77rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+  -webkit-transform: translate(-50%, 0);
+  font-size: 0.32rem;
+  color: #fff;
+}
+
+
+/* 领奖框 */
+
+.prizeBox {
+  padding-top: 2.49rem;
+  text-align: center;
+}
+
+.prizeBox>a {
+  font-size: 0.24rem;
+  color: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  padding-bottom: .08rem
+}
+
+.prizeBox li {
+  background: url(../images/1_08.png) no-repeat center/100%;
+  margin: 0 auto;
+  margin-bottom: .15rem;
+  width: 5.86rem;
+  height: 1.16rem;
+  line-height: 1.16rem;
+}
+
+.prizeBox li:last-of-type {
+  margin-bottom: .82rem;
+}
+
+.prizeBox li img {
+  float: left;
+  height: 100%;
+}
+
+.prizeBox li span:nth-of-type(1) {
+  float: left;
+  font-size: 0.22rem;
+  color: #666666;
+  max-width: 2.76rem;
+}
+
+.prizeBox li span:nth-of-type(2) {
+  float: right;
+  font-size: 0.28rem;
+  color: #ff3e5d;
+  padding-right: 0.27rem;
+}
+
+
+/* 弹框 */
+
+.keep,
+.acceptBox {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #fff;
+}
+
+.keep>div {
+  width: 5.25rem;
+  height: 3.36rem;
+  border-radius: 0.07rem;
+  overflow: hidden;
+  position: absolute;
+  top: 5.18rem;
+  left: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translate(-50%);
+}
+
+.keep>div>p {
+  height: 0.75rem;
+  line-height: 0.75rem;
+  position: relative;
+  font-size: .3rem;
+  text-align: center;
+  background-color: #FF3E5D;
+}
+
+.keep>div>p span {
+  position: absolute;
+  font-family: '宋体';
+  top: 0.12rem;
+  right: 0.17rem;
+  font-size: .27rem;
+  line-height: normal;
+}
+
+.keepBody {
+  height: 2.6rem;
+  box-sizing: border-box;
+  padding: 0.34rem 0.76rem 0;
+  position: relative;
+  background-color: #fff;
+}
+
+.keepBody p {
+  line-height: 0.36rem;
+  font-size: 0.24rem;
+  color: #525252;
+}
+
+.keepBody span {
+  position: absolute;
+  top: 1.6rem;
+  left: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translate(-50%);
+  width: 2.13rem;
+  height: 0.61rem;
+  line-height: 0.61rem;
+  text-align: center;
+  background-color: #F7D815;
+  border-radius: 0.08rem;
+  box-shadow: 0 0.06rem 0.03rem #8B790C;
+  color: #003366;
+  font-size: .3rem;
+}
+
+
+/* 领奖框 */
+
+.acceptBox>div {
+  width: 8rem;
+  height: 5.93rem;
+  background: url(../images/1_01.png) no-repeat center/100%;
+  text-align: center;
+}
+
+.acceptBox>div>span {
+  display: block;
+  color: #000;
+  font-size: .3065rem;
+  width: 1.82rem;
+  height: .67rem;
+  line-height: .67rem;
+  border-radius: .08rem;
+  background-color: #ffff00;
+  margin: 0 auto;
+}
+
+.acceptBox p:nth-of-type(1) {
+  padding-top: 3rem;
+  height: 0.6rem;
+  font-size: .36rem;
+}
+
+.acceptBox p:nth-of-type(2) {
+  height: 1rem;
+  font-size: .36rem;
+}
+
+.acceptBox p:nth-of-type(2) span {
+  font-size: .48rem;
+  color: #cccc66;
+  padding: 0 .05rem;
+}

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>360搜索</title>
+	<!-- https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word= -->
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		#inp{
+			box-sizing: border-box;
+			width: 300px;
+			height: 25px;
+			margin-top: 10px;
+			margin-left: 10px;
+		}
+		.box{
+			box-sizing: border-box;
+			width: 300px;
+			margin-left: 10px;
+			list-style: none;
+		}
+		.box li{
+			box-sizing: border-box;
+			width: 300px;
+			height: 25px;
+			line-height: 25px;
+			padding-left: 10px;
+		}
+		.box li:nth-child(odd){
+			background-color: green;
+		}
+		.box li:nth-child(even){
+			background-color: blue;
+		}
+	</style>
+</head>
+	<input type="text" id="inp">
+	<ul class="box">
+		
+	</ul>
+	<script src="jquery-1.12.2.min.js"></script>
+	<script>
+		$(function(){
+			// 原生
+			var head = document.head;
+			function jsonp(url,fn){
+				var s = document.createElement('script');
+				s.src = url;
+				window['suggest_so'] = function (data){
+					fn(data);
+					$(s).remove(); 
+				}
+				$(head).append(s);
+			}
+			$('#inp').on('input',function(){
+				var text = $(this).val();
+				if(text==' ')return; //什么都没输入 接收到的是 ' '
+				var url = 'https://sug.so.360.cn/suggest?callback=suggest_so&encodein=utf-8&encodeout=utf-8&format=json&fields=word&word='+text;
+				jsonp(url,function(data){
+					console.log(data.result);
+					var a = [];
+					$(data.result).each(function(i,e){
+						a.push('<li>'+e.word+'</li>')
+					});
+					$('.box').html(a.join(''));//每次都自动覆盖
+				});
+			});
+
+
+		});
+ 
+
+
+
+
+
+
+
+
+
+// 返回的数据结构
+// 
+// {query: "啊", ext: "eci=37474ca9716ff083&nlpv=suggest_3.2.2", result: Array(10), version: "3.2.2"}
+// ext:"eci=37474ca9716ff083&nlpv=suggest_3.2.2"
+// query:"啊"
+// result:Array(10)
+// 0:{word: "啊朋友再见原唱", resrc: "ori", source: ""}
+// 1:{word: "啊哈c游戏", resrc: "ori", source: ""}
+// 2:{word: "啊 朋友再见", resrc: "ori", source: ""}
+// 3:{word: "啊五环你比四环多一环是什么歌", resrc: "ori", source: ""}
+// 4:{word: "啊朋友再见歌词", resrc: "ori", source: ""}
+// 5:{word: "啊的读音", resrc: "ori", source: ""}
+// 6:{word: "啊朋友再见简谱", resrc: "ori", source: ""}
+// 7:{word: "啊 母亲", resrc: "ori", source: ""}
+// 8:{word: "啊中国的土地", resrc: "ori", source: ""}
+// 9:{word: "啊的组词", resrc: "ori", source: ""}
+// length:10
+// __proto__:Array(0)
+// version:"3.2.2"
+// __proto__:Object
+	</script>
+</body>
+</html>

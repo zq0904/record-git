@@ -1,0 +1,71 @@
+*,*::before,*::after{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
+}
+body{
+	font: 14px 'microsoft yahei',sans-serif;
+	color: #333;
+	background-color: #F5F5F5;
+}
+img,input{
+	border: 0 none;
+	vertical-align: top;
+}
+input,textarea{
+	outline-style: none;
+	border: 0 none;
+	resize: none;
+	-webkit-appearance: none;
+}
+ul,ol,dl{
+	list-style: none;
+}
+a{
+	color: #333;
+	text-decoration: none;
+}
+h1,h2,h3,h4,h5,h6{
+	font-size: 14px;
+	font-weight: 400;
+}
+.clearfix::before,.clearfix::after{
+	content: '';
+	display: block;
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+	clear:both;
+}
+.w{
+	min-width: 320px;
+	max-width: 640px;
+	width: 100%;
+	margin: 0 auto;
+}
+.l{
+	float: left;
+}
+.r{
+	float: right;
+}
+.m_t{
+	margin-top: 10px;
+}
+.m_b{
+	margin-bottom: 10px;
+}
+.m_l{
+	margin-left: 10px;
+}
+.m_r{
+	margin-right: 10px;
+}
+[class^="img"],[class*=" img"]{
+	background-image: url(../images/sprites.png);
+	background-repeat: no-repeat;
+	background-size: 200px 200px;
+}

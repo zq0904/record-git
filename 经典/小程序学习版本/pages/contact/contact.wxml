@@ -1,0 +1,44 @@
+<!--pages/contact/contact.wxml-->
+<view class='interval'></view>
+<text>表单组件</text>
+<input type='text' placeholder='文本键盘' class='select'></input>
+<input password  placeholder='密码键盘' class='select'></input>
+<input type='number' placeholder='数字键盘' class='select'></input>
+<input type='idcard' placeholder='身份证键盘' class='select'></input>
+<input type='digit' placeholder='带小数点的数字键盘' class='select'></input>
+<text>其他表单组件</text>
+<view class='interval'></view>
+<!-- bindchange 触发 change 事件 -->
+<checkbox-group class='select' bindchange='checkboxChange' data-parameter='自定义属性1'>
+    <checkbox color='#f60' value='1' checked>one</checkbox>
+    <checkbox color='#f60' value='2' disabled>two</checkbox>
+</checkbox-group>
+<radio-group class='select' bindchange='checkboxChange' data-parameter='自定义属性2'>
+    <radio value='man' color='#f60'>男</radio>
+    <radio value='woman' color='#f60'>女</radio>
+    <radio checked color='#f60'>保密</radio>
+</radio-group>
+<view class='select'>
+    <switch checked>1</switch>
+    <switch color="#f60">2</switch>
+</view>
+<view class='interval'></view>
+<text>事件</text>
+<view class='father' bindtap='fathertap' data-father='父盒子'>
+    <!-- bind 是有事件冒泡的 catch是没有事件冒泡的 传参通过data自定义属性传参 在事件参数e中拿取 -->
+    <view class='son' catchtap='sontap' data-son='儿盒子'>
+    </view>
+</view>
+<!-- WXS是小程序的一套脚本语言 -->
+<wxs module="foo"> 
+    module.exports = {
+        max: function (arr) {
+            var max = arr[1];
+            arr.forEach(function (e, i, a) {
+                max = max <= e ? e : max;
+            })
+            return max;
+        }
+    }
+</wxs>
+<view>{{foo.max(array)}}</view>

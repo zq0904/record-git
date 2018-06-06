@@ -1,0 +1,7 @@
+.con{
+    padding: 0px 20px;
+}
+.con>div{
+    width: 515px;
+    height: 400px;
+}

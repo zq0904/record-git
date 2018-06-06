@@ -1,0 +1,95 @@
+.main .search{
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+}
+.main .search form{
+	width: 100%;
+	height: 32px;
+	border: 1px solid #006699;
+	border-radius: 5px;
+	position: relative;
+}
+.main .search form input{
+	width: 100%;
+	height: 30px;
+	padding: 0 60px 0 10px;
+	border: 0 none;
+	font-size: 10px;
+}
+.main .search form a{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 60px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	color: #fff;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background-color: #006699; 
+}
+/*隐藏列表*/
+.main .localhost{
+	width: 100%;
+}
+.main .localhost ul{
+	width: 100%;
+	padding-right: 60px;
+	display: none;
+	border-radius: 5px;
+}
+.main .localhost ul li{
+	padding-right: 44px;
+	width: 100%;
+	height: 25px;
+	line-height: 25px;
+	border: 1px dashed #333;
+	border-top: 0 none;
+	position: relative;
+}
+.main .localhost ul li:first-child{
+	border-top-left-radius: 5px;
+}
+.main .localhost ul li:last-child{
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.main .localhost ul li:last-child a strong{
+	font-weight: 500;
+	margin-right: -44px;
+	border-radius: 10px;
+	font-size: 12px;
+	float: right;
+	height: 100%;
+	line-height: 24px;
+	height: 24px;
+	padding: 0 10px;
+	background-color: red;
+	color: #fff;
+}
+.main .localhost ul li a{
+	display: block;
+	width: 100%;
+	height: 24px;
+	padding-left: 10px;
+}
+.main .localhost ul li:last-of-type a{
+	text-align: right;
+	font: 700 12px 'Microsoft YaHei';
+	line-height: 25px;
+}
+.main .localhost ul li span{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 44px;
+	text-align: center;
+	border-radius: 10px;
+	font-size: 12px;
+	line-height: 24px;
+	height: 24px;
+	background-color: orange;
+	color: #fff;
+}

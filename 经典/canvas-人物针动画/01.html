@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas{
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+	// 要求:  
+	// 1. 完成一个画布600*400； 
+	// 2. 完成canvas上下文的获取；  
+	// 3. 完成图片的加载； 
+	// 4. 绘制默认的图片在中心位置； 
+	// 5. 绘制帧动画； 
+	// 请根据以上要求，完成相应的代码实现。
+	var canvas = document.querySelector('canvas');
+	var ctx = canvas.getContext('2d');
+	var width = ctx.canvas.width;
+	var height = ctx.canvas.height;
+	var x0 = width/2;
+	var y0 = height/2;
+
+	var img = new Image();
+	
+	var space = 5;
+	var i = -1; //图片水平索引
+	var ii = 0; //走的步数
+
+	img.onload = function (){
+			ctx.drawImage(img,0+i*img.width/4,0,img.width/4,img.height/4,x0-img.width/4/2,y0-img.height/4/2+ii*space,img.width/4,img.height/4)
+	}
+
+	setInterval(function(){
+		i++;
+		ii++;
+		ctx.clearRect(0,0,width,height);
+		ctx.drawImage(img,0+i*img.width/4,0,img.width/4,img.height/4,x0-img.width/4/2,y0-img.height/4/2+ii*space,img.width/4,img.height/4)
+		if(i>=3){
+			i=-1;
+		}
+	},400);
+	img.src = './images/04.png';
+
+	</script>
+</body>
+</html>

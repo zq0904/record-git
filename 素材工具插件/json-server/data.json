@@ -1,0 +1,7 @@
+{
+  "list": [
+    {"id": 1, "name": "小明", "gender": true, "age": 25},
+    {"id": 2, "name": "小红", "gender": false, "age": 16},
+    {"id": 3, "name": "小绿", "gender": true, "age": 30}
+  ]
+}

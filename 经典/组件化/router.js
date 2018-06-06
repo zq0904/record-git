@@ -1,0 +1,31 @@
+(function () {
+  window.router = new VueRouter({
+    linkActiveClass:'active',
+    routes:[
+    {
+      path:"/",
+      component:appMain
+    },
+    {
+      path:'/list',
+      component:List
+    },
+    {
+      path:'/list/add',
+      component:Add
+    },
+    {
+      path:'/list/updata',
+      component:Updata
+    },
+    {
+      path:'/liu',
+      component:A
+    },
+    {
+      path:'/ying',
+      component:B
+    }
+    ]
+  });
+})();

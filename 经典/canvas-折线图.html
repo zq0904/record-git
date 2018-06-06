@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>折线图</title>
+	<style>
+		canvas{
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+    var Zhexiantu = function (ctx){
+        this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+        this.width = this.ctx.canvas.width;
+        this.height = this.ctx.canvas.height;
+        this.space = 20;
+        this.x0 = this.space;
+        this.y0 = this.height - this.space;
+
+        this.fs = 10;
+
+        this.sj = 10;
+
+        this.dainSize = 10;
+    };
+    Zhexiantu.prototype.init = function (data){
+        this.hw();
+        this.hz();
+        this.zhuanhua(data);
+        this.hd();
+    };
+    Zhexiantu.prototype.hw = function (){
+        this.ctx.clearRect(0,0,this.width,this.height);
+        this.ctx.strokeStyle = '#ccc';
+        for(var i = 0; i < this.height/this.fs; i++){
+            this.ctx.beginPath();
+            this.ctx.moveTo(0,i*this.fs);
+            this.ctx.lineTo(this.width,i*this.fs);
+            this.ctx.stroke();
+        }
+        for(var i = 0; i < this.width/this.fs; i++){
+            this.ctx.beginPath();
+            this.ctx.moveTo(i*this.fs,0);
+            this.ctx.lineTo(i*this.fs,this.height);
+            this.ctx.stroke();
+        }
+    };
+    Zhexiantu.prototype.hz = function (){
+        this.ctx.strokeStyle = '#000';
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x0,this.y0);
+        this.ctx.lineTo(this.width-this.space,this.y0);
+        this.ctx.stroke();
+        this.ctx.lineTo(this.width-this.space-this.sj,this.y0+this.sj/2);
+        this.ctx.lineTo(this.width-this.space-this.sj,this.y0-this.sj/2);
+        this.ctx.lineTo(this.width-this.space,this.y0);
+        this.ctx.fill();
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x0,this.y0);
+        this.ctx.lineTo(this.x0,this.space);
+        this.ctx.stroke();
+        this.ctx.lineTo(this.x0+this.sj/2,this.space+this.sj);
+        this.ctx.lineTo(this.x0-this.sj/2,this.space+this.sj);
+        this.ctx.lineTo(this.x0,this.space);
+        this.ctx.fill();
+    };
+    Zhexiantu.prototype.zhuanhua = function (data){
+        var that = this;
+        var a = [];
+        data.forEach(function(e,i){
+            a.push({
+                x:that.x0+(i+1)*100,
+                y:that.y0-e
+            });
+        });
+        this.shuju = a;
+    };
+    Zhexiantu.prototype.hd = function (){
+        var that = this;
+        this.shuju.forEach(function(e,i){
+            that.ctx.beginPath();
+            that.ctx.moveTo(e.x-that.dainSize/2,e.y-that.dainSize/2);
+            that.ctx.lineTo(e.x+that.dainSize/2,e.y-that.dainSize/2);
+            that.ctx.lineTo(e.x+that.dainSize/2,e.y+that.dainSize/2);
+            that.ctx.lineTo(e.x-that.dainSize/2,e.y+that.dainSize/2);
+            that.ctx.lineTo(e.x-that.dainSize/2,e.y-that.dainSize/2);
+            that.ctx.fill();
+
+            that.ctx.beginPath();
+            if(i==0){
+                that.ctx.moveTo(that.x0,that.y0);
+            }else{
+                that.ctx.moveTo(that.shuju[i-1].x,that.shuju[i-1].y);
+            }
+            that.ctx.lineTo(e.x,e.y);
+            that.ctx.stroke();
+
+        });
+    };
+    new Zhexiantu().init([100,200,300,360,260]);
+
+
+		// // 表构造函数
+  //   var Tu = function (ctx){
+  //       this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+  //       // 画表格
+  //       this.width = this.ctx.canvas.width;
+  //       this.height = this.ctx.canvas.height;
+  //       this.f = 10;
+  //       this.wf = this.width/this.f;
+  //       this.hf = this.height/this.f;
+  //       // 画坐标系
+  //       this.space = 20;
+  //       this.x0 = this.space;
+  //       this.y0 = this.height-this.space;
+  //       this.sj = 10;
+  //       // 画点
+  //       this.dian = 10;
+  //   };
+  //   // 初始化
+  //   Tu.prototype.init = function (data){
+  //       this.ctx.clearRect(0,0,this.width,this.height);
+  //       this.hb();
+  //       this.hx();
+  //       this.hd(data);
+  //   };
+  //   // 画表格
+  //   Tu.prototype.hb = function (){
+  //       this.ctx.strokeStyle = '#ccc';
+  //       // x方向
+  //       for(var i = 1; i <= this.hf; i++){
+  //           this.ctx.beginPath();
+  //           this.ctx.moveTo(0,i*this.f);
+  //           this.ctx.lineTo(this.width,i*this.f);
+  //           this.ctx.stroke();
+  //       }
+  //       // y方向
+  //       for(var i = 1; i <= this.wf; i++){
+  //           this.ctx.beginPath();
+  //           this.ctx.moveTo(i*this.f,0);
+  //           this.ctx.lineTo(i*this.f,this.height);
+  //           this.ctx.stroke();
+  //       }
+  //   };
+  //   // 画坐标系
+  //   Tu.prototype.hx = function (){
+  //       // X轴
+  //       this.ctx.beginPath();
+  //       this.ctx.strokeStyle = '#000';
+  //       this.ctx.moveTo(this.x0,this.y0);
+  //       this.ctx.lineTo(this.width-this.space,this.y0);
+  //       this.ctx.stroke();
+
+  //       this.ctx.lineTo(this.width-this.space-this.sj,this.y0+this.sj/2);
+  //       this.ctx.lineTo(this.width-this.space-this.sj,this.y0-this.sj/2);
+  //       this.ctx.lineTo(this.width-this.space,this.y0);
+  //       this.ctx.fill();
+  //       // Y轴
+  //       this.ctx.beginPath();
+  //       this.ctx.strokeStyle = '#000';
+  //       this.ctx.moveTo(this.x0,this.y0);
+  //       this.ctx.lineTo(this.x0,this.space);
+  //       this.ctx.stroke();
+
+  //       this.ctx.lineTo(this.x0+this.sj/2,this.space+this.sj);
+  //       this.ctx.lineTo(this.x0-this.sj/2,this.space+this.sj);
+  //       this.ctx.lineTo(this.x0,this.space);
+  //       this.ctx.fill();
+  //   };
+  //   // 画点
+  //   Tu.prototype.hd = function(data){
+  //       // 数据转化
+  //       var json = this.zh(data);
+  //       var that = this;
+  //       json.forEach(function(e,i,a){
+  //           // 画点
+  //           that.ctx.beginPath();
+  //           that.ctx.moveTo(e.x-that.dian/2,e.y-that.dian/2);
+  //           that.ctx.lineTo(e.x+that.dian/2,e.y-that.dian/2);
+  //           that.ctx.lineTo(e.x+that.dian/2,e.y+that.dian/2);
+  //           that.ctx.lineTo(e.x-that.dian/2,e.y+that.dian/2);
+  //           that.ctx.lineTo(e.x-that.dian/2,e.y-that.dian/2);
+  //           that.ctx.fill();
+  //           // 画线
+  //           that.ctx.beginPath();
+  //           if(i==0){
+  //               that.ctx.moveTo(that.x0,that.y0);
+  //               that.ctx.lineTo(e.x,e.y);
+  //           }else{
+  //               that.ctx.moveTo(json[i-1].x,json[i-1].y);
+  //               that.ctx.lineTo(e.x,e.y);
+  //           }
+  //           that.ctx.strokeStyle = '#000';
+  //           that.ctx.stroke();
+  //       });
+  //   }
+  //   Tu.prototype.zh = function (a){
+  //       var that = this;
+  //       var b = [];
+  //       a.forEach(function(e,i,a){
+  //           var x = (i+1)*100; //真实坐标
+  //           var y = e;
+  //           b.push({ //css坐标
+  //               x:that.x0+x,
+  //               y:that.y0-y
+  //           });
+  //       });
+  //       return b;
+  //   }
+  //   // 实例化 初始化
+  //   var o = new Tu();
+  //   o.init([100,200,250,350,270]);
+	</script>
+</body>
+</html>

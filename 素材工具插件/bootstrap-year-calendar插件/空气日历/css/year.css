@@ -1,0 +1,196 @@
+ * {
+    margin: 0;
+    padding: 0;
+  }
+  ul, ol, dl {
+    list-style: none;
+  }
+  /*阻止上下文换行*/
+  div.content {
+    white-space: nowrap;
+  }
+  .year-title {
+    color: rgb(70, 184, 218);
+  }
+  .panel {
+    background-color: #eee;
+  }
+  .glyphicon {
+    color: #aaa;
+  }
+  .calendar table.month th.month-title {
+    padding-top: 5px;
+  }
+  .calendar .month-title:hover {
+    cursor:pointer;
+    background-color: #ddd;
+    border-radius: 5px;
+  }
+  .trigger li:first-child{
+    border-bottom: 1px solid #ccc;
+  }
+  .trigger li:nth-child(2){
+    padding: 3px 0;
+  }
+  /*新增样式*/
+  .calendar .month-container {
+    height: 274px;
+    position: relative;
+  }
+  .month-container .calendar_pollNum{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+  }
+  .calendar_pollNum {
+    width: 100%;
+    margin: 0 0 18px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+  }
+  .calendar_pollNum .singleSpan, #myModal .singleSpan {
+    color: black;
+    padding-bottom: 0px;
+  }
+  .calendar_pollNum td {
+    width: 65px!important;
+    font-size: 12px!important;
+  }
+  .calendar_pollNum .singleSpan_text, #myModal .singleSpan_text {
+    color: white!important;
+    float: right;
+    border-radius: 50%;
+    width: 17px;
+    height: 17px;
+    line-height: 17px;
+    box-sizing: border-box;
+    padding-top: 1px;
+  }
+/*污染物*/
+    .contaminants{
+      position: absolute;
+      top: 55px;
+      right: 200px;
+      z-index: 20;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      width: 320px;
+    }
+    .contaminants li{
+      font-size: 13px;
+      cursor: pointer;
+      float: left;
+      width: 45.43749px;
+      border-left: 1px solid #ccc;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: #fff;
+      color: #000;
+    }
+    .contaminants li:last-child {
+      border-right: none;
+    }
+    .contaminants .on{
+      background-color: #4ab4e8;
+      color: #fff;
+    }
+    .contaminants li:first-child {
+      border-left: 0 none;
+    }
+  /**/
+  .allYearStatistics {
+    height: auto;
+    width: 92%;
+    border: 1px solid rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 5px;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+    color: #31708f;
+    margin: 0 auto;
+    font-size: 16px;
+  }
+  .allYearStatistics span:nth-child(1) {
+    color: rgb(67, 206, 23);
+  }
+  .allYearStatistics span:nth-child(2) {
+    color: rgb(239, 220, 49);
+  }
+  .allYearStatistics span:nth-child(3) {
+    color: rgb(255, 170, 0);
+  }
+  .allYearStatistics span:nth-child(4) {
+    color: rgb(255, 64, 26);
+  }
+  .allYearStatistics span:nth-child(5) {
+    color: rgb(210, 0, 64);
+  }
+  .allYearStatistics span:nth-child(6) {
+    color: rgb(156, 10, 78);
+  }
+  #myModal .modal-body {
+    height: 500px;
+  }
+  #myModal .modal-header {
+    height: 30px;
+    border-bottom: 0 none; 
+  }
+  #myModal .month-container {
+    width: 100%;
+    margin: 0 auto;
+    margin-top: -30px;
+    height: 420px;
+  }
+  #myModal .month {
+    margin: 0 auto;
+    width: 420px;
+    height: 330px;
+    text-align: center;
+    font-size: 18px;
+  }
+  #myModal .month th{
+    text-align: center;
+    font-size: 18px;
+  }
+  #myModal .month-title {
+    padding: 13px;
+  }
+  #myModal .month td {
+    height: 55px;
+  }
+  #myModal .day-header {
+    height: 35px;
+  }
+  #myModal button {
+    position: relative;
+    font-size: 30px;
+    top: 1px;
+    right: 3px;
+    z-index: 1000;
+  }
+  #myModal .calendar_pollNum{
+    bottom: -78px;
+    left: 308px;
+    width: 230px;
+    height: 70px;
+    margin: 0;
+  }
+  #myModal .singleSpan {
+    text-align: center;
+    font-size: 16px !important;
+  }
+  #myModal .singleSpan_text {
+    width: 21px;
+    height: 21px;
+    line-height: 21px;
+    box-sizing: border-box;
+    margin-right: 3px;
+  }
+  #myModal .day {
+    box-sizing: border-box;
+    border: 2px solid #fff;
+  }

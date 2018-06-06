@@ -1,0 +1,67 @@
+*,*::before,*::after{
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
+}
+body,h1,h2,h3,h4,h5,h6,form,input,p,ul,ol,li,dl,dt,dd{
+	margin: 0;
+	padding: 0;
+}
+body{
+	font: 14px 'microsoft yahei';
+	color: #333;
+}
+ul,ol,dl{
+	list-style: none;
+}
+img,input{
+	border: 0 none;
+	vertical-align: top;/*还是top吧 要不太麻烦 middle需要在单独设置*/
+}
+input,textarea{
+	outline-style: none;
+	border: 0 none;
+	resize: none;
+/*	-webkit-appearance: none;*/
+}
+h1,h2,h3,h4,h5,h6{
+	font-size: 14px;
+	font-weight: 400;
+}
+a{
+	text-decoration: none;
+	color: #333;
+}
+a:hover{
+	color: transparent;
+	text-decoration: none;
+}
+em,i,ins,u{
+	font-style: normal;
+	text-decoration: none;
+}
+.clearfix:after,
+.clearfix:before{
+	display: block;
+	content: '';
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+	clear: both;
+}
+.clearfix{
+	zoom: 1;
+}
+.w{
+	min-width: ;
+	max-width: ;
+	width: ;
+	margin: 0 auto;
+}
+.l{
+	float: left;
+}
+.r{
+	float: right;
+}

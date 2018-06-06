@@ -1,0 +1,74 @@
+/*轮播图*/
+.box .mui-scroll-wrapper .mui-scroll-wrapper{
+	padding: 45px 0 55px;
+}
+/*广告部分*/
+.banner{
+	width: 100%;
+	background-color: #fff;
+}
+/*广告部分内容*/
+.banner .b_c{
+	padding: 10px;
+	width: 100%;
+	border-bottom: 1px solid #ccc;
+}
+.banner .b_c ul{
+	width: 100%;
+}
+.banner .b_c ul li{
+	float: left;
+	width: 33.33333%;
+}
+.banner .b_c ul li a{
+	display: block;
+	width: 100%;
+}
+.banner .b_c ul li a img{
+	width: 100%;
+}
+/*商品*/
+.banner .shangpin{
+}
+.banner .shangpin ul{
+	width: 100%;
+}
+.banner .shangpin ul li{
+	float: left;
+	margin: 0 2%;
+	margin-top: 10px;
+	width: 46%;
+	border: 1px solid #ccc;
+}
+.banner .shangpin ul li a{
+	display: block;
+	width: 100%;
+}
+.banner .shangpin ul li a img{
+	width: 100%;
+}
+.banner .shangpin ul li a p:first-of-type{
+	padding: 0 15px;
+	font-size: 14px;	
+}
+.banner .shangpin ul li a p:last-of-type{
+	padding: 5px;
+	text-align: center;
+	font-size: 10px;
+}	
+.banner .shangpin ul li a p span:first-of-type{
+	color: red;
+	font-size: 12px;
+}
+.banner .shangpin ul li a p span:last-of-type{
+	color: #ccc;
+	font-size: 10px;
+	text-decoration: line-through;
+}
+.banner .shangpin ul li a button{
+	display: block;
+	margin: 0 auto;
+	background-color: #006699;
+	color: #fff;
+	margin-bottom: 10px;
+}

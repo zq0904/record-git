@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 要求网页使用浏览器最高本版的内核渲染 -->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--视口的设置：视口的宽度和设备一致，默认的缩放比例和PC端一致，用户不能自行缩放-->
+    <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <title>后台管理系统-登录</title>
+    <link href="./assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/nprogress/nprogress.css"/>
+    <link rel="stylesheet" href="./css/base.css"/>
+    <link rel="stylesheet" href="./css/common.css"/>
+    <link rel="stylesheet" href="./css/category.css"/>
+    <!--[if lt IE 9]>
+    <script src="./assets/html5shiv/html5shiv.min.js"></script>
+    <script src="./assets/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="index">
+    <!--左-->
+    <div class="l">
+        <div class="logo"><a href="./index.html">ITCAST</a></div>
+        <div class="person clearfix">
+            <div class="img"><img src="./images/default.png" alt=""/></div>
+            <p>超级管理员</p>
+        </div>
+
+        <!--列表-->
+        <ul class="list">
+            <li><a href="#"><span class="glyphicon glyphicon-user"></span>用户管理</a></li>
+            <li class="s now"><a href="#"><span class="glyphicon glyphicon-th-list"></span>分类管理</a></li>
+            <div>
+                <a href="#">一级分类</a>
+                <a href="./category.html" class="now">二级分类</a>
+            </div>
+            <li><a href="#"><span class="glyphicon glyphicon-tag"></span>商品管理</a></li>
+        </ul>
+
+    </div>
+    <!--右-->
+    <div class="main">
+        <div class="top">
+            <a href="#" class="glyphicon glyphicon-align-justify"></a>
+            <a href="#" data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-share"></a>
+        </div>
+        <div class="main_content">
+            <ol class="breadcrumb">
+                <li><a href="#">管理系统</a></li>
+                <li class="active">分类管理</li>
+                <li class="active">二级分类</li>
+            </ol>
+
+        </div>
+        <div class="container clearfix">
+            <button id="tj" class="btn btn-default" data-toggle="modal" data-target="#myModal1">添加分类</button>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>一级分类名称</th>
+                    <th>二级分类名称</th>
+                    <th>二级分类LOGO</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <!--tbody-->
+                </tbody>
+            </table>
+            <!--分页-->
+            <ul class="pagination">
+
+            </ul>
+        </div>
+
+
+
+    </div>
+</div>
+<!--tbody-->
+<script type="text/html" id="tbody">
+    <% for(var i = 0; i < rows.length; i++){ %>
+    <tr>
+        <th scope="row"><%=(page-1)*size+i+1%></th>
+        <td><%=rows[i].categoryName%></td>
+        <td><%=rows[i].brandName%></td>
+        <td><img src="<%=rows[i].brandLogo%>" alt="" width="50" height="50"/></td>
+    </tr>
+    <% } %>
+</script>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">添加分类</h4>
+      </div>
+      <div class="modal-body">
+        <!--  为了能 序列化提交表单 name的值要参照接口写 -->
+        <form action="" id="form" enctype="multipart/form-data">
+            <!-- 一级分类 -->
+            <div class="noe clearfix " >
+                <span>一级分类: </span>
+                <div class="dropdown btn-group">
+                  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                    请选择
+                    <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                    <!-- list -->
+                  </ul>
+                  <!-- 为了实现添加 不能通过名字 只能通过id  设置动态创建a的自定义属性  设置隐藏域-->
+                  <input type="hidden" id="hidden1" name="categoryId">
+                </div>
+            </div>
+            <!-- 二级分类 -->
+            <div class="tow">
+                <input type="text" placeholder="请输入二级分类名称" name="brandName">
+            </div>
+            <!-- 上传图片 -->
+            <div class="shang">
+                <input type="file" name="pic1" id="fileupload" class="btn btn-default">
+                <a href="javascript:;" class="tp btn btn-default">上传图片</a>
+                <input type="hidden" id="hidden2" name="brandLogo">
+            </div>
+            <!-- 图片 -->
+            <div class="img">
+                <img src="./images/none.png" alt="" width="100" height="100">
+            </div>
+        </form>
+        <!-- 插件要求 必须有submit按钮 来提交 -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" form="form" class="btn btn-primary">确认</button>
+        <!-- 这个submit按钮 不在表单范围 使用 form="表单ID" 达到控制表单的效果 -->
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/template" id="list">
+    <% for(var i = 0; i < rows.length; i++){ %>
+    <li role="presentation"><a data-id="<%=rows[i].id%>" role="menuitem" tabindex="-1" href="#"><%=rows[i].categoryName%></a></li>
+    <% } %>
+</script>
+
+
+
+
+
+<!-- bootstrap依赖jquery-->
+<script src="./assets/jquery/jquery.min.js"></script>
+<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="./assets/artTemplate/template-native.js"></script>
+<!-- 进度条 -->
+<script src="./assets/nprogress/nprogress.js"></script>
+<!-- 分页插件 -->
+<script src="./assets/bootstrap-paginator/bootstrap-paginator.min.js"></script>
+<!--上传插件-->
+<script src="./assets/jquery-fileupload/jquery.ui.widget.js"></script>
+<script src="./assets/jquery-fileupload/jquery.fileupload.js"></script>
+<!--检验插件-->
+<script src="./assets/bootstrap-validator/js/bootstrapValidator.min.js"></script>
+
+<script src="./js/common.js"></script>
+<script src="./js/category.js"></script>
+</body>
+</html>

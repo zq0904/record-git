@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-year-calendar.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    ul, ol, dl {
+      list-style: none;
+    }
+    /*阻止上下文换行*/
+    div.content {
+      white-space: nowrap;
+    }
+    .year-title {
+      color: rgb(70, 184, 218);
+    }
+    .panel {
+      background-color: #eee;
+    }
+    .glyphicon {
+      color: #aaa;
+    }
+    .calendar table.month th.month-title {
+      padding-top: 5px;
+    }
+    .month-title:hover {
+      cursor:pointer;
+      background-color: #ddd;
+      border-radius: 5px;
+    }
+    .trigger li:first-child{
+      border-bottom: 1px solid #ccc;
+    }
+    .trigger li:nth-child(2){
+      padding: 3px 0;
+    }
+    
+  </style>
+</head>
+<body>
+  <div id="calendar"></div>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/bootstrap-year-calendar.min.js"></script>
+  <script src="js/bootstrap-year-calendar.china.js"></script>
+  <script>
+    $(function () {
+      var currentYear = new Date().getFullYear(); // 获取当前的年份
+      var oneMonth = new Date(currentYear, 0, 12).getTime(); // 设置1月12日
+      $('#calendar').calendar({
+        language: 'china', // 部分中文
+        // displayWeekNumber: true, // 显示周数
+        // customDayRenderer: function(element, date) { // 当前每个元素 当前这个元素代表的日期
+        //     if(date.getTime() == oneMonth) {
+        //         $(element).css({
+        //           'backgroundColor': 'red',
+        //           'border-radius': 0
+        //         });
+        //     }
+        // },
+        // disabledDays: [ // 禁用天
+        //     new Date(currentYear,0,11)
+        // ],
+        // dayContextMenu: function(e) { // 单击右键事件
+        //   $(e.element).popover('hide');
+        // },
+        // enableContextMenu: true, // 是否开启 单击右键鼠标放时的 上下文菜单
+        // contextMenuItems:[ // 定义上下文菜单的文本和事件
+        //     {
+        //         text: '更新',
+        //         click: updateEvent
+        //     },
+        //     {
+        //         text: '删除',
+        //         click: deleteEvent
+        //     }
+        // ],
+        // enableRangeSelection: true, // 是否开启 范围选择
+        // selectRange: function(e) { // 范围选择事件
+        //     updateEvent();
+        // },
+        startYear: 2017, // 日历应该打开的年份
+        style: 'background', // 数据源 背景展示
+        dataSource: [ // 数据源
+          {
+            name: '琪琪', // 右键文本
+            id: 0,
+            location: '777',
+            color: 'blue',
+            startDate: new Date(currentYear, 0, 6), // 选择对应的一段日期
+            endDate: new Date(currentYear, 0, 6)
+          },
+          {
+            name: '莹莹',
+            id: 1,
+            location: '666',
+            color: 'red',
+            startDate: new Date(currentYear, 0, 7),
+            endDate: new Date(currentYear, 0, 7)
+          }
+        ],
+        mouseOnDay: function(e) { // 鼠标移入事件 e.events对应的数据源 [{...}]  e.date对应的标准时间  e.element对应的元素
+            if(e.events.length > 0) {
+                var content = '';
+                for(var i in e.events) {
+                    content += '<ul class="trigger">\
+                                  <li>2018-01-01</li>\
+                                  <li>首要污染物:PM2.5</li>\
+                                  <li>AQI:190</li>\
+                                </ul>';
+                }
+                $(e.element).popover({ 
+                    trigger: 'manual',
+                    container: 'body',
+                    html: true,
+                    content: content
+                });
+                $(e.element).popover('show');
+            }
+        },
+        mouseOutDay: function(e) { // 鼠标移出事件
+          if(e.events.length > 0) { // 有数据源移出隐藏
+            $(e.element).popover('hide');
+          }
+        },
+        renderEnd: function () { // 日历加载完成之后执行
+          console.log('日历加载完成');
+        }
+      })
+    });
+
+    function updateEvent(event) { // 更新自定义事件
+      // $('#calendar').data('calendar').getDataSource(); // $('#calendar').data('calendar') 这个对象继承了 element 和 所有的配置
+      console.log('更新');
+    }
+    function deleteEvent(event) { // 删除自定义事件
+      console.log('删除')
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Vue</title>
+		<link rel="stylesheet" href="node_modules/todomvc-common/base.css">
+  	<link rel="stylesheet" href="node_modules/todomvc-app-css/index.css">
+		<link rel="stylesheet" href="css/app.css">
+	</head>
+	<body>
+		<section class="todoapp" id="app">
+			<!-- 本地存储 不能写在 带有v-if="arr.length"条件渲染里面 删除arr中最后一个 不显示 自然本地存储标签不会加载 导致监听不到 -->
+			<!-- <template>{{ jt }}</template> -->
+			<header class="header">
+				<h1>todos</h1>
+				<!-- 添加数据 -->
+				<input class="new-todo" placeholder="What needs to be done?"
+				@keydown.enter="add"
+				v-focus >
+			</header>
+
+			<template v-if="arr.length"><!-- arr没数据不显示 -->
+				<section class="main">
+					<!-- label for id 规避ckeckbox样式 全选 单选关联全选-->
+					<input id="toggle-all" class="toggle-all" type="checkbox"
+					@click="quan"
+					v-model="dan" >
+					<label for="toggle-all">Mark all as complete</label>
+					<ul class="todo-list">
+						<!-- 未完成状态：没有样式 编辑状态：editing -->
+						<!-- 计算属性arr_filter  底部筛选  -->
+						<li v-for="(e,i) in arr_filter"
+						:class="{editing:bianji===e}"
+								 >
+							<div class="view">
+								<input class="toggle" type="checkbox" v-model="e.checked">
+								<!-- 双击编辑 -->
+								<label @dblclick="bianji=e" >{{ e.text }}</label>
+								<button class="destroy" @click="del(i)"></button><!-- 单删除 -->
+							</div>
+							<!-- Esc 取消编辑 这里用 单项绑定更方便   确认编辑 -->
+							<input class="edit"
+							:value="e.text"
+							@keydown.enter="que($event,i)"
+							@blur="que($event,i)"
+							@keydown.esc="bianji=null"
+							v-focus2="bianji===e" >
+						</li>
+					</ul>
+				</section>
+				<footer class="footer">
+					<!-- 未完成个数 -->
+					<span class="todo-count"><strong>{{ weiwan }}</strong> item left</span>
+					<ul class="filters">
+						<li><!-- 底部样式 -->
+							<a :class="{selected:hash=='all'}" href="#/">All</a>
+						</li>
+						<li>
+							<a :class="{selected:hash=='active'}" href="#/active">Active</a>
+						</li>
+						<li>
+							<a :class="{selected:hash=='completed'}" href="#/completed">Completed</a>
+						</li>
+					</ul>
+					<button class="clear-completed"
+					v-show="arr.some( e => e.checked )"
+					@click="del_all" >Clear completed</button><!-- 全删除 -->
+				</footer>
+			</template>
+
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			<p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
+			<p>Created by <a href="http://todomvc.com">you</a></p>
+			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+		</footer>
+		<script src="node_modules/vue/dist/vue.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>

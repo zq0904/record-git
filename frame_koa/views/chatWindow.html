@@ -1,0 +1,170 @@
+{% extends 'base.html' %} {% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> <span class="glyphicon glyphicon-th-list"></span> 聊天窗口</h3>
+                </div>
+                <div class="panel-body">
+                    <div style="height:400px; overflow-x:hidden; overflow-y:scroll;">
+                        <!-- 信息列表 -->
+                        <div id="message-list">
+
+                            <div style="margin-bottom:25px;" v-for="msg in messages">
+
+                                <div v-if="msg.type === 'join' || msg.type === 'left'">
+                                    <div class="media-left">
+                                        <img class="media-object" style="width:20px; height:20px;" v-bind:src="'/static/images/' + msg.user.image + '.png'">
+                                    </div>
+                                    <div class="media-body">
+                                        <h4 class="media-heading" v-text="msg.data"></h4>
+                                    </div>
+                                </div>
+
+                                <div v-if="msg.type === 'chat'">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <img class="media-object" style="width:48px; height:48px;" v-bind:src="'/static/images/' + msg.user.image + '.png'">
+                                        </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading" v-text="msg.user.name"></h4>
+                                            <span v-text="msg.data"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div style="margin-top: 15px;">
+                        <!-- 提交 -->
+                        <div class="input-group">
+                            <input id="text" type="text" class="form-control" placeholder="探讨的问题?">
+                            <span class="input-group-btn">
+                                <button id="submit" class="btn btn-primary">提交</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"> <span class="glyphicon glyphicon-user"></span> 用户列表</h3>
+                    <a href="/logout" class="btn btn-danger" style="position:absolute;top:3px;right:30px;">登出</a>
+                </div>
+                <div class="panel-body" style="height: 479px;">
+                    <div style="height:434px; overflow-x:hidden; overflow-y:scroll;">
+                        <!-- 用户列表 -->
+                        <div id="user-list">
+
+                            <div class="media" v-for="user in users">
+                                <div class="media-left">
+                                    <img class="media-object" style="width:20px; height:20px;" v-bind:src="'/static/images/' + user.image + '.png'">
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading" v-text="user.name + ' (ID:' + user.id + ')'"></h4>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} {% block script %}
+<script>
+    $(function () {
+        // messagelist userlist 通过 vue 管理
+        var vmMessageList = new Vue({
+            el: '#message-list',
+            data: {
+                messages: []
+            }
+        });
+        var vmUserList = new Vue({
+            el: '#user-list',
+            data: {
+                users: []
+            }
+        });
+
+        var ws = new WebSocket(`ws://${window.location.hostname}:3000/ws/chat`);
+        // 监听wss返回的信息
+        ws.onmessage = function (packdata) {
+            var data = JSON.parse(packdata.data);
+            var type = data.type;
+            // console.log(data)
+            if (type === 'list') { // 更新用户列表 （服务端只在用户首次进入才会响应）
+                vmUserList.users = data.data;
+            } else if (type === 'join') { // 用户加入
+                addUserList(vmUserList.users, data.user); // 将新用户 加入到 列表
+                addMessage(vmMessageList.messages, data); // 将新用户加入这条信息 加入到 信息列表
+            } else if (type === 'left') { // 用户退出
+                removeUserList(vmUserList.users, data.user);
+                addMessage(vmMessageList.messages, data);
+            } else if (type === 'chat') { // 添加信息
+                addMessage(vmMessageList.messages, data); // 将信息添加到 信息列表
+            }
+        };
+        ws.onclose = function () {
+            console.log('ws close');
+            $('#text,#submit').attr('disabled', 'disabled');
+            $('#text').attr('placeholder', 'ws连接关闭');
+        };
+        ws.onerror = function (code, msg) {
+            console.log('ws error');
+        };
+        // 点击提交
+        $('#submit').click(function () {
+            var text = $('#text').val().trim();
+            if (text) {
+                ws.send(text);
+                $('#text').val('');
+            }
+        });
+        $('#text').keydown(function (e) {
+            if (e.keyCode === 13) {
+                $('#submit').click();
+            }
+        })
+
+    });
+    // 在userList中添加用户
+    function addUserList(arr, user) {
+        arr.forEach(function (e, i) {
+            if (e.id === user.id) { // 根据用户id已存在退出
+                return;
+            }
+        })
+        arr.push(user);
+    }
+    // 在userList中删除用户
+    function removeUserList(arr, user) {
+        var target = -1;
+        for (i = 0; i < arr.length; i++) {
+            if (arr[i].id === user.id) {
+                target = i;
+                break;
+            }
+        }
+        if (target >= 0) {
+            arr.splice(target, 1); // 影响原数组
+        }
+    }
+    // 添加消息 
+    function addMessage(arr, msg) {
+        arr.push(msg);
+        // messageList超出父容器 动画效果
+        $('#message-list').parent().stop().animate({
+            scrollTop: $('#message-list').height() // 多余法 溢出仍然到底为止
+        }, 1000);
+    }
+</script> {% endblock %}

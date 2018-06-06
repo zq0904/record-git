@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas{
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+	var Person = function (ctx){
+		this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+		this.width = this.ctx.canvas.width;
+		this.height = this.ctx.canvas.height;
+		this.x0 = this.width/2;
+		this.y0 = this.height/2;
+
+		this.src = './images/04.png';
+
+		this.spaceX = 0;
+		this.spaceY = 0;
+		this.spaceSize = 10;
+
+		this.index = 0;
+		this.Yindex	= 0;
+
+	}
+	Person.prototype.init = function (){
+		this.jiazai();
+		this.bangding();
+	};
+	Person.prototype.jiazai = function (){
+		var that = this;
+		this.img = new Image();
+		this.img.onload = function (){
+			that.hren();
+		};
+		this.img.src = this.src;
+	};
+	Person.prototype.hren = function (){
+		this.ctx.clearRect(0,0,this.width,this.height);
+		this.ctx.drawImage(this.img,this.index*this.img.width/4,this.Yindex*this.img.height/4,this.img.width/4,this.img.height/4,this.x0-this.img.width/4/2+this.spaceX*this.spaceSize,this.y0-this.img.height/4/2+this.spaceY*this.spaceSize,this.img.width/4,this.img.height/4);
+	};
+	Person.prototype.bangding = function (){
+		var that = this;
+		document.addEventListener('keydown',function(e){
+			// 0 xia 1 zuo 2 you 3 shang
+			switch(e.keyCode){
+				case 37:
+				that.index++;
+				that.spaceX--;
+				that.Yindex = 1;
+				break;
+				case 38:
+				that.index++;
+				that.spaceY--;
+				that.Yindex = 3;
+				break;
+				case 39:
+				that.index++;
+				that.spaceX++;
+				that.Yindex = 2;
+				break;
+				case 40:
+				that.index++;
+				that.spaceY++;
+				that.Yindex = 0
+				break;
+			}
+			if(that.index>=4){
+				that.index = 0;
+			}
+			that.hren();
+		})
+	};
+
+	new Person().init();
+
+
+
+
+
+
+
+
+
+		// var Person = function (ctx){
+	 //        this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+	 //        this.width = this.ctx.canvas.width;
+	 //        this.height = this.ctx.canvas.height;
+	 //        this.x0 = this.width/2;
+	 //        this.y0 = this.height/2;
+	 //        this.src = 'images/03.png';
+	           
+	 //        this.index = 0; //图片水平索引
+	 //        this.Yindex = 0; //图片垂直索引
+	 //        // 在画布上的位移差
+	 //        this.spaceX = 0;
+	 //        this.spaceY = 0;
+	 //        this.spaceSize = 10;
+	 //    };
+	 //    Person.prototype.init = function (){
+	 //        // 载入图片
+	 //        this.hp();
+	 //        // 绑定方向按钮
+	 //        this.bd();
+	 //    };
+	 //    // 载入图片
+	 //    Person.prototype.hp = function (){
+	 //        var that = this;
+	 //        this.img = new Image();
+	 //        this.img.onload = function (){
+	 //            that.hren(); //先做好准备 加载完 绘制人物
+	 //            //单独将绘制人物提出去 保证每次按键触发 仍用同一个this.img 只重新绘制人物
+	 //            //如果不提出去 每次创建 this.img 图片会闪动
+	 //        };
+	 //        this.img.src=this.src;
+	 //    };
+	 //    // 绘制人物
+	 //    Person.prototype.hren = function (){
+	 //        // 清空
+	 //        this.ctx.clearRect(0,0,this.width,this.height);
+	 //        this.ctx.drawImage(this.img,this.index*this.img.width/4,this.Yindex*this.img.height/4,this.img.width/4,this.img.height/4,this.x0-this.img.width/4/2+this.spaceX*this.spaceSize,this.y0-this.img.height/4/2+this.spaceY*this.spaceSize,this.img.width/4,this.img.height/4);
+	 //    };
+	 //    // 绑定方向按钮
+	 //    Person.prototype.bd = function (){
+	 //        var that = this;
+	 //        document.onkeydown = function (e){
+	 //            switch(e.keyCode){
+	 //                //由图来 0下 1左 2右 3上
+	 //                case 37:
+	 //                that.spaceX--;
+	 //                that.index++;
+	 //                that.Yindex = 1;
+	 //                break;
+	 //                case 38:
+	 //                that.spaceY--;
+	 //                that.index++;
+	 //                that.Yindex = 3;
+	 //                break;
+	 //                case 39:
+	 //                that.spaceX++;
+	 //                that.index++;
+	 //                that.Yindex = 2;
+	 //                break;
+	 //                case 40:
+	 //                that.spaceY++;
+	 //                that.index++;
+	 //                that.Yindex = 0;
+	 //                break;
+	 //            }
+	 //            if(that.index>=4){
+	 //                that.index = 0;
+	 //            }
+	 //            that.hp();
+	 //        };
+	 //    };
+	 //    new Person().init();
+	</script>
+</body>
+</html>

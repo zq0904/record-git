@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <!--忽略识别数字为电话号码-->
+  <meta content="telephone=no" name="format-detection">
+  <!--iPhone私有，允许全屏模式浏览-->
+  <meta content="yes" name="apple-mobile-web-app-capable">
+  <!--iPhone私有，指定Safari顶端状态栏样式-->
+  <meta content="black" name="apple-mobile-web-app-status-bar-style">
+  <title>PKindex</title>
+  <link rel="stylesheet" type="text/css" href="css/reset.css" />
+  <link rel="stylesheet" href="./iconfont/iconfont.css">
+  <link rel="stylesheet" type="text/css" href="css/pkIndex.css" />
+
+</head>
+
+<body>
+  
+  <!-- 倒计时 -->
+  <div class="head">
+    <div class="count">
+      <img src="./images/2_06.png" alt="">
+      <p>
+        <span>18</span>
+        <em></em>
+        <span>18</span>
+        <em></em>
+        <span>18</span>
+      </p>
+    </div>
+  </div>
+  <!-- 奖励list -->
+  <div class="w hide">
+    <section class="award">
+      <h4 class="yellow ">我的奖励
+        <span class="grey">(点赞数前三名)</span>
+      </h4>
+      <ul>
+        <li class="clearfix">
+          <div class="portrait l"></div>
+          <div class="describe l">
+            <p class="text">小星星</p>
+            <p class="date">2017-09-20</p>
+          </div>
+          <div class="money r">
+            <p>
+              <span>532</span>
+              <span>咖币</span>
+            </p>
+            <p>
+              <span class="iconfont icon-huangguan"></span>
+              <span>手气最佳</span>
+            </p>
+          </div>
+          <span></span>
+        </li>
+      </ul>
+    </section>
+    <section class="award">
+      <h4>最佳评论奖
+        <span class="grey">(点赞数前三名)</span>
+      </h4>
+      <ul>
+        <li class="clearfix">
+          <div class="portrait l"></div>
+          <div class="describe l">
+            <p class="text">小星星</p>
+            <p class="date">2017-09-20</p>
+          </div>
+          <div class="money r">
+            <p>
+              <span>532</span>
+              <span>咖币</span>
+            </p>
+          </div>
+          <span></span>
+        </li>
+        <li class="clearfix">
+          <div class="portrait l"></div>
+          <div class="describe l">
+            <p class="text">小星星</p>
+            <p class="date">2017-09-20</p>
+          </div>
+          <div class="money r">
+            <p>
+              <span>532</span>
+              <span>咖币</span>
+            </p>
+          </div>
+          <span></span>
+        </li>
+      </ul>
+    </section>
+  </div>
+  <!-- 进度 -->
+  <div class="">
+    <div class="plan">
+      <div class="content"></div>
+      <span>剩余</span>
+      <p>
+        <span>1888</span>
+        <span>咖币</span>
+      </p>
+    </div>
+    <p class="residue">奖池剩余 12900咖币</p>
+  </div>
+  <!-- 领奖框 -->
+  <ul class="prizeBox hide">
+    <li>
+      <a href="#">
+        <img src="./images/new-pk4_03.png" alt="">
+        <span>您有PK赛奖励待领取</span>
+        <span>领取奖励</span>
+      </a>
+    </li>
+    <li>
+      <a href="#">
+        <img src="./images/new-pk4_03.png" alt="">
+        <span>您有最佳评论奖励待领取</span>
+        <span>领取奖励</span>
+      </a>
+    </li>
+    <a href="#">*查看领奖详情</a>
+  </ul>
+  <!-- 弹框 -->
+  <div class="keep hide">
+    <div>
+      <p class="keep_title"></p>
+      <div class="keepBody">
+        <p></p>
+        <span id="keep_result"></span>
+      </div>
+    </div>
+  </div>
+  <!-- 领奖框 -->
+  <div class="acceptBox hide">
+    <div>
+      <p>恭喜您</p>
+      <p>获得<span>120</span>咖币</p>
+      <span>确定</span>
+    </div>
+  </div>
+  <script src="./js/rem.js"></script>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/pkIndex.js"></script>
+  <script>
+    $(function () {
+      // 弹框关闭按钮
+      $('.keep_title').on('click', '.keep_close', function () { keep(false); });
+      // 弹框确定按钮
+      $('#keep_result').click(function () {
+        var url = 'no...';
+        if ($(this).html === '我要领奖') {
+          url = 'yes...';
+        }
+        // $.ajax({
+        //   type: 'POST',
+        //   data: '',
+        //   dataType: 'json',
+        //   url: url,
+        //   async: true,
+        //   success: function (data) {
+        //     if (data.state != 1) return;
+            keep(false);
+            // 业务判断 如果领奖
+
+            // 渲染
+
+            $('.prizeBox').show();
+          // },
+        //   error: function () {
+        //     console.log('ajax error');
+        //   }
+        // });
+      });
+      // 首次渲染
+      // $.ajax({
+      //   type: 'POST',
+      //   data: '',
+      //   dataType: 'json',
+      //   url: '',
+      //   async: true,
+      //   success: function (data) {
+      //     if (data.state != 1) return;
+          $('.content').css({ bottom: schedule(50, 100) });
+      //   },
+      //   error: function () {
+      //     console.log('ajax error');
+      //   }
+      // });
+    });
+    // 进度
+    function schedule(now, standard) { // 当前值 基准值
+      return -122 + (122 - 12) / standard * now + '%'; // 最小-122%  最大-12%
+    }
+    var $keep = $('.keep');
+    // 弹框
+    function keep(show, boolea, text) { // 显示 输赢 文本
+      if (!show) return $keep.hide();
+      var str = '很遗憾，PK赛输了', result = '围观一下';
+      if (boolea) {
+        str = '恭喜，PK赛赢啦~';
+        result = '我要领奖';
+      }
+      $('.keep_title').html(str + '<span class="keep_close">×</span>');
+
+      $('.keepBody p').html(text);
+      $('#keep_result').html(result);
+      $keep.show();
+    }
+  </script>
+</body>
+
+</html>

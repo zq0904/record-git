@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+<body>
+  <div id="xinxi">
+      <label for="name"> 姓名： <input type="text" name="" id="name" value=""></label><br>
+      <label for="zhi"> 职业： <input type="text" name="" id="zhi" value=""></label>
+  </div>
+  <button>按钮</button>
+  <script src="/node_modules/art-template/lib/template-web.js"></script>
+  <script src="/node_modules/jquery/dist/jquery.js" ></script>
+  <script>
+    // 这个 姓名 和 职业  假设就是从2个接口拿到的  
+    // 主要看 怎么从2个接口拿数据 以及promise then使用
+    $('button').on('click',function () {
+
+      // // 回调嵌套
+      // $.ajax({
+      //   url:'/1',
+      //   type:'GET',
+      //   data:'',
+      //   dataType:'json',
+      //   success:function (data1) {
+      //     $.ajax({
+      //       url:'/2',
+      //       type:'GET',
+      //       data:'',
+      //       dataType:'json',
+      //       success:function (data2) {
+      //         console.log(data1,data2)
+      //       }
+      //     });
+      //   }
+      // });
+
+      //promise 来解决 嵌套的问题
+    function f() { //封装在一个函数里
+      var o = {}; //then方式 使得 2个结果处在不同的作用域 使用对象全局处理下
+      $.ajax({
+            url:'/1',
+            type:'GET',
+            data:'',
+            dataType:'json'
+      }).then(function (data1) {
+        o.data1 = data1;
+        return $.ajax({
+                url:'/2',
+                type:'GET',
+                data:'',
+                dataType:'json'
+              })
+      }).then(function (data2) {
+        o.data2 = data2;
+      })
+      return o;
+    }
+    console.log(f());
+      
+
+
+
+
+
+    })
+    
+
+  </script>
+</body>
+</html>

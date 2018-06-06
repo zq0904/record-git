@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>下拉刷新上拉加载</title>
+  <link rel="stylesheet" href="./css/reset_m.css">
+  <link rel="stylesheet" href="./css/pullToRefresh.css">
+</head>
+<style>
+  .article {
+    width: 100%;
+    height: 500px;
+    line-height: 500px;
+    text-align: center;
+    background-color: #ddd;
+    border: 1px solid red;
+  }
+</style>
+
+<body>
+  <div id="app">
+    <div>
+      <header style="height: 100px;line-height: 100px;background-color:red;text-align: center;">头部</header>
+      <div class="body">
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript" src="./js/zepto.min.js"></script>
+<!-- <script type="text/javascript" src="./js/jquery.min.js"></script> -->
+<script type="text/javascript" src="./js/pullToRefresh.js"></script>
+<script>
+  var mockUrl = 0; // mockurl路径
+
+  var config = {
+    pageStart: 1,
+    pageSize: 5,
+    isEnd: false, // 是否没有数据了
+    isAjax: false, // 是否正在发送ajax请求
+    padding_bottom: 100, // 距离下面多少 触发加载
+    isPull: true, // 是否下拉刷新
+    padding_top: 60, // 下拉超过距离 才会下拉刷新
+    d: '下拉刷新',
+    o: '释放刷新',
+    f: '刷新中……',
+    s: '刷新成功',
+    up_f: '正在加载……',
+    up_m: '没有更多数据了'
+  };
+  var refreshBox = new PullToRefresh({
+    container: "#app", // 容器
+    pull: { // 下拉刷新
+      set: config.isPull,
+      height: config.padding_top,
+      contentdown: config.d,
+      contentover: config.o,
+      contentfresh: config.f,
+      success: config.s,
+      callback: function () {
+        console.log('下拉刷新');
+        mockUrl = 1; // mockurl路径
+
+        $.get('http://localhost:3000/' + mockUrl, config, function (data) {
+          // 刷新成功
+          $('.body').html('<div class="article">' + data.data.text + '</div>'); // 业务
+          config.pageStart = 1; // 重置
+          config.isEnd = false;
+          refreshBox.endPullRefresh(); // 关闭下拉刷新
+        });
+
+      }
+    },
+    up: { // 上拉加载
+      contentfresh: config.up_f,
+      contentnomore: config.up_m,
+      callback: function () {
+        _upLoad();
+      }
+    }
+  });
+  // 通过监听滚动事件加载更多
+  $window = $(window);
+  $document = $(document);
+  $window.scroll(function () {
+    // 有数据 没有正在发送ajax请求 距底部距离满足条件时 发送请求
+    if (config.isEnd === false && config.isAjax === false && $document.height() - $window.scrollTop() - $window.height() < config.padding_bottom) {
+      _upLoad();
+    }
+  });
+  // 上拉加载 方法
+  function _upLoad() {
+    console.log('上拉加载');
+    mockUrl++; // mockurl路径
+
+    config.isAjax = true; // 正在发生请求
+    $.get('http://localhost:3000/' + mockUrl, config, function (data) {
+      $('.body').append('<div class="article">' + data.data.text + '</div>');
+      config.pageStart++; // 变更入参
+      config.isAjax = false; // 发生请求结束
+      if (data.end) { // 后台传回的 没有数据标识
+        config.isEnd = true;
+        refreshBox.endUpLoading(false);
+      }
+    });
+  }
+</script>
+
+</html>

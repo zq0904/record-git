@@ -1,0 +1,550 @@
+/*主体部分*/
+.section:nth-child(1){
+    background: url(../images/01-bg.png) no-repeat center bottom;
+}
+.section:nth-child(2){
+    background: url(../images/02-bg.png) no-repeat center bottom;
+}
+.section:nth-child(3){
+    background: url(../images/03-bg.png) no-repeat center bottom;
+}
+.section:nth-child(4){
+    background: url(../images/04-bg.png) no-repeat center bottom;
+}
+.section:nth-child(5){
+    background: url(../images/05-bg.png) no-repeat center bottom;
+}
+.section:nth-child(6){
+    background: url(../images/06-bg.png) no-repeat -286px bottom;
+    transition: background-position 2s linear;
+}
+.section:nth-child(6).donghua{
+    background: url(../images/06-bg.png) no-repeat -1140px bottom;
+}
+.section:nth-child(7){
+    background: url(../images/07-bg.png) no-repeat center bottom;
+}
+.section:nth-child(8){
+    background: url(../images/08-bg.png) center bottom;
+}
+/*共有部分*/
+.zhijie{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+    margin-bottom: 542px;
+    margin-left: 600px;
+    border-radius: 50%;
+    z-index: 100;
+}
+.jixu{
+    position: absolute;
+    bottom: 114px;
+    left: 50%;
+    transform: translate(-50%);
+    margin-left: 540px;
+    border-radius: 50%;
+    z-index: 100;
+    animation: donghua01 0.7s linear infinite alternate;
+}
+/*整体居中定位*/
+.section *{
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+/*1*/
+/*4个定图*/
+img[src="./images/01-goods.png"]{
+    bottom: 100px;
+}
+/*条幅*/
+img[src="./images/01-fly.png"]{
+    bottom: 550px;
+    margin-left: 225px;
+    margin-top: 0;
+    animation: donghua01 0.5s linear infinite alternate;
+}
+/*沙发*/
+img[src="./images/01-sofa.png"]{
+    bottom: 322px;
+    margin-top: 0;
+    margin-left: -180px;
+    animation: donghua01 1s linear infinite alternate;
+}
+@keyframes donghua01{
+    from{
+        margin-bottom: -20px;
+    }
+    to{
+        margin-bottom: 20px;
+    }
+}
+/*2*/
+/*文字*/
+.section:nth-child(2) .text{
+    width: 363px;
+    height: 27px;
+    bottom: 585px;
+}
+.section:nth-child(2) .text img:last-child{
+    opacity: 0;
+    transition: opacity 1s 3s linear;
+}
+.selected.section:nth-child(2) .text img:last-child{
+    opacity: 1;
+}
+/*8主体*/
+img[src="./images/02-goods.png"]{
+    bottom: 215px;
+    transform: translate(-50%) scale(0);
+    transform-origin: right bottom;
+    transition: transform 1s 2s linear;
+}
+.selected img[src="./images/02-goods.png"]{
+    transform: translate(-50%) scale(1);
+}
+/*搜索框*/
+.section:nth-child(2) .search{
+    width: 222px;
+    height: 45px;
+    bottom: 304px;
+    margin-left: 1400px;
+}
+.section:nth-child(2) .search img:last-child{
+    bottom: 9px;
+    transform: translate(0);
+    left: 92px;
+    opacity: 0;
+    transition: opacity 1s 1s linear;
+}
+.selected.section:nth-child(2) .search{
+    animation: search02 3s linear forwards;
+}
+@keyframes search02{
+    from{
+        margin-left: 1400px;
+        transform: translate(-50%);
+    }
+    33%{
+        margin-left: 0px;
+        transform: translate(-50%);
+    }
+    66%{
+        margin-left: 0px;
+        transform: translate(-50%);
+    }
+    to{
+        margin-left: 0px;
+        transform: translate(39%,-306%) scale(0.7);
+    }
+}
+.selected.section:nth-child(2) .search img:last-child{
+    opacity: 1;
+}
+/*沙发*/
+.section:nth-child(2) .sofa{
+    bottom: 302px;
+    transform: translate(-50%) scale(0.5);
+    margin-left: -55px;
+    display: none;
+    z-index: 100;
+}
+.section:nth-child(2) .sofa.donghua{
+    animation: sofa2 1s linear;
+}
+@keyframes sofa2{
+    form{
+        transform: translate(-50%) scale(0.5);
+    }
+    to{
+        transform: translate(-86%,400%) scale(1);
+        margin-bottom: -73px;
+    }
+}
+/*3*/
+/*沙发*/
+.section:nth-child(3) .sofa{
+    bottom: 240px;
+    margin-left: -130px;
+    display: none;
+}
+/*sml码*/
+.sml{
+    width: 296px;
+    height: 131px;
+    bottom: 169px;
+    margin-left: 188px;
+}
+.sml img:last-child{
+    display: none;
+}
+/*购物车*/
+.gou{
+    width: 218px;
+    height: 58px;
+    bottom: 104px;
+    margin-left: 147px;
+}
+.gou img:last-child{
+    display: none;
+}
+/*沙发斜着*/
+.section:nth-child(3) .sofa_x{
+    bottom: 208px;
+    margin-left: -130px;
+    display: none;
+    z-index: 100;
+}
+.section:nth-child(3) .sofa_x.donghua{
+    animation: donghua 1s linear;
+}
+@keyframes donghua{
+    form{
+        bottom: 208px;
+        margin-left: -130px;
+    }
+    to{
+        bottom: -427px;
+        margin-left: 50px;
+    }
+}
+/*4*/
+/*云*/
+img[src="./images/04-cloud.png"]{
+    bottom: 535px;
+    animation: yun04 20s linear infinite alternate;
+}
+@keyframes yun04{
+    from{
+        margin-left: -250px;
+    }
+    to{
+        margin-left: 1000px;
+    }
+}
+/*文本*/
+.section:nth-child(4) .text{
+    bottom: 500px;
+}
+.section:nth-child(4) .text img:last-child{
+    display: none;
+}
+/*收货框*/
+.section:nth-child(4) .add{
+    width: 283px;
+    height: 270px;
+    bottom: 163px;
+    background: url(../images/04-address01.png);
+    display: none;
+}
+.section:nth-child(4) .add img{
+    top: 60px;
+    display: none;
+}
+/*车*/
+.section:nth-child(4) .cart{
+    bottom: 400px;
+    z-index: 101;
+}
+.section:nth-child(4) .cart.donghua{
+    animation: cart04 1s linear forwards;
+}
+@keyframes cart04{
+    from{
+    }
+    to{
+        margin-left: 1000px;
+    }
+}
+.section:nth-child(4) .cart .sofa_x{
+    top: -44px;
+    margin-left: 50px;
+    display: none;
+}
+/*5*/
+/*文本*/
+img[src="./images/05-text.png"]{
+    margin-left: -132px;
+    bottom: 510px;
+}
+/*银行卡部分*/
+.icbc{
+    width: 358px;
+    height: 221px;
+    margin-left: -215px;
+    bottom: 150px; 
+    z-index: 50; /*5-6沙发父容器层级*/
+}
+.icbc img:first-child{
+    top: 0;
+    opacity: 0;
+    transition: all 1s 2s linear;
+}
+.selected .icbc img:first-child{
+    top: -100px;
+    opacity: 1;
+}
+.icbc .sofa{
+    bottom: 525px;
+    opacity: 0;
+}
+.selected .icbc .sofa{
+    animation: sofa05 2s 1s linear forwards;
+}
+/*5屏沙发动画*/
+@keyframes sofa05{
+    0%{
+        opacity: 0;
+        bottom: 525px;
+    }
+    1%{
+        opacity: 1;
+        bottom: 525px;
+    }
+    50%{
+        opacity: 1;
+        bottom: 0;
+    }
+    100%{
+        opacity: 1;
+        bottom: -127px;
+    }
+}
+/*5-6屏沙发动画*/
+.icbc .sofa.donghua{
+    animation: sofa5-6 1s linear;
+}
+@keyframes sofa5-6{
+    from{
+        opacity: 1;
+        bottom: -127px;
+    }
+    to{
+        opacity: 1;
+        bottom: -500px;
+        transform: translate(-50%) scale(0.3);
+    }
+}
+/*鼠标部分*/
+.mouse{
+    width: 205px;
+    height: 522px;
+    margin-left: 311px;
+}
+.mouse img{
+    bottom: 0;
+    margin-left: 20px;
+}
+.mouse img:nth-child(2){
+    opacity: 0;
+    transition: opacity 0s 1s linear;
+}
+.selected .mouse img:nth-child(2){
+    opacity: 1;
+}
+/*手*/
+.mouse img:nth-child(3){
+    margin-left: -16px;
+    bottom: -1000px;
+    transition: bottom 1s linear;
+}
+.selected .mouse img:nth-child(3){
+    bottom: -224px;
+}
+/*6*/
+/*云*/
+.section:nth-child(6)>img:nth-child(1){
+    bottom: 550px;
+    animation: yun06 20s linear infinite alternate;
+}
+.section:nth-child(6)>img:nth-child(2){
+    bottom: 560px;
+    animation: yun06 35s linear infinite alternate;
+}
+@keyframes yun06{
+    from{
+        margin-left: -250px;
+    }
+    to{
+        margin-left: 250px;
+    }
+}
+/*文本*/
+.section:nth-child(6) .text{
+    bottom: 545px;
+    margin-left: -167px;  
+}
+.section:nth-child(6) .text img:last-child{
+    display: none;
+}
+/*箱子*/
+.xiang{
+    bottom: 390px;
+    margin-left: -1000px;
+    z-index: 100;
+}
+.xiang.donghua{
+    animation: xiang 2s linear;
+}
+@keyframes xiang{
+    0%{
+        bottom: 390px;
+        margin-left: -1000px;
+    }
+    30%{
+        bottom: 390px;
+        margin-left: -215px;
+    }
+    50%{
+        bottom: 390px;
+        margin-left: -215px;
+        transform: translate(-50%) scale(1);
+    }
+    100%{
+        bottom: 0px;
+        margin-left: -215px;
+        transform: translate(-50%) scale(0.5);
+    }
+}
+/*车*/
+.che{
+    width: 221px;
+    height: 122px;
+    bottom: 0;
+    margin-left: -180px;
+    z-index: 101;
+}
+/*车文本*/
+.t1,.t2{
+    bottom: 105px;
+    margin-left: 138px;
+}
+.t2{
+    display: none;
+}
+/*双人*/
+.two{
+    bottom: 10px;
+    transform: translate(-45%) scale(0);
+    transform-origin: left bottom;
+}
+.two.donghua{
+    animation: two 3s linear forwards;
+}
+@keyframes two{
+    0%{
+       bottom: 10px;
+       transform: translate(-45%) scale(0); 
+       margin-left: 0; 
+    }
+    33%{
+       bottom: 10px;
+       transform: translate(-50%) scale(1);
+       margin-left: 0;
+    }
+    66%{
+       bottom: 109px;
+       transform: translate(-50%) scale(1); 
+       margin-left: 0;
+    }
+    100%{
+       bottom: 109px;
+       transform: translate(-45%) scale(1);
+       margin-left: 195px;
+    }
+}
+/*请收货*/
+img[src="./images/06-say.png"]{
+    bottom: 372px;
+    margin-left: 291px;
+    display: none;
+}
+/*单人模块*/
+.dan{
+    width: 106px;
+    height: 150px;
+    bottom: 116px;
+    margin-left: 519px;
+}
+.dan img:first-child{
+    display: none;
+}
+.dan img:last-child{
+    bottom: 0;
+    transform: translate(-50%) scale(0);
+    transform-origin: right bottom;
+}
+.dan img:last-child.donghua{
+    animation: img2 2s linear forwards;
+}
+@keyframes img2{
+    from{
+        transform: translate(-50%) scale(0);
+    }
+    50%{
+        transform: translate(-50%) scale(1);
+        margin-left: 0;
+    }
+    to{
+        transform: translate(-50%) scale(1);
+        margin-left: -126px;
+    }
+}
+/*7*/
+.xx{
+    bottom: 441px;
+    margin-left: -237px;
+    width: 99px;
+}
+/*星星*/
+.xx img{
+    position: static;
+    margin-right: 2px;
+    display: none;
+}
+/*好评*/
+img[src="./images/07-text.png"]{
+    bottom: 383px;
+    margin-left: -255px;
+    transform: translate(-50%) scale(0);
+    transform-origin: bottom left;
+}
+img[src="./images/07-text.png"].donghua{
+    animation: hao 1s linear forwards;
+}
+@keyframes hao {
+    from{
+        transform: translate(-50%) scale(0);
+    }
+    90%{
+        transform: translate(-50%) scale(1.2);
+    }
+    to{
+        transform: translate(-50%) scale(1);
+    }
+}
+/*8*/
+/*按钮*/
+.btn {
+    width: 389px;
+    height: 160px;
+    bottom: 360px;
+    cursor:pointer;
+}
+.btn img:last-child{
+    display: none;
+}
+/*再来一次*/
+img[src="./images/08-again.png"]{
+    bottom: 400px;
+    margin-left: 314px;
+    cursor:pointer;
+}
+/*手*/
+.section:nth-child(8) img:last-child{
+    bottom: 0;
+}
+
+

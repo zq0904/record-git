@@ -1,0 +1,26 @@
+{% extends 'base.html' %} 
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <span class="glyphicon glyphicon-user"></span> 请登录</h3>
+                </div>
+                <div class="panel-body">
+                    <!-- 点击submit post形式 /login路由 后端校验cookie -->
+                    <form action="/login" method="post">
+                        <div class="form-group">
+                            <label>名字</label>
+                            <input type="text" name="name" class="form-control" placeholder="你的昵称" value="{{ name }}">
+                        </div>
+                        <button type="submit" class="btn btn-primary">登录</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+/*两栏布局*/
+/*左*/
+.main .l{
+	width: 90px;
+	height: 100%;
+	position: relative;
+}
+.main .l ul{
+	width: 100%;
+}
+.main .l ul li{
+	width: 100%;
+}
+.main .l ul li a{
+	display: block;
+	height: 50px;
+	line-height: 50px;
+	text-align: center;
+	font-size: 14px;
+	background-color: #F3F4F5;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+.main .l ul li a.now{
+	background-color: #fff;
+	border-right: 1px solid transparent;
+	color: orange;
+}
+/*右*/
+.main_content{
+	position: relative;
+	overflow: hidden;
+	height: 100%;
+	padding: 0 10px;
+}
+.main_content ul{
+	width: 100%;
+}
+.main_content ul li{
+	float: left;
+	width: 33.3333%;
+}
+.main_content ul li a{
+	width: 100%;
+}
+.main_content ul li a img{
+	width: 60px;
+	height: 60px;
+	display: block;
+	margin: 0 auto;
+}
+.main_content ul li a p{
+	text-align: center;
+	padding-bottom: 10px;
+	font-size: 14px;
+}

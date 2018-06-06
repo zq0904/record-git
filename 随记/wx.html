@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>微信小程序</title>
+</head>
+<body>
+  <script>
+    如何让sublime识别 wxml wxss 语法
+    // view -> syntax -> open... -> xml/css
+    // 先在微信开发者工具中app.json中设置新的页面路径 页面等wxml文件自动创建 然后在回到sublime中编写
+    
+    微信小程序生命周期
+    onLaunch // 全局 加载完成 (初始化)
+    onShow   // 全局 显示 (可以根据scene字段判断 用户通过什么方式进到小程序的 初始化之后加载一次)
+    onLoad   // 首页 加载完成 (离开有display:none的感觉 并不会重新加载)
+    onShow   // 首页 显示
+    onReady  // 首页 监听页面初次渲染完成
+    进入链接里
+    onHide   // 首页 隐藏
+    onLoad   // 美食 加载完成
+    onShow   // 美食 显示
+    onReady  // 美食 监听页面初次渲染完成
+    回退到首页
+    onUnload // 美食 监听页面卸载 (页面卸载了 下次需要重新加载)
+    onShow   // 首页 显示
+
+    设置 -> 项目设置 有一个不校验安全域名 
+    // 在开发阶段wx.request请求需要设置 否则报错
+    // 最终需要 在微信公众平台->设置->开发设置->服务器域名 配置安全域名 .com 后不带/
+    // display: flex; 2个盒子水平排列 其中一个设置宽 另一个由于文本太长导致 第一个盒子所设置的 宽无效 (所以flex布局最好都设置好宽度)
+
+
+    微信公众平台 jssdk // https://mp.weixin.qq.com/wiki?t=resource/res_main&id=mp1421141115
+    微信公众平台技术文档->微信网页开发->微信JS-SDK说明文档（拉倒最下面）
+    DEMO页面：// http://demo.open.weixin.qq.com/jssdk  需要在微信web开发者工具中打开 不要在浏览器中打开
+    示例代码：// http://demo.open.weixin.qq.com/jssdk/sample.zip
+    jssdk php的这个运行时 报错 'Fatal error: Call to undefined function curl_init()' 必须开启 curl 扩展
+    // 1.修改 php.ini 中的 ;extension=php_curl.dll 把前面的;去掉
+    // 2.php5.6.31\ext 下的php_curl.dll 文件复制一份到 C盘中的 System32 文件夹下面
+    // 3.我的电脑 右键 属性 高级系统设置 环境变量 系统变量 Path 编辑添加2个路径（注意说个路径是用;号分割）
+    // ';C:\WAMP\php-5.6.31-Win32-VC11-x64;C:\WAMP\php-5.6.31-Win32-VC11-x64\ext'
+    // 4.重启Apache
+    在微信web开发者工具运行的是微信公众号的开发 
+    // http://localhost/JSSDKphp/sample.php 这个是我本地配的
+  </script>
+</body>
+</html>

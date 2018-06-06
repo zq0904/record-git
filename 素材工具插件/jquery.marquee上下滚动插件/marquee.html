@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>marquee</title>
+
+    <style>
+        /* 滚动样式 */
+        ul.col_marquee {
+            position: relative;
+            overflow: hidden;
+            width: 200px;
+            height: 100px;
+            background-color: #ccc;
+            line-height: 100px;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.col_marquee li {
+            position: absolute;
+            top: -999em;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box; /* 必须设置 li的宽度如果超过ul的宽度 会水平滚动 */
+            white-space: nowrap;
+            padding: 3px 5px;
+            text-align: center;
+        }
+
+        ul.col_marquee a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul class="col_marquee">
+        <li>
+            <a href="">111</a>
+        </li>
+        <li>
+            <a href="">222</a>
+        </li>
+        <li>
+            <a href="">333</a>
+        </li>
+    </ul>
+
+
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/jquery.marquee.min.js"></script>
+    <script>
+        $(function () {
+            $(".col_marquee").marquee({
+                yScroll: "bottom", // 从下开始滚动 默认top
+                showSpeed: 850,    // 初始下拉速度
+                scrollSpeed: 12,   // 滚动速度
+                pauseSpeed: 2000,  // 滚动 间隔时间
+                pauseOnHover: true,// 悬停停止滚动 移出恢复
+                loop: -1,          // 环滚动次数 (-1为无限循环)
+                fxEasingShow: "swing", // 使用旋转方式
+                fxEasingScroll: "linear", //  使用匀速方式
+                cssShowing: "showing", // 定义当前li的class
+                // init: function () { // 整个插件初始化时回调
+                // },
+                // beforeshow: function () { // 每个li显示前回调
+                // },
+                show: function (ul, nowli) { // 每个li完全显示时回调  e是ul初始化容器 
+                    console.log(ul,nowli)
+                },
+                // aftershow: function () { // 每个li显示前回调
+                // },
+            }).on('click', function () {
+                // $(this).marquee("update");// 更新数据 在更新了ul之后 最好调用一下
+                $(this).marquee('pause'); // 暂停滚动
+                // $(this).marquee("resume");// 恢复滚动
+            });
+        });
+    </script>
+</body>
+
+</html>

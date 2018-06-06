@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>模块化体验</title>
+  <link href="node_modules/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+  <link href="css/main.css" rel="stylesheet">
+</head>
+<body>
+
+  <div id="app"></div>
+
+  <script src="node_modules/axios/dist/axios.js"></script>
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script src="node_modules/vue-router/dist/vue-router.js"></script>
+
+    <script src="components/appNav.js"></script>
+    <script src="components/appSidebar.js"></script>
+
+      <script src="components/main/appUp.js"></script>
+      <!-- <script src="components/main/appDown.js"></script> -->
+    <script src="components/main/appMain.js"></script>
+
+  <script src="components/index.js"></script>
+    
+    <script src="components/CRUD/add.js"></script>
+    <script src="components/CRUD/list.js"></script>
+    <script src="components/CRUD/updata.js"></script>
+    <script src="components/AB/A.js"></script>
+    <script src="components/AB/B.js"></script>
+  <script src="router.js"></script>
+<script src="c.js"></script>
+</body>
+
+</html>
+

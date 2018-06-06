@@ -1,0 +1,116 @@
+/*顶部*/
+html,body{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	background-color: #fff;
+}
+header{
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+}
+header h3{
+	width: 100%;
+	height: 45px;
+	line-height: 45px;
+	text-align: center;
+	font-size: 18px;
+	font-weight: 500;
+	color: #fff;
+	background-color: #006699;
+}
+header.tou h3 a{
+	position: absolute;
+	top: 0;
+	height: 45px;
+	width: 45px;
+	line-height: 45px;
+	text-align: center;
+	color: #fff;
+	font-size: 18px;
+}
+header h3 a.back{
+	left: 0;
+}
+header h3 a.search{
+	right: 0;
+}
+header h3 a.index{
+	right: 0;
+}
+header h3 a.reset{
+	right: 0;
+	font-size: 20px;
+	font-weight: 700;
+}
+/*主体*/
+.box{
+    position: absolute;
+    top: 0;
+    left: 0;
+	padding: 45px 0 55px;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+.box .main{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+/*尾部*/
+footer{
+	width: 100%;
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	z-index: 100;
+	background-color: #006699;
+}
+footer ul{
+	width: 100%;
+}
+footer ul li{
+	width: 25%;
+	height: 55px;
+	float: left;
+	text-align: center;
+}
+footer ul li a{
+	padding-top: 6px;
+	display: block;
+	width: 100%;
+	height: 100%;
+	color: #fff;
+	font-size: 20px;
+}
+footer ul li a.now{
+	color: orange;
+}
+footer ul li a p{
+	color: #fff;
+}
+.rotate{
+	position: absolute;
+	top: 226px;
+	left: 50%;
+	font-size: 40px;
+	color: #006699;
+	transform: translateX(-50%) rotate(0deg);
+	animation: rotate 1s linear infinite;
+	transform-origin: center;
+}
+@keyframes rotate{
+	from{
+		transform: translateX(-50%) rotate(0deg);
+	}
+	50%{
+		transform: translateX(-50%) rotate(260deg);
+	}
+	to{
+		transform: translateX(-50%) rotate(360deg);
+	}
+}

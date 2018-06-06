@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>vuex</title>
+</head>
+
+<body>
+  <div id="app">
+    <component-a>
+    </component-a>
+  </div>
+  <script src="node_modules/vue/dist/vue.js"></script>
+  <script src="node_modules/vuex/dist/vuex.js"></script>
+  <script>
+    // 1.把组件需要通信的数据定义在 store 的 state 中 
+    // 2.把需要修改 state 数据的 方法定义在 mutations 中，提供方法来修改
+    // 3.在组件中通过计算属性来获取 store.state 中的成员，当 store.state 中的成员发生变化时，计算属性就监听到了 也会更新对应的视图
+    // 4.但需要修改 store.state 中的成员的时候 只能通过 mutations 中的变异方法 来改变 手动调用 store.commit('变异方法名称')
+
+    // 视图状态仓库 （超大的 VM 把需要跨组件通信的数据都放到这里）
+    const store = new Vuex.Store({
+      state: { //响应式的
+        count: 0
+      },
+      mutations: { //变异方法 调用 对应的方法 会使state中的数据得到更新 通过 store.commit('变异方法名称')
+        f1(state) {
+          state.count++
+        }
+      }
+    })
+
+    Vue.component('component-a', {
+      template: `
+        <div>
+          A组件
+          <p>{{ a }}</p>
+          <son></son>
+        </div>
+      `,
+      components: {
+        son: {
+          template: `
+            <div>
+              A 中的组件 B
+              <p>{{ b }}</p>
+              <button @click="click1" >点击调用Vuex 中的变异方法 修改 通信的数据 通过监视属性 </button>
+            </div>
+          `,
+          computed: {
+            b() {
+              return this.$store.state.count
+            }
+          },
+          methods: {
+            click1() {
+              this.$store.commit('f1')
+            }
+          }
+        }
+      },
+      data() {
+        return {}
+      },
+      computed: {
+        a() {
+          return this.$store.state.count
+        }
+      }
+    })
+
+    new Vue({
+      el: '#app',
+      store
+    })
+  </script>
+</body>
+
+</html>

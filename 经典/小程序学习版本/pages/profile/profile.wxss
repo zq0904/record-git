@@ -1,0 +1,21 @@
+/* pages/profile/profile.wxss */
+
+page {
+    background-color: #f2f2f2;
+}
+
+.head {
+    box-sizing: border-box;
+    height: 410rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ee702e;
+}
+
+.head image {
+    width: 221rpx;
+    height: 221rpx;
+    border-radius: 50%;
+    box-shadow: 0 0 5rpx 10rpx rgba(0, 0, 0, 0.3);
+}

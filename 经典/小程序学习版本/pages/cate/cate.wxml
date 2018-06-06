@@ -1,0 +1,16 @@
+<!--pages/cate/cate.wxml-->
+<view wx:for="{{list}}" wx:key="id" class="cate">
+  <image lazy-load src='{{item.images[0]}}'></image>
+  <view class='message'>
+    <text class='ellipsis'>{{item.name}}</text>
+    <text class='ellipsis'>电话：{{item.phone}}</text>
+    <text class='ellipsis'>地址：{{item.address}}</text>
+    <text class='ellipsis'>营业时间：{{item.businessHours}}</text>
+  </view>
+  <view class='star'>
+    <text class='starNone'>★★★★★</text>
+    <text class='starStyle' style='width:{{item.score}}%'>★★★★★</text>
+  </view>
+</view>
+<view wx:if="{{toggle}}" class="loadmore loading">正在加载...</view>
+<view wx:else class="loadmore">我是有底线的</view>

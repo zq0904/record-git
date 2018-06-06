@@ -1,0 +1,14 @@
+<!--pages/profile/profile.wxml-->
+<view class='head'>
+  <image src='/assets/images/avatar.png'></image>
+</view>
+<view class='interval'></view>
+<text class='select'>个人资料</text>
+<text class='select arrows'>我的优惠卷</text>
+<view class='interval'></view>
+<text class='select arrows'>常见问题</text>
+<text class='select arrows'>使用条款</text>
+<text class='select arrows'>常见问题</text>
+<text class='select arrows'>使用条款</text>
+<view class='interval'></view>
+<text class='select arrows'>设置</text>

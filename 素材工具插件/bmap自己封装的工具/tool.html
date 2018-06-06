@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>tool</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <style>
+        html,
+        body,
+        #map {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /*去掉logo和版权*/
+
+        .anchorBL {
+            display: none;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map"> </div>
+    <button id="btn" style="position:absolute;top:20px;left:50%;transform:translate(-50%);-webkit-transform:translate(-50%);cursor:pointer;">打印代码</button>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GBprGT6glyONIqGxpVLU6P184jamaWW5"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script>
+        $(function () {
+            var map = new BMap.Map('map');
+            var point = new BMap.Point(116.404, 39.915);
+            map.centerAndZoom(point, 15);
+            map.enableScrollWheelZoom(true); // 开启缩放
+
+            // 调试工具
+            // // 拖拽完成时触发 获取地图中心点
+            // map.addEventListener('dragend', function (e) {
+            //     var center = map.getCenter();
+            //     console.log('地图中心点变更为:' + center.lng + ',' + center.lat);
+            // });
+            // // 缩放获取地图级别
+            // map.addEventListener('zoomend', function (e) {
+            //     console.log('地图缩放至:' + this.getZoom());
+            // });
+            // // 点击获取点击的经纬度坐标
+            // map.addEventListener('click', function (e) {
+            //     console.log('点击坐标为:' + e.point.lng + ',' + e.point.lat);
+            // });
+
+            // 行政区域的绘制
+            // getBoundary("东城区", "rgba(255,0,0,0.3)", false); // 北京市 北京市东城区, 填充颜色, 是否清除所有的覆盖物
+            // getBoundary("西城区", false, false);
+            // function getBoundary(str, fillColor, boolean) {
+            //     var bdary = new BMap.Boundary();
+            //     bdary.get(str, function (rs) { // 获取行政区域
+            //         if (boolean) { map.clearOverlays(); } // 清除所有地图覆盖物  
+            //         var count = rs.boundaries.length; // 行政区域的点有多少个
+            //         if (count === 0) return window.alert('未能获取当前输入行政区域');
+            //         var pointArray = [];
+            //         for (var i = 0; i < count; i++) {
+            //             var ply = new BMap.Polygon(rs.boundaries[i], { fillColor: fillColor || 'rgba(0,0,0,0.3)', strokeWeight: 2, strokeColor: "#000" }); //建立多边形覆盖物
+            //             map.addOverlay(ply); // 添加覆盖物
+            //             pointArray = pointArray.concat(ply.getPath());
+            //         }
+            //         // map.setViewport(pointArray); // 调整视野  
+            //     });
+            // }
+
+            // 绘制百度地图没有收录的行政区边界
+            map.addEventListener('click', clickHandle());
+            // 合理运用闭包
+            function clickHandle() {
+                var points = new Array(); // 点位数组
+                var Polygon = new Object(); // 多边形对象
+                // 点击打印代码 也意味着本次图形绘制完毕
+                $('#btn').on('click', function () {
+                    var item = new Array();
+                    points.forEach(function (e, i) {
+                        item.push('new BMap.Point(' + e.lng + ',' + e.lat + ')');
+                    });
+                    console.log(item.join(',\n'));
+                    points = new Array();
+                    Polygon = new Object();
+                });
+                return function a(e) {
+                    if (!points.length) return points.push(new BMap.Point(e.point.lng, e.point.lat)); // 首次push退出
+                    points.push(new BMap.Point(e.point.lng, e.point.lat));
+                    map.removeOverlay(Polygon); // 清空上一次绘制的Polygon覆盖物
+                    Polygon = new BMap.Polygon(points, { fillColor: 'rgba(0,0,0,0.3)', strokeWeight: 2, strokeColor: "#000" }); // 绘制多边形
+                    map.addOverlay(Polygon); // 添加Polygon覆盖物
+                }
+            }
+
+            // 绘制多个多边形代码 点位(1/2维) 填充颜色(1/2维) 边线
+            function drawPolygon(points, fillColor, strokeColor) {
+                if (typeof (points[0][0]) === 'undefined') { // 一维
+                    core(points, fillColor, strokeColor);
+                } else { // 二维
+                    if (!fillColor) {
+                        points.forEach(function (e, i) {
+                            core(e, false, strokeColor);
+                        });
+                        return false;
+                    }
+                    if (fillColor[0].length === 1) { // 一维
+                        points.forEach(function (e, i) {
+                            core(e, fillColor, strokeColor);
+                        });
+                    } else { // 二维
+                        points.forEach(function (e, i) {
+                            core(e, fillColor[i], strokeColor);
+                        });
+                    }
+                }
+                function core(p, f, s) {
+                    Polygon = new BMap.Polygon(p, { fillColor: f || 'rgba(0,0,0,0.3)', strokeWeight: 2, strokeColor: s || "#000" }); // 绘制多边形
+                    map.addOverlay(Polygon); // 添加Polygon覆盖物
+                }
+            }
+
+            // 调用方法
+            // drawPolygon([new BMap.Point(116.387004, 39.931158),new BMap.Point(116.397568, 39.935971),new BMap.Point(116.397999, 39.926621)],'red', 'blue');
+            // drawPolygon([
+            //     [new BMap.Point(116.387004, 39.931158),
+            //     new BMap.Point(116.397568, 39.935971),
+            //     new BMap.Point(116.397999, 39.926621)],
+            //     [new BMap.Point(116.39746, 39.935943),
+            //     new BMap.Point(116.407809, 39.932735),
+            //     new BMap.Point(116.397963, 39.926621)],
+            //     [new BMap.Point(116.386968, 39.931158),
+            //     new BMap.Point(116.390454, 39.924103),
+            //     new BMap.Point(116.407773, 39.92449),
+            //     new BMap.Point(116.407737, 39.932707),
+            //     new BMap.Point(116.397892, 39.926648)]
+            // ], ['red', '#000', 'rgba(255,255,255)'], 'blue');
+
+            drawPolygon([
+                [new BMap.Point(116.387004, 39.931158),
+                new BMap.Point(116.397568, 39.935971),
+                new BMap.Point(116.397999, 39.926621)],
+                [new BMap.Point(116.39746, 39.935943),
+                new BMap.Point(116.407809, 39.932735),
+                new BMap.Point(116.397963, 39.926621)],
+                [new BMap.Point(116.386968, 39.931158),
+                new BMap.Point(116.390454, 39.924103),
+                new BMap.Point(116.407773, 39.92449),
+                new BMap.Point(116.407737, 39.932707),
+                new BMap.Point(116.397892, 39.926648)]
+            ], 'rgba(255,255,255,0)');
+
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+/* pages/message/message.wxss */
+page {
+  background-color: #C8C8C8;
+  padding: 0 20rpx 60rpx;
+  /* 给page设置padding 需要在设置box-sizing 保证其宽度 */
+   box-sizing: border-box; 
+}
+.main {
+  padding: 0 30rpx;
+  background-color: #fff;
+  border: 1rpx solid #DEDEDE;
+  border-radius: 10rpx;
+  display: flex;
+  flex-direction: column;
+  margin-top: 60rpx;
+}
+.main .title {
+  height: 109rpx;
+  padding-top: 30rpx;
+  box-sizing: border-box;
+  font-size: 40rpx;
+}
+.main .year {
+  font-size: 24rpx;
+  color: #DEDEDE;
+  padding-bottom: 19rpx;
+  border-bottom: 1rpx solid #DEDEDE;
+  margin-bottom: 21rpx;
+}
+.main navigator image {
+  height: 300rpx;
+  width: 100%; 
+}
+.main .message {
+  color: #333333;
+  padding-top: 27rpx;
+  font-size: 31rpx;
+  height: 49rpx;
+  border-bottom: 1rpx solid #DEDEDE;
+  margin-bottom: 28rpx;
+}
+.main .particulars {
+  font-size: 26rpx;
+  color: #666666;
+  margin-bottom: 25rpx;
+}

@@ -1,0 +1,235 @@
+/*头部*/
+.fixed{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+}
+.fixed header{
+	min-width: 320px;
+	max-width: 640px;
+	width: 100%;
+	margin: 0 auto;
+	position: relative;
+	height: 40px;
+	background-color: rgba(230,0,0,0);
+	padding: 5px 50px 0 70px;
+
+}
+.fixed header a:first-child{
+	position: absolute;
+	top: 10px;
+	left: 7px;
+	width: 55px;
+	height: 20px;
+	background-position: 0 -109px;
+}
+.fixed header a:last-child{
+	width: 50px;
+	text-align: center;
+	height: 40px;
+	line-height: 40px;
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-size: 14px;
+	color: #fff;
+}
+.fixed header form{
+	width: 100%;
+	position: relative;
+}
+.fixed header form span{
+	position: absolute;
+	top: 5px;
+	left: 10px;
+	width: 20px;
+	height: 20px;
+	background-position: -59px -109px;
+}
+.fixed header form input{
+	width: 100%;
+	height: 30px;
+	background-color: #fff;
+	border-radius: 15px;
+	padding-left: 35px;
+}
+/*轮播图*/
+.tu{
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+}
+.tu ul{
+	width: 1000%;
+	transform: translateX(-10%);
+	-webkit-transform: translateX(-10%);
+}
+.tu ul li{
+	width: 10%;
+	float: left;
+}
+.tu ul li a{
+	width: 100%;
+	display: block;
+}
+.tu ul li a img{
+	width: 100%;
+}
+.tu ol{
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	width: 118px;
+	margin-left: -59px;
+}
+.tu ol li{
+	float: left;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	border: 1px solid #fff;
+	margin-left: 10px;
+}
+.tu ol li:first-child{
+	margin-left: 0;
+}
+.tu ol li.off{
+	background-color: #fff;
+}
+/*分类*/
+.fl{
+	width: 100%;
+	padding: 10px 0;
+	border-bottom: 1px solid #ccc;
+	background-color: #fff;
+}
+.fl a{
+	float: left;
+	width: 25%;
+	text-align: center;
+}
+.fl a img{
+	width: 40px;
+}
+.fl a p{
+	line-height: 25px;
+}
+/*区块*/
+/*掌上描述*/
+section{
+	width: 100%;
+	padding: 0 5px;
+	margin-top: 10px;
+}
+section>div{
+	width: 100%;
+	border: 1px solid #ccc;
+	background-color: #fff;
+}
+.ms .title{
+	height: 45px;
+	padding-top: 13px;
+	position: relative;
+}
+.ms .title h2{}
+.ms .title h2>span{
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 20px;
+	height: 25px;
+	background: url(../images/seckill-icon.png) no-repeat center/20px 25px;
+}
+.ms .title h2 p{
+	font-size: 16px;
+	color: #D13844;
+	margin-left: 35px;
+}
+.ms .title h2 .time{
+	margin-left: 10px;
+}
+.ms .title h2 .time span{
+	margin-top: 4px;
+	float: left;
+	width: 16px;
+	height: 16px;
+	line-height: 16px;
+	text-align: center;
+	background-color: #333333;
+	color: #fff;
+	margin-right: 5px;
+}
+.ms .title h2 .time span:nth-child(3n){
+	width: 3px;
+	background-color: #fff;
+	color: #333333;
+}
+.ms .title h2 a{
+	margin-right: 10px;
+}
+.ms ul{
+	width: 100%;
+}
+.ms ul li{
+	float: left;
+	width: 33.333%;
+	text-align: center;
+}
+.ms ul li a{
+	display: block;
+	width: 100%;
+	border-right: 1px solid #ccc;
+}
+.ms ul li:last-child a{
+	border-right: none;
+}
+.ms ul li a img{
+	width: 60%;
+}
+.ms ul li p:nth-child(2){
+	font-size: 12px;
+	line-height: 27px;
+	color: #D13844;
+}
+.ms ul li p:nth-child(3){
+	font-size: 12px;
+	line-height: 27px;
+	color: #333;
+	text-decoration: line-through;
+	padding-bottom: 10px;
+}
+/*京东***/
+.jd .title h2{
+	height: 35px;
+	line-height: 35px;
+	padding-left: 23px;
+	font-size: 16px;
+	position: relative;
+	border-bottom: 1px solid #ccc;
+}
+.jd .title h2:before{
+	content: '';
+	position: absolute;
+	top: 13px;
+	left: 12px;
+	height: 12px;
+	border-left: 3px solid #D13844;
+}
+/*组合选择*/
+.bb{
+	border-bottom: 1px solid #ccc;
+}
+.bl{
+	border-left: 1px solid #ccc;
+}
+.br{
+	border-right: 1px solid #ccc;
+}
+.a50{
+	width: 50%;
+}
+.jd img{
+	width: 100%;
+}

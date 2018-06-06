@@ -1,0 +1,10 @@
+<!--pages/message/message.wxml-->
+<view wx:for="{{list}}" class='main'>
+  <text class='title'>{{item.title}}</text>
+  <text class='year'>{{item.date}}</text>
+  <navigator>
+    <image src='{{item.url}}'></image>
+  </navigator>
+  <text class='message'>{{item.subTitle}}</text>
+  <text class='particulars arrows'>查看详情</text>
+</view>

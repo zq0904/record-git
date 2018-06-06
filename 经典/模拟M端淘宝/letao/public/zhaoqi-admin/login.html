@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 要求网页使用浏览器最高本版的内核渲染 -->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--视口的设置：视口的宽度和设备一致，默认的缩放比例和PC端一致，用户不能自行缩放-->
+    <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <title>后台管理系统-登录</title>
+    <link href="./assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/bootstrap-validator/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="./assets/nprogress/nprogress.css"/>
+    <link rel="stylesheet" href="./css/base.css"/>
+    <link rel="stylesheet" href="./css/common.css"/>
+    <link rel="stylesheet" href="./css/login.css"/>
+    <!--[if lt IE 9]>
+    <script src="./assets/html5shiv/html5shiv.min.js"></script>
+    <script src="./assets/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+    <div class="login">
+        <div class="title">
+            <h2>后台管理系统</h2>
+        </div>
+        <div class="main">
+            <form id="login" class="form-horizontal" autocomplete="off">
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label">用户名</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="inputEmail3" placeholder="请输入用户名" name="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-3 control-label">密码</label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control" id="inputPassword3" placeholder="请输入密码" name="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="reset" class="btn btn-default">重置</button>
+                        <button type="submit" class="btn btn-primary">登录</button>   <!-- 表单验证 插件一定使用 submit按钮提交 因为验证的前提是 表单的提交 button按钮不绑定事件 不会触发验证 -->
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- bootstrap依赖jquery-->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="./assets/jquery/jquery.min.js"></script>
+<!-- bootstrap js 核心文件-->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="./assets/bootstrap-validator/js/bootstrapValidator.min.js"></script>
+<script src="./assets/nprogress/nprogress.js"></script>
+<script src="./js/common.js"></script>
+<script src="./js/login.js"></script>
+</body>
+</html>

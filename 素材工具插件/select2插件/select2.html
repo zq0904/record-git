@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>选择2插件</title>
+  <link rel="stylesheet" href="css/select2.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    #container {
+      width: 250px;
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="container">
+    <select name="" id="select2">
+      <option value="xz">--请选择--</option>
+      <option value="qq">琪琪</option>
+      <option value="yy">莹莹</option>
+    </select>
+  
+    <!-- multiple="multiple"属性实现多选 响应式最好在style中设置 -->
+    <select name="" id="select3" style="width: 100%"></select>
+  </div>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/select2.min.js"></script>
+  <script>
+    $(function () {
+      // select2 用 span来代替select 
+      $('#select2').select2({
+        width: 200, height: 30, // 需要设置宽高 也可写在css({})中
+        // tags: true, // 可以直接输入一个选项 它也会被创建在列表中
+      });
+
+      // 数据源渲染数据
+      var data = [{
+        id: 'qq',    // select 的 value
+        text: '琪琪', // select 的 文本
+        // disabled: true, // 禁用单个
+      },{
+        id: 'yy',
+        text: '莹莹',
+        selected: true // 默认选中
+      }];
+      $('#select3').html('').select2({ // select2相当于是追加 html清除之前添加的
+        data: data, // 数据源
+        placeholder: '提示文本', // 提示文本
+        // allowClear: true, // 全部清除按钮
+        // maximumSelectionLength: 1, // 最多选择几个
+        // minimumResultsForSearch: Infinity, // 隐藏搜索框
+        // templateResult: function (state) { // 添加自定义图标
+        //   if (!state.id) { // 这个必须有
+        //     return state.text;
+        //   }
+        //   var $state = $(
+        //     '<span><img src="images/' + state.element.value.toLowerCase() + '.ico" style="vertical-align: top;width: 21px; height: 21px;" /> ' + state.text + '</span>'
+        //   );
+        //   return $state;
+        // }
+      });
+
+      // // 追加一条数据
+      // var newOption = new Option('新增文本', '新增value');
+      // $('#select3').append(newOption).trigger('change');
+      // // js选中一条数据 一定要触发change来更新
+      // $('#select3').val(['qq', 'yy']).trigger('change');
+      // // js清除选择
+      // $('#select3').val(null).trigger('change');
+      // // 拿到所有的数据源 （纯数组）
+      // $('#select3').select2('data');  // $('#select3').find(':selected'); （伪数组）
+      // // 打开下拉菜单
+      // $('#select3').select2('open');
+      // // 关闭下拉菜单
+      // $('#select3').select2('close');
+      // 销毁Select2控件
+      // $('#select3').select2('destroy');
+      // 监听选择事件
+      // $('#select3').on('select2:select', function (e) {
+      //   console.log(e, e.params.data);
+      // });
+      // 过滤
+      // var select2Id = '';
+      // data.forEach(function (e, i) {
+      //   if (e.selected) {
+      //     select2Id = e.id
+      //   }
+      // })
+      // 触发事件
+      // $('#select3').trigger({
+      //   type: 'select2:select',
+      //   params: { data: {id: select2Id} }
+      // });
+      // 完美监听选择事件 使用原声的onchange避免事件的多次绑定 注意如果 $('#select3').off('change') 会解除select2原有的change事件！！！
+      $('#select3')[0].onchange = function (e) {
+        console.log($('#select3').val())
+      };
+      $('#select3').change();
+    });
+  </script>
+</body>
+</html>

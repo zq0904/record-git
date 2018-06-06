@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>饼状图</title>
+	<style>
+		canvas{
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas width="600" height="400"></canvas>
+	<script>
+    var Bingbu = function (ctx){
+        this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+        this.width = this.ctx.canvas.width;
+        this.height = this.ctx.canvas.height;
+        this.x0 = this.width/2;
+        this.y0 = this.height/2;
+
+        this.radius = 150;
+
+        this.outLine = 20;
+
+        this.rectWidth = 30;
+        this.rectHeight = 15;
+        this.rectSpace = 10;
+
+        this.rectStart = 20;
+
+    }
+    Bingbu.prototype.init = function (data){
+        this.data = data;
+        this.zhuanhua();
+        this.hb();
+    }
+    Bingbu.prototype.zhuanhua = function (){
+        var sum = 0;
+        this.data.forEach(function(e,i){
+            sum += e.num
+        });
+        var fs = [];
+        this.data.forEach(function(e,i){
+            fs.push(2*Math.PI*e.num/sum);
+        });
+        this.fs = fs;
+    };
+    Bingbu.prototype.hb = function (){
+        var that = this;
+        var start = 0;
+        var end = 0;
+        this.data.forEach(function(e,i){
+            end = start + that.fs[i];
+            that.ctx.beginPath();
+            that.ctx.moveTo(that.x0,that.y0);
+            that.ctx.arc(that.x0,that.y0,that.radius,start,end);
+            that.ctx.fillStyle = rgb();
+            that.ctx.fill();
+
+            that.hx(start,i);
+            that.hs(i);
+
+            start = end;
+        });
+    };
+    Bingbu.prototype.hx = function (start,i){
+        var c = this.radius + this.outLine;
+        var jiaodu = start + this.fs[i]/2;
+        this.outX = this.x0 + Math.cos(jiaodu)*c;
+        this.outY = this.y0 + Math.sin(jiaodu)*c;
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.x0,this.y0);
+        this.ctx.lineTo(this.outX,this.outY);
+        this.ctx.strokeStyle = this.ctx.fillStyle;
+        this.ctx.stroke();
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.outX,this.outY);
+        var w = this.ctx.measureText(this.data[i].text).width;
+        if(this.outX>this.x0){
+            this.ctx.textAlign = 'left';
+            this.ctx.lineTo(this.outX+w,this.outY);
+        }else{
+            this.ctx.textAlign = 'right';
+            this.ctx.lineTo(this.outX-w,this.outY);
+        }
+        this.ctx.stroke();
+        this.ctx.textBaseline = 'bottom';
+        this.ctx.strokeText(this.data[i].text,this.outX,this.outY);
+    };
+    Bingbu.prototype.hs = function (i){
+        this.ctx.fillRect(this.rectStart,this.rectStart+i*(this.rectHeight+this.rectSpace),this.rectWidth,this.rectHeight);
+        this.ctx.textAlign = 'left';
+        this.ctx.textBaseline = 'top';
+        this.ctx.strokeText(this.data[i].text,this.rectStart+this.rectWidth+this.rectSpace,this.rectStart+i*(this.rectHeight+this.rectSpace));
+    };
+    var data = [{
+        num:10,
+        text:'10-20岁'
+    },{
+        num:20,
+        text:'20-30岁'
+    },{
+        num:30,
+        text:'30-40岁'
+    },{
+        num:40,
+        text:'40-50岁'
+    }];
+    new Bingbu().init(data);
+    function random(min,max){
+        if(min>max){[max,min]=[min,max]};
+        return Math.floor(Math.random()*(max+1-min)+min);
+    }
+    function rgb(){
+        return 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		// // 创建饼图构造函数
+  //   var Bt = function (ctx){
+  //       this.ctx = ctx || document.querySelector('canvas').getContext('2d');
+  //       this.width = this.ctx.canvas.width;
+  //       this.height = this.ctx.canvas.height;
+  //       this.x0 = this.width/2 + 80;
+  //       this.y0 = this.height/2;
+  //       this.radius = 150;
+  //       // 延伸长度
+  //       this.outLine = 20;
+  //       // 矩形
+  //       this.rectWidth = 30;
+  //       this.rectHeight = 15;
+  //       this.rectSpace = 10;
+  //       this.rectJl = 20;
+  //   };
+  //   // 初始化方法
+  //   Bt.prototype.init = function (data){
+  //       this.data = data; //挂载数据
+  //       this.zhuanhua(); //转换数据 - 份数
+  //       // 画饼图
+  //       this.hb();
+  //   };
+  //   // 画饼图
+  //   Bt.prototype.hb = function (){
+  //       var start = 0;
+  //       for(var i = 0; i < this.data.length; i++){
+  //           end = start + this.fs[i];
+  //           this.ctx.beginPath();
+  //           this.ctx.moveTo(this.x0,this.y0);
+  //           this.ctx.arc(this.x0,this.y0,this.radius,start,end);
+  //           this.ctx.fillStyle = rgb(); //每次循环相同颜色 可以通过 this.ctx.fillStyle 取到
+  //           this.ctx.fill();
+            
+  //           // 画延伸线
+  //           this.hx(start,i);
+  //           // 画文字及下线
+  //           this.hw(i);
+  //           // 画说明 矩形
+  //           this.hj(i);
+
+  //           start = end; //缓存 上次结束 弧度 用于下次
+  //       }
+  //   }
+  //   // 画延伸线
+  //   Bt.prototype.hx = function (start,i){
+  //       var r = this.radius + this.outLine;
+  //       var jiaodu = start + this.fs[i]/2;
+  //       this.outX = this.x0 + Math.cos(jiaodu)*r; //挂载 延伸点
+  //       this.outY = this.y0 + Math.sin(jiaodu)*r;
+
+  //       this.ctx.beginPath();
+  //       this.ctx.moveTo(this.x0,this.y0);
+  //       this.ctx.lineTo(this.outX,this.outY);
+  //       this.ctx.strokeStyle = this.ctx.fillStyle;
+  //       this.ctx.stroke();
+  //   };
+  //   // 画文字及下线
+  //   Bt.prototype.hw = function (i){
+  //       this.ctx.beginPath();
+  //       this.ctx.moveTo(this.outX,this.outY);
+  //       var textWidth = this.ctx.measureText(this.data[i].text).width; //获取文本长度
+  //       if(this.outX>this.x0){ //判断对齐方向
+  //           this.ctx.textAlign = 'left';
+  //           this.ctx.lineTo(this.outX+textWidth,this.outY);
+  //       }else{
+  //           this.ctx.textAlign = 'right';
+  //           this.ctx.lineTo(this.outX-textWidth,this.outY);
+  //       }
+  //       this.ctx.stroke();
+  //       this.ctx.textBaseline = 'bottom';
+  //       this.ctx.fillText(this.data[i].text,this.outX,this.outY)
+  //   };
+  //   // 画说明 矩形
+  //   Bt.prototype.hj = function (i){
+  //       //绘制矩形自动开启新路径
+  //       this.ctx.fillRect(this.rectJl,this.rectJl+i*(this.rectHeight+this.rectSpace),this.rectWidth,this.rectHeight);
+  //       this.ctx.textAlign = 'left';
+  //       this.ctx.textBaseline = 'top';
+  //       this.ctx.fillText(this.data[i].text,this.rectJl+this.rectWidth+this.rectSpace,this.rectJl+i*(this.rectHeight+this.rectSpace))
+  //   };
+  //   // 转换数据 得到 份数（差值）
+  //   Bt.prototype.zhuanhua = function (){
+  //       var sum = 0;
+  //       this.data.forEach(function(e,i){
+  //           sum += e.num;
+  //       });
+  //       var fs = [];
+  //       this.data.forEach(function(e,i){
+  //           fs.push(2*Math.PI*e.num/sum);
+  //       });
+  //       this.fs = fs; //挂载份数
+  //   }
+  //   // 假设数据
+  //   var data = [{
+  //       num:10,
+  //       text:'10-20岁'
+  //   },{
+  //       num:20,
+  //       text:'20-30岁'
+  //   },{
+  //       num:30,
+  //       text:'30-40岁'
+  //   },{
+  //       num:40,
+  //       text:'40-50岁'
+  //   }];
+  //   // 创建对象 并 初始化
+  //   new Bt().init(data);
+  //   // 随即颜色
+  //   function random(min,max){
+  //   return Math.floor(Math.random()*(max+1-min)+min);
+  //   }
+  //   function rgb(){
+  //   return 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+  //   }
+	</script>
+</body>
+</html>

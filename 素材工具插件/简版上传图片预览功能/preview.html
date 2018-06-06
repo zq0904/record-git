@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>preview</title>
+</head>
+
+<body>
+  <form id="form1" action="">
+    
+    <!-- <input type="file" name="picture">
+    <img src="" alt=""> -->
+  </form>
+  <button id="select">选择图片</button>
+  <button id="upload">复合提交表单</button>
+
+  <script src="./js/jquery.min.js"></script>
+  <script>
+    $(function () {
+
+      // 选择图片按钮
+      $('#select').click(function () {
+        // 命名规则 picture + 时间戳 
+        var $file = $('<input type="file" name="picture' + new Date().getTime() + '" style="display:none;">');
+        $file.change(function () {
+          var that = this;
+          if (this) {
+          // ie
+          if (window.navigator.userAgent.indexOf("MSIE") >= 1) {
+            this.select();
+            return document.selection.createRange().text;
+          }
+          // ff
+          if (window.navigator.userAgent.indexOf("Firefox") >= 1) {
+            if (this.files) {
+              return this.files.item(0).getAsDataURL();
+            }
+            return this.value;
+          }
+          // 兼容chrome 火狐等 HTML5获取路径
+          if (typeof FileReader != "undefined") {
+            // 读完
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              // 核心创建预览图代码
+              var $div = $('<div style="float:left;position: relative;"></div>');
+              var $a = $('<a href="javascript:;" style="position: absolute;top: 0;right: 0;text-decoration: none;color: rgba(255,0,0,.6);font-size: 25px;background-color: rgba(0,0,0,.5);width: 20px;height: 20px;line-height: 20px;">×</a>');
+              var $img = $('<img src="' + e.target.result + '" style="vertical-align: top;width: 150px;height: 150px;"/>');
+              $a.click(function () { // X按钮
+                $div.remove();
+                $(that).remove();
+              })
+              $div.append($img);
+              $div.append($a);
+              $(that).after($div[0]);
+            }
+            reader.readAsDataURL(this.files[0]);
+          } else if (browserVersion.indexOf("SAFARI") > -1) {
+            window.alert("暂时不支持Safari浏览器!");
+          }
+        }
+        })
+
+        $('#form1').append($file);
+        
+        $file.click();
+      });
+
+      // 复合提交表单
+      $('#upload').click(function () {
+        var formdata = new FormData($('#form1')[0]);
+        $.ajax({
+          url: 'http://blog.csdn.net/u014607184/article/details/52372551',
+          data: formdata,
+          type: 'POST',
+          dataType: 'json',
+          mimeType: "multipart/form-data",
+          processData: false, // 告诉jQuery不要去处理发送的数据
+          contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+          success: function (data) {
+            console.log(data);
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+
+</html>

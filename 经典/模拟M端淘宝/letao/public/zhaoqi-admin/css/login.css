@@ -1,0 +1,55 @@
+body,html{
+    width: 100%;
+    height: 100%;
+    background-color: #222D32;
+}
+.login{
+    width: 100%;
+    background-color: #ffffff;
+    margin: 0 auto;
+    margin-top: 150px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 7px;
+    overflow: hidden;
+}
+@media screen and (max-width: 768px){
+    .container{
+        padding: 0 20px;
+    }
+}
+@media (min-width: 768px) {
+    .login{
+        width: 670px;
+    }
+}
+@media (min-width: 992px) {
+    .login{
+        width: 285px;
+    }
+}
+@media (min-width: 1200px) {
+    .login{
+        width: 350px;
+    }
+}
+.login .title h2{
+    height: 60px;
+    line-height: 60px;
+    color: #ffffff;
+    text-align: center;
+    font-size: 18px;
+    background-color: #337AB7;
+    padding: 0;
+    margin: 0;
+}
+.login .main{
+    padding: 20px;
+}
+.login .main button[type="reset"]{
+    margin-right: 55px;
+}
+
+
+
+

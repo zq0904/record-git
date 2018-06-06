@@ -1,0 +1,109 @@
+/*主体*/
+.content{
+	width: 100%;
+	padding-left: 10px;
+}
+.content li{
+	padding: 8px 15px 8px 0;
+	border-bottom: 1px solid #ccc;
+}
+.content li .l{
+	width: 60px;
+	text-align: center;
+}
+.content li .l img{
+	width: 100%;
+}
+.mui-table-cell .l{
+	text-align: center;
+	width: 70px;
+}
+.mui-media-body{
+	color: #808080;
+}
+.mui-media-body .mui-ellipsis{
+	padding-top: 1px;
+	height: 22px;
+	font-size: 14px;
+}
+.mui-media-body .mui-ellipsis span:first-of-type{
+
+	color: red;
+}
+.mui-media-body .mui-ellipsis span:nth-child(2){
+	color: #ccc;
+	padding-left: 5px;
+	font-size: 10px;
+	text-decoration: line-through;
+}
+.mui-media-body .mui-ellipsis span:last-of-type{
+	float: right;
+	font-size: 12px;
+}
+.mui-media-body p:last-child{
+	font-size: 12px;
+	margin-top: 2px;
+}
+/*生成订单*/
+.shengcheng{
+	position: absolute;
+	bottom: 55px;
+	left: 0;
+	width: 100%;
+	height: 30px;
+	padding-left: 20px;
+	z-index: 100;
+	border-top: 1px solid #ccc;
+	background-color: #fff;
+}
+.shengcheng .l{
+	height: 30px;
+	line-height: 30px;
+	color: #FF3300;
+	font-size: 14px;
+}
+.shengcheng a{
+	float: right;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	background-color: #FF3300;
+	text-align: center;
+	color: #fff;
+	font-weight: 700;
+}
+/*重置 滚动高度*/
+.box {
+    padding: 45px 0 85px;
+}
+/*尺码*/
+.cm,.sl{
+	padding-top: 10px;
+	color: #000;
+	font-size: 14px;
+}
+.sl{
+	padding-bottom: 10px;
+	text-align: left;
+}
+.cm span:nth-child(n+2),.sl span:nth-child(n+2),.sl input{
+	width: 28px;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	border: 1px solid #ccc;
+	display: inline-block;
+	margin-bottom: 10px;
+}
+.cm span.now{
+	background-color: #FA672D;
+}
+.cm span:first-child,.sl span:first-child{
+	border: 0 none;
+}
+.sl > input,.sl span:nth-child(n+2){
+	padding: 0;
+	margin-left: -5px;
+}
+
+/*数量*/

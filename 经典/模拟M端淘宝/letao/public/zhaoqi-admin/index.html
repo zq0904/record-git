@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <!-- 要求网页使用浏览器最高本版的内核渲染 -->
+    <!--<meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+    <!--视口的设置：视口的宽度和设备一致，默认的缩放比例和PC端一致，用户不能自行缩放-->
+    <!--<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">-->
+    <title>后台管理系统-登录</title>
+    <link href="./assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/nprogress/nprogress.css"/>
+    <link rel="stylesheet" href="./css/base.css"/>
+    <link rel="stylesheet" href="./css/common.css"/>
+    <link rel="stylesheet" href="./css/index.css"/>
+    <!--[if lt IE 9]>
+    <script src="./assets/html5shiv/html5shiv.min.js"></script>
+    <script src="./assets/respond/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="index">
+        <!--左-->
+        <div class="l">
+            <div class="logo"><a href="./index.html">ITCAST</a></div>
+            <div class="person clearfix">
+                <div class="img"><img src="./images/default.png" alt=""/></div>
+                <p>超级管理员</p>
+            </div>
+
+            <!--列表-->
+            <ul class="list">
+                <li><a href="#"><span class="glyphicon glyphicon-user"></span>用户管理</a></li>
+                <li class="s"><a href="#"><span class="glyphicon glyphicon-th-list"></span>分类管理</a></li>
+                <div style="display:none;">
+                    <a href="#">一级分类</a>
+                    <a href="./category.html">二级分类</a>
+                </div>
+                <li><a href="#"><span class="glyphicon glyphicon-tag"></span>商品管理</a></li>
+            </ul>
+
+        </div>
+        <!--右-->
+        <div class="main">
+            <div class="top">
+                <a href="#" class="glyphicon glyphicon-align-justify"></a>
+                <a href="#" data-toggle="modal" data-target="#myModal" class="glyphicon glyphicon-share"></a>
+            </div>
+            <div class="main_content">
+                <ol class="breadcrumb">
+                    <li><a href="#">管理系统</a></li>
+                    <li class="active">首页</li>
+                </ol>
+
+            </div>
+            <div class="con clearfix">
+                <div class="l"></div>
+                <div class="r"></div>
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+
+
+<!-- bootstrap依赖jquery-->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="./assets/jquery/jquery.min.js"></script>
+<!-- bootstrap js 核心文件-->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="./assets/nprogress/nprogress.js"></script>
+    <script src="./assets/echarts/echarts.min.js"></script>
+<script src="./js/common.js"></script>
+<script src="./js/index.js"></script>
+</body>
+</html>

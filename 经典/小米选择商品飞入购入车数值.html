@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>小米飞入</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			width: 100%;
+			height: 100%;
+			/*overflow: hidden;*/
+		}
+		/*模块化*/
+		.main{
+			width: 1000px;
+			height: 600px;
+			border: 1px solid #333;
+			margin: 50px auto 0;
+			position: relative;
+		}
+		.main ul{
+			list-style: none;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-content: space-around; 
+		}
+		.main ul li{
+			width: 180px;
+			height: 180px;
+		}
+		.main ul li a{
+			display: block;
+			height: 100%;
+			text-decoration: none;
+			line-height: 180px;
+			text-align: center;
+			color: #fff;
+		}
+		.main ul li a:hover{
+			color: #fff;
+		}
+		.main ul li a:focus{
+			color: red !important;
+		}
+		.main .clear{
+			position: absolute;
+			bottom: 0;
+			right: -150px;
+			width: 140px;
+			height: 50px;
+			border: 1px solid #333;
+		}
+		.main .clear span{
+			float: left;
+			width: 50%;
+			height: 100%;
+			line-height: 50px;
+			text-align: center;
+		}
+		.main .clear button{
+			float: right;
+			border: 0 none;
+			outline-style: none;
+			height: 100%;
+			width: 50%;
+			background-color: rgba(0,0,0,.7);
+			color: #fff;
+		}
+	</style>
+</head>
+<body>
+	<div class="main">
+		<ul>
+			<li><a href="#">1</a></li>
+			<li><a href="#">2</a></li>
+			<li><a href="#">3</a></li>
+			<li><a href="#">4</a></li>
+			<li><a href="#">5</a></li>
+			<li><a href="#">6</a></li>
+			<li><a href="#">7</a></li>
+			<li><a href="#">8</a></li>
+			<li><a href="#">9</a></li>
+			<li><a href="#">10</a></li>
+			<li><a href="#">11</a></li>
+			<li><a href="#">12</a></li>
+			<li><a href="#">13</a></li>
+			<li><a href="#">14</a></li>
+			<li><a href="#">15</a></li>
+		</ul>
+		<div class="clear"><span class="num"></span><button>清空</button></div>
+	</div>
+	<script src="./jquery-1.12.2.min.js"></script>
+	<script>
+		$(function(){
+			// 随机数
+			function random(min,max){
+				if(min>max){[min,max]=[max,min]};
+				return Math.floor(Math.random()*(max+1-min)+min);
+			}
+			// 随机颜色
+			function rgb(){
+				return 'rgb('+random(0,255)+','+random(0,255)+','+random(0,255)+')';
+			}
+			// 上色
+			var $num = $('.num'); //优化
+			var i = localStorage.getItem('gouwu') || 0; //本地没有 是null
+			$num.html(i);
+			$('.main ul li a').each(function(i,e){
+				$(e).css({
+					'backgroundColor': rgb()
+				});
+			}).end().on('click','a',function(){
+				var a_f = $(this).clone();
+				a_f.css({
+					position:'absolute',
+					left:$(this).offset().left,
+					top:$(this).offset().top,
+					width:$(this).width(),
+					height:$(this).height(),
+					textAlign:'center',
+					lineHeight:$(this).height(),
+					textDecoration:'none',
+					color:'#fff',
+					backgroundColor:$(this).css('backgroundColor')
+				}).appendTo('body').animate({ //追加到body中 一定没毛病
+					width:0,
+					height:0,
+					left:$num.offset().left+$num.width()/2,
+					top:$num.offset().top+$num.height()/2
+				},1000,function(){
+					$(this).remove();
+					i++;
+					$num.html(i);
+					localStorage.setItem('gouwu',i); //本地存储
+				})
+			});
+			// 清空
+			$num.siblings().on('click',function(){
+				$num.html(0);
+				i = 0;
+				localStorage.clear();
+			});
+		});
+	</script>
+</body>
+</html>

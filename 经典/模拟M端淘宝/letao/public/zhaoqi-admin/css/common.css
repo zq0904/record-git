@@ -1,0 +1,150 @@
+body,html,.index{
+    width: 100%;
+    height: 100%;
+}
+a{
+    text-decoration: none !important;
+}
+/*两栏布局*/
+.index>.l{
+    width: 180px;
+    height: 100%;
+    background-color: #222D32;
+    position: relative;
+    padding-top: 50px;
+}
+.index .l .logo{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50px;
+    line-height: 50px;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+.index .l .logo a{
+    color: #ffffff;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-color: #23527c;
+}
+.index .l .person{
+    padding: 30px 0 30px 20px;
+}
+.index .l .person .img{
+    width: 55px;
+    height: 55px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    float: left;
+    overflow: hidden;
+}
+.index .l .person .img img{
+    width: 100%;
+    height: 100%;
+}
+.index .l .person p{
+    float: left;
+    height: 55px;
+    line-height: 55px;
+    padding-left: 15px;
+    margin: 0;
+    color: #ffffff;
+}
+/*列表*/
+.list>li{
+    display: block;
+    width: 100%;
+    height: 42px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding-left: 30px;
+    padding-right: 40px;
+    border: 4px solid transparent;
+}
+.list>li.now{
+    border-left-color: #23527C;
+    background-color: #1D1F21;
+}
+.list>li.now a{
+    color: #fff;
+}
+.list>li a{
+    color: #AAAAAA;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 34px;
+    text-decoration: none;
+}
+.list>li span{
+    font-size: 14px;
+    padding: 10px;
+}
+.list>div{
+    width: 100%;
+}
+.list>div a{
+    padding-left: 67px;
+    height: 30px;
+    line-height: 30px;
+    display: block;
+    color: #AAAAAA;
+    font-size: 14px;
+    text-decoration: none;
+}
+.list>div a.now{
+    color: #ffffff;
+}
+/*两栏布局*/
+.main{
+    overflow: hidden;
+}
+.main .top{
+    height: 50px;
+    background-color: #3C8DBC;
+    padding: 16px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.main .top a{
+    font-size: 16px;
+    color: #ffffff;
+}
+.main .top a:first-of-type{
+    float: left;
+}
+.main .top a:last-of-type{
+    float: right;
+}
+.main .main_content{
+    padding: 16px;
+    padding-top: 20px;
+}
+#myModalLabel{
+    font-size: 18px;
+}
+.modal-content .text-danger span{
+    padding: 5px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

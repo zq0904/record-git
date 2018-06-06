@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>模拟Vue</title>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="message">
+    <div>
+      <input type="text" v-model="message">
+    </div>
+    <p>
+      <p>
+        <p>{{ message }}</p>
+      </p>
+    </p>
+    <input type="text" v-model="no">
+    <hr>
+    <input type="checkbox" v-model="boolean">
+    <div>
+      <input type="checkbox" v-model="boolean">
+    </div>
+    <p>{{ boolean }}</p>
+    <p>{{ no }}</p>
+  </div>
+  <script>
+    //事件 订阅 发布 模型
+    function Event() {
+      this.callback = {}; // { message:[f1,f2],boolean:[f3,f4] }
+      Event.prototype.sub = function (name, fn) { //订阅
+        if (!this.callback[name]) {
+          this.callback[name] = [];
+        }
+        this.callback[name].push(fn);
+      };
+      Event.prototype.emit = function (name) { //发布
+        if (!this.callback[name]) return;
+        this.callback[name].forEach(e => e());
+      }
+    }
+    //Vue构造函数
+    (function () {
+      function Vue(o) {
+        let { el, data } = o;
+        let rootEl = document.querySelector(el); //入口节点
+        let _data = {}; //真实存储数据
+        let _event = new Event(); //实例化 事件订阅/发布模型 对象
+        for (let key in data) { //这里必须使用 let 具有块作用域 get 和 set 方法 中含有key 只有真正访问 设置时 才使用key 如果使用var key循环完了就是 最后的那个值 也可以使用闭包来解决
+          _data[key] = data[key]; //data[key] 只是起到代理访问  赋初始值
+          Object.defineProperty(this, key, {
+            get() { //Vue.message
+              return _data[key];
+            },
+            set(val) { //Vue.message = 1  实现 viewmodel->view
+              _data[key] = val;
+              _event.emit(key); //发布事件  
+            }
+          })
+        }
+        //递归解析模板
+        function c(childNodes) {
+          childNodes.forEach((node, index) => {
+            switch (node.nodeType) {
+              case 1: //是元素 先看元素的类型 在看元素的属性 
+                //<input type="text" v-model="message" >  <input type="checkbox" v-model="message" >
+                if (node.nodeName === 'INPUT') {
+                  if (node.type === 'text') {
+                    let attr = node.attributes['v-model'];
+                    if (!attr) return; //没有v-model退出
+                    let key = attr.value.trim();
+                    if (_data[key] === undefined) return; //排除0的影响 没有这个属性退出
+                    node.value = _data[key]; //第一次初始值设定
+                    _event.sub(key, () => { //含有'v-model' 那就订阅事件
+                      node.value = _data[key];
+                    });
+                    node.oninput = () => {
+                      this[key] = node.value; //视图改变 直接设置属性（设置属性 同时set 发布事件） 实现 view->viewmodel->view
+                    }
+                  } else if (node.type === 'checkbox') {
+                    let attr = node.attributes['v-model'];
+                    if (!attr) return;
+                    let key = attr.value;
+                    if (_data[key] === undefined) return;
+                    node.checked = _data[key]; //第一次初始值设定
+                    _event.sub(key, () => { //含有'v-model' 那就订阅事件
+                      node.checked = _data[key];
+                    });
+                    node.onchange = () => {
+                      this[key] = node.checked ? true : false; //视图改变 直接设置属性（设置属性 同时set 发布事件） 实现 view->viewmodel->view
+                    };
+                  }
+                }
+                c.call(this, node.childNodes); //递归调用子节点
+                break;
+              case 3: //文本
+                let match = /{{(.+)}}/.exec(node.textContent); //含有{{}}一定会被匹配 没有匹配到返回null
+                if (!match) return;
+                let key = match[1].trim();
+                if (_data[key] === undefined) return; //考虑0的问题
+                node.textContent = _data[key];
+                _event.sub(key, () => { //订阅
+                  node.textContent = _data[key];
+                });
+                // 文本 只会被别人影响 也没法自己修改
+                break;
+            }
+          });
+        }
+        c.call(this, rootEl.childNodes); //传this 里面配合 =>函数 简直巧妙
+      }
+      window.Vue = Vue;
+    })();
+
+    
+    const app = new Vue({
+      el: '#app',
+      data: {
+        message: '文本',
+        boolean: true
+      }
+    });
+  </script>
+</body>
+
+</html>

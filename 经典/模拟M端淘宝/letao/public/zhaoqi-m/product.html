@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="blue" name="apple-mobile-web-app-status-bar-style">
+	<meta content="telephone=no" name="format-detection">
+	<meta name="keywords" content="乐淘 乐淘鞋城 买鞋子 上乐淘 运动鞋 篮球鞋 帆布鞋 跑步鞋 男鞋 女鞋 足球鞋 休闲鞋 凉鞋 户外鞋 布洛克 高跟鞋 单鞋 豆豆鞋 乐福鞋 牛津鞋 凉拖 皮鞋 短靴 长靴 登山鞋 徒步鞋 硫化鞋 训练鞋 溯溪鞋 越野鞋 板鞋 足球鞋 网球鞋 赛车鞋 雪地靴 马丁靴 商务 英伦">
+	<meta name="description" content="乐淘是中国最大的正品运动鞋、皮鞋网上专卖。乐淘网经营的品牌包括耐克、阿迪达斯、李宁、匡威等国内外知名品牌的篮球鞋,板鞋,休闲鞋,跑步鞋,帆布...">
+	<title>琦淘-商品详情</title>
+	<link rel="icon" href="images/favicon.ico">
+	<link rel="stylesheet" href="./bli/fontAwesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="./bli/mui/css/mui.min.css">
+	<link rel="stylesheet" href="./css/reset.css">
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/product.css">
+</head>
+<body>
+		<!-- 顶部 -->
+		<header class="tou">
+			<h3><a href="javascript:history.back();" class="back fa fa-arrow-left"></a>商品详情<a href="./index.html" class="index fa fa-home"></a></h3>
+		</header>
+		<!-- 主体 -->
+		<section class="box">
+			<div class="main">
+				<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<!-- 旋转图标 -->
+					<div class="rotate mui-icon mui-icon-spinner"></div>
+					<!-- 轮播图 -->
+
+
+				</div>
+				</div>
+			</div>
+		</section>
+		<!-- 尾部 -->
+		<footer class="mui-clearfix">
+			<span class="fa fa-shopping-cart"></span>
+			<a href="javascript:;" class="lj">立即购买</a>
+			<a href="javascript:;" class="jr_cart">加入购物车</a>
+		</footer>
+	<!-- 主体模板-->
+	<script type="text/html" id="tpl1">
+		<% 
+			if(!pic || pic.length==0){
+				pic = {picAddr: "/mobile/images/none.png"};
+			}
+		 %>
+		<div class="mui-slider mui-clearfix">
+
+		  <div class="mui-slider-group mui-slider-loop">
+				<div class="mui-slider-item">
+			      <a href="#"><img src="<%=pic[pic.length-1].picAddr%>" alt=""></a>
+			    </div>
+			    <% for(var i = 0; i < pic.length; i++){ %>
+			    <div class="mui-slider-item">
+			      <a href="#"><img src="<%=pic[i].picAddr%>" alt=""></a>
+			    </div>
+			    <% } %>
+			     <div class="mui-slider-item">
+			      <a href="#"><img src="<%=pic[0].picAddr%>" alt=""></a>
+			    </div>
+		  </div>
+
+			<div class="mui-slider-indicator">
+				<% for(var i = 0; i < pic.length; i++){ %>
+                <div class="mui-indicator <%=i==0?'mui-active':'' %>"></div>
+                <% } %>
+            </div>
+
+		</div>
+		
+		<div class="xg">
+			<h3><%=proName%></h3>
+			<div class="jiage">
+				<span>价格：</span>
+				<strong>&yen;<%=price%></strong>
+				<del>&yen;<%=oldPrice%></del>
+			</div>
+			<div class="cm clearfix">
+				<p>尺码：</p>
+				<% 
+					var a = size.split('-');
+				%>
+				<% for(var i = a[0]; i <= a[1]; i++){ %>
+					<span><%=i%></span>
+				<% } %>
+			</div>
+			<div class="sl clearfix">
+				<p>数量：</p>
+				<span class="jian">-</span>
+				<input type="button" value="0">
+				<span class="jia">+</span>
+				<p>剩余：<%=num%> 件</p>
+			</div>
+		</div>
+	</script>
+	<script src="./bli/artTemplate/template-native.js"></script>
+	<script src="./bli/mui/js/mui.min.js"></script>
+	<script src="./bli/zepto/zepto.min.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/product.js"></script>
+</body>
+</html>

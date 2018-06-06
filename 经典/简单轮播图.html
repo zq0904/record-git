@@ -1,0 +1,197 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <style type="text/css">
+    * {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      border: 0;
+    }
+
+    .all {
+      width: 500px;
+      height: 200px;
+      padding: 7px;
+      border: 1px solid #ccc;
+      margin: 100px auto;
+      position: relative;
+    }
+
+    .screen {
+      width: 500px;
+      height: 200px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen li {
+      width: 500px;
+      height: 200px;
+      overflow: hidden;
+      float: left;
+    }
+
+    .screen ul {
+      position: absolute;
+      left: 0;
+      top: 0px;
+      width: 3000px;
+    }
+
+    .all ol {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      line-height: 20px;
+      text-align: center;
+    }
+
+    .all ol li {
+      float: left;
+      width: 20px;
+      height: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .all ol li.current {
+      background: #DB192A;
+    }
+
+    #arr {
+      display: none;
+    }
+
+    #arr span {
+      width: 40px;
+      height: 40px;
+      position: absolute;
+      left: 5px;
+      top: 50%;
+      margin-top: -20px;
+      background: #000;
+      cursor: pointer;
+      line-height: 40px;
+      text-align: center;
+      font-weight: bold;
+      font-family: '黑体';
+      font-size: 30px;
+      color: #fff;
+      opacity: 0.3;
+      border: 1px solid #fff;
+    }
+
+    #arr #right {
+      right: 5px;
+      left: auto;
+    }
+  </style>
+</head>
+<body>
+<div class="all" id='box'><!--虽然相框和box一样大小  注意鼠标放到box显示arr arr是box的子元素 仍然在box中 没毛病  但是 如果鼠标放到相框显示arr 相框与arr是并列关系 那覆盖层arr会导致 离开相框 arr隐藏 放入相框 arr显示 覆盖 所以就闪烁   并不是 事件冒泡-->
+  <div class="screen">
+    <ul>
+      <li><img src="images/1.jpg" width="500" height="200"/></li>
+      <li><img src="images/2.jpg" width="500" height="200"/></li>
+      <li><img src="images/3.jpg" width="500" height="200"/></li>
+      <li><img src="images/4.jpg" width="500" height="200"/></li>
+      <li><img src="images/5.jpg" width="500" height="200"/></li>
+      <!--                 1   -->
+    </ul>
+    <ol></ol>
+  </div>
+  <div id="arr"><span id="left">&lt;</span><span id="right">&gt;</span></div>
+</div>
+<script src="common.js"> 
+//问题 将time 换成 ul.time 不好使 是为什么
+//box的冒泡阶段是怎么 不闪的</script>
+<script>
+    var xk = document.getElementsByClassName('screen')[0];
+    var ul = xk.children[0];
+    var ol = xk.children[1];
+    var width = xk.offsetWidth;
+    var block = my$('arr');
+    var left = my$('left');
+    var right = my$('right');
+    var index = 0;
+    for(var i = 0; i < ul.children.length; i++){
+      var li = document.createElement('li');
+      ol.appendChild(li);
+      li.innerHTML = i + 1;
+      li.setAttribute('index',i);
+      li.onmouseover = function (){
+        for(var i = 0; i < ol.children.length; i++){
+          ol.children[i].removeAttribute('class');
+        }
+        this.className = 'current';
+        index = this.getAttribute('index');
+        animate(ul,-index*width);
+      }
+    }
+    ol.children[0].className = 'current';
+    var lis = ol.children;
+    ul.appendChild(ul.firstElementChild.cloneNode(true));
+    my$('box').onmouseover = function (){
+      block.style.display = 'block';
+      clearInterval(time);
+    }
+    my$('box').onmouseout = function (){
+      block.style.display = 'none';
+      time = setInterval(f,1500);
+    };
+    right.onclick = f;
+    function f(){
+      if(index==ul.children.length-1){
+        index = 0;
+        ul.style.left = 0;
+      }
+      index++;
+      animate(ul,-index*width);
+      for(var i = 0; i < lis.length; i++){
+        lis[i].removeAttribute('class');
+      }
+      if(index==ul.children.length-1){
+        lis[0].className = 'current';
+      }else{
+        lis[index].className = 'current';
+      }
+    };
+    left.onclick = function (){
+      if(index==0){
+        index = ul.children.length-1;
+        ul.style.left = -index*width + 'px'; //最部长记性的地方之一！！！
+      }
+      index--;
+      animate(ul,-index*width);
+      for(var i = 0; i < lis.length; i++){
+        lis[i].removeAttribute('class');
+      }
+      lis[index].className = 'current';
+    };
+    var time = setInterval(f,1500);
+</script>
+<script type="text/javascript">
+  //封装 动画函数
+    function animate(e,t){
+      clearInterval(e.time);
+      e.time = setInterval(function (){
+        var d = e.offsetLeft;
+        var b = 10;
+        b = t > d ? b : -b;
+        d += b;
+        if(Math.abs(t-d)>Math.abs(b)){
+          e.style.left = d + 'px';
+        }else{
+          e.style.left = t + 'px';
+          clearInterval(e.time);
+        }
+      },20);
+    }
+</script>
+</body>
+</html>

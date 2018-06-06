@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>CKEditor4</title>
+</head>
+
+<body>
+  <form id="form1" action="">
+    <!-- 再次强调 文本域中必须有name属性 -->
+    <input type="text" name="else" value="1">
+    <textarea id="ckeditor" name="word"></textarea>
+  </form>
+
+  <button id='submit'>提交所有数据</button>
+
+  <script src="./js/jquery.min.js"></script>
+  <script src="./ckeditor/ckeditor.js"></script><!-- ./ckeditor/config 全局配置文件 按钮显示隐藏及位置 -->
+  
+  <script>
+    $(function () {
+      var editor = CKEDITOR.replace('ckeditor', {
+        // 私有配置项
+        height: 200, // 输入内容部分的 高度
+        width: 700, // 宽度
+        filebrowserImageUploadUrl: "http://localhost:8080/XTKFQAir/editor/iconUpload1", // 文件上传到服务器的路径 如图片上传
+      });
+
+      // editor.destroy(); // 销毁编译器
+      
+      // 监听编译器改变事件 输入字符数
+      editor.on("change", function(event) {
+          // console.log(event);
+          var oldhtml = editor.document.getBody().getHtml();
+          var description = oldhtml.replace(/<.*?>/ig, "")
+          .replace(/\s+/g," ")
+          .replace(/<br\s*?\/?>/g,".")
+          .replace(/(<\/p>)/g,".$1")
+          .replace(/<\/.+?>\s*<[^\/]>/g,"")
+          .replace(/<.+?>/g,"")
+          .replace(/&.+?;/g,".");
+          console.log('字符数: ' + description.length);
+          console.log('编译器源码: ' + editor.getData());
+      });
+      
+      // 提交信息
+      $('#submit').click(function () {
+        for (key in CKEDITOR.instances) { // 执行该方法 序列化 可获得 编译器源码
+          CKEDITOR.instances[key].updateElement();
+        }
+        var data = decodeURIComponent($('#form1').serialize()); // 序列化后 编译器中的内容是编码的
+        console.log(data, editor.getData());
+      });
+
+    });
+  </script>
+</body>
+
+</html>

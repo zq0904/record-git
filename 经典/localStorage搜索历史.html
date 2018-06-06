@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	 <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            margin-left: 300px;
+        }
+        ul{
+            list-style: none;
+        }
+        ul li,div{
+            width: 250px;
+            padding: 10px 0;
+            margin-left: 10px;
+            border-bottom: 1px dashed #ccc;
+            height: 20px;
+        }
+        a{
+            float: right;
+        }
+        input{
+            padding: 5px;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+	<input id="search" type="search" placeholder="输入搜索关键字"/>
+	<input type="button" value="搜索"/>
+	<div><a class="clear" href="javascript:;">清空搜索记录</a></div>
+	<ul>
+	    <!--<li>没有搜索记录</li><li><span>手机</span><a href="javascript:;">删除</a></li>-->
+	</ul>
+	<script src="./jquery-1.12.2.min.js"></script>
+	<script>
+		$(function(){
+			var $search = $('#search');
+			var $button = $('[type="button"]');
+			var clear = $('.clear');
+			var $ul = $('ul');
+
+			function load(){
+				$ul.empty();
+				window.a = JSON.parse(localStorage.getItem('list')) || [];
+				if(!a.length){
+					$ul.prepend('<li>没有搜索记录</li>');
+				}else{
+					$.each(a,function(i,e){
+						$ul.prepend('<li><span>'+e+'</span><a href="javascript:;" data-id="'+i+'">删除</a></li>')
+					});
+				}
+			}
+			load();
+			//添加
+			$button.on('click',function(){
+				var text = $search.val().trim();
+				if(text.length==0 || a.some(function(e,i){
+					return e==text;
+				}))return;
+				a.push(text);
+				localStorage.setItem('list',JSON.stringify(a));
+				load();
+			});
+			//删除
+			$ul.on('click','a',function(){
+				a.splice(this.dataset.id,1);
+				localStorage.setItem('list',JSON.stringify(a));
+				load();
+			});
+			//清空
+			clear.click(function(){
+				localStorage.clear();
+				load();
+			});
+
+		});
+	</script>
+</body>
+</html>
