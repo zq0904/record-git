@@ -1664,7 +1664,7 @@ window.location.search.substr(1) // 个别时候不好使（不是正常网址�
 this.$route.query.name
 this.$store.state.route.query.name
 
-git init //初始化仓库 自动创建了一个.git的隐藏目录
+git init // 初始化仓库 自动创建了一个.git的隐藏目录
 ssh-keygen -t rsa 一路回车 //id_rsa密钥 id_rsa.pub公钥 复制公钥 到Key
 git remote add origin 'git@github.com:154809748/2018_1_12.git' //远程地址起别名 origin 没有空格
 git push -u origin master // 把本地仓库推送到远程仓库 并关联
