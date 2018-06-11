@@ -129,6 +129,10 @@ var n2="a"+1;    //1隐式转换
   for(var i=0;i<n2.length;i++){ //数组的遍历
     console.log(n2[i]);
   }
+  for (let i = 0; i < index; i++) {
+    --index // --index 会对自身操作 反过来会影响循环次数
+    index - 1 // 不会对自身操作 不会影响循环次数
+  }
   var n3=n1.concat(n2); //数组的合并
   var n3=n1.join("");     //将数组中每个值之间添加字符，返回字符串
 二维数组 var arr = [1,[2,3],4]; //数组中的元素还是数组 这就是二维数组
@@ -276,6 +280,7 @@ Array对象的属性和方法
     a.splice(index,1,element); 在数组中替换元素
     a.splice(index+1,0,element); 改变原数组 向数组index后面添加元素
     // a.splice(index,1,a[index],element);  备用方法
+    [1, 2].splice(9, 1, 99) // 会得到 [1, 2, 99] 并不会在指定位置填充 Vue中对数组操作 可以先使用 arr[9] = 99 在使用深拷贝 最后赋值的方式来实现响应式的数组
   a.slice(startindex,endindex);//返回一个子数组 根据下标 不返回endindex对应的元素 没指定endindex 返回到最后 如果index为负代表倒数第几个 (原数组不会改变)
 Date对象 //使用Date对象 必须先创建 否则无法使用属性和方法
   var today = new Date(); //创建当前（现在的）日期对象，不带任何参数
@@ -719,6 +724,9 @@ document.title = '标题';//即可获取title标签 还能设置其中的值
 document.body           //获取的body标签
 document.head
 
+不受定位影响 获取元素相对于视口距离
+dom对象.getBoundingClientRect() // 方法返回元素的大小及其相对于视口的位置
+
 offset系列  获取的值都是数字类型
   .offsetWidth  //获取元素的真实宽度（边框 padding 内容）（border-box的width的感觉）
   .offsetHeight //
@@ -787,6 +795,8 @@ JS高级部分：
 //4种方法创建对象 只有自定义构造函数 可以通过instanceof 判断是不是 自定义的类型
 
 console.dir()//输出对象的结构
+console.time('label') // 统计一段代码的执行时间时 参数为对应相同的字符串 在控制台输出以ms为单位
+console.timeEnd('label')
 
 原型的作用之一 可以实现 数据共享 节省空间（共享的属性方法写在原型中 不共享的写在构造函数中）
 // 构造函数和实例对象之间的关系,叫原型链,这个原型链是通过原型来联系的 ----实现数据共享
