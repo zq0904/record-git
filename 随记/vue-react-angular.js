@@ -252,6 +252,11 @@ http-server 开启服务 //安装 npm i -g http-server
 // hs -o -p 3001  //指定端口开启
 // hs -o -p 3001 -c-1  //不启用缓存开启
 
+browser-sync 浏览器同步测试工具 （基于Node）
+npm install -g browser-sync // 全局安装
+browser-sync start --server --files "**/*.css, **/*.html" // 静态页面默认打开index.html 没有手输 http://localhost:3000/highcharts.html 
+browser-sync start --proxy "http://127.0.0.1:3002/highcharts.html" --files "**/*.css, **/*.html" // 动态网站 使用代理模式 查看
+
 MVVM （数据模型可以改变视图模型(查询)   视图模型也可以改变数据模型(修改)  视图模型与视图界面是双向绑定的）
 // M 模型 表意性 可重用性
 // new User({ // 增加数据  
