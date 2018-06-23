@@ -17,7 +17,7 @@ script标签属性
   number      //数字类型 整型数字 浮点型数字 NaN
   string      //字符串类型 (""和0的内容是相等的 ==为true ===为false)
   boolean     //布尔类型(true=1 false=0) (转换最后为false的值有 0 NaN "" undefined null)
-  undefined   //变量未初始化(定义变量 未赋值) undefined+1 结果是NaN
+  undefined   //变量未初始化(定义变量 未赋值) undefined+1 结果是NaN   void 0 === undefined 结果为true void 0防止undefined重写 省3个字节
   null      //值为空 用来销毁变量(var n1=null; n1用typeof判断是object类型)(null==undefined 为true  ===为false)(var a = null + 1;//结果是 1 number类型)
 复杂数据类型：
   object      //对象
@@ -36,28 +36,28 @@ console.log(Number.MAX_VALUE);//数的最大值
 转数字类型
   n2=Number(n1);   //不能转数字开头的非纯数字字符串
     console.log(Number("123")); //123
-      console.log(Number(""));  //0
-      console.log(Number(true));  //1
-      console.log(Number(false)); //0
-      console.log(Number(undefined)); //NaN
-      console.log(Number(null));  //0
-      console.log(Number([]));  //0
-      console.log(Number([3])); //3
-      console.log(Number([3,2])); //NaN
-      console.log(Number({}));  //NaN
+    console.log(Number(""));  //0
+    console.log(Number(true));  //1
+    console.log(Number(false)); //0
+    console.log(Number(undefined)); //NaN
+    console.log(Number(null));  //0
+    console.log(Number([]));  //0
+    console.log(Number([3])); //3
+    console.log(Number([3,2])); //NaN
+    console.log(Number({}));  //NaN
   n2=parseInt(n1); //取整 能转数字开头的非纯数字字符串
     console.log(parseInt('123.5asd'));//123
-      console.log(parseInt(""));//NaN
-      console.log(parseInt(true));//NaN
-      console.log(parseInt(false));//NaN
-      console.log(parseInt(undefined));//NaN
-      console.log(parseInt(null));//NaN
-      console.log(parseInt([]));//NaN
-      console.log(parseInt({}));//NaN
-      console.log(parseInt("0x10"));//16
-      console.log(parseInt("a",16));//10
-      console.log(parseInt("010"));//10
-      console.log(parseInt("010",8));//8
+    console.log(parseInt(""));//NaN
+    console.log(parseInt(true));//NaN
+    console.log(parseInt(false));//NaN
+    console.log(parseInt(undefined));//NaN
+    console.log(parseInt(null));//NaN
+    console.log(parseInt([]));//NaN
+    console.log(parseInt({}));//NaN
+    console.log(parseInt("0x10"));//16
+    console.log(parseInt("a",16));//10
+    console.log(parseInt("010"));//10
+    console.log(parseInt("010",8));//8
   n2=parseFloat(n1); //能转数字开头的非纯数字字符串 parseFloat(".1") 转为0.1
 转字符串类型
   n2=n1.toString();//12.toString()，大部分都能转只有null和undefined不能转
@@ -1776,6 +1776,12 @@ JSON.parse('[{"a":1},{"b":2}') // 谨记js中 JSON.parse严格要求格式 key �
 window.eval() // 是全局对象的一个函数属性 参数是一个String 会执行其中代码 
 // 如果eval()的参数不是字符串，eval()将会将参数原封不动的返回 可以通过 toString() 绕过 使得参数必为 String
 
-
 数组中获取一个最大值
 Math.max.apply(null, []);
+
+取整操作
+parseInt(a,10)
+Math.floor(a)
+a>>0
+~~a
+a|0

@@ -1142,7 +1142,7 @@ var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d'); //获取绘制工具 2d绘制平面效果
 
 ctx.beginPath(); //开启新路径
-ctx.moveTo(100,100); //起点  ctx.translate(100,100);起点位置从100,100开始 ctx.rotate(Math.PI/180*45);不是canvas画布旋转 是绘制的图形 以左上角为中心旋转
+ctx.moveTo(100,100); //起点  ctx.translate(100,100); 重新映射起点位置 ctx.rotate(Math.PI/4); 不是canvas画布旋转 是绘制的图形 以左上角为中心顺时针旋转
 ctx.lineTo(200,100); //绘制直线 绘制的是路径
 ctx.strokeStyle = 'blue'; //设置描边颜色 是跨路径的 不受ctx.beginPath()影响 但是ctx.stroke受影响
 ctx.stroke(); //描边 只能描边本次路径内的 颜色是最近的ctx.strokeStyle
