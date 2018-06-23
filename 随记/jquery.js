@@ -859,6 +859,16 @@ background-clip: content-box; /*从哪开始裁剪 默认border-box 以外的背
 //     }
 // }
 
+// .css样式适用于 最大设备宽度为480px 这里的 max-device-width 所指的是设备的实际分辨率 也就是指可视面积分辨率
+<link rel="stylesheet" media="screen and (max-device-width:480px)" href="iphone.css" />
+
+// 使用关键词 not 用来排除某种制定的媒体类型
+@media not print and (max-width: 1200px){ 样式代码 } // 样式代码将被使用在除打印设备和设备宽度小于1200px下所有设备中
+// 没有写 默认为 all 表示所有设备
+@media all and (max-width: 1200px){ 样式代码 }
+// 只有 彩色屏幕
+@media only screen and (max-width: 1200px){ 样式代码 }
+
 Bootstrap 中集成了 normalize 但是还是需要 自己的reset文件
 // 都是增强浏览器的表现一致性但是normalize不会重置已经一致的元素（例如对于ul本身的list-style不会重置    reset会重置 ）
 
@@ -1027,6 +1037,9 @@ function ff(e){
 
 css3规范 :伪类  :: 为元素
 p:first-of-type //css3选择器 通过p找父元素 在通过父元素找所有子元素类型为p 然后再找第几个 
+  // <p></p>
+  // <p class="red"></p>
+  // .box .red:first-of-type // 匹配父元素.box内同类型标签元素p中的第一个元素.test 然而并没有
 p:first-child   //通过P找到父元素 在通过父元素找所有的子元素 找第一个元素 匹配判断类型(如果不是选择器失效)
 p:nth-of-type
 
