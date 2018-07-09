@@ -40,6 +40,40 @@
     .BMapLib_trans {
       top: auto !important;
     }
+    /*地图标题*/  
+    .anchorBL{  
+        display:none;  
+    }  
+    .BMap_bubble_title{  
+        color:black;  
+        font-size:13px;  
+        font-weight: bold;  
+        text-align:left;  
+    }
+    /*infoWindow 自定义样式*/
+    .BMap_pop div:nth-child(1){  
+        border-radius:7px 0 0 0;  
+    }  
+    .BMap_pop div:nth-child(3){  
+        border-radius:0 7px 0 0;background:#ABABAB;;  
+        width:23px;  
+        width:0px;height;0px;  
+    }  
+    .BMap_pop div:nth-child(3) div{  
+        border-radius:7px;  
+    }  
+    .BMap_pop div:nth-child(5){  
+        border-radius:0 0 0 7px;  
+    }  
+    .BMap_pop div:nth-child(5) div{  
+        border-radius:7px;  
+    }  
+    .BMap_pop div:nth-child(7){  
+        border-radius:0 0 7px 0 ;  
+    }  
+    .BMap_pop div:nth-child div(7){  
+        border-radius:7px ;  
+    }
   </style>
 </head>
 
@@ -275,20 +309,20 @@
         // // map.removeOverlay(mySquare); // 或者 map.clearOverlays(); // 清除所有覆盖物
 
     // 点击marker 打开信息窗口 同一时刻只能有一个信息窗口在地图上打开
-        // var myPoint = new BMap.Point(116.39358, 39.923688);
-        // var marker = new BMap.Marker(myPoint);
-        // map.addOverlay(marker);
-        // var opts = {
-        //     width: 250,      // 信息窗口宽度
-        //     height: 100,     // 信息窗口高度
-        //     title: "<h4 style='margin: 0;text-align: center;'>标题</h4>"  // 信息窗口标题
-        // }
-        // var infoWindow = new BMap.InfoWindow("<div>123</div>", opts);  // 创建信息窗口对象 直接拼接字符串模板形式 行内样式便于迁移
-        // // infoWindow.setTitle("<h4 style='margin: 0; text-align: center;'>也能设置标题</h4>");
-        // marker.addEventListener('click', function () {
-        //     map.openInfoWindow(infoWindow, myPoint);      // 打开信息窗口
-        // });
-        // // map.closeInfoWindow(infoWindow, map.getCenter());      // 关闭信息窗口
+        var myPoint = new BMap.Point(116.39358, 39.923688);
+        var marker = new BMap.Marker(myPoint);
+        map.addOverlay(marker);
+        var opts = {
+            width: 250,      // 信息窗口宽度
+            height: 100,     // 信息窗口高度
+            title: "<h4 style='margin: 0;text-align: center;'>标题</h4>"  // 信息窗口标题
+        }
+        var infoWindow = new BMap.InfoWindow("<div class='tttt'>123</div>", opts);  // 创建信息窗口对象 直接拼接字符串模板形式 行内样式便于迁移
+        // infoWindow.setTitle("<h4 style='margin: 0; text-align: center;'>也能设置标题</h4>");
+        marker.addEventListener('click', function () {
+            map.openInfoWindow(infoWindow, myPoint);      // 打开信息窗口
+        });
+        // map.closeInfoWindow(infoWindow, map.getCenter());      // 关闭信息窗口
         
     // 叠加图层
         // var traffic = new BMap.TrafficLayer(); // 创建交通流量图层实例      

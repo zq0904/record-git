@@ -73,28 +73,24 @@
     //   reader.readAsDataURL(file)
     // })
 
-    // var url = 'http://p1.pstatp.com/large/435d000085555bd8de10' // 后端做了CORS处理
-    var url = 'http://demo.coilabs.com:2000/file//SYBWZAir/site/IMG_20180611_101012_20180620142218932718.jpg' // 后端没有做CORS处理
+    var url = 'http://p1.pstatp.com/large/435d000085555bd8de10' // 后端做了CORS处理
     
-    getHttpDataURL(url, function(dataURL, orientation) {
-      // console.log(dataURL, orientation)
-      var image = new Image()
-      image.setAttribute('crossOrigin', 'anonymous') // 回避CORS策略
-      image.onload = function() {
-        rotateImage(image, orientation)
-      }
-      image.src = dataURL
-    })
+    var image = new Image()
+    image.setAttribute('crossOrigin', 'anonymous') // 回避CORS策略
+    image.onload = function() {
+      rotateImage(image)
+    }
+    image.src = url
     
     // 矫正旋转图片
-    function rotateImage(img, orientation) { // img dom对象  orientation应矫正的旋转数值
+    function rotateImage(img) { // img dom对象
       var dataURL = ''
       var canvas = document.createElement('canvas')
       var ctx = canvas.getContext('2d')
       var width = img.width
       var height = img.height
       EXIF.getData(img, function() { // img 网络请求过来的时候 此操作是异步的  IE10 以下不支持
-        var ultimaOrientation = orientation || EXIF.getTag(this,'Orientation')
+        var ultimaOrientation = EXIF.getTag(this, 'Orientation')
         // console.log('ultimaOrientation', ultimaOrientation)
         switch (ultimaOrientation) {
           case 1: case undefined: // 不旋转
@@ -126,160 +122,160 @@
       })
     }
 
-    // get获取网路请求图片
-    function getHttpDataURL(url, callback) { // url 线上图片地址 callback(dataURL, orientation) // dataURL base64编码  orientation应矫正的旋转数值
-      var fromCharCode = String.fromCharCode
-      var xhr = new XMLHttpRequest()
+    // get获取网路请求图片 仍需后端CORS处理
+    // function getHttpDataURL(url, callback) { // url 线上图片地址 callback(dataURL, orientation) // dataURL base64编码  orientation应矫正的旋转数值
+    //   var fromCharCode = String.fromCharCode
+    //   var xhr = new XMLHttpRequest()
 
-      var done = function() { // 完成的处理
-        xhr = null
-      }
-      var read = function(arrayBuffer) { // 响应结果
-        var orientation = getOrientation(arrayBuffer)
-        var dataURL = arrayBufferToDataURL(arrayBuffer, 'image/jpeg')
-        done()
-        return isFunction(callback) && callback(dataURL, orientation)
-      }
-      xhr.ontimeout = done // 超时
-      xhr.onabort = done // 中断
-      xhr.onerror = done // 出错
-      xhr.onload = function() {
-        read(xhr.response)
-      }
-      xhr.open('get', url)
-      xhr.responseType = 'arraybuffer'
-      xhr.send()
+    //   var done = function() { // 完成的处理
+    //     xhr = null
+    //   }
+    //   var read = function(arrayBuffer) { // 响应结果
+    //     var orientation = getOrientation(arrayBuffer)
+    //     var dataURL = arrayBufferToDataURL(arrayBuffer, 'image/jpeg')
+    //     done()
+    //     return isFunction(callback) && callback(dataURL, orientation) // callback存在调用
+    //   }
+    //   xhr.ontimeout = done // 超时
+    //   xhr.onabort = done // 中断
+    //   xhr.onerror = done // 出错
+    //   xhr.onload = function() {
+    //     read(xhr.response)
+    //   }
+    //   xhr.open('get', url)
+    //   xhr.responseType = 'arraybuffer'
+    //   xhr.send()
 
-      /**
-       * Iterate the given data.
-       * @param {*} data - The data to iterate.
-       * @param {Function} callback - The process function for each element.
-       * @returns {*} The original data.
-       */
-      function forEach(data, callback) {
-        if (data && isFunction(callback)) {
-          if (Array.isArray(data) || isNumber(data.length) /* array-like */) {
-              var length = data.length
+    //   /**
+    //    * Iterate the given data.
+    //    * @param {*} data - The data to iterate.
+    //    * @param {Function} callback - The process function for each element.
+    //    * @returns {*} The original data.
+    //    */
+    //   function forEach(data, callback) {
+    //     if (data && isFunction(callback)) {
+    //       if (Array.isArray(data) || isNumber(data.length) /* array-like */) {
+    //           var length = data.length
 
-              var i = void 0
+    //           var i = void 0
 
-              for (i = 0; i < length; i += 1) {
-                if (callback.call(data, data[i], i, data) === false) {
-                  break
-                }
-              }
-            } else if (isObject(data)) {
-            Object.keys(data).forEach(function (key) {
-              callback.call(data, data[key], key, data)
-            })
-          }
-        }
+    //           for (i = 0; i < length; i += 1) {
+    //             if (callback.call(data, data[i], i, data) === false) {
+    //               break
+    //             }
+    //           }
+    //         } else if (isObject(data)) {
+    //         Object.keys(data).forEach(function (key) {
+    //           callback.call(data, data[key], key, data)
+    //         })
+    //       }
+    //     }
 
-        return data
-      }
-      function isFunction(value) {
-        return typeof value === 'function'
-      }
-      function isNumber(value) {
-        return typeof value === 'number' && !isNaN(value)
-      }
-      function isObject(value) {
-        return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value !== null
-      }
-      // 从给定的数组缓冲区获取方向值
-      function getOrientation(arrayBuffer) {
-        var dataView = new DataView(arrayBuffer)
-        var orientation = void 0
-        var littleEndian = void 0
-        var app1Start = void 0
-        var ifdStart = void 0
+    //     return data
+    //   }
+    //   function isFunction(value) {
+    //     return typeof value === 'function'
+    //   }
+    //   function isNumber(value) {
+    //     return typeof value === 'number' && !isNaN(value)
+    //   }
+    //   function isObject(value) {
+    //     return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value !== null
+    //   }
+    //   // 从给定的数组缓冲区获取方向值
+    //   function getOrientation(arrayBuffer) {
+    //     var dataView = new DataView(arrayBuffer)
+    //     var orientation = void 0
+    //     var littleEndian = void 0
+    //     var app1Start = void 0
+    //     var ifdStart = void 0
 
-        // Only handle JPEG image (start by 0xFFD8)
-        if (dataView.getUint8(0) === 0xFF && dataView.getUint8(1) === 0xD8) {
-          var length = dataView.byteLength
-          var offset = 2
+    //     // Only handle JPEG image (start by 0xFFD8)
+    //     if (dataView.getUint8(0) === 0xFF && dataView.getUint8(1) === 0xD8) {
+    //       var length = dataView.byteLength
+    //       var offset = 2
 
-          while (offset < length) {
-            if (dataView.getUint8(offset) === 0xFF && dataView.getUint8(offset + 1) === 0xE1) {
-              app1Start = offset
-              break
-            }
+    //       while (offset < length) {
+    //         if (dataView.getUint8(offset) === 0xFF && dataView.getUint8(offset + 1) === 0xE1) {
+    //           app1Start = offset
+    //           break
+    //         }
 
-            offset += 1
-          }
-        }
+    //         offset += 1
+    //       }
+    //     }
 
-        if (app1Start) {
-          var exifIDCode = app1Start + 4
-          var tiffOffset = app1Start + 10
+    //     if (app1Start) {
+    //       var exifIDCode = app1Start + 4
+    //       var tiffOffset = app1Start + 10
 
-          if (getStringFromCharCode(dataView, exifIDCode, 4) === 'Exif') {
-            var endianness = dataView.getUint16(tiffOffset);
+    //       if (getStringFromCharCode(dataView, exifIDCode, 4) === 'Exif') {
+    //         var endianness = dataView.getUint16(tiffOffset);
 
-            littleEndian = endianness === 0x4949;
+    //         littleEndian = endianness === 0x4949;
 
-            if (littleEndian || endianness === 0x4D4D /* bigEndian */) {
-                if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
-                  var firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
+    //         if (littleEndian || endianness === 0x4D4D /* bigEndian */) {
+    //             if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
+    //               var firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
 
-                  if (firstIFDOffset >= 0x00000008) {
-                    ifdStart = tiffOffset + firstIFDOffset;
-                  }
-                }
-              }
-          }
-        }
+    //               if (firstIFDOffset >= 0x00000008) {
+    //                 ifdStart = tiffOffset + firstIFDOffset;
+    //               }
+    //             }
+    //           }
+    //       }
+    //     }
 
-        if (ifdStart) {
-          var _length = dataView.getUint16(ifdStart, littleEndian);
-          var _offset = void 0;
-          var i = void 0;
+    //     if (ifdStart) {
+    //       var _length = dataView.getUint16(ifdStart, littleEndian);
+    //       var _offset = void 0;
+    //       var i = void 0;
 
-          for (i = 0; i < _length; i += 1) {
-            _offset = ifdStart + i * 12 + 2;
+    //       for (i = 0; i < _length; i += 1) {
+    //         _offset = ifdStart + i * 12 + 2;
 
-            if (dataView.getUint16(_offset, littleEndian) === 0x0112 /* Orientation */) {
-                // 8 is the offset of the current tag's value
-                _offset += 8;
+    //         if (dataView.getUint16(_offset, littleEndian) === 0x0112 /* Orientation */) {
+    //             // 8 is the offset of the current tag's value
+    //             _offset += 8;
 
-                // Get the original orientation value
-                orientation = dataView.getUint16(_offset, littleEndian);
+    //             // Get the original orientation value
+    //             orientation = dataView.getUint16(_offset, littleEndian);
 
-                // Override the orientation with its default value
-                dataView.setUint16(_offset, 1, littleEndian);
-                break;
-              }
-          }
-        }
+    //             // Override the orientation with its default value
+    //             dataView.setUint16(_offset, 1, littleEndian);
+    //             break;
+    //           }
+    //       }
+    //     }
 
-        return orientation;
-      }
-      // 从数据视图中的char代码获取字符串
-      function getStringFromCharCode(dataView, start, length) {
-        var str = '';
-        var i = void 0;
+    //     return orientation;
+    //   }
+    //   // 从数据视图中的char代码获取字符串
+    //   function getStringFromCharCode(dataView, start, length) {
+    //     var str = '';
+    //     var i = void 0;
 
-        length += start;
+    //     length += start;
 
-        for (i = start; i < length; i += 1) {
-          str += fromCharCode(dataView.getUint8(i));
-        }
+    //     for (i = start; i < length; i += 1) {
+    //       str += fromCharCode(dataView.getUint8(i));
+    //     }
 
-        return str;
-      }
-      // 将数组缓冲区转换为dataURL
-      function arrayBufferToDataURL(arrayBuffer, mimeType) {
-        var uint8 = new Uint8Array(arrayBuffer)
-        var data = ''
+    //     return str;
+    //   }
+    //   // 将数组缓冲区转换为dataURL
+    //   function arrayBufferToDataURL(arrayBuffer, mimeType) {
+    //     var uint8 = new Uint8Array(arrayBuffer)
+    //     var data = ''
 
-        // TypedArray.prototype.forEach is not supported in some browsers.
-        forEach(uint8, function (value) {
-          data += fromCharCode(value);
-        })
+    //     // TypedArray.prototype.forEach is not supported in some browsers.
+    //     forEach(uint8, function (value) {
+    //       data += fromCharCode(value);
+    //     })
 
-        return 'data:' + mimeType + ';base64,' + btoa(data)
-      }
-    }
+    //     return 'data:' + mimeType + ';base64,' + btoa(data)
+    //   }
+    // }
 
   </script>
 </body>
