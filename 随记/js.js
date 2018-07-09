@@ -230,6 +230,7 @@ String对象的属性和方法
   s.replace('a',1);     //将字符串中的一个子字符'a'替换成1 并返回 不改变原字符串
     .replace(/a/g,1); //全局替换
     .replace(/a/gi,1);//全局替换 忽略大小写
+'./asd.vue'.replace(/\.\/(.+)\..+/, '$1') // 'asd' replace正则表达式也可以使用捕获
   s.search('123');      //查找子字符对应的index（最左面的） 如果没有返回 -1 对大小写敏感
     .search(/123/i);  //查找 忽略大小写  
   s.match(/ain/gi);     //检索符合条件的子字符串 以数组形式返回 （提取邮箱 等）没有找到返回null 
@@ -1583,10 +1584,10 @@ console.log( result );
   })
 
 // 对象融合 
-// 原生 Object.assign({a:1},{b:2})
-// E6对象展开运算符 {a:1, ...{b:2}}
-// jQ里     $.extend({a:1},{b:2})
-// lodash里 _.assign({a:1},{b:2})
+// 原生 Object.assign({a:1},{b:2}) // 浅拷贝
+// E6对象展开运算符 {a:1, ...{b:2}} // 浅拷贝
+// jQ里     $.extend({a:1},{b:2}) // 浅拷贝
+// lodash里 _.assign({a:1},{b:2}) // 浅拷贝
 
 Object.assign() // 方法的用法
 // 1.合并多个对象 // 对数组的合并 是根据对index 对对象的合并 是根据key
@@ -1785,3 +1786,7 @@ Math.floor(a)
 a>>0
 ~~a
 a|0
+
+nginx
+start nginx.exe // 启动
+nginx.exe -s reload // 重载

@@ -29,6 +29,7 @@ v-on:click 简写  @click 绑定事件
 v-if 条件渲染 v-for 循环渲染  双向绑定
 // <div v-if="message" class="box"></div> message为 true div渲染 为false div不渲染 ""内部会隐式转换 "1"显示 "0"隐藏 等
 // <li v-for=" (e,i) in arr">{{ e }}</li> e是数组的每一项的值  i是索引
+// <li v-for=" (e,k) of o">{{ e }}</li> e是对象的值 4 5   k是健名 a,b
 // <li v-for=" (e,k,i) of o">{{ e }}</li> e是对象的值 4 5   k是健名 a,b  i是索引 0,1
 
 // 注册一个全局自定义指令 在实例化Vue之前注册 来操作dom 在模板中 使用 v-自定义名称

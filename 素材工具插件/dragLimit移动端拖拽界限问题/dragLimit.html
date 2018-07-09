@@ -106,7 +106,7 @@ function interiorMove(dom) {
   // 移动过程中阻止页面的滑动默认事件
   document.addEventListener("touchmove", function () {
     if (flag === true) event.preventDefault()
-  }, { passive: false }) // 解决chrome56 忽略问题 明确声明为不是被动的
+  }, { passive: false }) // 解决Chrome51 默认优化 passive: true handler内部不会调用事件的preventDefault函数 优化相关滚动事件
   el.addEventListener("touchstart", start, false)
   el.addEventListener("touchmove", move, false)
   el.addEventListener("touchend", end, false)
