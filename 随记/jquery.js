@@ -513,7 +513,7 @@ JQuery中 监听动画的结束
 .a{
     animation: name 1s linear infinite alternate forwards;
 }
-$('.a').on('animationend',function(){});
+$('.a').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){});
 /* animationend  事件 动画结束事件*/
 /* transitionend  事件 过渡结束事件*/ 
 

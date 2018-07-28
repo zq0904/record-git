@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>svg</title>
+</head>
+<body>
+  <svg width="300" height="300">
+    <defs>
+      <g id="clone">
+        <circle style="fill: red;" r="50"></circle>
+      </g>
+    </defs>
+    <!-- <use>能从SVG文档内部取出一个节点 克隆它 并把它输出到别处 是深度克隆 -->
+    <use x="50" y="50" href="#clone" />
+    <use x="150" y="50" href="#clone" />
+    <!-- <g>用来分组 可以把多个元素放在一组里 对g的样式渲染 都会作用到这个分组内的所有元素 -->
+    <g style="font-size: 20px;fill: red;">
+      <!-- text元素内部使用tspan元素给文字分组 可以分别设置格式样式位置 -->
+      <text x="150" y="150" style="transform: rotate(20deg);">
+        <tspan x="150" y="150">这是第一行文字</tspan>
+        <tspan x="150" y="170" style="fill: blue;">这是第二行文字</tspan>
+      </text>
+    </g>
+    <use href="#path" style="fill: red;"></use>
+  </svg>
+</body>
+</html>

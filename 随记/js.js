@@ -283,6 +283,7 @@ Array对象的属性和方法
     // a.splice(index,1,a[index],element);  备用方法
     [1, 2].splice(9, 1, 99) // 会得到 [1, 2, 99] 并不会在指定位置填充 Vue中对数组操作 可以先使用 arr[9] = 99 在使用深拷贝 最后赋值的方式来实现响应式的数组
   a.slice(startindex,endindex);//返回一个子数组 根据下标 不返回endindex对应的元素 没指定endindex 返回到最后 如果index为负代表倒数第几个 (原数组不会改变)
+  a.indexOf(val[, startIndex]) // 在数组中查找val存不存在 严格=== 查到了返回对应索引 没查到-1 第2个参数开始查找的索引位置 -2表示从倒数第2个向后查找
 Date对象 //使用Date对象 必须先创建 否则无法使用属性和方法
   var today = new Date(); //创建当前（现在的）日期对象，不带任何参数
   var today = new Date(1000); //创建指定时间日期对象，参数为毫秒（是创建了距1970.1.1之后多少毫秒的日期对象）
@@ -396,7 +397,7 @@ location.href   //获取地址栏中完整的地址 可以实现JS的页面跳�
   .replace("http://www.baidu.com");// 替换地址,不会保存历史记录 不可返回
 
 history对象（浏览历史）
-  .length    
+  .length    // 历史记录次数 也是可回退次数
   .forward() //相当于浏览器的前进按钮
   .back()    //相当于浏览器的后退按钮
   .go(N)     // history.go(0) 刷新网页
@@ -1790,3 +1791,7 @@ a|0
 nginx
 start nginx.exe // 启动
 nginx.exe -s reload // 重载
+
+<p date-index="1" asd="2" >
+dom.attributes // attributes 拿到所有属性{ 0: data-index, 1: aaa,2: class,3: style }
+dom.dataset // dataset 拿到标准的 自定义属性即 data-XXX
