@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Form-Data</title>
+</head>
+<body>
+
+  <form action="" id="form1">
+    <input type="text" name="n1">
+    <input type="file" name="f1">
+    <button>提交</button>
+  </form>
+
+  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    // var formData = new FormData()
+    // console.log(formData)
+    // // formData 的方法全部在原型中 自己本身没有任何属性和方法
+    // formData.append('name', 'qq') // 添加数据
+    // formData.append('age', 1)
+    // var age = formData.get('age') // 获取数据
+    // formData.delete('name') // 删除数据
+    // console.log(age, formData.get('name'))
+
+    $('#form1').on('submit', function(e) {
+      e.preventDefault()
+
+      // 第一种方式通过formData的 append 方法追加 然后上传 append方法的第一个参数充当 name字段
+      // var formData = new FormData()
+      // // console.log($(this).serialize()) // 表单序列化拿不到 file
+      // formData.append('upLoad', $(this).find('[type="file"]')[0].files[0]) // Content-Disposition: form-data; name="upLoad"; filename="头像.jpg" Content-Type: image/jpeg
+      // console.log(formData.get('upLoad'))
+      // formData.append('key', 111) // Content-Disposition: form-data; name="a"
+
+      // 第二种方式通过 new FormData() 传参 表单dom对象 就会把这个表单中含有name属性的表单控件 转成formData对象
+      var formData = new FormData($(this)[0])
+      formData.append('a', 1) // 动态添加其余字段
+
+      // 复合表单提交
+      $.ajax({
+        url: 'http://192.168.199.142:8080/api/attach/upload',
+        data: formData,
+        type: 'POST',
+        dataType: 'JSON',
+        cache: false, // 不缓存
+        processData: false, // JQ不去处理发送的数据
+        contentType: false, // JQ不去设置请求头
+        success: function(response) {},
+        error: function(err) {}
+      })
+    })
+  </script>
+</body>
+</html>

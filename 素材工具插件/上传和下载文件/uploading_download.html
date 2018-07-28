@@ -7,48 +7,45 @@
 </head>
 
 <body>
-  <p>上传文件</p>
   <form id="form1">
-    <input type="text" name="number" value="123">
-    <input type="file" name="file" value="选择上传文件" />
-    <input id="submit_form" name="0" type="button" value="复合表单提交" />
+    <input type="text" name="number">
+    <input type="file" name="file">
+    <button>复合表单提交</button>
   </form>
-  <p>下载文件</p>
-  <button id="download">下载</button>
-  <script src="./js/jquery.min.js"></script>
+  <br>
+  <button id="download">下载文件</button>
+  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
   <script>
-    $(function () {
-      // 复合表单提交
-      $('#submit_form').click(function () {
-        var formdata = new FormData($('#form1')[0]);
-        $.ajax({
-          type: 'POST',
-          data: formdata,
-          dataType: 'json',
-          mimeType: "multipart/form-data",
-          url: 'http://blog.csdn.net/u014607184/article/details/52372551',
-          processData: false, // 告诉jQuery不要去处理发送的数据
-          contentType: false, // 告诉jQuery不要去设置Content-Type请求头
-          success: function (data) {
-            console.log(data);
-          }
-        });
-      });
+    // 复合表单提交
+    $('#form1').on('submit', function(e) {
+      e.preventDefault()
 
-      // 下载
-      $('#download').click(function () {
-        var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master';
-        $e = $("<form>");
-        $e.attr({
-          'action': url,
-          'method': 'get',
-          'style': 'display:none'
-        });
-        $('body').append($e);
-        $e.submit();
-      });
+      var formData = new FormData(this)
+      $.ajax({
+        url: 'http://192.168.199.142:8080/api/attach/upload',
+        data: formData,
+        type: 'POST',
+        dataType: 'JSON',
+        mimeType: 'multipart/form-data',
+        cache: false, // 不缓存
+        processData: false, // JQ不去处理发送的数据
+        contentType: false, // JQ不去设置请求头
+        success: function(response) {},
+        error: function(err) {}
+      })
+    })
 
-    });
+    // 下载
+    document.getElementById('download').onclick = function () {
+      var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master'
+      var form = document.createElement('form')
+      form.action = url
+      form.method = 'get'
+      form.style.display = 'none'
+      document.getElementsByTagName('body')[0].appendChild(form)
+      form.submit() // 提交表单
+    }
+
   </script>
 </body>
 
