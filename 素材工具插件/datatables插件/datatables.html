@@ -79,6 +79,7 @@
   </div>
   <br><br>
   <input id="searchText" type="text"><button id="search">搜索</button>
+  <button id="anew">销毁table在创建一个table</button>
 
   <script src="./js/jquery.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
@@ -96,6 +97,12 @@
     });
     // 渲染table列表
     function drawTable(dataSource) {
+      // 动态生成表头
+      var columns = [{ title: "序号" }]
+      dataSource[0].forEach((e, i) => {
+        if (i > 0) { columns.push({ title: '组装数据' + i }) }
+      })
+      // 初始化插件
       var table = $('#example').DataTable({
         "oLanguage": { // 常用语言转义
           "sLengthMenu": "每页显示 _MENU_ 条",
@@ -119,14 +126,9 @@
         // "searching": false, // 禁用搜索功能
         // "ordering": false, // 禁用排序功能
         "processing": true, // 表格渲染时间长 或 排序 显示 loading
+        columns: columns, // 表头 会替换原有HTML中写好的表头 格式 [{ title: "序号" }, { title: "组装数据1" }]
         data: dataSource, // js 组装数据渲染 [[], []] 二位数组形式
         "order": [[1, "desc"]], // 第一个参数是列index asc升序排序 desc降序排序 前提有排序功能
-        columns: [ // 表头 会替换原有HTML中写好的表头
-          { title: "序号" },
-          { title: "组装数据1" },
-          { title: "组装数据2" },
-          { title: "组装数据3" }
-        ],
         "columnDefs": [ // 每列宽 列索引index
           { "width": "100", "targets": 0 }, // 受层叠的padding影响 +10 +10 剩下的自动平分(.table 这个类)
           // { "width": "100px", "targets": 1},
@@ -173,7 +175,14 @@
         var data = table.row(this).data()
         console.log(data)
       })
-
+      $('#anew').on('click', function() {
+        table.destroy()
+        $('#example').empty()
+        drawTable([
+          ['', 1, 2],
+          ['', 3, 4]
+        ]);
+      })
     }
   </script>
   

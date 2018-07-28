@@ -1006,10 +1006,10 @@ Bootstrap 也不是万能的 在需求得不到满足时 可以自己使用 媒�
 JQ对象中的事件参数e n.Event 中有一个originalEvent对象就是TouchEvent （移动端）
 
 $.ajax({
-  type: 'POST',
-  data: {},
-  dataType: 'json',
   url: '',
+  data: {},
+  type: 'POST',
+  dataType: 'json',
   async: false, // 默认true
   success: function (data) {
   },

@@ -246,7 +246,7 @@ Array对象的属性和方法
   a.reverse(); //将数组翻转
   a.concat(b); //不改变原数组 数组合并+扁平化 最多一层 var a = [1,2];console.log(a.concat(3,4));console.log(a.concat([3,4]));-->[1,2,3,4] 返回新数组 将元素的值融入 如果元素为2维数组 则变为一维数组融入
   a.sort();    //数组排序 不稳定 数字正常排 字母按第一个字母大小(a,b | A,a) （更改原数组）
-    a.sort(f); function f(a,b){return a < b;}//比较函数 注意a.sort(f);传的是函数地址 a < b 方向排列 大数在前
+    a.sort(f); function f(a,b){return a < b;} // 比较函数 a,b每次拿到前后2项的值 return true 表示交换着2项
   a.forEach(function (e,i,a){ // IE8 不支持 e每一个元素 i对应索引 a这个数组
     console.log(e,i,a, this); // this 是 window
   })
@@ -1588,6 +1588,15 @@ console.log( result );
 // E6对象展开运算符 {a:1, ...{b:2}} // 浅拷贝
 // jQ里     $.extend({a:1},{b:2}) // 浅拷贝
 // lodash里 _.assign({a:1},{b:2}) // 浅拷贝
+// lodash里 _.merge({a:1},{b:2}) // 浅拷贝
+
+// _.assign({}, {a: 1}, {b: 2}) // 实现和深拷贝等同的效果 
+// Object.assign _.assign $.extend 在1个深度层次合并
+// _.merge纯粹合并 只要是引用类型
+// var users = { 'data': [{ 'user': 'barney' }, { 'user': 'fred' }] }
+// var ages = { 'data': [{ 'age': 36 }, { 'age': 40 }] }
+// _.assign(users, ages) // { 'data': [{ 'age': 36 }, { 'age': 40 }] }
+// _.merge(users, ages) // { 'data': [{ 'user': 'barney', 'age': 36 }, { 'user': 'fred', 'age': 40 }] }
 
 Object.assign() // 方法的用法
 // 1.合并多个对象 // 对数组的合并 是根据对index 对对象的合并 是根据key
