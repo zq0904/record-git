@@ -9,61 +9,52 @@ node直接回车 进入编辑功能 类似浏览器中的控制台 方便测试 
 console.log() //是在cmd中直接输出
 res.end() //是返回给浏览器输出
 
-使用node 操纵文件（通过引入 fs核心模块）
-var fs = require('fs'); //加载 fs 核心模块
-读取文件 参数（文件路径,回调函数）
-// 成功 data 数据 error null  失败 data undefined error 错误对象 !!!
-fs.readFile('./index.html','utf8',function(error,data){ //加上第二个参数 utf8 读出的文件data就是 'utf8'格式的 无需 .toString()
-	 console.log(data); // 成功 <Buffer 68> 可以通过data.toString()转化成正常文字
-	 console.log(error);//       null
-	 if(error){ 
-	    console.log('读取文件失败');
-	  }else{
-	    console.log(data.toString()); //成功.toString()转化为字符串
-	  }
-}); 
-写文件 参数（文件路径,文件内容,回调函数）
-//成功 error null 失败 error 错误对象
-fs.writeFile('./index.html','内容',function(error){
-	if(error){
-		console.log('写入失败');
-	}else{
-		console.log('写入成功'); //对同一文件写入 会覆盖
-	}
-});
-
-使用node 构建一个web服务器 （通过引入 http核心模块）
-var http = require('http'); //加载 http 核心模块
-var server = http.createServer(); //创建一个Web服务器 返回一个server实例
-
-server.on('request',function(request,response){ //给服务器绑定request事件 当客户端发送请求 触发回调函数
-	var url = request.url;
-	if(url=='/a'){//request.url获取的是/之后的部分
-		// response.write('第一次'); //加入写 缓冲区 最终是用来呈现给浏览器的
-		// response.write('响应');
-		// response.end(); //响应内容 只能是 2进制 或者 字符串
-		response.end('第二次响应'); //直接end的同时发送响应数据
-	}else if(url=='/b'){
-		response.setHeader('Content-Type','text/plain;charset=utf-8');
-		response.end('<p>刘莹<p>'); //服务器默认发送utf-8 但是浏览器默认不是 所以改变响应头
-	}else{
-		response.setHeader('Content-Type','text/html;charset=utf-8');
-		response.end('<p>刘莹</p>'); //.end() 只支持 2进制 和 字符串
+fs模块 用于操纵文件
+const fs = require('fs') // 加载 fs 核心模块
+// fs.readFile(读取文件路径, 转码, 回调)
+fs.readFile('./1.js', 'utf-8', (err, result) => { // 读取成功 data为读取的数据 error为null  读取失败 data为undefined error 错误对象 !!!
+	if (err) return console.log('read error')
+	console.log(result) // result数据类型是<Buffer 61 61 61 0d 0a> 1.使用result.toString()转成文本类型 2.添加第2参数'utf-8'拿到的数据为文本
+})
+// fs.writeFile(写入文件路径, 写入的内容, 回调)
+fs.writeFile('./2.js', contant, err => { // 写入的内容content可以是Buffer类型或者是String类型
+	if (err) { // 写入成功 err 为null 失败 为错误对象 对统一文件执行写入操作会覆盖文件
+		console.log('write error')
+	} else {
+		console.log('write error')
 	}
 })
 
-server.listen(3000,function(){ //绑定端口号,启动服务器 回调函数触发
-	console.log('服务器启动成功了，可以通过 http://127.0.0.1:3000/ 来进行访问');
-});
+http模块 用于构建一个web服务器
+const http = require('http')
+const server = http.createServer() // 实例化server
+// 监听 server的request事件 客户端（浏览器）请求会触发
+server.on('request', (request, response) => {
+  const url = request.url // 获取 /及之后的部分
+  if (url === '/a') {
+    response.write('第1次写入缓冲区') // 添加进缓冲区的内容 最后通过 .end 一起发送
+    response.write('第2次写入缓冲区')
+    response.end()
+  } else if (url === '/b') { // 设置响应头 解决乱码及html解析问题
+    response.setHeader('Content-Type', 'text/plain;charset=utf-8')
+    response.end('<p>解决乱码 但是HTML并不能解析</p>')
+  } else {
+    response.setHeader('Content-Type', 'text/html;charset=utf-8')
+    response.end('<p>解决乱码 HTML能解析</p>')
+  }
+})
+server.listen(3000, () => { // 在3000端口启动服务 后的回调
+  console.log('server start 3000')
+})
 
 node中的 核心模块
-var os = require('os'); //用来获取计算机信息的
-	// console.log(os.cpus()); //获取CPU信息
-	// console.log(os.totalmem()); //获取内存
-var path = require('path'); //用来操作路径的
+const os = require('os') // 用来获取计算机信息
+	// console.log(os.cpus()) // 获取CPU信息
+	// console.log(os.totalmem()) // 获取内存
+const path = require('path'); // 用来操作路径的
 
-ip地址 用来定位计算机 request.socket.remoteAddress //请求过来的计算机IP
-端口号 用来定位具体应用程序 request.socket.remotePort //请求到过来的计算机远程端口
+ip地址 用来定位计算机 request.socket.remoteAddress // 请求过来的计算机IP
+端口号 用来定位具体应用程序 request.socket.remotePort // 请求到过来的计算机远程端口
 
 在node中作用域
 // 没有全局作用域 只有模块作用域 内部 外部完全隔离 仅仅是执行顺序上的关系
@@ -372,7 +363,7 @@ Express 框架 （目录结构很重要）
 // npm install --save express-art-template
 配置 Express 获取表单 POST 请求体数据
 // npm install --save body-parser
-var express = require('espress'); 
+var express = require('express'); 
 var bodyParser = require('body-parser'); //加载 配置获取表单 POST
 var app = express(); //创建服务器 相当于 http.createServer()
 

@@ -1804,3 +1804,8 @@ nginx.exe -s reload // 重载
 <p date-index="1" asd="2" >
 dom.attributes // attributes 拿到所有属性{ 0: data-index, 1: aaa,2: class,3: style }
 dom.dataset // dataset 拿到标准的 自定义属性即 data-XXX
+dom.getBoundingClientRect() // { bottom: 333, height: 302, left: 0, right: 402, top: 31, width: 402, x: 0, y: 31 }
+.top // 元素上边 距 可视窗口 上边距离
+.bottom // 元素下边 距 可视窗口 上边距离
+.left // 元素左边 距 可视窗口 左边距离
+.right // 元素右边 距 可视窗口 左边距离

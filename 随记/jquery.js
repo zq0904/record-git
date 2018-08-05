@@ -918,7 +918,7 @@ Bootstrap中
 js调用模态框的显示与隐藏
   $('#myModel').modal('show');
   $('#myModel').modal('hide');
-  $('#myModel').om('hide.bs.modal', function () {}); // 在模态框被隐藏（并且同时在 CSS 过渡效果完成）之后被触发
+  $('#myModel').on('hide.bs.modal', function () {}); // 在模态框被隐藏（并且同时在 CSS 过渡效果完成）之后被触发
 显示与隐藏 （3.2版本以后  建议使用hidden）
   .hidden-lg  //大屏隐藏 其余显示
   .hidden-md
