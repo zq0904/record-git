@@ -953,7 +953,7 @@ f.hai = function (){};
          f.call(this,a,b);   //call的参数是以一个一个的参数传入的   直接调用函数执行
 
 var f1 = f.bind(this,a,b);   //ECMAScript5中,新的方法 相当于是复制了这个函数 返回值是复制的这个函数
-  f1();
+  f1(c, d) // bind 拷贝函数 a,b 预先传参 实际参数 a,b,c,d
 
 setTimeout(this.init.bind(this),1000);//延时器中的第一个参数只能是函数地址（匿名函数 如果是函数调用的话只是立即执行了一次函数） 这2个this都是实例对象 返回的这个函数中this 本应该是window 但是bind改变了this指向
 function f(x,y) {//调用f1函数 输出的字符串window 显示的是---->  [object Window]
