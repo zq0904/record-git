@@ -250,9 +250,9 @@ Array对象的属性和方法
   a.forEach(function (e,i,a){ // IE8 不支持 e每一个元素 i对应索引 a这个数组
     console.log(e,i,a, this); // this 是 window
   })
-  a.filter(function (e,i,a){
-    if(){return true;}
-  })//如果 函数的返回值是true,元素保留下来,组成一个新的数组 不影响原数组
+  a.filter(function(e, i, a) { // return true 该元素保留 组成一个新的数组 但其中的每一项仍是原来的 引用
+    return true
+  })
   a.map(function (e,i,a){
     return e * 2;
   })//必须 return 每个元素 做相同的操作 并放回原位置 
@@ -266,7 +266,7 @@ Array对象的属性和方法
   arr.find(function(e){ //返回 满足条件 那一项 不满足返回undefined
     return e.id == 3;
   })
-  arr.findIndex(function(e){ //返回 满足条件 那一项对应的索引 不满足返回undefined
+  arr.findIndex(function(e){ // 返回满足条件那一项对应的 索引 不满足返回undefined  都满足 返回第一个索引 如：[1, 1].findIndex(e => e === 1) // 0
     return e.id == 3;
   })
   Array.from($('div'), (e,i) => i); // ES6中提供 Array.from 用于将伪数组转化为真数组 第2个参数和map方法一致 对转化后的真的数组进行统一的处理
@@ -304,7 +304,7 @@ Date对象 //使用Date对象 必须先创建 否则无法使用属性和方法
   .getHours();  //获取小时
   .getMinutes();  //获取分钟
   .getSeconds();  //获取秒
-  .getMilliseconds();//获取毫秒
+  .getMilliseconds();//获取日期毫秒形式
   .getDay();    //获取星期 0-6
   .getTime();   //获取1970至今的毫秒数
   .valueOf();
@@ -663,9 +663,9 @@ event对象
 //但IE中 事件对象 是window的一个子对象 无需传参
 关于e的兼容写法 e = window.event || e; //应用短路运算
 e.type //触发该事件的事件类型---事件的名字,没有on   拓展 利用e.type 结合 switch 实现 为同一个元素注册不同的事件 指向的是同一个函数
-e.target//事件源对象--谷歌和火狐
+e.target // 返回触发事件的元素
+e.currentTarget // 返回绑定事件的元素
 window.event.srcElement.id//事件源对象---IE8写法
-e.currentTarget.id//当前触发该事件的对象
 
 e.keyCode //按键对应的数字值  能输的按键对应的 都有对应的唯一数字值
 e.altKey  //按下alt键   为true 否则为false
