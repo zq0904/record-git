@@ -1543,47 +1543,6 @@ console.log( result );
     }
   };
 
-玖富工作 
-
-// 封装的插件
-// 已经挂载在Vue的原型中了
-// loading 加载完成消失
-  this.showLoading(true) // 显示load ing
-  this.showToast({msg: res.message}) // toast 提示
-  this.$fetch({
-    url: this.$store.state.api,
-    data: {}
-  }).then(date => {
-    this.showLoading(false) // 隐藏 load ing
-  })
-// 1个按钮的弹窗
-  this.showNewAlert({
-    title: '提示',
-    msg: `<p>您尚不具备该业务的参与资格</p>`,
-    rBtnText: '我知道了',
-    callShow: false, // 叉号是否显示
-    confCallBack: function () {
-      console.log(1)
-    }
-  })
-// 2个按钮的弹窗
-  this.showTwoBtnDialog({
-    title: '提示',
-    msg: `<div class="member_two">
-            <p>您需要开通银卡会员，</p>
-            <p>才可以进行此项业务</p>
-          </div>`,
-    rBtnText: '我知道了',
-    lBtnText: '马上开通',
-    borderNone: true,
-    cancelBack: () => {
-      console.log(1)
-    },
-    confCallBack: () => {
-      console.log(2)
-    }
-  })
-
 // 对象融合 
 // 原生 Object.assign({a:1},{b:2}) // 浅拷贝
 // E6对象展开运算符 {a:1, ...{b:2}} // 浅拷贝
@@ -1699,7 +1658,9 @@ git clone git@github.com:154809748/2018_1_12.git --depth=1 // --depth=1 克隆�
 // 新建分支拉取代码时 应该先 切换到 master 分支上 
 git checkout master // 切换到 master 分支上
 git pull origin master // 更新
-git checkout -b 分支名 origin/分支名 // 创建新的分支 并移到这个分支 拉取远程代码
+git checkout -b 分支名 origin/分支名 // 创建新的分支 并移到这个分支 拉取远程代码(远程分支必须存在)
+git checkout -b 分支名 // 创建并移动到这个新分支
+git push origin 本地分支名:远程分支名 // 把本地分支push到远程服务器 远程分支与本地分支同名(远程分支可以不存在)
 
 // 更改完代码 要切换分支 先存到本地仓库
 git status // 查看状态 红色更改 绿色是已经推到暂存区
@@ -1716,8 +1677,9 @@ git add .
 git commit -m 更新
 git push origin 你的分支名20171225 // 他就可以在远程 下载你的分支了
 
-// 删除远程分支
-git push origin --delete <branchName>
+git branch -d <branch_name> // 删除本地分支
+git branch -D <branch_name> // 删除本地分支 自己还没转移到另外的分支上 Git就会给出一个警告 并拒绝该删除操作
+git push origin --delete <branch_name> // 删除远程分支
 
 // 更新自己开发分支上的master基础
 git checkout master           // 切换到master分支
@@ -1799,7 +1761,7 @@ a|0
 
 nginx
 start nginx.exe // 启动
-nginx.exe -s reload // 重载
+sudo nginx -s reload // 重载
 
 <p date-index="1" asd="2" >
 dom.attributes // attributes 拿到所有属性{ 0: data-index, 1: aaa,2: class,3: style }
