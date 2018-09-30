@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>裁剪图片</title>
+  <link rel="stylesheet" href="./css/croppic.css">
+  <style>
+    #container {
+      display: none; /*上传后才能看到图片*/
+      position: relative; /* 或者 absolute */
+      width: 350px;
+      height: 200px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <button id="uploading">上传</button>
+  <input type="text" id="outputUrlId">
+  <div id="container"></div>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./js/croppic.js"></script>
+  <script>
+    var options = {
+      uploadUrl: 'http://www.croppic.net/img_save_to_file.php', // 上传原图接口
+      uploadData: { // 上传原图 同时 需要上传的字段
+        "number": 12,
+        "text": '文本1'
+      },
+      // 将通过ajax post请求 和上传文件一样的enctype="multipart/form-data"格式
+      // 成功响应 必须这种格式
+      // {
+      //   "status": 'success',
+      //   "url": 'http://demo.coilabs.com:2000/img.jpg', // 原图线上地址 会赋值给预览图（预览图是缩放的）
+      //   "width": 200, // 原图宽高
+      //   "height": 320
+      // }
+      // 失败响应
+      // {
+      //   "status": 'error',
+      //   "message": '错误文本'
+      // }
+      cropUrl: 'http://www.croppic.net/img_crop_to_file.php', // 上传裁剪接口
+      cropData: { // 上传裁剪 同时 需要上传的字段
+        "number": 6,
+        "text": '文本2'
+      },
+      // 自动入参
+      // imgUrl // 原图线上 url
+      // imgInitW // 原图宽高
+      // imgInitH
+      // imgW // 缩放宽高
+      // imgH
+      // imgX1 // 裁剪图像与缩放图像x轴差值
+      // imgY1 // 裁剪图像与缩放图像y轴差值
+      // cropW // 裁剪图像宽度
+      // cropH // 裁剪图像高度
+      // rotation // 旋转的角度
+      // 成功响应
+      // {
+      //   status: 'success',
+      //   url: 'http://demo.coilabs.com:2000/file//XTKFQAir/icon/1522833772(1)_20180411162558888881_clip.jpg' // 裁剪图像线上地址
+      // }
+      // 失败响应
+      //  {
+      //   "status": 'error',
+      //   "message": '错误文本'
+      //  }
+
+      // loadPicture: '../images/2b.jpg', // 预加载图像路径
+      zoomFactor: 10, // 缩放系数
+      doubleZoomControls: true, // 显示 大 缩放控件
+      rotateFactor: 10, // 旋转系数
+      rotateControls: true, // 显示 旋转控件
+      enableMousescroll: true, // 开启鼠标滚轮缩放 依赖 jquery.mousewheel.min.js
+      outputUrlId: 'outputUrlId', // 成功裁剪后 裁剪图像线上url地址 放入标签中
+      customUploadButtonId: 'uploading', // 自定义上传按钮id
+      modal: true, // 在模态框中展示
+      loaderHtml: '<div class="loader croppic_loading"></div>', // 加载时候的loading
+      // processInline: true, // 进程内联 （巨坑 不要开 目测兼容性等问题）
+      imgEyecandy: true, // 超出部分显示 及 透明度
+      imgEyecandyOpacity: 0.5,
+      onBeforeImgUpload: function () { // 在上传图片之前
+        $('#container').show();
+      },
+      onAfterImgUpload: function () { console.log('onAfterImgUpload') },
+      onImgDrag: function () { console.log('onImgDrag') }, // 当图片拖拽时
+      onImgZoom: function () { console.log('onImgZoom') }, // 当图片缩放时
+      onBeforeImgCrop: function () { console.log('onBeforeImgCrop') }, // 在成功裁剪之前
+      onAfterImgCrop: function () { console.log('onAfterImgCrop') },
+      onReset: function () { // 当重置时 如点击×
+        $('#container').hide();
+      },
+      onError: function (err) { console.log('onError:' + err) },
+    };
+
+    var croppic = new Croppic('container', options);
+  </script>
+</body>
+
+</html>

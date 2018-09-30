@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>animate</title>
+  <link rel="stylesheet" href="../node_modules/animate.css/animate.min.css">
+  <style>
+    div::after {
+      content: '';
+      display: block;
+      height: 0;
+      line-height: 0;
+      visibility: hidden;
+      clear: both;
+    }
+    span {
+      float: left;
+      margin: 0 8px 8px 0;
+      border: 1px solid #000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  查看结束状态:<input type="checkbox" checked>
+  <div>
+    <p>特殊</p>
+    <span class="animated">hinge,摆出</span>
+    <span class="animated">jackInTheBox,旋如</span>
+    <span class="animated">rollIn,滚入</span>
+    <span class="animated">rollOut,滚出</span>
+    <span class="animated">lightSpeedIn,飘入</span>
+    <span class="animated">lightSpeedOut,飘出</span>
+  </div>
+  <div>
+    <p>效果</p>
+    <span class="animated">bounce,弹跳</span>
+    <span class="animated">flash,闪光</span>
+    <span class="animated">pulse,脉搏</span>
+    <span class="animated">rubberBand,橡皮圈</span>
+    <span class="animated">shake,抖动</span>
+    <span class="animated">swing,摆动</span>
+    <span class="animated">tada,晃动</span>
+    <span class="animated">wobble,大幅晃动</span>
+    <span class="animated">jello,弹动</span>
+  </div>
+  <div>
+    <p>弹动 入场</p>
+    <span class="animated">bounceIn,内</span>
+    <span class="animated">bounceInDown,到下</span>
+    <span class="animated">bounceInLeft,到左</span>
+    <span class="animated">bounceInRight,到右</span>
+    <span class="animated">bounceInUp,到上</span>
+  </div>
+  <div>
+    <p>弹动 出场</p>
+    <span class="animated">bounceOut,内</span>
+    <span class="animated">bounceOutDown,到下</span>
+    <span class="animated">bounceOutLeft,到左</span>
+    <span class="animated">bounceOutRight,到右</span>
+    <span class="animated">bounceOutUp,到上</span>
+  </div>
+  <div>
+    <p>翻转</p>
+    <span class="animated">flip,翻转</span>
+    <span class="animated">flipInX,入场翻转</span>
+    <span class="animated">flipInY,入场翻转</span>
+    <span class="animated">flipOutX,出场翻转</span>
+    <span class="animated">flipOutY,出场翻转</span>
+  </div>
+  <div>
+    <p>旋转 入场</p>
+    <span class="animated">rotateIn,内</span>
+    <span class="animated">rotateInDownLeft,左上</span>
+    <span class="animated">rotateInDownRight,右上</span>
+    <span class="animated">rotateInUpLeft,左下</span>
+    <span class="animated">rotateInUpRight,右下</span>
+  </div>
+  <div>
+    <p>旋转 出场</p>
+    <span class="animated">rotateOut,内</span>
+    <span class="animated">rotateOutUpLeft,左上</span>
+    <span class="animated">rotateOutUpRight,右上</span>
+    <span class="animated">rotateOutDownLeft,左下</span>
+    <span class="animated">rotateOutDownRight,右下</span>
+  </div>
+  <div>
+    <p>缩放 入场</p>
+    <span class="animated">zoomIn,内</span>
+    <span class="animated">zoomInUp,上</span>
+    <span class="animated">zoomInDown,下</span>
+    <span class="animated">zoomInLeft,左</span>
+    <span class="animated">zoomInRight,右</span>
+  </div>
+  <div>
+    <p>缩放 出场</p>
+    <span class="animated">zoomOut,内</span>
+    <span class="animated">zoomOutUp,上</span>
+    <span class="animated">zoomOutDown,下</span>
+    <span class="animated">zoomOutLeft,左</span>
+    <span class="animated">zoomOutRight,右</span>
+  </div>
+  <div>
+    <p>淡入 入场</p>
+    <span class="animated">fadeIn,内</span>
+    <span class="animated">fadeInDown,到下</span>
+    <span class="animated">fadeInDownBig,到下</span>
+    <span class="animated">fadeInLeft,到左</span>
+    <span class="animated">fadeInLeftBig,到左</span>
+    <span class="animated">fadeInRight,到右</span>
+    <span class="animated">fadeInRightBig,到右</span>
+    <span class="animated">fadeInUp,到上</span>
+    <span class="animated">fadeInUpBig,到上</span>
+  </div>
+  <div>
+    <p>淡出 出场</p>
+    <span class="animated">fadeOut,内</span>
+    <span class="animated">fadeOutDown,到下</span>
+    <span class="animated">fadeOutDownBig,到下</span>
+    <span class="animated">fadeOutLeft,到左</span>
+    <span class="animated">fadeOutLeftBig,到左</span>
+    <span class="animated">fadeOutRight,到右</span>
+    <span class="animated">fadeOutRightBig,到右</span>
+    <span class="animated">fadeOutUp,到上</span>
+    <span class="animated">fadeOutUpBig,到上</span>
+  </div>
+  <div>
+    <p>滑动 入场</p>
+    <span class="animated">slideInUp,上</span>
+    <span class="animated">slideInDown,下</span>
+    <span class="animated">slideInLeft,左</span>
+    <span class="animated">slideInRight,右</span>
+  </div>
+  <div>
+    <p>滑动 出场</p>
+    <span class="animated">slideOutUp,上</span>
+    <span class="animated">slideOutDown,下</span>
+    <span class="animated">slideOutLeft,左</span>
+    <span class="animated">slideOutRight,右</span>
+  </div>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    $('span').each(function(i, e) {
+      var $this = $(this)
+      var className = $this.html().trim().split(',')[0]
+      $this
+      .on('click', function() {
+        if (!$this.is(className)) { // 不含类名 添加类名
+          $this.addClass(className)
+          if ($('input').prop('checked')) return // 是否 查看结束状态
+          setTimeout(function() {
+            $this.removeClass(className)
+          }, 1000)
+        }
+      })
+      // 监听animation结束
+      .on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+        console.log(className,'动画执行完成')
+      })
+    })
+  </script>
+</body>
+</html>

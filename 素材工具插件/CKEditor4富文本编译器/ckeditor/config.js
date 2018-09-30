@@ -4,7 +4,7 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	// 获取配置   位置 及 按钮显示隐藏  ./samples/toolbarconfigurator/index.html
+	// 获取配置 位置 及 按钮显示隐藏  ./samples/toolbarconfigurator/index.html
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
 		{ name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },

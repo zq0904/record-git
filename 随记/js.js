@@ -269,6 +269,7 @@ Array对象的属性和方法
   arr.findIndex(function(e){ // 返回满足条件那一项对应的 索引 不满足返回undefined  都满足 返回第一个索引 如：[1, 1].findIndex(e => e === 1) // 0
     return e.id == 3;
   })
+  [1, 2].reduce((a, b) => (!a[b] && (a[b] = b), a), {'A': 'A', '2': '已存在'}) // {1: 1, 2: "已存在", A: "A"}
   Array.from($('div'), (e,i) => i); // ES6中提供 Array.from 用于将伪数组转化为真数组 第2个参数和map方法一致 对转化后的真的数组进行统一的处理
   数组元素的删除和添加
   delete a[0]; //只删除数组的内容 数组的长度不会改变 （删除对象的属性，是真的删除了）(for in 不会循环 被删除数组的下标)
@@ -1075,7 +1076,7 @@ forDom(document.documentElement);
   |     //或者 （优先级特别低 最后运算）
 
   {}      //前一个出现的次数
-  * {0,}    //前一个出现0次或多次
+  * {0,}    //前一个出现0次或多次  注意 {1,2} ,后绝对不能跟空格 
   + {1,}  //前一个出现1次或多次
   ? {0,1} //前一个出现0次或1次  （?阻止贪婪模式）
 
@@ -1760,7 +1761,7 @@ a>>0
 a|0
 
 nginx
-start nginx.exe // 启动
+start nginx.exe // 启动µ
 sudo nginx -s reload // 重载
 
 <p date-index="1" asd="2" >

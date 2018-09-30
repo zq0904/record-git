@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>son</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div>son 页面</div>
+  <button>son 主动发送消息</button>
+
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    
+    // 监听发送过来的消息
+    $(window).on('message', e => {
+      // console.log(e)
+      const event = e.originalEvent
+      if (event.origin !== 'http://127.0.0.1:3000') return // 验证其来源
+      console.log(event.data)
+      setTimeout(() => {
+        event.source.postMessage({ msg: '子 -> 父 回反消息' }, event.origin) // 返回消息
+      }, 2000)
+    })
+    
+    // 主动向父级发送消息
+    $('button').on('click', () => {
+      window.parent.postMessage({ msg: '子 -> 父 主动发送消息' }, 'http://127.0.0.1:3000')
+    })
+
+  </script>
+  
+</body>
+</html>

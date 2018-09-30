@@ -1,14 +1,12 @@
 {
-  "name": "Babel",
+  "name": "babel",
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "browser-sync start --server --directory --files **/*.*",
-    "build": "babel src -s -d dist",
-    "mock": "json-server -w -p 3000 db.json"
+    "start": "browser-sync start --server --directory --files **/*.* *.*",
+    "build": "babel src -s -d dist"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-stage-2": "^6.24.1",
     "babel-standalone": "^6.26.0"

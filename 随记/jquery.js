@@ -469,6 +469,7 @@ $_SESSION=array(); //删除多个会话，把一个空数组给$_SESSION，把�
 $('p').prop(); //获取设置 单值属性 checked等 
 //通过prop可以设置自定义属性 设置完可以通过prop获取 只不过Element不显示 
 $('p').attr(); //获取设置 自定义属性
+$('p').removeAttr('ignore') // 删除属性
 
 $(':hidden');  //返回所有不可见的元素的jQuery对象
 //visibility: hidden;和opacity: 0;都被视作可见的，因为它们在页面上占据了相应的物理空间。
@@ -1010,15 +1011,25 @@ $.ajax({
   data: {},
   type: 'POST',
   dataType: 'json',
-  async: false, // 默认true
+  async: false, // 默认 true
+  cache: false, // 禁止直接的浏览器缓存 200 OK (from disk cache) 默认 true
   success: function (data) {
   },
   error: function () {
   }
 }) //ajax请求 一般在服务中打开 尽量不要本地打开
 $.post 或者 $.get 默认都是 异步请求 获取的data是json字符串 使用JSON.parse(data)转
+$.get('url', () => {}, 'json')
+.done() // 成功的回调
+.fail() // 失败的回调
 $.ajaxSettings.async = false; // 保证同步加载
 $.ajaxSettings({async: false});
+
+$('.a', $dom) // 在$dom内查找.a
+$dom.trigger('click', 123) // 触发指定元素的 指定事件 第2个参数以后为传入的额外参数
+$dom.one('click', () => {}) // 只会触发一次
+$dom.closest('a') // 从当前元素 开始 一直向上查找 找到停止 参数必填 性能好
+$dom.parents() // 从父元素 开始 一直到文档根元素开始 性能差
 
 .json 文件 不能使用注释// 运行会报错
 

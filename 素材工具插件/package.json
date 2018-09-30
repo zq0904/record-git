@@ -1,0 +1,30 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "mock": "json-server -w data.json -p 3001",
+    "dev": "browser-sync start --server --directory --files **/*.* *.*"
+  },
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "@fancyapps/fancybox": "^3.5.0",
+    "animate.css": "^3.7.0",
+    "art-template": "^4.13.1",
+    "bootstrap": "^3.3.7",
+    "echarts": "^4.2.0-rc.1",
+    "highcharts": "^6.1.4",
+    "html2canvas": "^1.0.0-alpha.12",
+    "jquery": "^1.12.4",
+    "loadsh": "0.0.3",
+    "moment": "^2.22.2",
+    "normalize.css": "^8.0.0",
+    "zepto": "^1.2.0"
+  },
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC"
+}

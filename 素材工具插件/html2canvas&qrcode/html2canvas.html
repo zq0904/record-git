@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>html2canvas</title>
+  <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #222;
+    }
+    ul, ol, dl {
+      list-style: none;
+    }
+
+    /* 下载的海报 */
+    #posters {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 772.5px;
+      height: 706.5px;
+    }
+    /* 按钮 */
+    .close-btn {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      top: 0;
+      right: 237.5px;
+    }
+    .update-btn, .downLoad-btn {
+      position: absolute;
+      width: 148.5px;
+      height: 44px;
+      line-height: 43.5px;
+      right: 100.5px;
+      bottom: 194.5px;
+      font-size: 16px;
+      color: #ffb75f;
+      text-align: center;
+      text-decoration: none;
+    }
+    .downLoad-btn {
+      bottom: 123px;
+      color: #000;
+    }
+    /* logo */
+    #download-source {
+      position: absolute;
+      top: 28.5px;
+      left: 105px;
+      width: 341.5px;
+      height: 606.5px;
+    }
+    #download-source > img {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #download-source .enterprise-logo {
+      position: absolute;
+      top: 136px;
+      left: 50%;
+      width: 130px;
+      transform: translateX(-50%);
+      border: 5px solid #feb75f;
+      border-radius: 5px;
+    }
+    #download-source .enterprise-logo img {
+      vertical-align: top;
+    }
+    #download-source .title {
+      position: relative;
+      margin-top: 260px;
+      font-size: 23px;
+      text-align: center;
+      color: #feb75f;
+    }
+    #download-source .bright-spot {
+      position: relative;
+      margin-top: 5px;
+      font-size: 13.5px;
+      text-align: center;
+      color: #c9c9c9;
+    }
+    #download-source ul {
+      overflow: hidden;
+      position: relative;
+      padding: 10px 5.75px 0;
+    }
+    #download-source ul li {
+      float: left;
+      width: 98.5px;
+      height: 23px;
+      line-height: 23px;
+      margin: 0 5.75px 10px;
+      background: url('./images/li-bg.png') no-repeat 0/cover;
+      font-size: 12px;
+      text-align: center;
+      color: #000;
+    }
+    #download-source .qrCode {
+      position: absolute;
+      bottom: 112px;
+      left: 50%;
+      width: 90px;
+      height: 90px;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+
+    <button type="button">点击 加载海报</button>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/html2canvas/dist/html2canvas.min.js"></script>
+  <script src="./js/jquery.qrcode.min.js"></script>
+  <script>
+    $('button').click(() => {
+      const html = `
+        <div id="posters">
+          <img src="./images/bg.png" width="100%" />
+          <div id="download-source">
+            <img src="./images/main.png" width="100%" />
+            <div class="enterprise-logo">
+              <img src="./images/logo.png" width="130" height="65" />
+            </div>
+            <p class="title">我是百度</p>
+            <p class="bright-spot">我的非凡亮点</p>
+            <ul>
+              <li>世界 500强</li>
+              <li>七险一金</li>
+              <li>18薪</li>
+              <li>上市公司</li>
+              <li>股票期权</li>
+              <li>绩效奖金</li>
+            </ul>
+            <div class="qrCode"></div>
+          </div>
+          <a href="javascript:;" class="close-btn"></a>
+          <a href="javascript:;" class="update-btn">返回修改</a>
+          <a href="javascript:;" class="downLoad-btn" download="猎聘·非凡雇主宣传海报.png">下载宣传海报</a>
+        </div>
+      `
+      $('body').append(html)
+      
+      // 生成二维码
+      $('#download-source .qrCode').qrcode({
+        // render: 'table', // 二维码的生成方式 table兼容性好 默认canvas
+        text: encodeURI('http://www.jq22.com/'), // encodeURI() 编码中文url
+        width: 90,
+        height: 90,
+        foreground: '#000',
+        background: '#fff'
+      })
+
+      // 官网 http://html2canvas.hertzen.com
+      // 图片资源 跨域的 必须 做跨域处理 1.前端单独的静态资源 nginx配置 Access-Control-Allow-Origin *; 2.后端的静态资源 设置响应头 Access-Control-Allow-Origin *;
+      // 尽量不要使用css background-img 设置背景图 模糊 img标签更加清晰
+      // 不要添加css动画 (animation) 会影响导出图片
+      const source = $('#download-source')
+      const width = parseInt(source.css('width'))
+      const height = parseInt(source.css('height'))
+      const _canvas = document.createElement('canvas')
+      const scale = 5
+      _canvas.width = width * scale
+      _canvas.height = height * scale
+      _canvas.getContext('2d').scale(scale, scale)
+      const options = {
+        useCORS: true,
+        logging: false, // 禁用日志记录
+        canvas: _canvas,
+        scale, // 导出图片的放大倍数
+        width,
+        height,
+      }
+      html2canvas(source[0], options).then(canvas => {
+        $('#posters .downLoad-btn').attr('href', canvas.toDataURL())
+      })
+
+    })
+    
+  </script>
+</body>
+</html>

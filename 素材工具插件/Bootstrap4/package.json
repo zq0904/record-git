@@ -1,5 +1,5 @@
 {
-  "name": "Bootstrap4",
+  "name": "bootstrap4",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,7 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^4.1.2",
-    "jquery": "^1.12.4"
+    "bootstrap": "^4.1.2"
   }
 }

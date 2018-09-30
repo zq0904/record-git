@@ -2,7 +2,6 @@
 const a = {}
 let b = 1
 
-
 // 安装相应的转码规则
 // babel-preset-es2015 ES2015转码规则  babel-preset-react react转码规则 babel-preset-stage-0 ES7不同阶段语法提案的转码规则(0-3 共4个)
 // 配置 .babelrc
