@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "mock": "json-server data.json --port 3000"
+    "mock": "json-server -w data.json -p 3002"
   }
 }

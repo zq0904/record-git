@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>marquee</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        ul, ol, dl {
+            list-style: none;
+        }
+        /* 滚动样式 */
+        .box {
+            overflow: hidden;
+            width: 300px;
+            border: 1px solid #ccc;
+            background: #ccc;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <a href="#">字幕滚动效果1</a>
+        <a href="#">字幕滚动效果2</a>
+        <a href="#">字幕滚动效果3</a>
+    </div>
+    <button data-select="pause">暂停滚动</button>
+    <button data-select="resume">恢复滚动</button>
+    <button data-select="toggle">切换滚动</button>
+    <button data-select="destroy">销毁滚动</button>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./js/jquery.marquee.min.js"></script>
+    <script>
+        // 需要保证文本长度 大于 容器宽度 才有意义
+        const $box = $('.box').marquee({
+            duration: 5000, // 每轮的持续时间 默认5000 ms
+            gap: 10, // 标签之间的间隔 默认20 px
+            delayBeforeStart: 0, // 开始滚动前的延迟时间 默认1000 ms
+            duplicated: true, // 复制一个 默认false
+            direction: 'left', // 滚动方向 默认left 可选right up down
+            // pauseOnHover: true, // 鼠标悬停停止滚动 移出正常 默认false
+            // pauseOnCycle: true, // 默认false
+            // startVisible: true, // 默认false
+            // allowCss3Support: true,
+            // css3easing: 'linear',
+            // easing: 'linear'
+        })
+        // 实例方法
+        $('[data-select="pause"]').click(() => {
+            $box.marquee('pause')
+        })
+        $('[data-select="resume"]').click(() => {
+            $box.marquee('resume')
+        })
+        $('[data-select="toggle"]').click(() => {
+            $box.marquee('toggle')
+        })
+        $('[data-select="destroy"]').click(() => {
+            $box.marquee('destroy')
+        })
+    </script>
+</body>
+
+</html>

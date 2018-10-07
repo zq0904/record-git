@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "",
   "main": "",
   "scripts": {
@@ -14,14 +14,19 @@
     "@fancyapps/fancybox": "^3.5.0",
     "animate.css": "^3.7.0",
     "art-template": "^4.13.1",
+    "axios": "^0.18.0",
     "bootstrap": "^3.3.7",
+    "cropper": "^4.0.0",
     "echarts": "^4.2.0-rc.1",
+    "exif-js": "^2.3.0",
     "highcharts": "^6.1.4",
     "html2canvas": "^1.0.0-alpha.12",
     "jquery": "^1.12.4",
-    "loadsh": "0.0.3",
+    "lodash": "^4.17.11",
+    "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.0",
+    "vue": "^2.5.17",
     "zepto": "^1.2.0"
   },
   "devDependencies": {},

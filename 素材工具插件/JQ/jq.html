@@ -23,7 +23,7 @@
   </form>
   <p id="p" data-before="标准的自定义属性">.data()方法</p>
 
-  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script>
     console.log( $('li').length ) // 元素个数
     console.log( $('li').size() ) // 元素个数 是个方法
@@ -36,7 +36,7 @@
     console.log( $(':checked:not([type="radio"])') ) // :not 排除某类元素
     console.log( $('li').parent() ) // 拿到父元素 仍可能有多个
     console.log( $('li').parents() ) // 拿到其所有祖先元素
-    console.log( $('li').closest('ul') ) // 拿到其所 第一个祖先元素
+    console.log( $('li').closest('ul') ) // 拿到其所 第一个祖先元素 性能优于.parents
     console.log( $('li').filter(':even') ) // 过滤出 (对应选择器) 这里是根据index
     console.log( $('li').filter(function(i, e) { // .each(callBack) .filter(callBack) jq callBack都很另类 参数顺序 i e
       return i % 2 === 0 // 返回 true 元素被保留

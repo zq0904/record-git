@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>上传和下载</title>
+</head>
+
+<body>
+  <form id="form1">
+    <input type="text" name="number">
+    <input type="file" name="file">
+    <button>复合表单提交</button>
+  </form>
+  <br>
+  <button id="download1">利用window.location.href 下载文件</button>
+  <button id="download2">利用a标签 下载文件 移动端不支持download属性</button>
+  <button id="download3">利用form标签 下载文件</button>
+  <button id="download4">利用iframe标签 下载文件</button>
+  <a href="./images/1.jpg" download="海报.jpg">PC下载图片</a>
+  
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    // 复合表单提交 上传文件
+    $('#form1').on('submit', function(e) {
+      e.preventDefault()
+
+      var formData = new FormData(this)
+      $.ajax({
+        url: 'http://192.168.199.142:8080/api/attach/upload',
+        data: formData,
+        type: 'POST',
+        dataType: 'JSON',
+        mimeType: 'multipart/form-data',
+        cache: false, // 不缓存
+        processData: false, // JQ不去处理发送的数据
+        contentType: false, // JQ不去设置请求头
+        success: function(response) {},
+        error: function(err) {}
+      })
+    })
+
+    // 使用 window.location.href
+    // 下载 图片等会打开 需要后台配合 设置响应头 Content-Disposition attachment  （查询字符串可传参）
+    $('#download1').click(function() {
+      window.location.href = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
+    })
+    // 利用a标签 下载文件 移动端不支持download属性 图片会被打开 （查询字符串可传参）
+    $('#download2').click(function() {
+      var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
+      var $a = $('<a href="' + url + '" download style="display: none;">123</a>')
+      .appendTo($('body'))
+      $a[0].click()
+      $a.remove()
+    })
+    // 利用form标签 下载文件 （传参 不可拼接查询字符串 只能push input方式加参）
+    $('#download3').click(function() {
+      var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master'
+      $('<form action="' + url + '" method="get" style="display: none;"></form>')
+      .append('<input type="text" name="a" value="1">') // 传参
+      .append('<input type="text" name="b" value="2">')
+      .appendTo($('body'))
+      .submit()
+      .remove()
+    })
+    // 利用iframe标签 下载文件
+    $('#download4').click(function() {
+      var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
+      $('<iframe src="' + url + '" style="display: none;"></iframe>')
+      .appendTo($('body'))
+    })
+    
+    
+
+  </script>
+</body>
+
+</html>

@@ -1,17 +1,12 @@
 {
-  "scripts": {
-    "mock": "json-server -p 3002 port.json"
-  },
   "name": "json-server",
   "version": "1.0.0",
-  "main": "jquery.min.js",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "mock": "json-server -w data.json -p 3002"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "axios": "^0.18.0",
-    "bootstrap": "^4.1.0",
-    "jquery": "^3.3.1"
-  }
+  "license": "ISC"
 }

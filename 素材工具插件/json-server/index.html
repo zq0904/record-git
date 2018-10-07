@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>mock数据</title>
+</head>
+<body>
+  <button onclick="get()">查询</button>
+  <button onclick="add()">新增</button>
+  <button onclick="update()">修改</button>
+  <button onclick="del()">删除</button>
+  <button onclick="getUrlData()">获取mock接口数据</button>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/axios/dist/axios.min.js"></script>
+
+  <script>
+    // 增删改查 json-server -w data.json -p 3002
+    function get() {
+      axios.get('http://localhost:3002/list')
+      .then(res => {
+        console.log(res)
+      })
+    }
+
+    function add() {
+      axios.post('http://localhost:3002/list',{
+        "name": "新增名字", "gender": true, "age": 12
+      })
+      .then(res => {
+        console.log(res)
+      })
+    }
+
+    function update() {
+      // 修改 id 为 1
+      axios.patch('http://localhost:3002/list/1',{
+        "name": "修改1", "gender": false, "age": 26
+      })
+      .then(res => {
+        console.log(res)
+      })
+    }
+
+    function del() {
+      // 删除 id 为 4
+      axios.delete('http://localhost:3002/list/4')
+      .then(res => {
+        console.log(res)
+      })
+    }
+
+    // 获取接口数据 json-server -w port.json -p 3002 或者 npm run mock 配好了指令
+    function getUrlData() {
+      $.get('http://localhost:3002/clip', function (res) {
+        // JSON.parse(res)
+        console.log(res);
+      })
+      $.get('http://localhost:3002/news', function (res) {
+        console.log(res);
+      })
+    }
+   
+  </script>
+</body>
+</html>

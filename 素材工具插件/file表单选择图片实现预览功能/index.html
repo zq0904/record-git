@@ -11,10 +11,9 @@
 </head>
 <body>
 
-  <input type="file" id="file">
-  <canvas id="canvas"></canvas>
+  <input type="file" id="file" />
 
-  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script>
     // 1.通过 window.URL.createObjectURL 得到blob格式的url 相比base64编码的url节省了很多字节 性能更好
     $('#file').on('change', function() {
@@ -23,10 +22,11 @@
       var img = new Image
       img.onload = function() {
         // 直接添加到dom中
-        $('body').append($(img))
+        $('body').append(img)
 
         // 绘制在cnavas上
-        var canvas = $('#canvas')[0]
+        var canvas = document.createElement('canvas')
+        $('body').append(canvas)
         var ctx = canvas.getContext('2d')
         var w = canvas.width = this.naturalWidth
         var h = canvas.height = this.naturalHeight
@@ -41,7 +41,7 @@
     //   var reader = new FileReader()
     //   reader.onload = function() {
     //     var img = new Image
-    //     img.onload = function() { $('body').append($(img)) }
+    //     img.onload = function() { $('body').append(img) }
     //     img.src = this.result
     //   }
     //   reader.readAsDataURL(file)

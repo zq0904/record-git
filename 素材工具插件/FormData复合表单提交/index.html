@@ -12,11 +12,11 @@
     <button>提交</button>
   </form>
 
-  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script>
     // var formData = new FormData()
     // console.log(formData)
-    // // formData 的方法全部在原型中 自己本身没有任何属性和方法
+    // // formData实力对象 的方法全部在原型中 自己本身没有任何属性和方法
     // formData.append('name', 'qq') // 添加数据
     // formData.append('age', 1)
     // var age = formData.get('age') // 获取数据
@@ -34,7 +34,7 @@
       // formData.append('key', 111) // Content-Disposition: form-data; name="a"
 
       // 第二种方式通过 new FormData() 传参 表单dom对象 就会把这个表单中含有name属性的表单控件 转成formData对象
-      var formData = new FormData($(this)[0])
+      var formData = new FormData(this)
       formData.append('a', 1) // 动态添加其余字段
 
       // 复合表单提交

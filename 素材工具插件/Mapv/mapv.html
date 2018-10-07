@@ -8,16 +8,21 @@
     <style type="text/css">
         html,
         body {
+            overflow: hidden;
             width: 100%;
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden;
         }
 
         #map {
             width: 100%;
             height: 100%;
+        }
+
+        /*去掉logo和版权*/
+        .anchorBL {
+            display: none;
         }
     </style>
 </head>
@@ -27,7 +32,7 @@
     <div id="map"></div>
     <canvas id="canvas"></canvas>
 
-    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="../node_modules/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=GBprGT6glyONIqGxpVLU6P184jamaWW5"></script>
     <script type="text/javascript" src="./js/mapv.js"></script>
     <!-- 解密后的 中国城市点位数据 和 每个城市边界点位数据 -->
