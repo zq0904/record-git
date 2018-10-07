@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片转base64</title>
+</head>
+<body>
+
+  <input id="file" type="file" multiple>
+
+  <div class="show-img"></div>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/exif-js/exif.js"></script>
+  <script>
+    // 自定义操作 以显示图片为例
+    function showImage(url) {
+      var image = new Image()
+      image.src = url
+      $(image).css({
+        width: 100,
+        height: 100
+      }).appendTo('.show-img')
+    }
+
+    // 1. 转base64
+    // file表单选择图片
+    // var reader = new FileReader()
+    // var imgMaxSize = 2097152 // 上传图片最字节 （2M = 2097152B）
+    // // 监听 表单控件file的change事件
+    // $('#file').on('change', function() {
+    //   var file = this.files[0] // 表单控件的dom对象 files伪数组存储了本地图片信息 name size mime类型等
+    //   if (!file || file.size > imgMaxSize) return // 文件不存在 或 文件超出最大限制
+    //   reader.onload = function() { // 读取完调用
+    //     // console.log(reader.result) // base URL
+    //     // reader.result.split(',')[1] // 后台需要以纯字符串的形式上传格式
+    //     // 自定义操作
+    //     showImage(reader.result)
+    //   }
+    //   reader.readAsDataURL(file) // 读取图像文件会自动将文件编码成DataURL 读取完调用onload
+    // })
+
+    // 链接图片
+    // var url = './images/portrait.jpg' // 没有跨域的图片
+    // // var url = 'http://p1.pstatp.com/large/435d000085555bd8de10' // 跨域的图片 做了CORS处理
+    // var image = new Image()
+    // image.setAttribute('crossOrigin', 'anonymous') // 回避CORS策略
+    // image.onload = function() {
+    //   var canvas = document.createElement('canvas')
+    //   var ctx = canvas.getContext('2d')
+    //   canvas.width = image.width
+    //   canvas.height = image.height
+    //   ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, image.width, image.height) // 图片dom对象 在图片上的定位坐标XY 截取的图片大小WH 画布上的坐标XY 画布上的大小WH
+    //   var dataURL = canvas.toDataURL('image/jpeg', 1) // 将当前canvas绘制的图片转化为base64 参数设置 (mime类型 质量)
+    //   showImage(dataURL)
+    // }
+    // image.src = url
+
+    // 2. 解决部分手机拍摄的图片会带有拍摄方向（如魅族、苹果）的坑
+    // file表单选择图片
+    var reader = new FileReader()
+    $('#file').on('change', function() {
+      var file = this.files[0]
+      if (!/image\/\w+/.test(file.type)) return window.alert('仅支持图片格式') // mime类型判断是否属于图片文件
+      // if (file.size > 2 * 1024 * 1024) return window.alert('仅支持图片小于2M') // 1M = 1024kb 1kb = 1024b
+      reader.onload = function() {
+        var image = new Image()
+        image.onload = function() {
+          rotateImage(image)
+        }
+        image.src = reader.result
+      }
+      reader.readAsDataURL(file)
+    })
+    // 链接图片
+    // var url = './images/test.png' // 没有跨域的图片
+    // // var url = 'http://p1.pstatp.com/large/435d000085555bd8de10' // 跨域的图片 做了CORS处理
+    // var image = new Image()
+    // image.setAttribute('crossOrigin', 'anonymous') // 回避CORS策略
+    // image.onload = function() {
+    //   rotateImage(image)
+    // }
+    // image.src = url
+    
+    // 通过EXIF库 矫正旋转的图片
+    function rotateImage(img) { // img dom对象
+      var dataURL = ''
+      var canvas = document.createElement('canvas')
+      var ctx = canvas.getContext('2d')
+      var width = img.width
+      var height = img.height
+      EXIF.getData(img, function() { // 此操作是异步的 IE10 以下不支持
+        var ultimaOrientation = EXIF.getTag(this, 'Orientation')
+        // console.log('ultimaOrientation', ultimaOrientation)
+        switch (ultimaOrientation) {
+          case 1: case undefined: // 不旋转
+            canvas.width = width
+            canvas.height = height
+            break
+          case 6: // 顺时针 旋转90°
+            canvas.width = height // 先旋转canvas
+            canvas.height = width
+            ctx.translate(height, 0) // 重新映射起点位置
+            ctx.rotate(Math.PI / 2) // 绘制的图形 顺时针旋转90
+            break
+          case 3: // 顺时针 旋转180°
+            canvas.width = width
+            canvas.height = height
+            ctx.translate(width, height)
+            ctx.rotate(Math.PI)
+            break
+          case 8: // 顺时针 旋转270°
+            canvas.width = height
+            canvas.height = width
+            ctx.translate(0, width)
+            ctx.rotate(-Math.PI / 2)
+            break
+        }
+        ctx.drawImage(img, 0, 0, width, height, 0, 0, width, height) // 图片dom对象 在图片上的定位坐标XY 截取的图片大小WH 画布上的坐标XY 画布上的大小WH
+        dataURL = canvas.toDataURL('image/jpeg', 1) // 将当前canvas绘制的图片转化为base64 参数设置 (mime类型 质量)
+        // console.log(dataURL.split(',')[1]) // 可以直接将base64上传给后台
+        showImage(dataURL)
+      })
+    }
+
+    // 通过get请求网路图片 矫正旋转的图片
+    function getHttpDataURL(url, callback) { // url 线上图片地址 callback(dataURL, orientation) // dataURL base64编码  orientation应矫正的旋转数值
+      var fromCharCode = String.fromCharCode
+      var xhr = new XMLHttpRequest()
+
+      var done = function() { // 完成的处理
+        xhr = null
+      }
+      var read = function(arrayBuffer) { // 响应结果
+        var orientation = getOrientation(arrayBuffer)
+        var dataURL = arrayBufferToDataURL(arrayBuffer, 'image/jpeg')
+        done()
+        return isFunction(callback) && callback(dataURL, orientation) // callback存在调用
+      }
+      xhr.ontimeout = done // 超时
+      xhr.onabort = done // 中断
+      xhr.onerror = done // 出错
+      xhr.onload = function() {
+        read(xhr.response)
+      }
+      xhr.open('get', url)
+      xhr.responseType = 'arraybuffer'
+      xhr.send()
+
+      /**
+       * Iterate the given data.
+       * @param {*} data - The data to iterate.
+       * @param {Function} callback - The process function for each element.
+       * @returns {*} The original data.
+       */
+      function forEach(data, callback) {
+        if (data && isFunction(callback)) {
+          if (Array.isArray(data) || isNumber(data.length) /* array-like */) {
+              var length = data.length
+
+              var i = void 0
+
+              for (i = 0; i < length; i += 1) {
+                if (callback.call(data, data[i], i, data) === false) {
+                  break
+                }
+              }
+            } else if (isObject(data)) {
+            Object.keys(data).forEach(function (key) {
+              callback.call(data, data[key], key, data)
+            })
+          }
+        }
+
+        return data
+      }
+      function isFunction(value) {
+        return typeof value === 'function'
+      }
+      function isNumber(value) {
+        return typeof value === 'number' && !isNaN(value)
+      }
+      function isObject(value) {
+        return (typeof value === 'undefined' ? 'undefined' : _typeof(value)) === 'object' && value !== null
+      }
+      // 从给定的数组缓冲区获取方向值
+      function getOrientation(arrayBuffer) {
+        var dataView = new DataView(arrayBuffer)
+        var orientation = void 0
+        var littleEndian = void 0
+        var app1Start = void 0
+        var ifdStart = void 0
+
+        // Only handle JPEG image (start by 0xFFD8)
+        if (dataView.getUint8(0) === 0xFF && dataView.getUint8(1) === 0xD8) {
+          var length = dataView.byteLength
+          var offset = 2
+
+          while (offset < length) {
+            if (dataView.getUint8(offset) === 0xFF && dataView.getUint8(offset + 1) === 0xE1) {
+              app1Start = offset
+              break
+            }
+
+            offset += 1
+          }
+        }
+
+        if (app1Start) {
+          var exifIDCode = app1Start + 4
+          var tiffOffset = app1Start + 10
+
+          if (getStringFromCharCode(dataView, exifIDCode, 4) === 'Exif') {
+            var endianness = dataView.getUint16(tiffOffset);
+
+            littleEndian = endianness === 0x4949;
+
+            if (littleEndian || endianness === 0x4D4D /* bigEndian */) {
+                if (dataView.getUint16(tiffOffset + 2, littleEndian) === 0x002A) {
+                  var firstIFDOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
+
+                  if (firstIFDOffset >= 0x00000008) {
+                    ifdStart = tiffOffset + firstIFDOffset;
+                  }
+                }
+              }
+          }
+        }
+
+        if (ifdStart) {
+          var _length = dataView.getUint16(ifdStart, littleEndian);
+          var _offset = void 0;
+          var i = void 0;
+
+          for (i = 0; i < _length; i += 1) {
+            _offset = ifdStart + i * 12 + 2;
+
+            if (dataView.getUint16(_offset, littleEndian) === 0x0112 /* Orientation */) {
+                // 8 is the offset of the current tag's value
+                _offset += 8;
+
+                // Get the original orientation value
+                orientation = dataView.getUint16(_offset, littleEndian);
+
+                // Override the orientation with its default value
+                dataView.setUint16(_offset, 1, littleEndian);
+                break;
+              }
+          }
+        }
+
+        return orientation;
+      }
+      // 从数据视图中的char代码获取字符串
+      function getStringFromCharCode(dataView, start, length) {
+        var str = '';
+        var i = void 0;
+
+        length += start;
+
+        for (i = start; i < length; i += 1) {
+          str += fromCharCode(dataView.getUint8(i));
+        }
+
+        return str;
+      }
+      // 将数组缓冲区转换为dataURL
+      function arrayBufferToDataURL(arrayBuffer, mimeType) {
+        var uint8 = new Uint8Array(arrayBuffer)
+        var data = ''
+
+        // TypedArray.prototype.forEach is not supported in some browsers.
+        forEach(uint8, function (value) {
+          data += fromCharCode(value);
+        })
+
+        return 'data:' + mimeType + ';base64,' + btoa(data)
+      }
+    }
+
+  </script>
+</body>
+</html>

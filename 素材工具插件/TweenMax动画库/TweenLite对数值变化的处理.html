@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TweenLite</title>
+</head>
+<body>
+  
+  <div id="vm">
+    <input type="number" step="20" v-model.number="number">
+    <p>num: {{ computedNum }}</p>
+    <p>str: {{ str }}</p>
+    <p v-for="e in arr" :key="e">arr: {{ e }}</p>
+    <p>obj: {{ obj.key }}</p>
+  </div>
+
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <script src="./js/TweenMax.min.js"></script>
+  <script>
+    const vm = new Vue({
+      el: '#vm',
+      data: {
+        number: 0,
+        num: 1,
+        str: '1, 2, 3',
+        arr: [1, 2, 3],
+        obj: {
+          key: 1
+        }
+      },
+      watch: {
+        number(val) {
+          TweenLite.to(this.$data, 1, {
+            num: val
+          })
+          TweenLite.to(this.$data, 1, {
+            str: '10, 20, 30'
+          })
+          TweenLite.to(this.$data.arr, 1, [10, 20, 30]) // 坑 虽然视图确实得到更新 但是watch computed计算属性监听不到
+          TweenLite.to(this.$data.obj, 1, { key: 10 })
+        },
+        arr: {
+          handler(val) {
+            console.log(val)
+          },
+          deep: true
+        }
+      },
+      computed: {
+        computedNum() {
+          return this.num.toFixed(0)
+        }
+      }
+    })
+  </script>
+</body>
+</html>

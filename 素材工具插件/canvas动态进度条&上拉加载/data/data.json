@@ -1,0 +1,21 @@
+{
+  "a1": {
+    "message": "请求成功",
+    "status": 1,
+    "data": {
+    },
+    "end": false
+  },
+  "a2": {
+    "message": "请求成功",
+    "status": 1,
+    "data": {},
+    "end": false
+  },
+  "a3": {
+    "message": "请求成功",
+    "status": 1,
+    "data": {},
+    "end": true
+  }
+}

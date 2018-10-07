@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TweenLite</title>
+</head>
+<body>
+
+  <div id="vm">
+      <input type="number" step="20" v-model.number="number1"/> +
+      <input type="number" step="20" v-model.number="number2"/> =
+      <span>{{ number1 + number2 }}</span>
+      <p>
+        <tween :val="number1"></tween> + <tween :val="number2"></tween> =
+        <tween :val="number1 + number2"></tween>
+      </p>
+  </div>
+
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <script src="./js/TweenMax.min.js"></script>
+  <script>
+    Vue.component('tween', {
+      template: `
+      <span>{{textVal}}</span>
+      `,
+      props: {
+        val: {
+          type: Number,
+          require: true
+        }
+      },
+      data() {
+        return {
+          textVal: 0
+        }
+      },
+      watch: {
+        val(val) {
+          TweenLite.to(this.$data, 1, { textVal: val })
+        },
+        textVal(val) {
+          this.textVal = Number(val.toFixed(0))
+        }
+      }
+    })
+
+    const vm = new Vue({
+      el: '#vm',
+      data: {
+        number1: 0,
+        number2: 0
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>表单上传图片 预览功能</title>
+  <style>
+    canvas {
+      border: 1px solid red;
+    }
+  </style>
+</head>
+<body>
+
+  <input type="file" id="file" />
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    // 1.通过 window.URL.createObjectURL 得到blob格式的url 相比base64编码的url节省了很多字节 性能更好
+    $('#file').on('change', function() {
+      var file = this.files[0] // file表单控件 dom元素 .files 拿到FileList对象
+      var url = window[window.webkitURL ? 'webkitURL' : 'URL']['createObjectURL'](file) // blob:http://127.0.0.1:3000/91519c77-aa15-452f-99f8-91930bbdf432
+      var img = new Image
+      img.onload = function() {
+        // 直接添加到dom中
+        $('body').append(img)
+
+        // 绘制在cnavas上
+        var canvas = document.createElement('canvas')
+        $('body').append(canvas)
+        var ctx = canvas.getContext('2d')
+        var w = canvas.width = this.naturalWidth
+        var h = canvas.height = this.naturalHeight
+        ctx.drawImage(img, 0, 0, w, h)
+      }
+      img.src = url
+    })
+
+    // // 2.通过 FileReader对象 readAsDataURL方法 去读取file对象 读取完将调用load事件
+    // $('#file').on('change', function(e) {
+    //   var file = this.files[0]
+    //   var reader = new FileReader()
+    //   reader.onload = function() {
+    //     var img = new Image
+    //     img.onload = function() { $('body').append(img) }
+    //     img.src = this.result
+    //   }
+    //   reader.readAsDataURL(file)
+    // })
+  </script>
+</body>
+</html>

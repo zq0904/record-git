@@ -1,0 +1,43 @@
+{
+  "list": [
+    {"id": 1, "name": "小明", "gender": true, "age": 25},
+    {"id": 2, "name": "小红", "gender": false, "age": 16},
+    {"id": 3, "name": "小绿", "gender": true, "age": 30}
+  ],
+  "clip": {
+    "message": "卡会员接口请求成功",
+    "status": 1,
+    "data": {
+      "memberType": "银卡会员",
+      "price": 198.00,
+      "list": [
+        {
+          "time": "2018-1-21"
+        },
+        {
+          "time": "2018-1-23"
+        }
+      ]
+    }
+  },
+  "news": {
+    "message": "新闻接口请求成功",
+    "status": 1,
+    "data": [
+      {
+        "id": 1,
+        "title": "曹县宣布昨日晚间登日成功",
+        "date": "2016-08-12",
+        "likes": 55,
+        "views": 100086
+      },
+      {
+        "id": 2,
+        "title": "长江流域首次发现海豚",
+        "date": "2016-08-12",
+        "likes": 505,
+        "views": 9800
+      }
+    ]
+  }
+}

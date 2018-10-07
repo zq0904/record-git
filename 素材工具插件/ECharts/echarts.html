@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>echarts</title>
+  <link rel="stylesheet" href="">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    /*需要为ECharts容器 指定宽高*/
+    #main {
+      width: 850px;
+      height: 450px;
+    }
+  </style>
+</head>
+<body>
+  <div id="main"></div>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/echarts/dist/echarts.min.js"></script>
+  <script>
+    $(function () {
+      // 初始化echarts实例
+      var myCharts = echarts.init(document.getElementById('main')); // light光主题 dark暗主题 设置为init的第二个参数
+      // 添加标记 线 配置
+      var markLineOption = {
+        animation: false, // 是否开启动画 默认开启
+        tooltip:{ // 标记 线 不显示提示组件
+          show: false
+        },
+        lineStyle: { // 标线的样式 默认虚线
+          normal: { // 一般Style样式 都有2个属性 normal正常时 emphasis高亮时
+            type: 'solid',
+            color: 'red',
+          },
+          emphasis: {
+            type: '',
+            color: 'blue',
+          }
+        },
+        data: [[
+          {
+            // coord: [0, 0],    // x是Number 取的是xAxis.data[0]   y取的是值为0的那一项(一般y轴不设置data 以便自适应 !!!如果xy轴都没有data属性 那coord中取到的均为项)
+            coord: ['A', -1], // x是String 取的是xAxis.data中 值为A那一项 
+            symbol: 'none' // 起点标注的图形  默认起点圆 终点箭头  'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow'
+          },
+          {
+            coord: ['D', 6],
+            symbol: 'none'
+          }
+        ]],
+      };
+
+      // 配置项和数据
+      var option = {
+        // backgroundColor: '#ddd', // 背景色
+        // textStyle: { // 文本颜色
+        //   color: '#000'
+        // },
+        // color: ['blue'], // 全局调色盘
+        // title: {
+        //   text: 'ECharts标题',
+        //   left: 'center',
+        //   subtext: '子标题',
+        // },
+        tooltip: { // 提示框组件
+          // show: false, // 是否显示提示框组件 默认显示
+          // backgroundColor: 'red', // 提示框浮层的背景颜色
+          // axisPointer: {type: 'cross'}, // 坐标轴 指示器配 置项
+          // trigger: 'axis', // 触发方式 由轴触发（多折线对比） 默认item由数据项触发
+          enterable: true, // 鼠标是否可进入提示框浮层中 如需详情内交互可设置
+          formatter: function (params) { // 提示框浮层内容格式器
+            console.log(params); // item触发params是一项 axis触发params为数组
+            // if (params.componentType == "markLine") return; // 标记 线 不显示提示组件 或者 直接在 标记线中配置 tooltip.show
+            return 'X: ' + params.name + '<br/>Y: ' + params.data.value; 
+          },
+          // formatter: "{a} <br/>{b} : {c} ({d}%)" // 饼图 {a}（系列名称）{b}（数据项名称）{c}（数值）{d}（百分比）
+        },
+        grid: { // 网格的设置
+            // show: true, // 是否显示网格
+            containLabel: true, // 坐标轴标签在内的所有内容所形成的矩形的位置
+            left: '5%', // 距离容器的距离 会拉伸
+            right: '8%',
+            top: '10%',
+            bottom: '5%',
+        },
+        legend: { // 说明图例
+            data: ['系列一', '系列二', '系列三'], // 数据
+            orient: 'vertical', // 垂直显示
+            top: 0, // 距离网格上边线的距离是0
+            right: 0, 
+        },
+        xAxis: {
+          type: 'category', // (value 数值轴) (category 类目轴 适用离散数据 必须通过data设置类目数据 默认) 
+          // (time 时间轴 不要设置xAxis.data 以便达到自适应 在series.data中设置二维数组自动识别 [[1518634800000,6],['2012-03-01 05:06',6],['2012-03-01',6]] 其中的一维表示xAxis会自适应 支持时间戳和一定格式的字符串 再通过)
+          name: 'x轴名字',
+          // nameGap: 20, // 名称与轴线之间的距离
+          // nameTextStyle: { // 坐标轴名字样式
+          //   color: '#333',
+          //   fontSize: 14
+          // },
+          data:['A','B','C','D','E'],
+          boundaryGap: true, // 刻度完全对应
+          splitLine: {show: false}, // 是否显示分隔线 默认数值轴显示 (类似网格线)
+          // axisLabel:{ // 坐标轴刻度相关设置
+          //   formatter: function (value, index) { // 格式器 value是data中的每一个值 index是索引
+          //     console.log(value,index);
+          //     // return value + '格式';
+          //     return new Date(value-0).format('yyyy-MM-dd\nhh:mm:ss'); // 当x轴的data是时间戳时直接格式化 为了兼容字符串记得-0转成Number
+          //   }
+          // },
+          // axisLine: { // 坐标轴轴线相关设置
+          //   onZero: false, // d当前轴线是否在另一个轴的 0 刻度上，只有在另一个轴为数值轴且包含 0 刻度时有效
+          //   lineStyle: {
+          //     color: 'red'
+          //   },
+          // },
+          // min: 'dataMin', // 最小值从series.data中的取值
+          // max: 'dataMax', // 最大值
+        },
+        yAxis: [{ // 需要第二个轴时 改为数组
+          type: 'value',
+          name: '百分比(%)',
+          splitLine: {show: false}, // 是否显示分隔线 默认数值轴显示 (类似网格线)
+          axisLabel: { // 坐标轴刻度相关设置
+              formatter: '{value}%' // 格式器 像这种百分比就是通过type:value 格式器生成的
+          },
+          // axisPointer: { // 限定指示器的y轴范围 tooltip 中的 axisPointer: {type: 'cross'}
+          //   snap: true
+          // },
+        },
+        // { // 第二个轴
+        //   type: 'value',
+        //   name: '第二个轴',
+        //   nameLocation: 'end',
+        // }
+        ],
+        series: [
+        // { // 单独提出来的一些线 目的是 层级优化
+        //   type: 'line',
+        //   markLine: markLineOption, // 添加标记 线 配置
+        //   z: 0 // 层级
+        // },
+        { // 第一个图
+          name: '系列一',
+          type: 'pie',  // line线 bar条形图 scatter散点图 pie饼图(不需要xAxis,yAxis)
+          // smooth: true, // line线 平滑的
+          // areaStyle: {}, // 区域填充样式 向下
+          // color: ['blue'], // 系列一 自己的调色盘
+          // data: [ // 涉及到每个标记的颜色在使用这种data形式
+          //   {value: 6, name: 'aa', itemStyle: {color: 'green'}},
+          //   {value: '12', name: 'bb'},
+          //   {value: 6, name: 'cc'},
+          //   {value: -1, name: 'dd'},
+          //   {value: '5', name: 'ee'},
+          // ],
+          // data: [[1518534000000,6,'参数1'],[1518620400000,7,'参数2'],[1518652800000,9,'参数3']], // 一维xAxis 二维yAxis 3维以后的参数 在tooltip组件中通过其中的对象获取data
+          // showSymbol: false, // 不显示 标志 data对应的小圆点
+          // symbolSize: 10, // 标志大小
+          // markPoint: { // 标记的点
+          //     data: [
+          //         {type: 'max', name: '最大值'}, // 通过关键字 min max 自动获取的最大值
+          //         {type: 'min', name: '最小值'},
+          //         // {name: '最小值', value: -1, xAxis: 3, yAxis: -1}, // 通过自定义 设置的最小值 其中 value 显示的值 xAxis 用索引 yAxis 用值
+          //     ]
+          // },
+          // markLine: { // 标记的线
+          //     data: [
+          //         {type: 'average', name: '平均值'}, // 平均值
+          //         [{ // 该 系列一 的最大值标注
+          //             symbol: 'none',
+          //             x: '90%',
+          //             yAxis: 'max'
+          //         },{
+          //             symbol: 'circle',
+          //             label: {
+          //               normal: {
+          //                 position: 'start',
+          //                 formatter: '最大值'
+          //               }
+          //             },
+          //             type: 'max',
+          //             name: '最高点'
+          //         }]
+          //     ]
+          // },
+          // z: 10, // 层级
+          // 饼图 --------------------------------------------------------------
+          // roseType: 'angle', 南丁格尔图-饼图
+          // radius: '55%', // 圆的大小 相对容器
+          // center: ['50%', '50%'], // 圆的位置 相对容器
+          // data: [
+          //   {value: 5, name: '第一份', itemStyle: {color: 'green'}}, // 单个颜色
+          //   {value: 5, name: '第二份'},
+          //   {value: 5, name: '第三份'},
+          // ],
+          // label: { // 饼图文本颜色
+          //   textStyle: {
+          //     color: 'blue'
+          //   }
+          // },
+          // labelLine: { // 饼图线颜色
+          //   lineStyle: {
+          //     color: 'blue'
+          //   }
+          // },
+          // 
+          // itemStyle: { // 每个样式
+          //   normal: { // 每个正常样式
+          //     // borderWidth: 10, // 边框宽
+          //     // borderColor: 'yellow', // 边框颜色
+          //     label: {
+          //       // show: false, // 标签文本是否显示
+          //       // position : 'inside', // 标签文本内侧显示
+          //       // color: "#000000", // 标签文本颜色
+          //       formatter: function (params) { // 标签文本格式器
+          //         console.log(params)
+          //         return (params.percent - 0).toFixed(2) + '%';
+          //       },
+          //     },
+          //     // labelLine: {
+          //     //     show: false // 外部链接线
+          //     // },
+          //   },
+          //   emphasis: { // 每个高亮样式
+          //     label: {
+          //       // show: false, // 标签文本是否显示
+          //       // formatter: '高亮了' // 标签文本格式器
+          //     },
+          //     shadowBlur: 20, // 阴影的大小
+          //     // shadowOffsetX: 5, // 阴影水平方向上的偏移
+          //     // shadowOffsetY: -5, // 阴影垂直方向上的偏移
+          //     shadowColor: 'rgba(0, 0, 0, 0.5)' // 阴影颜色
+          //   }
+          // },
+        },
+        { // 第二个图
+          name:'系列二',
+          type:'bar',
+          stack: '总量', // 每个对象具有相同的stack字段属性 下一个会在上一个的基础上显示
+          label: { // 标记
+            normal: {
+              show: false, // 显示文本
+              position: 'top' // 在上方
+            }
+          },
+          // barGap: '-100%', // 柱间距离
+          areaStyle: {normal: {}}, // 区域填充样式 上面的覆盖下面的
+          data:[12, 14, 16]
+        },
+        { // 第三个图
+          name: '系列三',
+          type: 'bar',
+          // stack: '总量',
+          data: [10, 12, 14]
+        }
+        ],
+        // visualMap: { // 组件
+        //   show: false, // 不显示 visualMap 组件 只使用区间颜色效果
+        //   // min: 0, // 映射的最小值为0 对应的透明度为 1
+        //   // max: 15, // 映射的最大值为15 对应的透明度为 1
+        //   // inRange: {
+        //   //   colorLightness: [0, 1] // 明暗度的范围是 0 到 1
+        //   // },
+        //   dimension: 0, // 维度 x轴 0 对应的lte是 索引    y轴 1 对应的lte是 值
+        //   pieces: [{
+        //     lte: 1,
+        //     color: 'red'
+        //   }, {
+        //     gt: 1, // 大于
+        //     lte: 3, // 小于
+        //     color: 'blue'
+        //   }, {
+        //     gt: 3,
+        //     color: 'green'
+        //   }]
+        // },
+        // emphasis: {
+        //   itemStyle: { // 高亮时颜色
+        //     color: '#000'
+        //   }
+        // },
+        // dataZoom: [ // dataZoom交互组件 
+        //   {
+        //     type: 'slider',// 滑动器 类型
+        //     start: 0,      // 左边在 0% 的位置
+        //     end: 100       // 右边在 600% 的位置
+        //   },
+        //   {
+        //     type: 'inside',// 拖动及滚轮缩放 类型
+        //     start: 0,      // 左边在 0% 的位置
+        //     end: 100       // 右边在 600% 的位置
+        //   },
+        //   {
+        //     type: 'slider',// 滑动器 类型
+        //     yAxisIndex: 0, // y轴显示 默认控制x轴
+        //     start: 0,      // 左边在 0% 的位置
+        //     end: 100       // 右边在 600% 的位置
+        //   },
+        //   {
+        //     type: 'inside',// 拖动及滚轮缩放 类型
+        //     yAxisIndex: 0,
+        //     start: 0,      // 左边在 0% 的位置
+        //     end: 100       // 右边在 600% 的位置
+        //   }
+        // ],
+      };
+      // 使用配置
+      myCharts.setOption(option);
+      // 事件
+      myCharts.on('click', function (params) { // p为当前点击的封装好的对象
+      });
+
+
+      // axisLabel: {  ????
+      //       formatter: '{value}%'
+      //   },
+
+
+
+    });
+    // 日期格式化
+    Date.prototype.format = function(p) { // new Date('时间戳').format('yyyy-MM-dd hh:mm:ss');
+        var f = {
+            "y+": this.getFullYear(), // + 代表正则中的至少出现一次
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(), // 1-31
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "S": this.getMilliseconds(),
+            "H": (this.getHours() % 12), // 12小时制
+            "A": (this.getHours() / 12) <= 1 ? "AM" : "PM" // 是上午还是下午
+        };
+        var format = p;
+        for (var key in f) {
+            var reg = new RegExp("(" + key + ")"); // + 贪婪模式
+            if (reg.test(format)) {
+                var zero = ""; // 重置 转字符串
+                for (var i = 0; i < RegExp.$1.length; i++) { // hhh  000
+                    zero += 0;
+                }
+                var replace = RegExp.$1.length == 1 ? f[key] : (zero + f[key]).substr((("" + f[key]).length)); // 模板一位简写模式 模板非一前补0 '0002'.substr(1) 002
+                format = format.replace(RegExp.$1, replace);
+            }
+        }
+        return format;
+    };
+  </script>
+</body>
+</html>

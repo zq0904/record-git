@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>layer</title>
+</head>
+<body>
+
+  <img src="./images/菲世.jpg" class="tp" width="200" />
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./layer/layer.js"></script>
+  <script>
+      // http://layer.layui.com/api.html 弹出层api
+
+      // 为动态渲染的 .tp 绑定 点击显示图片
+      $('body').on('click', '.tp', function () {
+        layer.open({
+          type: 1,
+          title: false, // 不显示标题
+          // shade: true, // 遮挡层背景全黑
+          area: '600px',
+          content: '<img style="width:100%;vertical-align:top;" src="' + $(this).attr("src") + '">'
+        });
+      });
+
+      // // 提示框
+      // layer.msg('提示框', {time: 1000});
+      
+      // // 警告框
+      // layer.alert('警告框', {
+      //   skin: 'layui-layer-molv', // 深绿 样式类名
+      //   // skin: 'layui-layer-lan', // 深蓝
+      //   closeBtn: 2, // 0不显示关闭按钮 1正常X 2圆X
+      //   icon: 2, // icon图标 1对 2错 3问 4锁 5不高兴 6高兴 7感叹号
+      //   anim: 6, // 动画类型 1上入 2下入 3左入 4左旋转入 5直接显示 6颤抖
+      //   cancel: function () { // 点击关闭按钮的回调
+      //     console.log('点击了X');
+      //   }
+      // });
+      
+      // // 选择框
+      // layer.confirm('选择框', {
+      //   btn: ['确定','取消']
+      // }, function(){
+      //   layer.msg('确定时的回调', {icon: 1});
+      // }, function(){
+      //   layer.msg('取消时的回调', {
+      //     time: 1000, //20s后自动关闭
+      //     btn: ['确定', '取消']
+      //   });
+      // });
+
+      // // 小提示框
+      // layer.tips('我是另外一个tips，只不过我长得跟之前那位稍有些不一样。', '.tp', {
+      //   tips: [1, '#3595CC'],
+      //   time: 1000
+      // });
+
+  </script>
+</body>
+</html>

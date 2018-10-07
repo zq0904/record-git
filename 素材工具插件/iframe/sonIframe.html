@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>sonIframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: chartreuse;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">
+        <button id="gain">获取父级页面</button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./js/iframeResizer.contentWindow.min.js"></script>
+    <script>
+        // 父级窗口的js先执行 然后在执行自己窗口的js 但是2个js是独立的 也就是说2个窗口的依赖css js要分别引入
+        // 在子级窗口 也有一个window
+        // 同域访问（父子iframe都处在同一个协议、域名（ip）、端口） 父子iframe 通信
+        $('#gain').click(function () {
+            console.log(window.parent.$('#container'), window.parent.father());
+        });
+        function son() {
+            console.log('son');
+        }
+        // 跨域访问
+    </script>
+</body>
+</html>

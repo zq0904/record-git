@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TweenMax</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    div {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- <div id="dv1"></div> -->
+  <!-- <div id="dv2"></div> -->
+  <!-- <div id="dv3"></div> -->
+
+  <!-- <button id="play">开始播放</button>
+  <button id="stop">暂停播放</button>
+  <button id="reverse">反向播放</button>
+  <div id="dv4"></div> -->
+
+  <!-- <div id="dv5"></div> -->
+
+  <div id="dv6"></div>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./js/TweenMax.min.js"></script>
+  <script>
+    // 官网 https://greensock.com/timelinemax
+    // 个人 http://www.cnblogs.com/chenyablog/p/5554926.html
+    var t = new TimelineMax() // 获取动画实例
+    // t.to('#dv1', 2, { width: 200, height: 200 }, 1) // .to(选择器 | dom对象, 动画持续时间s, 变更对象, 延迟时间)
+    //   .to('#dv1', 1, { width: 100, height: 100 }) // 对于同一个元素 第2个动画没有延迟时间 执行动画队列（会等待上一次动画执行结束在去执行本次动画）
+
+    // t.to('#dv2', 1, { transform: 'translateX(100px)' }, 1)
+    //   .to('#dv2', 1, { transform: 'translateX(0)' }, '+=1') // 第1个动画执行完成 等待1s在去执行本次动画
+
+    // t.to('#dv3', 1, { transform: 'translateX(100px)', width: 300 }, 1)
+    //   .to('#dv3', 1, { transform: 'translateX(-10px)' }, 0) // 第2个动画立即执行1s 正好执行第2个动画
+
+    // // 动画的 暂停.stop() 开始.play() 反向.reverse()
+    // t.to('#dv4', 1, { transform: 'translate3d(100px, 0, 0)' })
+    //   .to('#dv4', 1, {
+    //     transform: 'translate3d(100px, 100px, 0)',
+    //     onComplete: function() { // 第2个动画执行完成的回调
+    //       console.log('onComplete')
+    //     },
+    //     onReverseComplete: function() { // 第2个动画反向执行完成的回调
+    //       console.log('onReverseComplete')
+    //     }
+    //   })
+    //   .to('#dv4', 1, { transform: 'translate3d(0, 100px, 0)' })
+    //   .to('#dv4', 1, { transform: 'translate3d(0, 0, 0)' })
+    // $('#play').on('click', function() { t.play() })
+    // $('#stop').on('click', function() { t.stop() })
+    // $('#reverse').on('click', function() { t.reverse() })
+
+    // // .add(string | func) 添加状态 函数会在这一时刻执行
+    // // .tweenTo(number | string) 执行到这个状态 number执行到状态的秒数 string执行到状态的标识
+    // // .seek(number | string [, boolean ]) 从这个状态开始执行 number开始执行状态的秒数 string开始执行到状态的标识 boolean 默认true 不执行函数 false执行前会执行.add(func)
+    // t.to('#dv5', 1, { left: '200px' }).add('state1')
+    //   // .clear() // 之前的动画被清除 后续的动画继续执行
+    //   .to('#dv5', 1, { top: '200px' }).add(() => $('#dv5').css({ 'background-color': 'blue' }))
+    //   .to('#dv5', 1, { left: 0 }).add('state3')
+    //   .to('#dv5', 1, { top: 0, onComplete: function() {
+    //     console.log(t.time()) // 动画已执行的时间
+    //   }})
+    //   // .seek(2)
+    //   // .seek('state3', false)
+    //   // .tweenTo(2)
+    //   // .tweenTo('state1')
+
+    // .staggerTo() 会严格执行 动画队列 等待上次动画执行完成在执行本次动画
+    // t.totalDuration() 返回 动画总时长
+    // t.getLabelTime(状态) 返回 开始至当前状态的时间
+    // t.currentLabel() 返回 当前的状态 当前没有状态返回null
+    // t.getLabelBefore(number) 返回 当前时间的上一个状态 当前没有状态返回null
+    // t.getLabelAfter(number) 返回 当前时间的下一个状态 当前没有状态返回null
+    t.add('state1')
+      .to('#dv6', 1, { left: 200 })
+      .staggerTo('#dv6', 1, {
+        top: 200,
+        onComplete: function() {
+          var time = t.getLabelTime(t.currentLabel())
+          console.log(t.getLabelBefore(time))
+          console.log(t.currentLabel())
+          console.log(t.getLabelAfter(time))
+        }
+      })
+      .add('state2')
+      .staggerTo('#dv6', 1, { left: 0 })
+      .add('state3')
+    console.log(t.totalDuration())
+    console.log(t.getLabelTime('state2'))
+    
+  </script>
+</body>
+</html>

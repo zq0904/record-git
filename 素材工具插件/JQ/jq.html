@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>jq</title>
+</head>
+<body>
+
+  <ul>
+    <li>1-1</li>
+    <li>1-2</li>
+  </ul>
+  <ul>
+    <li>2-1</li>
+    <li>2-2</li>
+  </ul>
+  <p>p-1</p>
+  <p>p-2</p>
+  <form action="">
+    <input type="text">
+    <input type="checkbox" checked>
+    <input type="radio" checked>
+  </form>
+  <p id="p" data-before="标准的自定义属性">.data()方法</p>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+    console.log( $('li').length ) // 元素个数
+    console.log( $('li').size() ) // 元素个数 是个方法
+    console.log( $('li').get() ) // 伪数组直接转换成真数组 每一项是dom对象
+    console.log( $('li').get(1) ) // 直接根据数组index 那对应dom元素
+    console.log( $('ul > li') ) // ul 下所有 li
+    console.log( $('ul + p') ) // ul 同级 后面的 第一个 p
+    console.log( $('ul ~ p') ) // ul 同级 后面的 所有 p
+    console.log( $(':checked') ) // 选中所有被 checked 的元素
+    console.log( $(':checked:not([type="radio"])') ) // :not 排除某类元素
+    console.log( $('li').parent() ) // 拿到父元素 仍可能有多个
+    console.log( $('li').parents() ) // 拿到其所有祖先元素
+    console.log( $('li').closest('ul') ) // 拿到其所 第一个祖先元素 性能优于.parents
+    console.log( $('li').filter(':even') ) // 过滤出 (对应选择器) 这里是根据index
+    console.log( $('li').filter(function(i, e) { // .each(callBack) .filter(callBack) jq callBack都很另类 参数顺序 i e
+      return i % 2 === 0 // 返回 true 元素被保留
+    }) )
+
+    // .data()
+    $('#p').data('asd', 123) // 设置 缓存属性
+    console.log($('#p').data('asd')) // 获取 缓存属性
+    console.log($('#p').data('before')) // 也能 获取标准的自定义属性
+ 
+    // $.extend() 
+    var newo1 = $.extend({a: 1, b: {v:2}}, {a: 2, b: {c:2}})
+    console.log('newo1:', newo1) // 浅拷贝 一个深度层次合并 与 Object.assign() 一样
+    var newo2 = $.extend(true, {a: 1, b: {v:2}}, {a: 2, b: {c:2}})
+    console.log('newo2:', newo2) // 设置第一参数 为true 在更深层次合并
+    // 只有一个参数 意味着向 $类中 添加方法
+    $.extend({ say: function() { console.log(1) } })
+    $.say() // 调用 注意 $的实例对象不$('body')
+
+    // 1.类 级别插件开发 给jQuery类 添加静态方法 典型的例子 $.ajax()
+    // 实现方式 1.1 $.a = function() {} 1.2 $.extend({ a: function() {} })
+    // 调用 $.a()
+    // $('a') 得到实例对象是不能调用 .a() 因为.a是定义在类$的静态方法 没有在类$的原型中
+    // 
+    // 2.类原型 级别插件开发 给jQuery.prototype 添加方法 典型的例子 $('div').each()
+    // $.fn === $.prototype // true $.fn 完全与 $.prototype 等价
+    // $.fn.extend({ e: function() {} })
+    // 调用$('div').e()
+    // 向$类的原型中添加方法 实例对象$('div')的__proto__指向自身构造函数（类）$的原型 通过原型链继承
+  </script>
+</body>
+</html>

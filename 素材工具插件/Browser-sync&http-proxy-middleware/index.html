@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Browser-sync&http-proxy-middleware</title>
+</head>
+
+<body>
+  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./node_modules/axios/dist/axios.min.js"></script>
+  <script>
+    axios.get('/api/book/1220562')
+    .then(res => {
+      console.log(res)
+    })
+
+    // 通过ajax的jsonp get请求访问跨域数据
+    // 请求时会动态创建srcipt插入到head标签中
+    // https://api.douban.com/v2/book/1220562?callback=fnName&_=1534990848787  // 会传递一个callback回调函数名 及 _时间戳
+    // 有回调函数先执行fnName 在执行success
+    // $.ajax({
+    //   url: 'https://api.douban.com/v2/book/1220562',
+    //   type: 'GET',
+    //   dataType: 'jsonp', // jsonp形式
+    //   jsonp: 'callback', // 回调函数查询字符串参数 默认为callback
+    //   jsonpCallback: 'fnName', // 回调函数名称 默认为jQuery自动生成的随机函数名
+    //   success: function (data) {
+    //     console.log('success执行了', data)
+    //   }
+    // })
+    // function fnName(...args) {
+    //   console.log('fnName执行了', args)
+    // }
+  </script>
+</body>
+
+</html>

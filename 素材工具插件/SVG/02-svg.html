@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>svg</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- 将svg文件嵌入 html中 可以使用 <embed> <object> <iframe> -->
+  <embed src="./01-svg.svg">
+  <object data="./01-svg.svg"></object>
+  <iframe src="./01-svg.svg" frameborder="0" width="200" height="200"></iframe>
+  <!-- 直接写入html中 -->
+  <svg width="200" height="200">
+    <circle cx="100" cy="100" r="90" stroke="blue" stroke-width="2" fill="red"></circle>
+  </svg>
+  <!-- 矩形 -->
+  <!-- SVG 形状 svg 如果没有设置宽高 默认的宽高是 300 * 150-->
+  <svg width="200" height="200">
+    <rect x="50" y="50" rx="40" ry="20" width="100" height="100" style="
+      opacity: 0.3;
+      fill: blue;
+      fill-opacity: 0.9;
+      stroke: red;
+      stroke-width: 2;
+      stroke-linecap: round;/* 线冒样式 butt round圆帽 round直角 */
+      stroke-dasharray: 10,10;/* 破折号数组 */
+      stroke-opacity: 0.9;">
+  </svg>
+  <!-- 圆形 -->
+  <svg width="200" height="200">
+    <circle cx="100" cy="100" r="50"></circle>
+  </svg>
+  <!-- 椭圆 -->
+  <svg width="200" height="200">
+    <ellipse cx="100" cy="100" rx="90" ry="50"></ellipse>
+  </svg>
+  <!-- 线 -->
+  <svg width="200" height="200">
+    <line x1="50" y1="50" x2="100" y2="100" style="stroke: red"></line>
+  </svg>
+  <!-- 多边形 -->
+  <svg width="200" height="200">
+    <polygon points="100,20 180,180 20,180" style="fill: #fff;stroke: red;"></polygon>
+  </svg>
+  <!-- 折线 -->
+  <svg width="200" height="200">
+    <polyline points="100,20 180,180 20,180" style="fill: #fff;stroke: red;"></polyline>
+  </svg>
+  <!-- 路径 -->
+  <svg width="200" height="200">
+    <path d="M100 20 L180 180 L20 180 Z" style="fill: #fff;stroke: red;"></path>
+  </svg>
+  <!-- 滤镜 必须定义在 defs标签中 -->
+  <!-- filter指定引用id -->
+  <!-- 样式 filter: url(#feGaussianBlur);直接就可以引用 -->
+  <svg width="200" height="200">
+    <defs>
+      <filter id="feGaussianBlur">
+        <feGaussianBlur in="SourceGraphic" stdDeviation="3" /><!-- stdDeviation模糊度 -->
+      </filter>
+    </defs>
+    <!-- 通过 filter属性应用对应的过滤 -->
+    <ellipse cx="100" cy="100" rx="90" ry="50" style="fill: red;filter: url(#feGaussianBlur);"></ellipse>
+  </svg>
+  <!-- 渐变 必须定义在 defs标签中 -->
+  <!-- linearGradient指定引用id 渐变轴起始结束位置 每个stop来定义 在渐变轴上的偏移 及 颜色 透明度 -->
+  <!-- 样式 fill: url(#red-blue);直接就可以引用 -->
+  <svg width="200" height="200">
+    <defs>
+     <linearGradient id="red-blue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="30%" style="stop-color: rgb(255,0,0);stop-opacity: 0.7"/>
+      <stop offset="50%" style="stop-color: rgb(0,255,0);stop-opacity: 1"/>
+      <stop offset="70%" style="stop-color: rgb(0,0,255);stop-opacity: 1"/>
+     </linearGradient>
+    </defs>
+    <ellipse cx="100" cy="100" rx="90" ry="50" style="fill: url(#red-blue);"></ellipse>
+  </svg>
+  <!-- 放射性渐变 -->
+  <!-- cx cy r 属性定义外圈 而 fx y 定义内圈 -->
+  <svg width="200" height="200">
+    <defs>
+      <radialGradient id="blue-red" cx="50%" cy="50%" r="50%" fx="40%" fy="40%">
+        <stop offset="0%" style="stop-color: rgb(0,255,0);stop-opacity: 1"/>
+        <stop offset="100%" style="stop-color: rgb(0,0,255);stop-opacity: 1"/>
+      </radialGradient>
+    </defs>
+    <circle cx="100" cy="100" r="100" style="fill: url(#blue-red);"></circle>
+  </svg>
+  <!-- 事件交互 -->
+  <svg width="200" height="200">
+    <g style="font-size: 20px;fill: red;fill-opacity: .7;">
+      <!-- y="100" 是文本的基线距离x轴距离 -->
+      <text x="10" y="100" onclick="handlerClick(event)">文本</text>
+      <!-- <a href="www.baidu.com" target="_blank"></a> -->
+    </g>
+  </svg>
+  <!-- js可以操纵svg -->
+  <svg width="200" height="200">
+    <rect id="rect" x="50" y="50" width="100" height="100" style="opacity: 1"></rect>
+  </svg>
+  <!-- animate实现动画 -->
+  <svg width="200" height="200">
+    <rect x="50" y="50" width="100" height="100" style="opacity: 1">
+      <!-- attributeName那个属性 attributeType属性的类型 XML CSS repeatCount重复的次数 -->
+      <animate attributeName="opacity" attributeType="CSS" dur="1s" from="1" to="0" repeatCount="indefinite"></animate>
+    </rect>
+  </svg>
+  <svg width="200" height="200">
+    <rect id="a1" x="50" y="50" width="100" height="100" style="opacity: 1;fill: red;">
+      <animate attributeName="x" sttributeType="XML" begin="0s" dur="5s" from="50" to="0" fill="freeze" />
+      <animate attributeName="x" sttributeType="XML" begin="5s" dur="5s" from="0" to="50" fill="freeze" />
+      <animate attributeName="fill" sttributeType="CSS" begin="2.5s" dur="5s" from="red" to="blue" fill="freeze" />
+    </rect>
+  </svg>
+  <!-- animateMotion沿路径移动
+    使用additive="sum"属性 合并多个animateTransform
+    fill="freeze"动画结束完成保持状态 -->
+  <svg width="200" height="200">
+    <g style="transform: translate(10px,30px);">
+      <text x="0" y="0">文本
+        <animate attributeName="fill" dur="5s" from="red" to="blue" fill="freeze" />
+        <animateMotion path="M 0 0 L 100 100" dur="5s" fill="freeze" />
+        <animateTransform attributeName="transform"  type="rotate" dur="5s" from="-90" to="0" fill="freeze" />
+        <animateTransform attributeName="transform"  type="scale" dur="5s" from="0.1" to="1" additive="sum" fill="freeze" />
+      </text>
+    </g>
+  </svg>
+  <script>
+    function handlerClick(event) {
+      console.log(event)
+    }
+    const rect = document.getElementById('rect')
+    let opacity = 1
+    let intervalTime = 1000
+    let fps = 60
+    setInterval(() => {
+      let nowVal = rect.style.opacity - (1 - 0) / fps
+      if (nowVal < 0) nowVal = 1
+      rect.style.opacity = nowVal
+    }, intervalTime / fps)
+  </script>
+  <script>
+    // 矩形 <rect x="20" y="20" rx="40" ry="20" width="100" height="100"> x y 矩形相对svg左上角定位坐标 rx ry 圆角 水平半径 垂直半径
+    // 圆形 <circle cx="200" cy="70" r="50"></circle> cx cy 圆心相对svg左上角定位坐标 r 半径
+    // 椭圆 <ellipse cx="100" cy="100" rx="90" ry="50"></ellipse> rx ry 椭圆 水平半径 垂直半径
+    // 线 <line x1="50" y1="50" x2="100" y2="100" style="stroke: red"></line> x1 y1 起始点坐标 x2 y2 终止点坐标
+    // 多边形 <polygon points="100,20 180,180 20,180"></polygon> 该标签会默认链接结尾点至起始点 多边形至少3个点位组成 points多边形点位格式 逗号和空格分割 
+    // 折线 <polygon points="100,20 180,180 20,180"></polygon> 不会链接结尾点至起始点
+    // 路径 <path> 建议使用 SVG 编辑器来创建复杂的图形
+      // M = moveto 移动到 移动虚拟画笔到指定的（x,y）坐标，仅移动不绘制
+      // L = lineto 连直线到 从当前画笔所在位置绘制一条直线到指定的（x,y）坐标
+      // H = horizontal lineto 水平连线到 绘制一条水平直线到 x
+      // V = vertical lineto 垂直连线到 绘制一条垂直直线到 y
+      // C = curveto 三次方贝塞尔曲线
+      // S = smooth curveto 平滑三次方贝塞尔曲线
+      // Q = quadratic Belzier curve 二次方贝塞尔曲线
+      // T = smooth quadratic Belzier curveto 平滑的二次贝塞尔曲线
+      // A = elliptical Arc 椭圆弧线
+      // Z = closepath 关闭路径
+    // SVG 滤镜
+    // feBlend
+    // feColorMatrix
+    // feComponentTransfer
+    // feComposite
+    // feConvolveMatrix
+    // feDiffuseLighting
+    // feDisplacementMap
+    // feFlood
+    // feGaussianBlur
+    // feImage
+    // feMerge
+    // feMorphology
+    // feOffset
+    // feSpecularLighting
+    // feTile
+    // feTurbulence
+    // feDistantLight
+    // fePointLight
+    // feSpotLight
+  </script>
+</body>
+</html>

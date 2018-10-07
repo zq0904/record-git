@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>daterangepicker</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/daterangepicker.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 防止margin塌陷带来的定位不准确 */
+        html,
+        body {
+            overflow: hidden;
+        }
+
+        .father {
+            margin: 100px;
+        }
+
+        /* 样式修改 */
+        #btn {
+            text-align: center;
+            cursor: pointer;
+            width: 200px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="father">
+        <input type="text" id="btn" class="form-control" readonly>
+    </div>
+
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/moment/moment.js"></script>
+    <script src="../node_modules/moment/locale/zh-cn.js"></script>
+    <script src="./js/daterangepicker.js"></script>
+    <script>
+        // 官网 https://github.com/dangrossman/daterangepicker/
+
+        var nowTime = moment(new Date()).format('YYYY-MM-DD');
+        $('#btn').val(nowTime + ' - ' + nowTime).daterangepicker({ // 设置初始值并初始化插件
+            "startDate": nowTime, // 设置插件的开始时间 不会val在input上
+            "endDate": nowTime,
+            // showDropdowns: true, // 月份 年份 显示下拉列表
+            // showWeekNumbers: true, // 显示一年的第几周
+            // timePicker: true, // 具有时间选择
+        }).on('apply.daterangepicker', function (ev, picker) { // 点击确定触发 cancel.daterangepicker点击取消触发
+            console.log(ev, picker, $(this), picker.startDate.format('YYYY-MM-DD'));
+        });
+    </script>
+</body>
+
+</html>

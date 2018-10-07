@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>father</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  
+  <iframe src="http://127.0.0.1:3001/son.html" id="iframe1"></iframe>
+  <button>father 发送数据</button>
+  
+  <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    // hs -o -p 3000 -c-1 启动 father页面
+    // hs -o -p 3001 -c-1 启动 son页面
+
+    // 监听 消息
+    $(window).on('message', e => {
+      // console.log(e)
+      const event = e.originalEvent
+      if (event.origin !== 'http://127.0.0.1:3001') return // 验证其来源
+      console.log(event.data)
+    })
+    // 点击按钮 发送消息
+    $('button').on('click', () => {
+      const iframe = $('#iframe1')[0]
+      iframe.contentWindow.postMessage({ msg: '父 -> 子 发送消息' }, 'http://127.0.0.1:3001') // 目标源
+    })
+    
+  </script>
+  
+</body>
+</html>

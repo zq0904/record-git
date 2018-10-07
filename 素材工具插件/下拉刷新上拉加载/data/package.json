@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "mock": "json-server -w data.json -p 3002"
+  }
+}
