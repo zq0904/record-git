@@ -55,75 +55,51 @@
 	
 <script src="./js/delaunay.js"></script>
 <script src="./js/TweenMax.min.js"></script>
-<!-- <script src='./js/stopExecutionOnTimeout.js?t=1'></script> -->
 <script>
 var a = '🐶🐱🐭🦄🐛🐌🐺🐗';
 
-const TWO_PI = Math.PI * 2;
+// 全局变量
+const TWO_PI = 2 * Math.PI; // 2
 var images = [], imageIndex = 0; // img数组 img索引
-var image, imageWidth = 768, imageHeight = 485; // 当前img 容器大小
+var image, imageWidth = 768, imageHeight = 485; // 当前 img 容器 大小
 var vertices = [], indices = [], fragments = []; // 定点 指数 碎片
 var container = document.getElementById('container'); // 容器
-var clickPosition = [ // 点击的位置
-    imageWidth * 0.5,
-    imageHeight * 0.5
-];
-window.onload = function () {
-    TweenMax.set(container, { perspective: 500 }); // 透视图?
-    var urls = [
-            'img/crayon.jpg',
-            'img/spaceship.jpg',
-            'img/dj.jpg',
-            'img/chicken.jpg'
-        ],
-        image, loaded = 0;
-    images[0] = image = new Image();
-    image.onload = function () {
-        if (++loaded === 1) {
-            imagesLoaded();
-            for (var i = 1; i < 4; i++) {
-                // if (window.CP.shouldStopExecution(1)) {
-                //     break;
-                // }
-                images[i] = image = new Image();
-                image.src = urls[i];
-            }
-            // window.CP.exitedLoop(1);
-        }
-    };
-    image.src = urls[0];
-};
-function imagesLoaded() {
-    placeImage(false);
-    triangulate();
-    shatter();
-}
-function placeImage(transitionIn) {
+TweenMax.set(container, { perspective: 500 }); // 透视图?
+var clickPosition = [imageWidth * 0.5, imageHeight * 0.5]; // 点击的位置
+var urls = ['img/crayon.jpg', 'img/spaceship.jpg', 'img/dj.jpg', 'img/chicken.jpg'];
+
+const loadImg = url => new Promise((resolve, reject) => {
+    const img = new Image()
+    images.push(img)
+    img.onload = () => resolve()
+    img.onerror = () => reject()
+    img.src = url
+})
+urls.map(v => loadImg(v))
+Promise.all(urls).then(list => placeImage())
+
+function placeImage() {
     image = images[imageIndex];
-    if (++imageIndex === images.length)
-        imageIndex = 0;
+    console.log(imageIndex, images.length)
+    if (++imageIndex === images.length) imageIndex = 0;
     image.addEventListener('click', imageClickHandler);
     container.appendChild(image);
-    if (transitionIn !== false) {
-        TweenMax.fromTo(image, 0.75, { y: -1000 }, {
-            y: 0,
-            ease: Elastic.easeOut
-        });
-    }
 }
 function imageClickHandler(event) {
-    var box = image.getBoundingClientRect(), top = box.top, left = box.left;
+    var box = image.getBoundingClientRect(),
+    top = box.top,
+    left = box.left;
     clickPosition[0] = event.clientX - left;
     clickPosition[1] = event.clientY - top;
     triangulate();
     shatter();
 }
-// 三角形
+// 划分三角形
 function triangulate() {
-    var rings = [
+    var rings = [ // 环
             {
-                r: 50,
-                c: 12
+                r: 50, // 半径
+                c: 12 // 份数
             },
             {
                 r: 150,
@@ -138,24 +114,14 @@ function triangulate() {
                 c: 12
             }
         ], x, y, centerX = clickPosition[0], centerY = clickPosition[1];
-    vertices.push([
-        centerX,
-        centerY
-    ]);
+    vertices.push([centerX, centerY]);
     rings.forEach(function (ring) {
         var radius = ring.r, count = ring.c, variance = radius * 0.25;
         for (var i = 0; i < count; i++) {
-            // if (window.CP.shouldStopExecution(2)) { // 应该停止执行?
-            //     break;
-            // }
             x = Math.cos(i / count * TWO_PI) * radius + centerX + randomRange(-variance, variance);
             y = Math.sin(i / count * TWO_PI) * radius + centerY + randomRange(-variance, variance);
-            vertices.push([
-                x,
-                y
-            ]);
+            vertices.push([x, y]); // 其余点位
         }
-        // window.CP.exitedLoop(2); // 退出循环?
     });
     vertices.forEach(function (v) {
         v[0] = clamp(v[0], 0, imageWidth);
@@ -163,13 +129,11 @@ function triangulate() {
     });
     indices = Delaunay.triangulate(vertices);
 }
+// 破碎动画
 function shatter() {
     var p0, p1, p2, fragment;
-    var tl0 = new TimelineMax({ onComplete: shatterCompleteHandler });
+    var tl0 = new TimelineMax({ onComplete: shatterCompleteHandler }); // 破碎动画的回调
     for (var i = 0; i < indices.length; i += 3) {
-        // if (window.CP.shouldStopExecution(3)) {
-        //     break;
-        // }
         p0 = vertices[indices[i + 0]];
         p1 = vertices[indices[i + 1]];
         p2 = vertices[indices[i + 2]];
@@ -190,10 +154,10 @@ function shatter() {
         fragments.push(fragment);
         container.appendChild(fragment.canvas);
     }
-    // window.CP.exitedLoop(3);
     container.removeChild(image);
     image.removeEventListener('click', imageClickHandler);
 }
+// 破碎动画的回调
 function shatterCompleteHandler() {
     fragments.forEach(function (f) {
         container.removeChild(f.canvas);
@@ -203,12 +167,15 @@ function shatterCompleteHandler() {
     indices.length = 0;
     placeImage();
 }
-function randomRange(min, max) { // min max 之间的随机数 不包min max
+// min max 之间的随机数 不包min max
+function randomRange(min, max) {
     return min + (max - min) * Math.random();
 }
-function clamp(x, min, max) { // x 介于 min max 之间
+// 限制 x 介于 min max 之间
+function clamp(x, min, max) {
     return x < min ? min : x > max ? max : x;
 }
+// 标志
 function sign(x) {
     return x < 0 ? -1 : 1;
 }
