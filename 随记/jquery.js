@@ -1236,8 +1236,7 @@ img.src="./images/01,jpg"; //部分浏览器的图片加载 会在onload绑定�
 绘制视频
 let $v = $('video'), v = $v[0], c = $('canvas')[0], ctx = c.getContext('2d'), id = null;
 $v.on('play', () => id = setInterval(() => ctx.drawImage(v, 0, 0, 150, 140), 20)) // 每20ms就会绘制视频的当前帧
-  .on('pause ended', () => clearInterval(id)) 
-
+  .on('pause ended', () => clearInterval(id))
 
 canvas 适配浏览器或者移动端 js判断设置 .width .height
 

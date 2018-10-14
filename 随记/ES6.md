@@ -383,7 +383,7 @@
   })
   // 执行顺序
   new Promise((resolve, reject) => {
-    console.log('1. Promise 新建后立即执行')
+    console.log('1. new Promise 新建实例后 立即执行')
     resolve()
   }).then(() => {
     console.log('3. then方法的回调 会在当前脚本所有同步任务执行完才会执行')
@@ -404,11 +404,15 @@
     resolve(1)
     console.log(2)
   }).then(value => console.log(value)) // 2 1 
-  // Promise 类 构造函数 原型方法
-  // Promise.prototype.then()
+
+  // Promise 原型方法
+  // 1. Promise.prototype.then()
   asyncLoad('https://timgsa.baidu.com')
   .then(() => console.log('success'), () => console.log('error')) // 第二个回调 不会捕获 当前.then中第一个回调的错误 (所以说一般不要指定.then的第二个参数 而总是使用.catch)
-  // Promise.prototype.catch 是 .then(null, rejection) 的别名
+
+  // 2. Promise.prototype.catch() 是 .then(null, rejection) 的别名
+  new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // 经过.catch promise的状态变更为resolve
+
   asyncLoad('https://timgsa.baidu.com')
   .then(() => console.log('success'))
   .catch(() => console.log('error')) // .catch能捕获asyncLoad中 及 任何一个在.catch之前的.then中的 错误
@@ -417,6 +421,57 @@
   .then(() => console.log('success'))
   .then(null, (err) => console.log(123))
 
+  // .then .catch 返回 非promise实例 仍使用之前的promise
+  // PromiseStatus为之前的promise的状态 PromiseValue为上一个.then .catch返回的值
+  new Promise((resolve, reject) => resolve(1))
+  .then(val => { console.log(val); return 2; })
+  .then(val => { console.log(val); return 3; })
+  // Promise {<resolved>: 3}
+  // __proto__: Promise
+  // [[PromiseStatus]]: "resolved"
+  // [[PromiseValue]]: 3
+
+  // .then .catch 返回 promise实例 后续直接使用新的promise实例
+  // PromiseStatus为新promise的状态 PromiseValue为新promise传递出来的值
+  new Promise((resolve, reject) => resolve(1))
+  .then(val => { console.log(val); return new Promise((resolve, reject) => reject(2)); })
+  .then(val => { console.log(val); return 3; })
+  // Promise {<rejected>: 1}
+  // __proto__: Promise
+  // [[PromiseStatus]]: "rejected"
+  // [[PromiseValue]]: 2
+
+  // 3. Promise.prototype.finally() 不管promise实例的状态为什么都会执行
+  new Promise((resolve, reject) => resolve(1))
+  .then(val => { console.log(val); return new Promise((resolve, reject) => reject(2)); }) // 1
+  .finally(val => { console.log(val); return 3; }) // undefined 回调不接受任何参数 在这里操作应该与promise实例状态无关
+  // Promise {<rejected>: 2}   .finally的返回值不会影响prosime 而总是返回原值
+  // 底层实现
+  Promise.prototype.finally = function (callback) {
+    let P = this.constructor
+    return this.then(
+      val => P.resolve(callback()).then(() => val), // 而总是返回原值 的原因
+      err => P.resolve(callback()).then(() => throw err)
+    );
+  }
+
+  // Promise 静态方法
+  // Promise.all() 接受一个数组作为参数 数组中的每项均为promise实例 
+  const arr = ['1.jpg', '2.jpg', '3.jpg']
+  const loadImg = url => new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = err => reject(err)
+    img.src = url
+  });
+  Promise.all(arr.map(v => loadImg(v)))
+  .then(list => console.log(list)) // 只有数组中所有promise实例的状态都变为resolve才会执行 list为数组 每一项为每个promise实例的返回值
+  .catch(err => console.log(err)) // 只要有一个promise实例的状态为reject 就会执行一次
+
+  const p1 = new Promise((resolve, reject) => resolve(1))
+  const p2 = new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // p2 有自己的 .catch 发生错误先调用自己的.catch 状态变更为resolve
+  Promise.all([p1, p2]).then(list => console.log(list)).catch(err => console.log(err)) // 2个都为resolve 执行then
+  // [1, Error: 报错了]
 
 
   ```
