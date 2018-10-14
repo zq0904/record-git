@@ -69,6 +69,13 @@
                 // plotShadow: true, // 内图表阴影
             }
         });
+        // 柱状图填充色没有提供 渐变 替代方案
+        Highcharts.getOptions().colors = Highcharts.map(['#359BCE'], function(color) {
+            return {
+                radialGradient: { cx: 0, cy: -1 ,r: 2.5 },
+                stops: [[0, color], [1, 'rgb(255, 255, 255)']]
+            }
+        })
         // chart1的配置
         var chart1 = Highcharts.chart('container1', {
             chart: {
@@ -167,6 +174,7 @@
                 },
                 tickWidth: 2, // 刻度宽
                 tickColor: 'green', // 刻度颜色
+                tickPositions: [0,1], // 刻度位置数组
                 lineWidth: 2, // x轴宽
                 lineColor: 'red', // x轴颜色
                 // gridLineWidth: 2, // 网格线宽度

@@ -1,5 +1,5 @@
-(function($) {
-  
+(function ($) {
+
   $.fn.grain = function (options) {
     var _default = {
       el: this.selector,
@@ -16,13 +16,11 @@
     var S = {
       init: function () {
         var action;
-        // i = action.indexOf('?a='); // 是否含有 ?a= 查询字符串
         S.Drawing.init(opt.el);
-
         function _p(search) {
           var o = {}
           var arr = search.split('&')
-          for (var i = 0; i < arr.length; i++)	{
+          for (var i = 0; i < arr.length; i++) {
             _arr = arr[i].split('=')
             o[_arr[0]] = _arr[1]
           }
@@ -32,15 +30,9 @@
         var search = arr && arr[1]
         action = search && _p(search)[opt.tag]
         S.UI.simulate(action ? action : opt.action);
-        // document.body.classList.add('body--ready'); // 在body添加一个class类
-        // if (i !== -1) { // 有动画 就用没有执行 固定的
-        //   S.UI.simulate(decodeURI(action).substring(i + 3));
-        // } else {
-        //   S.UI.simulate('Shape|Shifter|Type|to start|#rectangle|#countdown 3||');
-        // }
         S.Drawing.loop(function () { S.Shape.render(); });
       }
-    }; 
+    };
     S.Drawing = (function () {
       // 这是一个闭包
       var canvas, context, renderFn
@@ -80,26 +72,22 @@
           context.fill();
         }
       }
-    }()); 
+    }());
     S.UI = (function () {
       var
-      input = document.querySelector('.grain-input'), // 输入框
-      // ui = document.querySelector('.ui'), // 输入框 外层
-      // help = document.querySelector('.help'), // ？
-      // commands = document.querySelector('.commands'), // ul
-      // overlay = document.querySelector('.overlay'), // ul 最外层
-      // canvas = document.querySelector('.canvas'), // canvas
-      interval, // 定时器id
-      isTouch = false, // 是否是触摸
-      currentAction, // 当前的 行动
-      resizeTimer, // 调整计时器
-      time,
-      maxShapeSize = 30, // 最大形状大小
-      firstAction = true, // 第一次 行动
-      sequence = [], // 序列
-      cmd = '$';
+        input = document.querySelector('.grain-input'), // 输入框
+        interval, // 定时器id
+        isTouch = false, // 是否是触摸
+        currentAction, // 当前的 行动
+        resizeTimer, // 调整计时器
+        time,
+        maxShapeSize = 30, // 最大形状大小
+        firstAction = true, // 第一次 行动
+        sequence = [], // 序列
+        cmd = '$';
       function formatTime(date) {
-        var h = date.getHours(), m = date.getMinutes(), m = m < 10 ? '0' + m : m; return h + ':' + m; }
+        var h = date.getHours(), m = date.getMinutes(), m = m < 10 ? '0' + m : m; return h + ':' + m;
+      }
       function getValue(value) { return value && value.split(' ')[1]; }
       function getAction(value) {
         value = value && value.split(' ')[0];
@@ -131,51 +119,43 @@
       // 执行动作
       function performAction(value) {
         var action, value, current;
-        // overlay.classList.remove('overlay--visible'); // 要显示值的时候 overlay隐藏
         sequence = typeof (value) === 'object' ? value : sequence.concat(value.split('|')); // 长串指令 按顺放入
         input.value = ''; // 清空input
-        // checkInputWidth();
         timedAction(function (index) {
           current = sequence.shift(); // 取出第一项
           action = getAction(current);
           value = getValue(current);
           switch (action) {
             case 'down':
-            value = parseInt(value) || 10;
-            value = value > 0 ? value : 10;
-            timedAction(function (index) {
-              if (index === 0) {
-                if (sequence.length === 0) {
-                  S.Shape.switchShape(S.ShapeBuilder.letter(''));
+              value = parseInt(value) || 10;
+              value = value > 0 ? value : 10;
+              timedAction(function (index) {
+                if (index === 0) {
+                  if (sequence.length === 0) {
+                    S.Shape.switchShape(S.ShapeBuilder.letter(''));
+                  } else {
+                    performAction(sequence);
+                  }
                 } else {
-                  performAction(sequence);
+                  S.Shape.switchShape(S.ShapeBuilder.letter(index), true);
                 }
-              } else {
-                S.Shape.switchShape(S.ShapeBuilder.letter(index), true);
-              }
-            }, 1000, value, true);
-            break;
+              }, 1000, value, true);
+              break;
             case 'rect':
-            value = value && value.split('*');
-            value = (value && value.length === 2) ? value : [maxShapeSize, maxShapeSize / 2];
-            S.Shape.switchShape(S.ShapeBuilder.rectangle(Math.min(maxShapeSize, parseInt(value[0])), Math.min(maxShapeSize, parseInt(value[1]))));
-            break;
+              value = value && value.split('*');
+              value = (value && value.length === 2) ? value : [maxShapeSize, maxShapeSize / 2];
+              S.Shape.switchShape(S.ShapeBuilder.rectangle(Math.min(maxShapeSize, parseInt(value[0])), Math.min(maxShapeSize, parseInt(value[1]))));
+              break;
             case 'circle': value = parseInt(value) || maxShapeSize; value = Math.min(value, maxShapeSize); S.Shape.switchShape(S.ShapeBuilder.circle(value));
-            break;
+              break;
             case 'time':
-            var t = formatTime(new Date());
-            if (sequence.length > 0) { S.Shape.switchShape(S.ShapeBuilder.letter(t)); } else { timedAction(function () { t = formatTime(new Date()); if (t !== time) { time = t; S.Shape.switchShape(S.ShapeBuilder.letter(time)); } }, 1000); }
-            break;
+              var t = formatTime(new Date());
+              if (sequence.length > 0) { S.Shape.switchShape(S.ShapeBuilder.letter(t)); } else { timedAction(function () { t = formatTime(new Date()); if (t !== time) { time = t; S.Shape.switchShape(S.ShapeBuilder.letter(time)); } }, 1000); }
+              break;
             default: S.Shape.switchShape(S.ShapeBuilder.letter(current[0] === cmd ? 'What?' : current));
           }
         }, 2000, sequence.length);
       }
-      // function checkInputWidth(e) {
-        // 长度大于18 增加长度
-        // if (input.value.length > 18) { ui.classList.add('ui--wide'); } else { ui.classList.remove('ui--wide'); }
-        // 第一次 只要输入了 显示回车标识
-        // if (firstAction && input.value.length > 0) { ui.classList.add('ui--enter'); } else { ui.classList.remove('ui--enter'); }
-      // }
       function bindEvents() {
         // 监听 回车
         document.body.addEventListener('keydown', function (e) {
@@ -186,65 +166,21 @@
             performAction(input.value);
           }
         });
-        // input.addEventListener('input', checkInputWidth);
-        // input.addEventListener('change', checkInputWidth);
-        // input.addEventListener('focus', checkInputWidth);
-        // help.addEventListener('click', function (e) {
-        //   overlay.classList.toggle('overlay--visible');
-        //   overlay.classList.contains('overlay--visible') && reset(true);
-        // });
-        // commands.addEventListener('click', function (e) {
-        //   var el, info, demo, tab, active, url;
-        //   if (e.target.classList.contains('commands-item')) {
-        //     el = e.target;
-        //   } else {
-        //     el = e.target.parentNode.classList.contains('commands-item') ? e.target.parentNode : e.target.parentNode.parentNode;
-        //   }
-        //   info = el && el.querySelector('.commands-item-info');
-        //   demo = el && info.getAttribute('data-demo');
-        //   url = el && info.getAttribute('data-url');
-        //   if (info) {
-        //     overlay.classList.remove('overlay--visible');
-        //     if (demo) {
-        //       input.value = demo;
-        //       if (isTouch) {
-        //         reset();
-        //         performAction(input.value);
-        //       } else {
-        //         input.focus();
-        //       }
-        //     } else if (url) { } }
-        // });
-        // canvas.addEventListener('click', function (e) { overlay.classList.remove('overlay--visible'); });
       }
       function init() {
         bindEvents();
         input.focus();
-        // isTouch && document.body.classList.add('touch'); // 是触摸 body加类
       }
       init();
       return { simulate: function (action) { performAction(action); } }
     }());
-    // S.UI.Tabs = (function () {
-    //   var tabs = document.querySelector('.tabs'), labels = document.querySelector('.tabs-labels'), triggers = document.querySelectorAll('.tabs-label'), panels = document.querySelectorAll('.tabs-panel');
-    //   function activate(i) { triggers[i].classList.add('tabs-label--active'); panels[i].classList.add('tabs-panel--active'); }
-    //   function bindEvents() {
-    //     labels.addEventListener('click', function (e) {
-    //       var el = e.target, index; if (el.classList.contains('tabs-label')) {
-    //         for (var t = 0; t < triggers.length; t++) { triggers[t].classList.remove('tabs-label--active'); panels[t].classList.remove('tabs-panel--active'); if (el === triggers[t]) { index = t; } }
-    //         activate(index);
-    //       }
-    //     });
-    //   }
-    //   function init() { activate(0); bindEvents(); }
-    //   init();
-    // }());
     S.Point = function (args) {
-      this.x = args.x; this.y = args.y; this.z = args.z; this.a = args.a; this.h = args.h; };
-      S.Color = function (r, g, b, a) { this.r = r; this.g = g; this.b = b; this.a = a; };
-      S.Color.prototype = { render: function () { return 'rgba(' + this.r + ',' + +this.g + ',' + this.b + ',' + this.a + ')'; } };
-      S.Dot = function (x, y) { this.p = new S.Point({ x: x, y: y, z: 5, a: 1, h: 0 }); this.e = 0.07; this.s = true; this.c = new S.Color(255, 255, 255, this.p.a); this.t = this.clone(); this.q = []; };
-      S.Dot.prototype = {
+      this.x = args.x; this.y = args.y; this.z = args.z; this.a = args.a; this.h = args.h;
+    };
+    S.Color = function (r, g, b, a) { this.r = r; this.g = g; this.b = b; this.a = a; };
+    S.Color.prototype = { render: function () { return 'rgba(' + this.r + ',' + +this.g + ',' + this.b + ',' + this.a + ')'; } };
+    S.Dot = function (x, y) { this.p = new S.Point({ x: x, y: y, z: 5, a: 1, h: 0 }); this.e = 0.07; this.s = true; this.c = new S.Color(255, 255, 255, this.p.a); this.t = this.clone(); this.q = []; };
+    S.Dot.prototype = {
       clone: function () { return new S.Point({ x: this.x, y: this.y, z: this.z, a: this.a, h: this.h }); }, _draw: function () { this.c.a = this.p.a; S.Drawing.drawCircle(this.p, this.c); }, _moveTowards: function (n) {
         var details = this.distanceTo(n, true), dx = details[0], dy = details[1], d = details[2], e = this.e * d; if (this.p.h === -1) { this.p.x = n.x; this.p.y = n.y; return true; }
         if (d > 1) { this.p.x -= ((dx / d) * e); this.p.y -= ((dy / d) * e); } else { if (this.p.h > 0) { this.p.h--; } else { return true; } }
@@ -257,10 +193,10 @@
     }
     S.ShapeBuilder = (function () {
       var gap = opt.gap,
-      shapeCanvas = document.createElement('canvas'),
-      shapeContext = shapeCanvas.getContext('2d'),
-      fontSize = opt.fontSize,
-      fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
+        shapeCanvas = document.createElement('canvas'),
+        shapeContext = shapeCanvas.getContext('2d'),
+        fontSize = opt.fontSize,
+        fontFamily = 'Avenir, Helvetica Neue, Helvetica, Arial, sans-serif';
       function fit() { shapeCanvas.width = Math.floor(window.innerWidth / gap) * gap; shapeCanvas.height = Math.floor(window.innerHeight / gap) * gap; shapeContext.fillStyle = 'red'; shapeContext.textBaseline = 'middle'; shapeContext.textAlign = 'center'; }
       function processCanvas() {
         var pixels = shapeContext.getImageData(0, 0, shapeCanvas.width, shapeCanvas.height).data; dots = [], pixels, x = 0, y = 0, fx = shapeCanvas.width, fy = shapeCanvas.height, w = 0, h = 0; for (var p = 0; p < pixels.length; p += (4 * gap)) {
@@ -297,4 +233,5 @@
     }());
     S.init();
   }
+
 })(jQuery);
