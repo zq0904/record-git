@@ -224,7 +224,7 @@ npm run mock 启动方式
 // package.json // data.json的配置文件
 // {
 //   "scripts": {
-//     "mock": "json-server data.json --port 3002"
+//     "mock": "json-server -w data.json -p 3002"
 //   }
 // }
 // npm run mock

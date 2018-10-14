@@ -470,9 +470,9 @@ function get_xy(e){
 <img id="img1">
 Event对象 的属性
   type      //当前事件类型
-  clientX clientY //距离窗口左边和上边的距离（body）
-  pageX pageY   //距离网页左边和上边的距离
-  screenX screenY //距离屏幕左边和上边的距离
+  clientX clientY //距离 可视窗口       左边和上边的距离
+  pageX pageY     //距离 整个网页(html) 左边和上边的距离
+  screenX screenY //距离 屏幕(不是浏览器屏幕) 左边和上边的距离
 二.IE中Event对象
 IE中Event对象，是window对象的一个属性，不需要传参数
 如：window.event.clientX
@@ -726,9 +726,6 @@ document.documentElement//获取Html标签
 document.title = '标题';//即可获取title标签 还能设置其中的值
 document.body           //获取的body标签
 document.head
-
-不受定位影响 获取元素相对于视口距离
-dom对象.getBoundingClientRect() // 方法返回元素的大小及其相对于视口的位置
 
 offset系列  获取的值都是数字类型
   .offsetWidth  //获取元素的真实宽度（边框 padding 内容）（border-box的width的感觉）

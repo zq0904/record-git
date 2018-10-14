@@ -13,7 +13,7 @@ $(document).ready(function(){});
 方法
 $('.btn').click(function(){}); //没有on 是个函数 把伪数组里 全都对象 注册click事件
 $('.btn').eq(0);               //将伪数组中第一项拿出来组成新的伪数组 (因为.click只能作用与伪数组 不能作用与对象!!!)
-
+$('.btn').add('p') // 等价于 $('.btn').add($('p')) 等价于 $('.btn, p')
 
 $('#box').css('width','200px');    //分别设置行内样式 width等带不带单位都可以 （lineHeight 必须带px !!! 都能识别要不默认倍数了）
 $('#box').css('height',200);
@@ -1011,7 +1011,7 @@ $.ajax({
   data: {},
   type: 'POST',
   dataType: 'json',
-  async: false, // 默认 true
+  // async: false, // 默认 true
   cache: false, // 禁止直接的浏览器缓存 200 OK (from disk cache) 默认 true
   success: function (data) {
   },
@@ -1164,12 +1164,15 @@ a:focus,input:focus,button:focus{
 // <canvas width="600" height="400"></canvas>
 var canvas = document.querySelector('canvas');
 var ctx = canvas.getContext('2d'); //获取绘制工具 2d绘制平面效果
-
+ctx.save(); //保存状态
 ctx.beginPath(); //开启新路径
-ctx.moveTo(100,100); //起点  ctx.translate(100,100); 重新映射起点位置 ctx.rotate(Math.PI/4); 不是canvas画布旋转 是绘制的图形 以左上角为中心顺时针旋转
+ctx.moveTo(100,100); //起点 ctx.rotate(Math.PI/4); 不是canvas画布旋转 是绘制的图形 以左上角为中心顺时针旋转
 ctx.lineTo(200,100); //绘制直线 绘制的是路径
 ctx.strokeStyle = 'blue'; //设置描边颜色 是跨路径的 不受ctx.beginPath()影响 但是ctx.stroke受影响
 ctx.stroke(); //描边 只能描边本次路径内的 颜色是最近的ctx.strokeStyle
+ctx.clip(); //裁剪 设置剪切区域为当前剪切区域与当前路径的交集（闭合路径 .rect .arc） 之后的绘图都会被限制在被剪切的区域内 配合.save .restore效果无解
+ctx.restore(); //恢复状态
+ctx.translate(100,100); // 重新映射画布上的 (0,0)位置 值会添加到x和y坐标值上
 
 ctx.fillStyle = 'rgb(255,0,0)'; //设置填充颜色 
 ctx.fill(); //填充 自动闭合 只能填充本次路径内的
@@ -1222,12 +1225,19 @@ ctx.measureText(str).width  //测量文本宽
 
 绘制图片
 var img = new Image();
-img.onload = function (){ //当图片加载完
-  ctx.drawImage(img,200,200,100,100,100,100,100,100);
-  // 图片对象 在图片上的定位坐标XY 截取的图片大小WH 画布上的坐标XY 画布上的大小WH 
+img.onload = function() {
+  // ctx.drawImage(img, x, y); // 图片对象 画布上的坐标XY （用于 定位图片在canvas上的位置 不缩放图片）
+  // ctx.drawImage(img, x, y, width, height); // 图片对象 画布上的坐标XY 画布上的大小WH (用于 定位图片 缩放图片)
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, width, height); // 图片对象 原图片上开始坐标XY 截取原图片的WH 画布上的坐标XY 画布上的大小WH（用于 裁剪图片 定位图片 缩放图片）
 };
 img.src="./images/01,jpg"; //部分浏览器的图片加载 会在onload绑定之前 先有接收 在创建图片 稳妥
 // 拓展 含有src属性的标签 都可以跨域访问 iframe src属性 内嵌窗口 也有onload事件
+
+绘制视频
+let $v = $('video'), v = $v[0], c = $('canvas')[0], ctx = c.getContext('2d'), id = null;
+$v.on('play', () => id = setInterval(() => ctx.drawImage(v, 0, 0, 150, 140), 20)) // 每20ms就会绘制视频的当前帧
+  .on('pause ended', () => clearInterval(id)) 
+
 
 canvas 适配浏览器或者移动端 js判断设置 .width .height
 
@@ -1311,12 +1321,12 @@ javascript:;中的代码依然能执行
 //  }
 // %>
 
-$('#form').serialize(); //序列化表单值 
+$('#form').serialize(); //序列化表单值
 // 序列化的表单控件必须有 name 属性
-// 序列化的值可直接用于AJAX请求 url: 中
+// 序列化的值 会转译 但可直接用于AJAX请求 url: 中
 // 复选框（checkbox）和单选按钮（radio）的值只有在被选中时才会被序列化
 // 提交按钮的值不会被序列化,文件选择元素的数据也不会被序列化
-$('#form').serializeArray(); //序列化表单值 得到json格式
+$('#form').serializeArray(); //序列化表单值 得到数组对象json格式（不会转译）
 
 $('#form').on('submit',function(e){ //只有表单才有默认提交行为
   e.preventDefault(); //阻止表单的默认提交行为
