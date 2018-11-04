@@ -456,7 +456,7 @@
   }
 
   // Promise 静态方法
-  // Promise.all() 接受一个数组作为参数 数组中的每项均为promise实例 
+  // 1.Promise.all() 接受一个数组作为参数 数组中的每项均为promise实例 
   const arr = ['1.jpg', '2.jpg', '3.jpg']
   const loadImg = url => new Promise((resolve, reject) => {
     const img = new Image()
@@ -472,6 +472,10 @@
   const p2 = new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // p2 有自己的 .catch 发生错误先调用自己的.catch 状态变更为resolve
   Promise.all([p1, p2]).then(list => console.log(list)).catch(err => console.log(err)) // 2个都为resolve 执行then
   // [1, Error: 报错了]
-
+  
+  // 2.Promise.race() 接受一个数组作为参数 数组中的每项为promise实例 只要其中一个promise实例状态发生改变就会去执行对应的
+  Promise.race([fetch('/asd'), new Promise((resolve, reject) => setTimeout(() => reject(), 5000))])
+  .then(console.log) // 5000ms内 fetch请求成功或者失败 状态都变为resolve 执行.then方法
+  .catch(console.error) // 5000ms后 fetch仍处于请求状态 后一个promise实例状态变更为reject 执行.catch方法
 
   ```
