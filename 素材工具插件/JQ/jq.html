@@ -42,12 +42,15 @@
       return i % 2 === 0 // 返回 true 元素被保留
     }) )
 
+    // $.contains($('.f')[0], $('.s')[0]) // 判断 dom元素 结构中 是否包含了 另一个dom元素
+    $.contains(this, event.target) // 事件绑定中 缩小范围
+
     // .data()
     $('#p').data('asd', 123) // 设置 缓存属性
     console.log($('#p').data('asd')) // 获取 缓存属性
     console.log($('#p').data('before')) // 也能 获取标准的自定义属性
- 
-    // $.extend() 
+
+    // $.extend()
     var newo1 = $.extend({a: 1, b: {v:2}}, {a: 2, b: {c:2}})
     console.log('newo1:', newo1) // 浅拷贝 一个深度层次合并 与 Object.assign() 一样
     var newo2 = $.extend(true, {a: 1, b: {v:2}}, {a: 2, b: {c:2}})
@@ -60,7 +63,7 @@
     // 实现方式 1.1 $.a = function() {} 1.2 $.extend({ a: function() {} })
     // 调用 $.a()
     // $('a') 得到实例对象是不能调用 .a() 因为.a是定义在类$的静态方法 没有在类$的原型中
-    // 
+    //
     // 2.类原型 级别插件开发 给jQuery.prototype 添加方法 典型的例子 $('div').each()
     // $.fn === $.prototype // true $.fn 完全与 $.prototype 等价
     // $.fn.extend({ e: function() {} })

@@ -1205,6 +1205,8 @@ apply() call() 深层次运用于 某个对象没有 每个方法 但是可以�
 Array.prototype.slice.call(伪数组);
 [].slice.call(伪数组);
 
+Array.prototype.shift.call(arguments) // 借用数组shift去除 arguments 中第一个参数
+
 在封装库的时候 考虑到每次调用都会创建一个数组
   var a = [],
     slice = a.slice,
