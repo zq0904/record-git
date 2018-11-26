@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>SeaJS</title>
+  <style>
+    #hellow {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div>
+    <div id="hellow">hellow</div>
+    <button id="toggle">toggle</button>
+  </div>
+
+  <script src="./js/sea.js"></script>
+  <script>
+    // https://www.zhangxinxu.com/sp/seajs/#api
+    // SeaJS 是一个在web浏览器的模块加载器 遵循 CMD（Common Module Definition) 像node环境中一样来写代码
+    // seajs.config({
+    //   alias: {
+    //     'zepto': '//concat.lietou-static.com/core/h5/v2/zepto/zepto.js'
+    //   }
+    // });
+    seajs.use(['./js/toggleHellow'], function (toggleHellow, $) {
+      // $('#toggle').on('click', toggleHellow.toggleHellow)
+    });
+    
+  </script>
+</body>
+
+</html>

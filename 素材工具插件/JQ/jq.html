@@ -22,6 +22,7 @@
     <input type="radio" checked>
   </form>
   <p id="p" data-before="标准的自定义属性">.data()方法</p>
+  <span id="custom">自定义方法</span>
 
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script>
@@ -43,7 +44,12 @@
     }) )
 
     // $.contains($('.f')[0], $('.s')[0]) // 判断 dom元素 结构中 是否包含了 另一个dom元素
-    $.contains(this, event.target) // 事件绑定中 缩小范围
+    // $.contains(this, event.target) // 事件绑定中 缩小范围
+
+    // 自定义事件的声明 与 自定义事件的触发
+    $('#custom').on('asd', (e, ...args) => {
+      console.log(e, ...args) // event 其余参数
+    }).trigger('asd', 1)
 
     // .data()
     $('#p').data('asd', 123) // 设置 缓存属性

@@ -25,7 +25,7 @@
   }
   f() // 1
 
-  // const 声明常量 声明就应该赋值 仅保证引用不变 
+  // const 声明常量 声明就应该赋值 仅保证引用不变
   // E6变量声明有6种方式 var function let const import class
   ```
 ## 结构赋值
@@ -142,7 +142,7 @@
     }
   }
   foo.call({id: 1}).call({id: 2}).call({id: 3}) // 1
-  
+
   // 尾递归优化 例如求n的阶层
   function foo(n) {
     if (n === 1) return 1
@@ -184,7 +184,7 @@
   [1, 2, 3].find((v, i, a) => v > 1) // 2 查找满足条件的第一项并返回
   [1, 2, 3].findIndex(function(v) { return v > this.id}, {id: 1}) // 1 查找满足条件的第一项的索引并返回 都没查到返回 -1 第二个参数绑定的this
   ['a', 'b', 'c', 'd'].fill({f: 1}, 1, 3)[1].f = 2 // ['a', {f: 2}, {f: 2}, 'd'] .fill(填充的值, 填充起始位置的index默认0, 填充结束位置的index默认this.length) 填充属于浅拷贝
-  
+
   // .keys() .values() .entries() 都返回遍历器对象 对 键、值、键和值
   for (let key of ['a', 'b'].keys()) { console.log(key) } // 0  1
   for (let value of ['a', 'b'].values()) { console.log(value) } // 'a'  'b'
@@ -252,7 +252,7 @@
   for (let k of Reflect.ownKeys(a)) { console.log(k) } // a b Symbol(c) 总结 Reflect.ownKeys() 拿到自身所有属性
   // 遍历对象的键名 是有序的 1. 先遍历所有 大于等于0整数值键（数值升序） 2. 在遍历剩下的字符串键（按加入时间） 3.最后遍历Symbol键（按加入时间）
   Object.keys({ '1': '1', 0: 0, '-1': '-1', '1.1': '1.1', 'b': 'b', 'a': 'a'  }) // [0, 1, -1, 1.1, b, a]
-  
+
   Object.getOwnPropertyDescriptor({a: 1}, 'a') // 获取对象一个属性 的 描述对象 （如是否可以枚举等）
   {
     value: 1,
@@ -263,11 +263,11 @@
   // for in 会遍历对象原型上的属性或方法 可以设置enumerable为false来避免
   // 如 数组的length属性、Es6的 class 中的原型方法都是不可枚举的 在实际使用中应该多使用 Object.keys() 少用for in
   Object.getOwnPropertyDescriptors([1]) // 返回自身所有属性的描述对象
-  { 
+  {
     0: { value: 1, configurable: true, enumerable: true, writable: true },
     length: { value: 1, configurable: false, enumerable: false, writable: true }
   }
- 
+
   Object.getOwnPropertyDescriptors({get a() { return 1 }}) // { a: {get: ƒ a(), set: undefined, enumerable: true, configurable: true} } 获取一个对象的所有属性的 描述对象
   Object.create({a: 1}, {foo: {value: 1}}) // {foo: 1, __proto__: {a: 1}} 第一个参数设置原型对象 第二个参数设置所有属性的 描述对象
   Object.getPrototypeOf({__proto__: {a: 1}}) // {a: 1} 获取一个对象的原型
@@ -291,7 +291,7 @@
   Object.keys({a: 1}) // ['a'] 返回不含继承 所有属性 键名
   Object.values({a: 1}) // [1] 返回不含继承 所有属性 键值
   Object.entries({a: 1}) // [['a', 1]] 返回不含继承 所有属性 键名 键值
-  
+
   let {a, ...foo} = {b: 2, __proto__: {a: 1, c: 3}} // 1 {b: 2} 结构赋值可以拿到原型对象的属性 但 展开运算符拿不到原型对象的属性
   ```
 ## Symbol
@@ -301,7 +301,7 @@
   Symbol('a') === Symbol('a') // false 名字的独一无二性
   Symbol('a').toString() // 转字符串
   !Symbol('a') // 转布尔
-  
+
   // 对Symbol键的取值
   const o = { [Symbol('a')]: 1 }
   for (let k of Object.getOwnPropertySymbols(o)) {
@@ -361,12 +361,15 @@
 
   //  WeakMap() 与 Met() 区别 1.成员只能是对象 2.WeakSet中的对象都是弱引用（垃圾回收机制不考虑 WeakSet 对该对象的引用, 如果其他对象都不再引用该对象, 那么垃圾回收机制会自动回收该对象所占用的内存, 不考虑该对象还存在于 WeakSet 之中）
   const wm = new WeakMap()
-  const dom = document.querySelector('a') 
+  const dom = document.querySelector('a')
   wm.set(dom, () => console.log(1)) // 设置
   wm.get(dom) // 获取
   wm.delete(dom) // 删除
   wm.has(dom) // 检测是否存在
   ```
+
+## Proxy
+## Reflect
 
 ## Promise 对象
   ```javascript
@@ -403,7 +406,7 @@
   new Promise((resolve, reject) => {
     resolve(1)
     console.log(2)
-  }).then(value => console.log(value)) // 2 1 
+  }).then(value => console.log(value)) // 2 1
 
   // Promise 原型方法
   // 1. Promise.prototype.then()
@@ -456,7 +459,7 @@
   }
 
   // Promise 静态方法
-  // 1.Promise.all() 接受一个数组作为参数 数组中的每项均为promise实例 
+  // 1.Promise.all() 接受一个数组作为参数 数组中的每项均为promise实例
   const arr = ['1.jpg', '2.jpg', '3.jpg']
   const loadImg = url => new Promise((resolve, reject) => {
     const img = new Image()
@@ -472,10 +475,451 @@
   const p2 = new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // p2 有自己的 .catch 发生错误先调用自己的.catch 状态变更为resolve
   Promise.all([p1, p2]).then(list => console.log(list)).catch(err => console.log(err)) // 2个都为resolve 执行then
   // [1, Error: 报错了]
-  
-  // 2.Promise.race() 接受一个数组作为参数 数组中的每项为promise实例 只要其中一个promise实例状态发生改变就会去执行对应的
+
+  // 2.Promise.race() 接受一个数组作为参数 数组中的每项为promise实例 只要其中一个promise实例状态发生改变就会去执行对应的方法
   Promise.race([fetch('/asd'), new Promise((resolve, reject) => setTimeout(() => reject(), 5000))])
   .then(console.log) // 5000ms内 fetch请求成功或者失败 状态都变为resolve 执行.then方法
   .catch(console.error) // 5000ms后 fetch仍处于请求状态 后一个promise实例状态变更为reject 执行.catch方法
 
+  // 3.Promise.resolve() 将参数转为Promise对象 这个promise的状态一般为resolve
+  Promise.resolve('foo') // Promise {<resolved>: foo} 等价于 new Promise(resolve => resolve('foo'))
+  Promise.resolve(new Promise(resolve => resolve(1))) // Promise {<resolve>: 1} 参数（也是resolve中的参数）如果为promise实例 则原封不动的返回这个 promise实例
+  Promise.resolve({ then(resolve, reject) { reject(5) } }) // Promise {<reject>: 5} 参数（也是resolve中的参数）如果为一个具备then方法的对象 则将这个对象转化为promise对象 并调用then方法
+
+  // 4.Promise.reject() 将参数转为 状态为reject的 Promise对象
+  Promise.reject(new Promise((resolve, reject) => resolve(1))) // Promise {<rejected>: Promise} 无论参数为什么都仅作为promise的值
   ```
+## Iterator 和 for of 循环
+  ```javascript
+  // iterator 遍历器对象本质上，就是一个指针对象
+  // Es6规定 默认的 Iterator 接口部署在数据结构的Symbol.iterator属性
+  // 原生具备 Iterator 接口的数据结构如下 Array Set Map String 函数的arguments对象 NodeList对象
+  let arr = [1, 2];
+  let it  er = arr[Symbol.iterator]();
+  iter.next() // {value: 1, done: false}
+  iter.next() // {value: 2, done: false}
+  iter.next() // {value: undefined, done: true}
+  for (let v of [1, 2]) { console.log(v) }
+  for (let v of document.querySelectorAll('a')) { console.log(v) }
+
+  // 默认调用Iterator接口的场合
+  [a, ...b] = [1, 2, 3] // 解构赋值
+  [...'asd'] // 展运算符
+  let g = function* () { // yield* 后面跟的是一个可遍历的结构 它会调用该结构的遍历器接口
+    yield 1;
+    yield* [2, 3];
+    yield 4;
+  }
+  let iter = g()
+  iter.next() // { value: 1, done: false }
+  iter.next() // { value: 2, done: false }
+  iter.next() // { value: 3, done: false }
+  iter.next() // { value: 4, done: false }
+  iter.next() // { value: undefined, done: true }
+  for...of Array.from() Promise.all() // 等其他场合也会调用
+
+  // 指针结构
+  class O {
+    constructor(v) {
+      this.v = v
+      this.next = null // 指针 指向下一个对象
+    }
+    [Symbol.iterator]() {
+      let that = this
+      return {
+        next() {
+          if (that) {
+            const v = that.v // 拿到当期指针所指对象的值
+            that = that.next // 指针移动 指向下一个对象
+            return { value: v, done: false }
+          } else {
+            return { value: undefined, done: true }
+          }
+        }
+        return() {
+          console.log('出错 或 有break语句 将会执行')
+          return { value: undefined, done: true }
+        }
+        throw() { }
+      }
+    }
+  }
+  let o1 = new O(1)
+  let o2 = new O(2)
+  let o3 = new O(3)
+  o1.next = o2
+  o2.next = o3
+  for (let v of o1) {
+    if (v > 2) break; // break语句可以跳出for of
+    console.log(v) // 1 2 '出错 或 有break语句 将会执行'
+  }
+
+  // 使用Generator函数 实现 Iterator接口
+  let o = {
+    [Symbol.iterator]: function* () { // Generator函数 默认返回的迭代器对象 正好具备next方法 而next方法的返回值也是{value,done}这种形式的
+      yield 1;
+      yield 2;
+      yield 3;
+    }
+  }
+  for (let v of o) { console.log(v) } // 1 2 3
+
+  // for of 遍历 默认使用Iterator接口 Array Set Map 各别伪数组（arguments, NodeList） Generator对象 字符串
+  // 对象不具备Iterator接口 不能直接使用for of遍历 而Object.entries等返回遍历器对象
+  for (let v of [1, 2, 3]) { console.log(v) } // 1 2 3
+  for (let v of new Set([1, 2, 2])) { console.log(v) } // 1 2
+  for (let [key, val] of new Map([['a', 1], ['b', 2]])) { console.log(key, val) } // a 1   b 2
+  for (let [key, val] of Object.entries({a: 1, b: 2})) { console.log(key, val) } // a 1   b 2 entries() keys() values() 都返回遍历器对象
+  for (let [key, val] of [1, 2].entries()) { console.log(key, val) } // 0 1   1 2
+  for (let v of document.querySelectorAll('a')) { console.log(v) }
+  ```
+## Generator 函数
+  ```javascript
+  // Generator函数是一个状态机 封装了多个内部状态 还是一个遍历器对象 生成函数 返回遍历器对象
+  // Generator.prototype.next() Generator函数 返回的 遍历器对象 next方法 可以恢复执行 将上一个yield表达式替换为 next方法中的参数
+  function* g() {
+    yield 1; // 遇到 yield 暂停执行后面的操作
+    return 2;
+  }
+  let i = g() // 调用Generator函数 返回一个遍历器对象 代表Generator函数的 内部指针
+  i.next() // {value: 1, done: false} 调用next恢复执行
+  i.next() // {value: 2, done: true} value表示当前的内部状态的值 是yield表达式后面的值 或者 return语句后面表达式的值 （执行到return done就为true）
+  i.next() // {value: undefined, done: true} done表示是否遍历结束
+
+  function* g() { console.log('执行了') } // 调用一个Generator函数 即便没有yield也不会立执行 必须调用next()方法
+  let i = g()
+  setTimeout(() => i.next(), 2000)
+  function* g() {
+    console.log(1 + (yield 2)) // yield在一个表达式中 必须放到()中
+  }
+
+  // yield表达式本身没有返回值 或者说总是返回undefined next方法可以带一个参数 该参数就会被当作 (!!! 上一个 !!!) yield表达式的返回值
+  function* foo() {
+    yield yield 1
+  }
+  let f = foo()
+  f.next() // {value: 1, done: false}
+  f.next(3) // {value: 3, done: false} 上一个 yield 1 被替换为 3
+  f.next(3) // {value: undefined, done: true}
+  function* foo(x) {
+    var y = 3 * (yield (x + 1))
+    var z = yield (y / 3)
+    return (x + y + z)
+  }
+  let f = foo()
+  f.next() // {value: 2, done: false}
+  f.next(2) // {value: 2, done: false}
+  f.next(3) // {value: 10, done: true}
+  f.next() // {value: undefined, done: true}
+
+  // Generator函数 返回的遍历器对象 用于 使用遍历器对象接口的操作
+  function* foo() {
+    yield 1
+    yield 2
+    return 3 // {value: 3, done: true} done为true 会导致for of循环终止
+    yield 4
+  }
+  for (let v of foo()) { console.log(v) } // 1 2
+  [...foo()] // [1, 2]
+  let [x, y] = numbers() // x 1 y 2
+
+  // 2.Generator.prototype.throw() Generator函数 返回的 遍历器对象 throw方法 可以在函数体外抛出错误 在Generator函数体内捕获
+  var g = function* () {
+    try {
+      yield 1
+    } catch (err) {
+      console.log('内部捕获', err)
+    }
+  }
+  var i = g()
+  i.next() // 必须执行一次next方法 .throw 才能被内部捕获到
+  try {
+    i.throw('a') // 内部捕获 a
+    i.throw('b') // 外部捕获 b
+  } catch (err) {
+    console.log('外部捕获', err)
+  }
+
+  // 3.Generator.prototype.return() Generator函数 返回的 遍历器对象 return方法 可以返回给定值 并结束Generator函数
+  var g = function* () {
+    yield 1
+    yield 2
+    yield 3
+  }
+  var i = g()
+  i.next()        // { value: 1, done: false }
+  i.return('foo') // { value: 'foo', done: true } 就好像直接在 yield 1 下一行直接添加 return 'foo'
+  i.next()        // { value: undefined, done: true }
+
+  // 总结 .next() .throw() .return() 都是让 Generator 函数 恢复执行 并替换上一个yield表达式
+  var g = function* () {
+    try {
+      var n = yield 1
+      console.log(n)
+      var e = yield 2
+      console.log(e)
+    } catch (err) {
+      console.log('内部错误', err)
+    }
+    var r = yield 3
+    console.log(r)
+  }
+  var i = g()
+  i.next()       //             {value: 1, done: false}
+  i.next('foo')  // foo         {value: 2, done: false}         将上一个yield表达式替换为 'foo'
+  i.throw('err') // 内部错误 err {value: 3, done: false}         将上一个yield表达式替换为 throw('err')
+  i.return('1')  //             {value: "1", done: true}        将上一个yield表达式替换为 return '1'
+  i.next()       //             {value: undefined, done: true}
+
+  // yield* 表达式
+  function* foo() { yield 'foo' }
+  function* bar() { yield 'bar'; yield foo(); }
+  function* flag() { yield 'flag'; yield* foo(); }
+  等价于 function* flag() { yield 'flag'; for (let v of foo()) { yield v } }
+  等价于 function* flag() { yield 'flag'; yield 'foo'  }
+  var i = bar()
+  i.next() // {value: "bar", done: false}
+  i.next() // {value: foo, done: false}
+  var i = flag()
+  i.next() // {value: "flag", done: false}
+  i.next() // {value: "foo", done: false}
+
+  // yield* 遍历器对象  可以看成是 for (let v of 遍历器对象) { yield v } 的一种简写
+  var g = function* () { yield* ['1', '2'] }
+  var i = g()
+  i.next() // {value: '1', done: false}
+  i.next() // {value: '2', done: true}
+
+  // yield* Generator函数有return 则会返回数据
+  function* foo() {
+    yield 2;
+    return 'foo'
+  }
+  function* bar() {
+    yield 1;
+    var v = yield* foo(); // 'foo'
+    console.log(v)
+  }
+  var i = bar()
+  i.next() // {value: 1, done: false}
+  i.next() // {value: 2, done: false}
+  i.next() // foo {value: undefined, done: true}
+
+  // 对象属性的 Generator 函数写法
+  var o = {
+    g1: function* () {},
+    * g2() {} // 简写方式
+  }
+  ```
+## Generator 函数的异步应用 和 Generator自动流程管理的实现
+  ```javascript
+  // JavaScript 语言的 Thunk函数
+  // 目的是将 多参数函数 替换成一个只接受回调函数的单参数函数 （仅仅是写法形式上的变化 但会带来方便的递归）
+  // 最终目的 方便递归 配合Generator函数自执行
+  // 例如node fs模块读取文件 改写成Thunk函数
+  fs.readFile(fileName, callback)
+  var readFileThunk = function(fileName) {
+    return function(fileName) {
+      return fs.readFile(fileName, callback)
+    }
+  }
+  readFileThunk(fileName)(callback)
+
+  // 通用Thunk函数转换器
+  const Thunk = function(fn) {
+    return function(...args) {
+      return function(callback) {
+        fn.call(this, ...args, callback)
+      }
+    }
+  }
+  Thunk(fs.readFile)(fileName)(callback)
+
+  // Thunk函数 用于 Generator函数的 自动流程管理
+  function run(g) {
+    var i = g()
+    function callback(err, data) {
+      var result = i.next(data)
+      if (result.done) return
+      result.value(callback) // Thunk(fs.readFile)(fileName)(callback)
+    }
+    callback()
+  }
+  function* g() {
+    yield Thunk(fs.readFile)(fileName)
+  }
+  run(g)
+
+  // Promise 用于 Generator函数的 自动流程管理
+  function PreadFile (fileName) {
+    return new Promise((resolve, reject) => {
+      fs.readFile(fileName, 'utf-8', (err, data) => {
+        if (err) return reject(err)
+        console.log(data)
+        resolve(data)
+      })
+    })
+  }
+  function run(g) {
+    var i = g()
+    function callback(data) {
+      var result = i.next(data)
+      if (result.done) return
+      result.value.then(callback) // promise.then()
+    }
+    callback()
+  }
+  function* g() {
+    yield PreadFile('1.txt')
+    yield PreadFile('2.txt')
+    yield PreadFile('3.txt')
+  }
+  run(g)
+  ```
+## async 函数
+  ```javascript
+  // async函数 对比 Generator函数
+  // 1.内置执行器 async函数 就像是 Generator函数 + co模块(自执行器)
+  // 2.更好的语义 async/await 替换原来的 */yield
+  // 3.更广的适用性 co模块约定 yield命令后面只能是 Thunk函数或 Promise实例对象 而async函数的await命令后面 可以是 Promise对象和原始类型的值（数值、字符串和布尔值，但这时等同于同步操作）
+  // 4.返回值是 Promise  而 Generator函数返回遍历器接口对象(指针)
+  // async函数 可看成是 把多个异步操作包装成一个Promised对象(返回Promise) 内部的await命令就是.then的语法糖
+
+  // async函数的声明
+  async function() {}
+  async () => {}
+  var fn = async function() {}
+  var fn = async () => {}
+  { async foo() {} }
+  { bar: async () => {} }
+
+  // async函数无论return什么都默认“包装”成promise实例对象
+  (async () => 1)() // Promise {<resolved>: 1}
+
+  // async函数内部抛出错误 会导致返回的Promise实例状态为reject
+  (async () => {
+    throw new Error('出错了')
+  })()              // Promise {<rejected>: Error: 出错了}
+    .then(() => console.log('成功执行'))
+    .catch((err) => console.log(err))
+
+  // async函数 await 后面的 Promise实例对象如果状态变为reject 整个async函数都会终止执行 相当于直接返回了这个promise实例
+  (async () => {
+    var err = await Promise.reject('错误')
+    console.log(err) // 终止执行 不会执行到这
+  })()             // Promise {<rejected>: "错误"}
+    .then(() => console.log('成功执行'))
+    .catch((err) => console.log(err)) // 错误
+
+  // 错误处理 优先顺序
+  (async () => {
+    try {
+      await Promise.reject('错误').catch((err) => console.log(err)) // 1
+    } catch (err) { console.log(err) } // 2
+  })()
+  .catch((err) => console.log(err)) // 3
+
+  // 异步操作bar依赖foo 只能 继发 (在foo异步操作完成之后 再去bar异步操作)
+  (async () => {
+    await foo()
+    await bar()
+  })()
+
+  // 异步操作bar和foo没有依赖关系 并发 (同时执行 减少程序的执行时间)
+  (async () => {
+    const list = await Promise.all([foo(), bar()])
+  })()
+
+  // 继发 常见错误写法
+  const arr = [foo, bar] // foo是函数名 调用返回Promisr实例对象
+  (() => {
+    arr.forEach(async v => { // foo bar 实际上是并发操作 而且console.log(123)同步任务先执行
+      await v()
+    })
+    console.log(123)
+  })()
+  // 等价于
+  (async () => {
+    await foo()
+  })()
+  (async () => {
+    await bar()
+  })()
+  console.log(123)
+  ```
+## Class的基本语法
+  ```javascript
+    // 构造函数方式 生成实例对象 （首先是这种写法和C++和Java差异很大 而且构造函数能直接调用等问题）
+    function P(x) {
+      this.x = x // 添加实例属性
+    }
+    P.prototype.a = function() { console.log('原型方法 a') }
+    var p = new P(1)
+
+    // class方式 生成实例对象
+    class P { // 类不存在变量提升 不同于构造函数 这样设计的目的是 类的继承保证顺序 （子类在父类之后）
+      // 类和模块的内部 默认就是严格模式 不需要使用use strict指定运行模式
+      constructor(x) { // 类的默认方法 new时会自动调用 如果没写constructor方法 程序会自动添加
+        this.x = x
+        // return this // constructor方法默认返回 this
+      }
+      a() { console.log('原型方法 a') }
+    }
+    var p = new P(1) // 类必须使用 new来调用 而 构造函数单独调用 相对更“安全”
+    typeof P // "function" 类本质是函数
+    P === P.prototype.constructor // true 类本身指向 自身的 原型构造方法
+    for (let key in p) { console.log(key) } // x  class的原型方法都是不可枚举的 而 构造函数上的原型方法是可枚举的 相对更“安全”
+    p.hasOwnProperty('x') // true 判断p是否含有x属性 原型链上的属性不会被检测
+    Object.getPrototypeOf(p) // 获取一个对象的原型
+
+    // Class表达式
+    const Point = class P {
+      constructor() {
+        console.log(P) // 在class内部 可以获取 P类名
+      }
+    }
+    console.log(P) // P is not defined 在class外部 不能获取 P类名
+    new Point() // 只能new Point
+    const Point = class {} // 如果内部没有用到P类名的话 直接匿名class 表达式
+    const p = new class { // 立执行class
+      constructor(...args) {
+        console.log(...args)
+      }
+    }('张三')
+
+    // ES6 不提供 私有方法和私有属性  （注: 以下含有未实现的提案 #私有属性）
+    class A {
+      #xValue = 1; // 使用#开头标识私有属性
+      get #x() { return #xValue; } // 私有属性的get set
+      set #x(v) { this.#xValue = v; }
+      #s() {} // 私有方法
+      _s() {} // 常规做法 命名上加以区别 约定 _代表私有方法 仅在内部使用
+    }
+
+    // this指向
+  ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -253,7 +253,7 @@ Array对象的属性和方法
   a.filter(function(e, i, a) { // return true 该元素保留 组成一个新的数组 但其中的每一项仍是原来的 引用
     return true
   })
-  a.map(function (e,i,a){
+  a.map(function (e,i,a){ // map方法 返回新数组 数组中的每项使用原引用 不改变原数组
     return e * 2;
   })//必须 return 每个元素 做相同的操作 并放回原位置
   a.every(function (e,i,a){

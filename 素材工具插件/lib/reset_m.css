@@ -63,3 +63,22 @@ a, a:hover {
 .pull-right {
   float: right;
 }
+/* 非淘宝flexible 真正1px细线 */
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {
+  .border::before, .border::after {
+    -webkit-transform: scaleY(0.6666666666666667);
+    transform: scaleY(0.6666666666666667);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 2), (min-device-pixel-ratio: 2) {
+  .border::before, .border::after {
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+  }
+}
+@media (-webkit-min-device-pixel-ratio: 3), (min-device-pixel-ratio: 3) {
+  .border::before, .border::after {
+    -webkit-transform: scaleY(0.3333333333333333);
+    transform: scaleY(0.3333333333333333);
+  }
+}

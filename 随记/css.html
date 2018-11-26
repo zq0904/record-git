@@ -21,7 +21,7 @@
 		#one {
 			font-size: 2cm;
 			color: green;
-		}/*id选择器*/  
+		}/*id选择器*/
 		div p {
 			color: blue;
 		}/*后代选择器 只要包含就行*/
@@ -56,17 +56,17 @@
 </html>
 
 文字样式font-style: italic;
-文字加粗font-weight: 900;(100-400(normal)-700(bold)-900)
+文字加粗font-weight: 900;(100-400(normal)-700(bold)-900) 开发中为统一规范 一般只写normal bold这2个值
 字体大小font-size: 40px;
   行高  line-height: 200px;
 设置字体font-fanily: microsoft yahei;
   文字  font: normal 700 14px/30px \5B8B\4F53;(italic斜体 粗细 字体大小/行高 宋体)
 
 文字颜色color：rgba(0,0,0,0.7);
- 透明度 opacity: 0.1;(取值0-1); 
+ 透明度 opacity: 0.1;(取值0-1);
  		filter:Alpha(opacity=50);(IE8浏览器)
 文本缩进text-indent: 2em;(-5000px 内容移出 用于logo)
-文本居中text-align:left;(left center right)	
+文本居中text-align:left;(left center right)
 文字间隔letter-spacing: 0.8cm;
 空格间隔word-spacing: 0.8cm;
 
@@ -101,7 +101,7 @@
 		left:700px;
 相对定位position:relative; （可以用在链接上 更明显）
 		top:5px;
-		left:5px;	
+		left:5px;
 覆盖关系z-index:10;（2个元素谁的值大谁在前面 前提真对定位元素而言）
 超出部分overflow:auto;(hidden超出隐藏 scroll加滚动条 auto超出才加滚动条 visible超出显示)
 
@@ -184,19 +184,19 @@ padding-left: 10px;(不会影响背景图片的位置)
 		top:50%;
 		left:50%;
 		margin-top: -100px;
-		margin-left: -200px;	  
+		margin-left: -200px;
 
 对于区别？
 display:none; 		不占据位置 配合JS制作选项卡
 overflow:hidden; 	超出部分不显示 可触发BFC解决 嵌套盒子外边距塌陷、清除浮动 配合JS制作滚动效果
-visibility:hidden;  占据位置 是透明的效果 目前只在清除浮动中用到 
+visibility:hidden;  占据位置 是透明的效果 目前只在清除浮动中用到
 
 宋体：\5B8B\4F53 simsun
 微软雅黑：\5FAE\8F6F\96C5\9ED1 microsoft yahei
 查找字体编码：F12 escape("宋体")
 
-优先级：继承<默认样式<*<标签选择器<类选择器<id选择器<行内样式<!important 
-权重依次增大  
+优先级：继承<默认样式<*<标签选择器<类选择器<id选择器<行内样式<!important
+权重依次增大
 （       0                  1         10       100      1000      1000  ）(为什么行内样式的优先级高 因为JS不能直接操纵CSS 能通过行内样式)
 (类选择器<属性选择器=伪类选择器)
 继承的权重为0（一般 默认样式<继承）
@@ -205,7 +205,7 @@ visibility:hidden;  占据位置 是透明的效果 目前只在清除浮动中�
 指定同一标签权重可以叠加（毕竟是估计别认真）
 
 内容：content
-导航：nav  
+导航：nav
 子导航：subnav
 侧栏：aside/sidebar
 专栏：column
@@ -237,14 +237,14 @@ C3属性
 
 圆角半径：border-radius=50%;(可以拿正方形制作圆形)
 		  border-radius= 1px 2px 3px 4px/1px 2px 3px 4px;(上左 上右 下右 下左)
-	
-文字浮雕: text-shadow: 1px 2px 0 red,1px 2px 0 blue; 
+
+文字浮雕: text-shadow: 1px 2px 0 red,1px 2px 0 blue;
 颜色可以换成hsla(360,100%,30%,1) 色调0-360(0红 120绿 240蓝 PS中色相环) 饱和度（0-100%） 亮度（0-100%） 透明度0-1
 (文档流的方向 依次是 水平方向偏移量 垂直方向偏移量 羽化 颜色)
 color: transparent; 透明的
 结构伪类选择器
-:first-child{}
-:last-child{}
+:first-child{} IE7 及以上版本都支持
+:last-child{}  IE9 及以上才支持
 :nth-child(an+b){} (0=<n系统取值)(选前三个-n+3 顺序不能变)
 		 取奇数odd  或 2n+1
 		 取偶数even 或 2n
@@ -264,7 +264,7 @@ word-break:keep-all;(需要手动设置一个空格或（-）来换行)
 word-spacing(单词与单词之间的距离 需要设置空格)
 
 设置input中 placehlder属性 兼容性写法
-input::-webkit-input-placeholder{} 
+input::-webkit-input-placeholder{}
      ::-moz-placeholder{}
      :-ms-input-placeholder{}
 input::placeholder{}
@@ -315,21 +315,21 @@ background-image: radial-gradient(600px at center 10px,red,blue);
 背景过滤 （仅iphone有效）
 backdrop-filter: blur(10px)
 
-box-sizing:content-box (wh为 内容) 
+box-sizing:content-box (wh为 内容)
 		   padding-box (wh为 padding+内容)
   		   border-box  (wh为 border+padding+内容)（不用计算做减法）
 
 盒子阴影(这里的盒子指的是标签所占的区域 a img 标签一样可以用该属性)
 box-shadow:inset 1px 2px 3px red;（默认外阴影 设置inset内阴影）
 
-触发bfc的方式 1. overflow:hidden; 
+触发bfc的方式 1. overflow:hidden;
 			  2. float(浮动);
 			  3. position:absolute;
 			  4. position:fixed;
 	可以解决 外边距塌陷 清除浮动
 
 垂直居中只能用在 img input table 等一些inlin-block元素上
-vertical-align:baseline;(默认基线对齐) top middle bottom 
+vertical-align:baseline;(默认基线对齐) top middle bottom
 实现行内块垂直居中 先设置行高 然后在设置vertical-align
 
 logo 优化 color: transparent; font-size:0px; text-indent:-5000px;
@@ -355,7 +355,7 @@ button 的value值 在页面显示默认就是水平垂直居中的 无需在次
 web字体
 下载到本地使用 引用外链样式.css 调用对应类 （若要移动复制 一定整体移动 字体多种格式 不能指移动css文件）（.ttf .otf .woff .eot .svg）
 
-过度属性 
+过度属性
 transition-property: all;(可以只针对多个属性width)
 transition-duration: 1s;
 transition-delay: 1s;
@@ -422,7 +422,7 @@ linear还有一种写法steps(60)60帧相对动画的执行时间分为60步
 直接父元素设置为伸缩盒子display: flex;
 特点：1.水平主轴 垂直副轴。
 	    2.所有的子元素都是按照主轴方向显示。
-调整主轴方向 
+调整主轴方向
 flex-direction: row; 左到右(默认值)
 				row-reverse;
 				column;      上到下
@@ -446,9 +446,9 @@ flex-flow: row nowrap; 是flex-direction 和 flex-wrap 的简写
 换行后整体的垂直方向 对齐方式(前提必须换行 前提必须换行 前提必须换行)
 align-content: flex-start;
 			   flex-end;
-			   center; 
+			   center;
 			   space-between;  垂直方向 （上 下 中间自适应）
-			   space-around;   
+			   space-around;
 			   stretch;
 以上属性都是给父元素设置的。
 
@@ -498,14 +498,14 @@ a:link只会匹配拥有href属性的a链接 <a>这种写法 不会匹配
 宽度剩余法 dl 高度剩余法dt dd
 
 div[class="a"]{} 	属性选择器
-div[class^="a"]{} 	选择class子字符第一个含有a 
-div[class$="a"]{} 	选择class子字符最后一个含有a 
-div[class*="a"]{} 	选择class子字符中含有a 
-div[class][id]{} 	选择既有class又有id 
+div[class^="a"]{} 	选择class子字符第一个含有a
+div[class$="a"]{} 	选择class子字符最后一个含有a
+div[class*="a"]{} 	选择class子字符中含有a
+div[class][id]{} 	选择既有class又有id
 
 dt + dd{}  	兄弟选择器  选择dt后面的所有dd 前提dt 与 dd有共同的父元素
 
-垂直方向上 外边距塌陷 margin-top margin-bottom 都有可能发生 
+垂直方向上 外边距塌陷 margin-top margin-bottom 都有可能发生
 
 父元素宽度固定 子元素平分其宽度
 .parent{ display: table; width: 900px;}
