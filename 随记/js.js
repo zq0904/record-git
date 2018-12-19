@@ -10,6 +10,7 @@ script标签属性
   confirm();      //弹出对话框 多了一个取消按钮 点击确定返回true 取消false
   prompt();         //接收用户输入的信息 window.prompt("提示信息","默认值") 点击确定返回一个字符串 点击取消返回一个null
   console.log();    //在控制台输出消息 JS调试试用
+  console.log('before %c middle %c after','color: red; font-size:20px', 'color: blue;') // 在控制台输出带有颜色的字体
   document.write(); //在页面输出信息  可以识别标签
   console.dir();    // 显示出一个对象的所有属性和方法 获取的dom元素用于展开查找属性方法
 
@@ -60,9 +61,12 @@ console.log(Number.MAX_VALUE);//数的最大值
     console.log(parseInt("010",8));//8
   n2=parseFloat(n1); //能转数字开头的非纯数字字符串 parseFloat(".1") 转为0.1
 转字符串类型
-  n2=n1.toString();//12.toString()，大部分都能转只有null和undefined不能转
-  n2=String(n1);   //String(变量) ，null和undefined能转
-var n2="a"+1;    //1隐式转换
+  s1 = n1.toString(); // 大部分都能转只有null和undefined不能转
+  // 1.toString() 报错 JS引擎无法确定这里的.是什么意思 是点运算符（对象方法）还是浮点数
+  // 1..toString()  // '1' 第二个点被视为点运算符，前面的是浮点数
+  // 1.0.toString() // '1' 第二个点被视为点运算符，前面的是浮点数
+  s1 = String(n1);  // String(变量) ，null和undefined能转
+var n2="a"+1;       // 1隐式转换
 转布尔类型
   n2=Boolean(n1);  //绝大多数为true,只有0,NaN,"",undefined,null为false
   !!"12as"
@@ -246,7 +250,7 @@ Array对象的属性和方法
   a.reverse(); //将数组翻转
   a.concat(b); //不改变原数组 数组合并+扁平化 最多一层 var a = [1,2];console.log(a.concat(3,4));console.log(a.concat([3,4]));-->[1,2,3,4] 返回新数组 将元素的值融入 如果元素为2维数组 则变为一维数组融入
   a.sort();    //数组排序 不稳定 数字正常排 字母按第一个字母大小(a,b | A,a) （更改原数组）
-    a.sort(f); function f(a,b){return a < b;} // 比较函数 a,b每次拿到前后2项的值 return true 表示交换着2项
+    a.sort(f); function f(a, b) { return a - b; } // 比较函数 修改原数组 a后一项b前一项 1.返回值小于0 a排列在b前 2.返回值等于0 相对不变 3.返回值大于0 b排列到a前
   a.forEach(function (e,i,a){ // IE8 不支持 e每一个元素 i对应索引 a这个数组
     console.log(e,i,a, this); // this 是 window
   })
@@ -1698,6 +1702,7 @@ git diff 文件名
 
 // git的版本回退（本地） 与 前进
 git log // 查看历史版本 后更新的在前 commit ca7fd8a9f12... (commitId)
+git log -2 // 查看最近2次的commit版本
 git reset --hard HEAD~2 // 后退2个版本 git reset --hard HEAD^^
 cat 文件名 // 查看某个文件
 git reset --hard HEAD a9092d160a4a // 到固定的commitId版本 log只会存储该commitId之前的 所以需要保留git的历史

@@ -240,21 +240,3 @@
     # 2018/11/26 17:41:18 [error] 10858#0: *8225 "/Users/zhaozhaoqi/zhaoqi/test/b/index.html" is not found (2: No such file or directory), client: 127.0.0.1, server: fe.test.com, request: "GET /qwe HTTP/1.1", host: "fe.test.com"
   ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

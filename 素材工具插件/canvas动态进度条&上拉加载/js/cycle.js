@@ -1,7 +1,7 @@
 ;
 (function () {
   // 插件机制
-  $.fn.cycle = function (option) { // jQ中 $.fn.extend = {cycle: function() {}} 实现多扩展
+  $.fn.cycle = function (option) { // 等价于 $.fn.extend({cycle: function() {}})
     var plugina = new plugin(this, option);
   };
   // 构造函数

@@ -253,7 +253,7 @@
   // 遍历对象的键名 是有序的 1. 先遍历所有 大于等于0整数值键（数值升序） 2. 在遍历剩下的字符串键（按加入时间） 3.最后遍历Symbol键（按加入时间）
   Object.keys({ '1': '1', 0: 0, '-1': '-1', '1.1': '1.1', 'b': 'b', 'a': 'a'  }) // [0, 1, -1, 1.1, b, a]
 
-  Object.getOwnPropertyDescriptor({a: 1}, 'a') // 获取对象一个属性 的 描述对象 （如是否可以枚举等）
+  Object.getOwnPropertyDescriptor({a: 1}, 'a') // 获取一个对象 某个一个key的 描述对象 （如 set get 枚举等）
   {
     value: 1,
     writable: true, // 可写
@@ -262,7 +262,7 @@
   }
   // for in 会遍历对象原型上的属性或方法 可以设置enumerable为false来避免
   // 如 数组的length属性、Es6的 class 中的原型方法都是不可枚举的 在实际使用中应该多使用 Object.keys() 少用for in
-  Object.getOwnPropertyDescriptors([1]) // 返回自身所有属性的描述对象
+  Object.getOwnPropertyDescriptors([1]) // 获取一个对象 所有key的 描述对象
   {
     0: { value: 1, configurable: true, enumerable: true, writable: true },
     length: { value: 1, configurable: false, enumerable: false, writable: true }
@@ -293,6 +293,26 @@
   Object.entries({a: 1}) // [['a', 1]] 返回不含继承 所有属性 键名 键值
 
   let {a, ...foo} = {b: 2, __proto__: {a: 1, c: 3}} // 1 {b: 2} 结构赋值可以拿到原型对象的属性 但 展开运算符拿不到原型对象的属性
+
+  const o = {}
+  Object.defineProperty(o, 'key', { // Object.defineProperty 为某个对象 的某个key 设置描述属性
+    get() { return 1 },
+    set(val) { console.log(val) }
+  })
+  o.key = 123 // 123
+  o.key // 1
+  Object.defineProperty(o, 'key', {
+    get() { return 1 },
+    set(val) { console.log(val) }
+  })
+  o.key = 123 // 123
+  o.key // 1
+  Object.defineProperties(o, { // Object.defineProperties 为某个对象 设置描述属性
+    a: {
+      get() { return  123 },
+      set(val) { console.log(val) }
+    }
+  })
   ```
 ## Symbol
   ```javascript
@@ -878,6 +898,7 @@
         console.log(P) // 在class内部 可以获取 P类名
       }
     }
+    console.log(Point.name) // P name属性总是返回紧跟在class关键字后面的名字
     console.log(P) // P is not defined 在class外部 不能获取 P类名
     new Point() // 只能new Point
     const Point = class {} // 如果内部没有用到P类名的话 直接匿名class 表达式
@@ -896,7 +917,45 @@
       _s() {} // 常规做法 命名上加以区别 约定 _代表私有方法 仅在内部使用
     }
 
-    // this指向
+    // this指向 单独使用类的方法this会指向方法所在的运行环境
+    class A {
+      // constructor() { this.b = this.b.bind(this) } // 简单的解决办法
+      a() { return this.b }
+      b() { console.log(this) }
+    }
+    const fn = new A().a()
+    fn() // undefined
+    const { b } = new A() // 结构复赋值 依据原型链结构
+    b() // undefined
+
+    //
+    class A {
+      get b() { console.log('getter') }
+      set b(val) { console.log('setter') console.log(val) }
+    }
+    const a = new A()
+    a.b = 1 // setter 1
+    a.b // getter
+
+    // Class 的 Generator 方法
+    class Foo {
+      static * [Symbol.iterator]() {
+        for (let a of [1, 2, 3]) {
+          yield a;
+        }
+      }
+    }
+    for (let x of Foo) {
+      console.log(x);
+    }
+
+    // Class 的静态方法
+    class Foo { // 类被看做实例的原型 在方法前加static关键字 标识该方法为静态方法 如$.ajax等都为静态方法
+      static a() { this.b() }
+      static b() { console.log(this) }
+    }
+    Foo.a() // class Foo 静态方法中的this默认指向类本身 而不是实例对象
+    new Foo().a() // .a is not a function
   ```
 
 

@@ -23,6 +23,7 @@
     "html2canvas": "^1.0.0-alpha.12",
     "jquery": "^1.12.4",
     "lodash": "^4.17.11",
+    "masonry-layout": "^4.2.2",
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.0",
