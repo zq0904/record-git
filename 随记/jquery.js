@@ -1,8 +1,8 @@
 外链引用jquery.js文件 (JQuery里 $ === jQuery )
 
 入口函数3种写法
-$(function(){}); 
-// 低版本jQ $(function () {}) 比 window.onload 先运行 高版本jQ 比window.onload后运行     
+$(function(){});
+// 低版本jQ $(function () {}) 比 window.onload 先运行 高版本jQ 比window.onload后运行
 // $(function () {}) 中的js 要等到外部js运行完成在运行 --- 所以格式你懂的
 //入口函数本质是事件 入口函数中的function类似沙箱（所以你懂的）
 //与window.onload区别 入口函数多次调用不会冲突（window.onload后面会把前面的覆盖） 入口函数在DOM绘制完成即可执行不需要等待加载图片（window.onload 必须等到页面加载完成（图片加载完成）之后才能执行）
@@ -64,7 +64,7 @@ $('p~div')      //兄弟 p后面的所有（并列）
 $('li:odd')   //li伪数组中索引为奇数
 $('li:even')  //      索引为偶数
 $('li:eq(2)')   //        索引为2  与 $('li').eq(2) 获取的标签一样
-$('li:nth-child(2)') // 前提是 子元素都是li 才能用  
+$('li:nth-child(2)') // 前提是 子元素都是li 才能用
 
 属性选择器
 $('[class]')  //选中有class属性的
@@ -84,13 +84,13 @@ $('li').prevAll() // 选择该元素之前的 所有同级元素 注意是倒序
 $('li').find('.l')//后代 li以下的元素 满足条件 效率是不高，所以少用 没有条件是无效的
 $('li').parents() //祖先 li的祖先元素 效率是不高，所以少用
 
-转  jQuery对象  
+转  jQuery对象
 $(dom对象) //如（ $(this) ）
 
-转  dom对象 
+转  dom对象
 $('div')[0] //或者 $('div').get(0)
-//使用document 去获取页面上面的元素产生的对象就是dom对象 dom对象不能使用jQuery对象的API 
-//使用 $("") 去获取页面上面的元素产生的对象就是一个jQuery对象  jQuery对象 不能直接调用dom 的API 
+//使用document 去获取页面上面的元素产生的对象就是dom对象 dom对象不能使用jQuery对象的API
+//使用 $("") 去获取页面上面的元素产生的对象就是一个jQuery对象  jQuery对象 不能直接调用dom 的API
 
 .hover(鼠标移入事件,鼠标移出事件); //写2个参数 为鼠标移入事件,鼠标移出事件 只写一个参数代表鼠标移入移出都执行相同代码！！！
 
@@ -98,11 +98,11 @@ $('div')[0] //或者 $('div').get(0)
 
 类名操作（都是原来的类基础上操作 不会有覆盖问题！！！）
 .addClass('b c d')    //在原类基础上添加 多个       原生中 .className 是对原有值得覆盖
-.removeClass('b c d') //在原类基础上删除 多个 
-.toggleClass('b c')   //每次事件触发  切换 如原来 class="a c" ---> class="a b"  
+.removeClass('b c d') //在原类基础上删除 多个
+.toggleClass('b c')   //每次事件触发  切换 如原来 class="a c" ---> class="a b"
 
 获取元素的索引
-$('li').index() //jquery自带的方法 但是 兄弟元素都是自己才准！！！ （这样的 ul>li+div+li）(div index为1) 
+$('li').index() //jquery自带的方法 但是 兄弟元素都是自己才准！！！ （这样的 ul>li+div+li）(div index为1)
 
 jQuery中的排他（用的是 链式写法 + siblings() 都是套路！！）
 $(this).addClass().siblings().removeClass();
@@ -118,16 +118,17 @@ $('<div>123</div>')   //创建元素  原生 document.createElement('div')
 
 创建元素并追加内容
 $('ul').prepend('<li>子前加</li>')  //在ul子元素最前面添加
-$('<li>子前加</li>').prependTo('ul')  
+$('<li>子前加</li>').prependTo('ul')
 $('ul').append('<li>子后加</li>')   //在ul子元素最后面添加
-$('<li>子后加</li>').appendTo('ul')   
+$('<li>子后加</li>').appendTo('ul')
 
 $('ul').before('同级前添加')
 $('ul').after('同级后添加')
 
 删除 清空
-$('li').remove();   //删除li元素及以下 （jquery里不用找父元素）
-$('li').empty();  //清空li元素里面的所有东西 （包括标签）
+$('li').remove(); // 删除li元素及以下 绑定的事件数据也会删除 （jquery里不用找父元素）
+$('li').detach(); // 页面中移除li元素及以下 绑定的事件数据仍保留 用再次添加到页面中
+$('li').empty();  // 清空li元素里面的所有东西 （包括标签）
 
 获取内容
 $('ul').text()    //获取其下 文本内容   原生中的 innerText
@@ -164,7 +165,7 @@ $('').undelegate()
 //juery中注册事件都可叠加 如果只希望解绑其中的某一个，可以传入这个事件处理程序的名称
 
 //创建元素的同时是可以直接给元素添加自定义属性
-$('<img data="20">')  
+$('<img data="20">')
 
 获取DOM元素属性（一般就用 .prop() 自定义属性才用.attr() ）
 $().prop('checked')  //不能获取自定义属性
@@ -188,7 +189,7 @@ jquery链式写法 （本质 前一个方法内部返回值 return this 直接�
 
 获取设置宽高
 $().width()    //获取元素的width 不带px       对比.css('width') 带px
-$().height()   //可以设置 
+$().height()   //可以设置
 $().innerWidth()  // width + padding          可以设置 设置完 多余的只由width来承担
 $().innerHeight()
 $().outerWidth()  // width + padding + border 可以设置 设置完 多余的只由width来承担
@@ -215,10 +216,10 @@ $(window).scrollLeft();//浏览器水平滚动距离
 
 隐式迭代（说白了jquery中自带了循环）
 可以循环 赋 相同的值  //如 $().click();  $('button').text(1);
-不能循环 赋 不同的值  
+不能循环 赋 不同的值
 不能循环 取值         $('input').prop('checked')  只能获取循环中的第一个!!!
- 
-$(this).index()     //取出某一个的值是可以的 
+
+$(this).index()     //取出某一个的值是可以的
 
 each() 可以循环 赋 不同的值
 var a = [];
@@ -282,12 +283,12 @@ $(function(){
 事件委托原理（事件本质绑定到父元素上 因为冒泡所以 都能触发  但是 只有在子元素上才触发）
 //例如点击事件
 father.onclick = function(e){
-  if(e.target.className=='son'){//判断 当前点击目标的类样式 是否为son 
+  if(e.target.className=='son'){//判断 当前点击目标的类样式 是否为son
     //满足条件才触发效果
   }
 };
 
-jQuery插件拓展 
+jQuery插件拓展
 //静态方法添加JQ插件
   $(function(){
     (function($){
@@ -301,7 +302,7 @@ jQuery插件拓展
     (function($){
       $.extend({  //通过拓展的方法 向$中添加方法
         hai:function(){
-          
+
         }
       });
     }(jQuery));
@@ -357,7 +358,7 @@ jq中做到 给多个对象同时添加循环随机动画 //核心 是 时间的
             })
         }
         var time = setInterval(f,1000);
-    }); 
+    });
 
 
 
@@ -389,7 +390,7 @@ indexOf 扩展
 // console.log( num.toString().indexOf(2) ); //()内的number类型会隐式转换
 // console.log( (''+num).indexOf(2) );
 
-数组有 indexOf(a,startindex) 方法   
+数组有 indexOf(a,startindex) 方法
 // // start 大于或者等于了数组的长度 不会检索 直接返回-1
 // var a = ['1','2','2'];
 // console.log( a.indexOf('2') ); //1  只会匹配到第一个停止
@@ -398,7 +399,7 @@ indexOf 扩展
 
 对于使用了模板的（无论是PHP自带的 还是用HTML的模板） 采用PHP方式 每次都是重定向页面 所有代码都会执行 可以不用事件委托 但是AJAX 必须使用事件委托！！！
 
-JQ中事件委托 
+JQ中事件委托
 // $('.father').on('click','.son',function(){
 //  this //this 是 .son
 // });
@@ -414,15 +415,15 @@ MySQL 语句
 // SELECT id,name FROM users WHERE id=2
 
 // 更新
-// UPDATE users SET name=1,sex=2 WHERE id=2 
+// UPDATE users SET name=1,sex=2 WHERE id=2
 
 // 删除
 // DELETE FROM users WHERE id in(1,2,3)
 //                         id like '%我%'
 
 // 添加
-// INSERT INTO users(`email`,`password`,`nickname`,`slug`,`status`) 
-// VALUES('1@com','123456','q','q','unactivated'), 
+// INSERT INTO users(`email`,`password`,`nickname`,`slug`,`status`)
+// VALUES('1@com','123456','q','q','unactivated'),
 // ('2@com','123456','w','w','unactivated'),
 // ('3@com','123456','e','e','unactivated')
 
@@ -455,7 +456,7 @@ JQ中 有这么个 .toArray() 可以将伪数组转化为真数组
 
 
 session_start();//开启session 才能使用 设置 $_SESSION
-//一旦开启session_start() 会产生 session_id() 记录在服务器 
+//一旦开启session_start() 会产生 session_id() 记录在服务器
 //PHP 查看浏览器的  $_COOKIE['PHPSESSID']
 //浏览器端查看为 document.cookie
 
@@ -466,8 +467,8 @@ session_destory(); //通过销毁当前session_id() 结束当前的会话
 $_SESSION=array(); //删除多个会话，把一个空数组给$_SESSION，把之前的值覆盖了，这样并不是将$_SESSION销毁 ，还可以重新赋值
 
 
-$('p').prop(); //获取设置 单值属性 checked等 
-//通过prop可以设置自定义属性 设置完可以通过prop获取 只不过Element不显示 
+$('p').prop(); //获取设置 单值属性 checked等
+//通过prop可以设置自定义属性 设置完可以通过prop获取 只不过Element不显示
 $('p').attr(); //获取设置 自定义属性
 $('p').removeAttr('ignore') // 删除属性
 
@@ -492,7 +493,7 @@ search   查询的参数 "?k=v&kk=vv"
 hash     锚点 "#mark"
 
 jQ中3种判断 元素是否含有类名 （含有返回true）
-$('div').is('.a');   
+$('div').is('.a');
 $('div').hasClass('a');
 $('div').prop('className')=='a';
 
@@ -516,10 +517,10 @@ JQuery中 监听动画的结束
 }
 $('.a').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){});
 /* animationend  事件 动画结束事件*/
-/* transitionend  事件 过渡结束事件*/ 
+/* transitionend  事件 过渡结束事件*/
 
 全屏切换动画元素层级问题（同级定位元素 看子元素层级）
-// section1 section2 两屏 相对定位 并列关系 
+// section1 section2 两屏 相对定位 并列关系
 // 默认 section2子元素 在 section1子元素上面
 // 通过设置section1子元素的层级 可以在section2子元素上面
 
@@ -575,7 +576,7 @@ JQ中有  $('li:first'); //li中第一个
         $('li:nth-child(1)');
         $('li:last-child');
 
-利用 delay().animate() JS延迟 实现多组动画连续 
+利用 delay().animate() JS延迟 实现多组动画连续
 // 构建连续动画
 // $().each(function(i,e){
 //  $(e).delay(i*400).animate({opacity:1;},400);//执行i*400+400(最后一个)
@@ -602,7 +603,7 @@ dom对象.classList.remove();            JQ对象.removeClass();  //删除类
 dom对象.classList.toggle();            JQ对象.toggleClass();  //切换类
 dom对象.classList.contains();          JQ对象.hasClass();   //判断含不含有类 含有返回true
 
-H5对自定义属性有了新的定义 
+H5对自定义属性有了新的定义
 // 它认为必须以 data- 开始才是自定义属性
 // 通过dataset对象 设置和获取自定义属性
 // data-my-index="1"
@@ -703,9 +704,9 @@ meta:vp 快捷方式
 通过给盒子设置 box-sizing:border-box; width就是元素的 border+padding+元素的width 在设置% （防止内容溢出 提升用户体验）
 通过设置 -webkit-tap-highlight-color: transparent; //轻触 显示透明色 做到兼容
 
-去除img的基线对齐所引起的下间隙 
+去除img的基线对齐所引起的下间隙
 // img{vertical-align:top;}
-// img{display:block} 
+// img{display:block}
 // 给父元素设置font-size:0px;
 
 sessionStorage实现 跳转页面 有曾经位置
@@ -724,7 +725,7 @@ CSS排版技巧
 一个元素定位脱标（absolute fixed） width: 100%;基于最近的定位元素
 父元素的padding会限制 子元素的width: 100%
 
-% float:left 排版 
+% float:left 排版
 ul>li*8     ul{width: 100%;} li{float:left;width:25%} //2行
 
 移动端 精灵图公共样式
@@ -812,13 +813,13 @@ screenY screenX  //基于屏幕
 //  };
 // };
 两栏布局 自适应 （浮动元素要写在前面！！！）配合相对定位 实现里面的元素正常定位
-// <div class="box1"></div>  .box1{float:left;position:relative;} 
+// <div class="box1"></div>  .box1{float:left;position:relative;}
 // <div class="box2"></div>  .box2{overflow:hidden;position:relative;} 触发bfc 使其绝缘 不要设置width
 
 网页不显示滚动条 html,body{width: 100%;height: 100%;} .box{width: 100%;height:100%;overflow:hidden;}
 // <html>
 // <body>
-//  <div class="box"></div> 
+//  <div class="box"></div>
 // </body>
 // </html>
 
@@ -903,7 +904,7 @@ Bootstrap中
 栅格系统
   .row       //会填充父容器的15px的左右内间距（通过 margin-left margin-right 各-15px）
   .col-*-*   //默认会有padding-left padding-right 各15px , 每一行的分等份，默认分成12等份 ，数字代表的是占多少份
-  .col-lg-4  //大屏设备包含自身及以上生效    
+  .col-lg-4  //大屏设备包含自身及以上生效
   .col-md-4  //中屏设备包含自身及以上生效
   .col-sm-4  //小屏设备包含自身及以上生效
   .col-xs-4  //超小屏设备包含自身及以上生效
@@ -942,11 +943,11 @@ js调用模态框的显示与隐藏
   .text-center //文本居中
   .text-danger //文本警告红色
   .modal-sm    //300*175 小模态框 (模态框那个 最外层是遮挡层 给第2层设置modal-sm)
-  
+
   .navbar //导航模块
 拷贝源码的模块样式 更改模块名称（替换对应类名）  应用层叠性覆盖更安全 ！！！
   .navbar-default  //样式模块 （webStorm点进去）
- 
+
   .navbar-toggle   //切换按钮样式
   data-toggle="collapse"   //声明是什么组件（此处是折叠组件）
   data-target="#bs-example-navbar-collapse-1" //形式 （目标元素=选择器） 选择对应的元素 并操作 （此处是折叠操作）
@@ -956,8 +957,8 @@ js调用模态框的显示与隐藏
   // id="bs-example-navbar-collapse-1" //对应的元素
   .carousel //轮播图模块
   .slide //滑动效果
-  data-ride="carousel" //初始化轮播图属性 
-标签页Tab 根据ID查找对应的显示很灵活 
+  data-ride="carousel" //初始化轮播图属性
+标签页Tab 根据ID查找对应的显示很灵活
 
   .nav-tabs //样式模块
   .active //默认选中
@@ -1033,7 +1034,7 @@ $dom.parents() // 从父元素 开始 一直到文档根元素开始 性能差
 
 .json 文件 不能使用注释// 运行会报错
 
-盒子阴影： 
+盒子阴影：
 // box-shadow: 0 0 5px 20px blue inset;
 // 水平偏移 垂直偏移 羽化度 延伸度 颜色 内阴影
 
@@ -1047,7 +1048,7 @@ function ff(e){
 
 
 css3规范 :伪类  :: 为元素
-p:first-of-type //css3选择器 通过p找父元素 在通过父元素找所有子元素类型为p 然后再找第几个 
+p:first-of-type //css3选择器 通过p找父元素 在通过父元素找所有子元素类型为p 然后再找第几个
   // <p></p>
   // <p class="red"></p>
   // .box .red:first-of-type // 匹配父元素.box内同类型标签元素p中的第一个元素.test 然而并没有
@@ -1062,7 +1063,7 @@ less （简化CSS编写 降低CSS维护成本 less向下兼容支持css语法）
 @a:10px; //数值
 @b:box;  //类名
 
-混入 //可以理解为 函数 继承 
+混入 //可以理解为 函数 继承
 .@br(@number:5px){ //默认值 定义了参数（没有默认值）调用的时候必须传参 ，（有默认值）可传可不传
   border-radius:@number;
   -webkit-border-radius:@number;
@@ -1084,7 +1085,7 @@ less （简化CSS编写 降低CSS维护成本 less向下兼容支持css语法）
   img{
     .c(); //类混入
     .@br(); //函数混入
-    background-color:darken(red,20%); //内置函数 查表 亮度提高20% 
+    background-color:darken(red,20%); //内置函数 查表 亮度提高20%
   }
 }
 
@@ -1092,7 +1093,7 @@ less在浏览器上使用的方法
 // <link rel="stylesheet/less" type="text/html" href="./index.less" />
 // <script src="less.js" type="text/javascript"></script>
 
- 
+
 @list:320px,750px;  //less声明数组 320px,360px,375px,384px,400px,414px,424px,480px,540px,640px,720px,750px;
 @len:length(@list); //数组长度
 @baseWidth:750px;   //设计稿宽 以基准宽
@@ -1119,7 +1120,7 @@ less数组的循环（构建不同的rem）
 // 响应式布局          //基于媒体查询  PC端 M端
 // less+rem布局        //PC端 通常整体布局 使用流式布局 图片%自动缩放 其他的涉及font-size等带px 采用rem布局
 实现图片适配
-P端  单独充满width: 100%   响应式 定高背景图适配只是左右被裁剪 height:400px; background-position:center;background-size:cover; 
+P端  单独充满width: 100%   响应式 定高背景图适配只是左右被裁剪 height:400px; background-position:center;background-size:cover;
 M端  单独充满width: 100%   对于图片不是单独充满  基于父容器%  或 rem
 
 zepto移动端 阉割版jQ （基本模块就5个） 每个模块都有对应的功能想要使用就要追加
@@ -1156,8 +1157,8 @@ a:focus,input:focus,button:focus{
   // 点击 a标签 点击button 就算光标聚集 在点击空白处 光标消失
 }
 
-一行文字 由于窗口宽度不够 导致换行 要求紧贴着上一行显示 
-// 该容器不设置高度 给父容器设置padding:50px 0; 
+一行文字 由于窗口宽度不够 导致换行 要求紧贴着上一行显示
+// 该容器不设置高度 给父容器设置padding:50px 0;
 
 画布的大小
 // canvas标签自带的width height 是画布的大小 css样式设置的是该元素的大小不是画布的大小 此时画布自适应
@@ -1174,13 +1175,13 @@ ctx.clip(); //裁剪 设置剪切区域为当前剪切区域与当前路径的�
 ctx.restore(); //恢复状态
 ctx.translate(100,100); // 重新映射画布上的 (0,0)位置 值会添加到x和y坐标值上
 
-ctx.fillStyle = 'rgb(255,0,0)'; //设置填充颜色 
+ctx.fillStyle = 'rgb(255,0,0)'; //设置填充颜色
 ctx.fill(); //填充 自动闭合 只能填充本次路径内的
 填充规则：非零环绕 从本区域拉出一条直线 顺时针逆时针正好抵消为0不填充 否则填充
 
 ctx.lineWidth = 10; //设置线宽 默认线宽为1px 设置了线宽会导致缺角很明显 使用ctx.closePath()填充缺角
 // 在使用线宽时 是以线的中线为基准
-ctx.closePath(); //闭合本次路径 基于本次ctx.moveTo(); 
+ctx.closePath(); //闭合本次路径 基于本次ctx.moveTo();
 
 ctx.lineCap = 'butt'; //butt默认值不加长  square加长一个正方形  round加长一个半圆形
 ctx.lineJoin = 'miter'; //miter默认值直角  bevel平角 round圆角
@@ -1190,17 +1191,17 @@ ctx.lineDashOffset = -10; //虚线的偏移  负值向右偏移
 
 绘制的线默认宽度1px 默认颜色黑色，但是实际绘制出的线2px颜色淡了?
 // 线的绘制坐标 是线的中心位置对齐坐标 1px的线跨2px的位置
-// 处理方案：移动0.5px 
+// 处理方案：移动0.5px
 
 ctx.canvas.width //画布大小 或 canvas.width
 
 直接绘制矩形
-ctx.rect(100,100,200,100); //起始位置（坐标）,宽度,高度  绘制的是矩形的路径 
+ctx.rect(100,100,200,100); //起始位置（坐标）,宽度,高度  绘制的是矩形的路径
 ctx.strokeRect(100,100,100,100); //直接 描边 矩形 每次绘制都开启了新路径 不会影响上次
 ctx.fillRect(100,100,100,100);   //直接 填充 矩形 每次绘制都开启了新路径 不会影响上次
 ctx.clearRect(50,50,100,100);    //清除矩形区域内的内容
 
-创建一个渐变的方案  
+创建一个渐变的方案
 var lg = ctx.createLinearGradient(100,100,500,100); //渐变由100,100指向500,100
 lg.addColorStop(0,'blue');  //渐变的方向  渐变的长度
 lg.addColorStop(1,'yellow');//0 0%  1 100%
@@ -1267,7 +1268,7 @@ git commit -m "备注信息"  //存到本地仓库
 git remote add origin 'git@github.com:154809748/2018_1_12.git' //远程地址起别名 origin 没有空格
 git push -u origin master // 把本地仓库推送到远程仓库 并关联
 git push origin master //推倒远程仓库 （分支默认是master） 项目不能建在桌面 不是空项目 必须先拉git pull  提示信息（shift+:一起按 输入q ）在提交 git push ！！！
- 
+
 远程仓库
 git init --bare  //创建远程（共享）仓库  必须以.git结尾的目录
 
@@ -1284,14 +1285,14 @@ git branch 新分支名 //创建新分支
 git branch -a //查看本地和远程的所有分支
 git branch -r //查看远程分支
 git branch    //查看本地分支 （绿色表示当前所在的分支）
-git checkout 分支名 //切换分支 
+git checkout 分支名 //切换分支
 //切换完分支 修改信息完 git add -A git commit -m 'name' 必须放到分支的仓库中 在切换分支到master 才不显示分支的内容
 git checkout -b 新的分支名 //创建新分支 并 切换到该分支
 git checkout -b 新本地分支名 origin/远程分支名  // 创建新分支 并 切换到该分支 从远程仓库下载
 
 git branch -d 分支名 //删除分支
 git branch -D 分支名 //强行删除没有合并的分支
-git merge 分支名称   //合并分支  要先切换到主分支master,在master中执行命令 
+git merge 分支名称   //合并分支  要先切换到主分支master,在master中执行命令
 // 出现编辑器 按“esc” 写“：wq”
 // git push --set-upstream origin test
 
@@ -1302,18 +1303,18 @@ git fetch //更新本地仓库 和远程（共享）仓库保持一致
 git fetch origin master    // 从远程的origin的master主分支下载最新的版本到origin/master分支上
 git log -p master..origin/master // 比较本地的master分支和origin/master分支的差别
 git merge origin/master    // 最后进行合并
-   
+
 mui
 .mui-clearfix  //自带的清除浮动
 .mui-ellipsis-2 //两行超出部分显示省略号  不要设置padding-bottom 底层通过overflow:hidden实现
 .mui-ellipsis   //一行省略超出部分显示省略号
 
 javascript:;中的代码依然能执行
-// <a href="javascript:history.back();">后退</a> 
+// <a href="javascript:history.back();">后退</a>
 
 // 模版引擎中不要含有这种注释 <!-- <% if(rows.length=0){ %> --> 会报错
 模版引擎中 该加引号还是加
-// <% for(var i = 0; i < data.length; i++){ 
+// <% for(var i = 0; i < data.length; i++){
 //    if(!data[i].pic || data[i].pic.length==0){
 //      data[i].pic =  [{picAddr:'/zhaoqi-m/images/none.jpg'}];
 //    }
@@ -1341,7 +1342,7 @@ innerHTML += // 先将之前的元素拿出 + 上以后的 一起添加     会�
 .ajaxStop(function(){});      //Ajax请求完成时执行
 通过参数 s.url 具体监听那一类url 的 ajax结束
 // $(document).ajaxComplete(function(e,x,s){
-//    if(s.url=='./'){ 
+//    if(s.url=='./'){
 //      console.log(1);
 //    }else{
 //      console.log(2);

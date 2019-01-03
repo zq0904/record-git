@@ -276,7 +276,7 @@
   // this关键字 总是指向函数所在的当前对象 而 super 关键字 指向当前对象的原型对象
   const a = {
     foo: 1,
-    getFoo() { // 使用super关键字 只能使用 方法简写
+    getFoo() { // 使用super关键字 只能使用 方法简写才能被识别
       console.log(this.foo) // 1
       console.log(super.foo) // 2 Object.getPrototypeOf(this).foo
       super.getFoo() // 1 Object.getPrototypeOf(this).getFoo.call(this)
@@ -298,6 +298,10 @@
   Object.defineProperty(o, 'key', { // Object.defineProperty 为某个对象 的某个key 设置描述属性
     get() { return 1 },
     set(val) { console.log(val) }
+    configurable: true, // 是否可以再次配置(不同的)
+    enumerable: true, // 是否可枚举 for in
+    value: 1, // 属性的值 不能与 set get 共存
+    writable: false, // 是否可写 设置为false 写不会报错 但设置不上
   })
   o.key = 123 // 123
   o.key // 1
@@ -867,7 +871,7 @@
   })()
   console.log(123)
   ```
-## Class的基本语法
+## Class 基本语法
   ```javascript
     // 构造函数方式 生成实例对象 （首先是这种写法和C++和Java差异很大 而且构造函数能直接调用等问题）
     function P(x) {
@@ -890,7 +894,7 @@
     P === P.prototype.constructor // true 类本身指向 自身的 原型构造方法
     for (let key in p) { console.log(key) } // x  class的原型方法都是不可枚举的 而 构造函数上的原型方法是可枚举的 相对更“安全”
     p.hasOwnProperty('x') // true 判断p是否含有x属性 原型链上的属性不会被检测
-    Object.getPrototypeOf(p) // 获取一个对象的原型
+    Object.getPrototypeOf(p) === p.__proto__ // true 获取一个对象的原型
 
     // Class表达式
     const Point = class P {
@@ -908,15 +912,6 @@
       }
     }('张三')
 
-    // ES6 不提供 私有方法和私有属性  （注: 以下含有未实现的提案 #私有属性）
-    class A {
-      #xValue = 1; // 使用#开头标识私有属性
-      get #x() { return #xValue; } // 私有属性的get set
-      set #x(v) { this.#xValue = v; }
-      #s() {} // 私有方法
-      _s() {} // 常规做法 命名上加以区别 约定 _代表私有方法 仅在内部使用
-    }
-
     // this指向 单独使用类的方法this会指向方法所在的运行环境
     class A {
       // constructor() { this.b = this.b.bind(this) } // 简单的解决办法
@@ -928,7 +923,7 @@
     const { b } = new A() // 结构复赋值 依据原型链结构
     b() // undefined
 
-    //
+    // 取值函数（getter）和存值函数（setter）
     class A {
       get b() { console.log('getter') }
       set b(val) { console.log('setter') console.log(val) }
@@ -946,19 +941,258 @@
       }
     }
     for (let x of Foo) {
-      console.log(x);
+      console.log(x); // 1 2 3
     }
 
-    // Class 的静态方法
+    // Class的静态方法
     class Foo { // 类被看做实例的原型 在方法前加static关键字 标识该方法为静态方法 如$.ajax等都为静态方法
-      static a() { this.b() }
-      static b() { console.log(this) }
+      static a() { this.foo() }
+      static foo() { console.log(this) }
     }
-    Foo.a() // class Foo 静态方法中的this默认指向类本身 而不是实例对象
+    Foo.a() // class Foo 静态方法中的this‘默认’指向类本身 而不是实例对象
     new Foo().a() // .a is not a function
+    class Bar extends Foo { // 静态方法的继承
+      static bar1() {
+        Bar.foo() // class Bar
+      }
+      static bar2() {
+          super.foo() // class Bar super虽然指向__proto__(class Foo)但会call(this) 所以这里输出的仍是calss Bar
+      }
+    }
+
+    // 实例属性 静态属性 私有属性 新写法
+    class Bar extends Foo {
+      b = 1; // 实例属性的新写法 清晰无this 可以提前设置默认值
+      static c = 3; // 静态属性新写法
+      #d = 4; // 私有属性 (js是一门动态语言没有类型声明 私有属性的声明没有采用private关键字 @已经被留给了Decorator)
+      constructor() {
+        super()
+        console.log(this.b) // 1
+        this.b = 2; // 修改默认值 实例属性的老写法
+        console.log(this.b) // 2
+        console.log(Bar.c) // 3
+        console.log(this.#d) // 4
+      }
+      #bar() {} // 私有方法新写法 仅允许在类内部调用 不暴露给外部 (react环境中暂不支持)
+      // _bar() {} // 私有方法老写法 仅仅是约定
+    }
+    // Bar.c = 3 // 静态属性老写法
+
+    // 私有属性 getter和setter
+    class A {
+      #xValue = 1;
+      get #x() { return #xValue; } // 私有属性的get set
+      set #x(v) { this.#xValue = v; }
+    }
+
+    // new.target 通过new命令调用构造函数返回构造函数本身
+    function A() {
+      console.log(new.target) // 如果使用
+    }
+    A() // undefined
+    new A() // f A() {}
+    class A {
+      constructor() {
+        console.log(new.target)
+      }
+    }
+    class B extends A {
+      constructor() {
+        console.log(new.target) // class B  类中new.target返回类本身
+        super() // class B   call(this)会影响new.target
+      }
+    }
   ```
+## Class 继承
+  ```javascript
+    // Es5的继承
+    function A(a) { this.a = a }
+    A.prototype.asd = function() { console.log(this.a) }
+    B.prototype = new A() // 原型链继承
+    B.__proto__ = A // 为了实现静态属性方法的继承
+    function B(a, b) { this.b = b; A.call(this, a) } // 构造函数继承（Es5构造函数继承先创建子类this 然后再将父类方法添加到this上）
+    B.prototype.get1 = function() { this.asd() }
+    B.prototype.get2 = function() { Object.getPrototypeOf(this).asd.call(this) }
+    b = new B('a', 'b')
 
+    // Es6的继承
+    class A {
+      constructor(a) { this.a = a }
+      asd() { console.log(this.a) }
+      static aaa() { console.log(this) }
+    }
+    class B extends A { // B.prototype = new A();（原型链继承） B.__proto__ = A (为了实现静态属性方法的继承)(坑：Object.getPrototypeOf(B) = A 这样的赋值不被允许)
+      constructor(a, b) {
+        // 子类继承必须在constructor中调用super否则会报错
+        // 因为子类的this在构造函数继承的实现上是通过调用父类构造函数得到父类实例对象，在对其加工(添加自身的属性方法)最终得到自身this（这于Es5继承机制完全不同）
+        super(a) // A.prototype.constructor.call(this, a) // super作为函数使用代表父类的构造函数并自动call(this)
+        this.b = b
+        // console.log(super) // 直接打印super会报错 因为js引擎无法知道这个super是作为方法调用 还是作为对象使用
+      }
+      get1() { this.asd() }
+      // super作为对象使用 获取(调用) super相当于Object.getPrototypeOf(this) 在普通方法中指向父类原型对象 在静态方法中指向父类
+      get2() { super.asd() } // Object.getPrototypeOf(this).asd.call(this) // b.__proto__.asd.call(this) // B.prototype.asd.call(this) // a.__proto__.asd.call(this) // a.__proto__.asd.call(this) // A.prototype.asd.call(this)
+      static bbb() { super.aaa() } // Object.getPrototypeOf(this).aaa.call(this) // A.aaa.call(this)
+      // super作为对象使用 设置(赋值) super相当于this 在普通方法中指向实例对象 在静态方法中指向子类
+      set1() { super.asd = 'asd' } // this.asd = 'asd' // b.asd = 'asd'
+      static set2() { super.asd = 'asd' } // this.asd = 'asd' // B.asd = 'asd'
+    }
+    const b = new B('a', 'b')
+    b.get1() // 'a'
+    b.get2() // 'a'
+    console.log(b) // B {a: "a", b: "b"}
+                   //   a: "a"
+                   //   b: "b"
+                   //   __proto__: A
+                   //     constructor: class B
+                   //     get1: ƒ get1()
+                   //     get2: ƒ get2()
+                   //       __proto__:
+                   //       asd: ƒ asd()
+                   //       constructor: class A
+                   //       __proto__: Object
+    // 术语 原型我们指__proto__ 原型对象prototype
+    Object.getPrototypeOf({__proto__: {a: 1}}) // {a: 1} 获取一个对象的原型
+    Object.setPrototypeOf({}, {a: 1}) // {__proto__: {a: 1}} 设置一个对象的原型
+    Object.create({a: 1}, {foo: {value: 1}}) // {foo: 1, __proto__: {a: 1}} 创建一个对象其原型为第一个参数 第二个参数设置所有属性的描述对象
+    // Es6可以自定义原生数据结构 Es5无法做到（因为Es5先创建子类实例对象this 再将父类的属性添加到this 由于父类的内部属性无法获取 导致无法继承原生的构造函数）
+    class VersionArray extends Array {
+      constructor() {
+        super();
+        this.history = [[]]
+      }
+      commit() { // 暂存快照
+        this.history.push(this.slice())
+      }
+      revert() { // 回退到上一快照版本
+        this.splice(0, this.length, ...this.history[this.history.length - 1])
+      }
+    }
+  ```
+## 修饰器
+  ```javascript
+    // 1.类的 修饰器 @后跟 函数名 或 匿名函数
+    @d // 等价于 @(target) => target.a =1 等价于 @function(target) { target.a =1 }
+    class A {}      // 被修饰的类
+    function d(target) { target.a = 1 } // 类的修饰器只会接收到1个参数为 类本身
+    console.log(A.a) // 1
+    // 编译后的结果为
+    let _class
+    let A = d(_class = class A {}) || _class
+    function d(target) { target.a = 1 }
+    // 传参形式
+    @f(1)
+    class A {}
+    function f(arg) {
+      return function(target) {
+        target.a = arg
+      }
+    }
+    console.log(A.a)
+    // 修饰器对类行为的改变是在编译时发生的 而非 运行时
+    // 实际开发中React结合Redux
+    class A extends React.Component {}
+    export default connect(mapStateToProps, mapDispatchToProps)(A)
+    // 修饰器写法
+    @connect(mapStateToProps, mapDispatchToProps)
+    export default class A extends React.Component {}
 
+    // 2.类方法的 修饰器 提供对属性的修饰 也就是 描述属性
+    class A {
+      @d
+      add() {}
+    }
+    function d(classPrototype, matchName, descriptor) { // 类方法的修饰器接收到的参数为 类的原型 该属性(方法名) 该方法的描述对象
+      descriptor.enumerable = true
+      // 默认取descriptor 不用显示声明(return descriptor)
+    }
+    // 在解析的时候会调用 Object.defineProperty(classPrototype, matchName, descriptor)
+    for (let v in new A()) console.log(v) // add 正常class原型属性都是不可枚举的通过修饰器改变这一行为
+    class A {
+      @log
+      add(a, b) { return a + b }
+    }
+    function log(prototype, methodName, descriptor) {
+      let oldVal = descriptor.value
+      descriptor.value = function(...args) {
+        console.log('日志信息')
+        return oldVal.apply(this, args)
+      }
+    }
+    new A().add(1, 2) // '日志信息' 3
+    // 方法有多个修饰器
+    class A {
+      @d(1)
+      @dd(2)
+      add() {}
+    }
+    function d(arg) {
+      console.log(arg)
+      return (p, n, d) => {
+        d.value = arg
+        console.log('d')
+      }
+    }
+    function dd(arg) {
+      console.log(arg)
+      return (p, n, d) => {
+        d.value = arg
+        console.log('dd')
+      }
+    }
+    // 1 2 dd d 函数调用的执行顺序为从外而内 但修饰器执行顺序由内而外
+    new A().add // 1
+    // 修饰器不能用于函数 因为函数存在提升 类不存在提升可以使用
+
+    // 用修饰器实现mixin混入模式 mixin.js
+    export function mixin(...list) {
+      return function(target) {
+        Object.assign(target.prototype, ...list)
+      }
+    }
+    import {mixin} from 'mixin.js' // 使用
+    @mixin({ foo() {console.log('foo')} })
+    class A {}
+    new A().foo() // foo
+  ```
+## Es6模块规范 Module语法
+  ```javascript
+    // commonjs模块规范 运行时确定依赖
+    module.export = { a() {} } // 导出 export 为 module.export的引用
+    const {a} = require('c.js') // 本质是加载整个模块 在读取相应方法 如果不是在运行时是拿不到这个对象 导致编译时做不了“静态优化” 不利于类型检测等
+    // Es6模块规范 编译时确定依赖
+    export function a() { } // Es6模块不是对象 通过显示声明export指令导出指定代码 或者通过export default默认导出
+    import {a} from 'c.js' // 只加载a方法 不会加载其余方法 效率高 编译时加载 类型检测成为可能
+    // Es6自动启用严格模式 即 'use strict' 在严格模式中 顶层this指向undefined
+
+    // export 明确显示声明导出变量 
+    export const a = 1; // 必须具名 错误写法  export 1; const a = 1 export a;
+    export function b() { } // 错误写法 export () => { } 
+    // export等价写法 优先使用这种方式 清晰看出导出了那些变量
+    export {a as c, b} // 直接指定要输出的一组变量可以起别名 并不是导出一个匿名对象 压根就不支持:
+    export default function() {} // 默认导出 可以导出匿名成员 完全等价于export {a as default}
+    // import
+    true && import 'a' // 报错 import在编译时执行 具有“提升”效果 不能与变量表达式同用
+    import d from './c' // 默认导入 完全等价于 import {default as d} form 'c'
+    import d, {c as a, b} from './c' // 如果连写 默认导入必须写到最前面 按需导入也可以起别名
+    import * as obj from './c' // 导入所有 import语法.js是可以省略的 node_modules模块不需要写路径
+    import 'lodash' // 仅仅执行lodash模块 却不导入任何值
+
+    // export 与 import 的复合写法
+    export {a, b} from './c' // 该文件仅仅起到转发作用a,b在该文件中不可用 形式上等价于 import {a, b} from 'c'; export {a, b}
+    export {a as default} from './c' // 具名接口改为默认接口
+    // 模块的继承
+    export * from './c' // c模块的默认导出将被忽略 继承c模块除默认导出 同时添加方法
+    export const e = 3.14
+    export default () => {}
+
+    // import() 由于import指令是编译时执行 无法替代require动态加载的特点 故引入import()
+    // import() 返回promise 是异步加载 而 require() 是同步加载
+    import() 
+
+  ```
+## Module语法实现
+##
 
 
 

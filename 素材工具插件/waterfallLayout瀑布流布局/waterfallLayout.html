@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>waterfallLayout</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #ccc;
+    }
+    #operation {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+    }
+    #waterfall-container {
+      margin-top: 10px;
+    }
+
+
+    /* 样式 */
+    .cell {
+      margin-bottom: 10px;
+      background-color: #999;
+    }
+    img {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="operation">
+    <button id="getPlugin">getPlugin方法</button>
+    <button id="add">add方法</button>
+    <button id="refresh">refresh方法</button>
+  </div>
+  <div id="waterfall-container">
+    <div class="cell">
+      <img src="http://127.0.0.1:3000/0.png" />
+      <p>0</p>
+    </div>
+    <div class="cell">
+      <img src="./images/1.jpg" />
+      <p>1</p>
+    </div>
+    <div class="cell">
+      <img src="./images/2.jpg" />
+      <p>2</p>
+    </div>
+    <div class="cell">
+      <img src="./images/3.jpg" />
+      <p>3</p>
+    </div>
+    <div class="cell">
+      <img src="./images/4.jpg" />
+      <p>4</p>
+    </div>
+    <div class="cell">
+      <img src="./images/5.jpg" />
+      <img src="./images/5.jpg" />
+      <p>5</p>
+    </div>
+    <div class="cell">
+      <img src="./images/6.jpg" />
+      <p>6</p>
+    </div>
+    <div class="cell">
+      <img src="./images/7.jpg" />
+      <p>7</p>
+    </div>
+  </div>
+
+  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="./node_modules/zero-util/index.js"></script>
+  <script src="./node_modules/zero-imgsload/index.js"></script>
+  <script src="./node_modules/zero-waterfalllayout/index.js"></script>
+  <script>
+    // 插件初始化
+    $('#waterfall-container').waterfallLayout({
+      columnClassName: 'waterfall-column', // 列类名
+      columnWidth: 240, // 列宽
+      columnInterval: 10, // 列间距 每列 margin-right + margin-left
+      cellSelector: '.cell', // 需要排列的单元格 类名
+      type: 1, // 插入类型 1插入最短列 2按序插入
+      isFadein: true, // 是否渐显载入
+      fadeinSpeed: 600, // 渐显速率 单位毫秒
+      delayRatio: 1/10, // 渐显 延时比率
+      scrollOffset: 0, // 滚动偏移量 正值向下偏移 负值向上偏移
+      scrollBottom(add) { // 滚动到底部时触发的回调
+        const str = `
+          <div>
+            <div class="cell">
+              <img src="./images/0.png" />
+              <p>0</p>
+            </div>
+            <div class="cell">
+              <img src="./images/1.jpg" />
+              <p>1</p>
+            </div>
+            <div class="cell">
+              <img src="./images/2.jpg" />
+              <p>2</p>
+            </div>
+          </div>`
+        add(str)
+      }
+    });
+
+    // 基础插件方法
+    $('#getPlugin').click(() => {
+      console.log($('#waterfall-container').waterfallLayout('getPlugin'))
+    })
+    $('#refresh').click(() => {
+      $('#waterfall-container').waterfallLayout('refresh')
+    })
+    $('#add').click(() => {
+      $('#waterfall-container').waterfallLayout('add', `
+        <div>
+          <div class="cell">
+            <img src="./images/0.png" />
+            <p>0</p>
+          </div>
+          <div class="cell">
+            <img src="./images/1.jpg" />
+            <p>1</p>
+          </div>
+          <div class="cell">
+            <img src="./images/2.jpg" />
+            <p>2</p>
+          </div>
+        </div>`)
+    })
+
+  </script>
+</body>
+
+</html>
