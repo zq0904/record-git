@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>RequireJS</title>
+</head>
+
+<body>
+  <script src="./js/require.min.js" data-main="./js/index" async defer></script>
+  <script>
+    // RequireJS AMD加载方式 也是很多第三方包umd支持的加载模式（如jq vue等）
+    // 解决的问题
+    // 1.实现js文件异步加载避免因引入script标签导致网页失去响应
+    // 2.管理模块之间的依赖 便于代码的编写与维护
+
+    // async属性 异步加载
+    // defer属性 IE异步加载
+    // data-main属性的作用是 指定主模块入口
+    // requirejs 默认文件后缀是js .js可以省略
+
+    // 实现原理 RequireJS 使用 head.appendChild() 将依赖加载为script标签
+  </script>
+</body>
+
+</html>

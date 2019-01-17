@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "mock": "json-server -w data.json -p 3001",
-    "dev": "browser-sync start --server --directory --files **/*.* *.*"
+    "dev": "browser-sync start --server --directory --files **/*.*, *.*"
   },
   "directories": {
     "lib": "lib"
@@ -16,6 +16,7 @@
     "art-template": "^4.13.1",
     "axios": "^0.18.0",
     "bootstrap": "^3.3.7",
+    "create-react-app": "^2.1.3",
     "cropper": "^4.0.0",
     "echarts": "^4.2.0-rc.1",
     "exif-js": "^2.3.0",
@@ -27,10 +28,15 @@
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "remarkable": "^1.7.1",
     "vue": "^2.5.17",
     "zepto": "^1.2.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@babel/standalone": "^7.2.5"
+  },
   "author": "",
   "license": "ISC"
 }

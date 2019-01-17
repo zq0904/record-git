@@ -16,7 +16,7 @@ browserSync.init({
   },
   port: 4000, // 这个端口 只有配置到server平级才好使
   startPath: '/', // 自动打开浏览器的访问路径
-  files: ['**/*.*'] // 需要监视的文件
+  files: ['**/*.*', '*.*'] // 需要监视的文件
 })
 
 console.log('[DEMO] Server: listening on port 4000')
