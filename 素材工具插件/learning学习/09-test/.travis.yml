@@ -1,0 +1,12 @@
+language: node_js # 语言
+node_js:
+  - "8" # 要测试node版本
+brancher:
+  only:
+    - "mater" # 测试master分支
+install:
+  - "npm i"
+script:
+  - "npm run istanbul-mocha"
+after_success:
+  - "codecov" # 运行codecov 依赖于 Travis CI

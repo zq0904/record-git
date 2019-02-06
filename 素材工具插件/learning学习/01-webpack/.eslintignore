@@ -1,0 +1,5 @@
+dist/*
+build/*
+config/*
+node_modules/*
+bower_components/*

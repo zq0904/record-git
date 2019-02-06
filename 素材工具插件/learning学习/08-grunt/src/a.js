@@ -1,0 +1,1 @@
+export default () => console.log('a模块的方法执行了')

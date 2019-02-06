@@ -1,0 +1,24 @@
+{
+  "name": "08-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "mocha": "mocha src/03-mocha.js",
+    "istanbul": "istanbul cover ./src/04-istanbul.js",
+    "istanbul-mocha": "istanbul cover _mocha -R ./src/03-mocha.js",
+    "jest": "jest ./src/06-jest.test.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "benchmark": "^2.1.4",
+    "chai": "^4.2.0",
+    "codecov": "^3.1.0",
+    "istanbul": "^0.4.5",
+    "jest": "^24.0.0",
+    "mocha": "^5.2.0"
+  }
+}

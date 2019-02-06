@@ -1,0 +1,10 @@
+h2 {
+  display: flex;
+  justify-content: space-between;
+  div {
+    flex: 1;
+  }
+  p {
+    flex: 1;
+  }
+}

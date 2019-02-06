@@ -1,0 +1,30 @@
+import React, { Component } from 'react'
+
+export default class Goods extends Component {
+  componentWillMount() {
+    this.props.getAllGoods()
+  }
+  render() {
+    const {
+      props: {
+        goods,
+        addToCart
+      }
+    } = this
+    return (
+      <div>
+        <h4>商品组件 (展示商品 添加到购物车)</h4>
+        <ul>
+          {
+            goods.goods.map(v => (
+              <li key={v.id}>
+                <span>{v.title}</span> - <span>价格：{v.price}</span> - <span>库存：{v.inventory}</span><br/>
+                <button disabled={v.inventory===0} onClick={() => addToCart(v.id)}>添加到购物车</button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    )
+  }
+}
