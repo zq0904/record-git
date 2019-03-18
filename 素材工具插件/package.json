@@ -4,7 +4,7 @@
   "description": "",
   "main": "",
   "scripts": {
-    "mock": "json-server -w data.json -p 3001",
+    "mock": "json-server -w data.json -H 127.0.0.1 -p 3001",
     "dev": "browser-sync start --server --directory --files **/*.*, *.*"
   },
   "directories": {
@@ -36,6 +36,7 @@
   "devDependencies": {
     "@babel/standalone": "^7.2.5",
     "@vue/cli": "^3.4.0",
+    "create-nuxt-app": "^2.2.4",
     "create-react-app": "^2.1.3"
   },
   "author": "",

@@ -6,9 +6,9 @@
       "start": "", // start test 可以省略run
       "test": "", // npm run 是 npm run-script 的缩写 执行该命令会 临时将node_modules/.bin加入PATH变量 避免全局安装npm模块
       "dev": "npm test && npm start", // &&继发 &并发 |管道符(前一个输出是后一个输入)
-      "prebuild": "", // pre- 钩子
+      "prebuild": "", // pre - 钩子
       "build": "", // 当执行 npm run build 相当于 npm run prebuild && npm run build && npm run postbuild
-      "postbuild": "" // post- 钩子
+      "postbuild": "" // post - 钩子
     }
   }
 ```
@@ -16,7 +16,7 @@
 ```code
   npm i // 根据package.json的dependencies和devDependencies安装依赖
   npm i jquery@1 // 下载指定版本的包用@符跟版本号 如@liepin/im@1.2.9-beta
-  npm i jquery@latest // lastest表最新的
+  npm i jquery@latest // lastest表最新的稳定版
   npm i jquery@beta // beta版本
   npm i -S jqeruy@1 // 安装到生成环境依赖dependencies
   npm i -D jqeruy@1 // 安装到开发环境依赖devDependencies
@@ -46,7 +46,7 @@
       "name": "qixiaoqi"
     }
   }
-  npm unpublish <package_name> // 删除包 遇权限方面的错误 加 --force
+  npm unpublish <package_name> // 删除包 遇权限方面的错误 加 --force （只有发布没超过24小时的包才能删除, 其他的一律使用弃用操作）
   npm deprecate <package_name>@"< 1.2.0" 'This package is no longer maintained' // 弃用某个包给与友好的提示(会在安装这个包的版本小于1.2.0给予提示)
   "version": "x.y.z" // 版本控制 z bug级别小改动 y 新特性方法仍兼容 x 大版本不兼容
 ```
@@ -71,5 +71,17 @@
   npm config list // 查看配置信息
   npm get <key> // 查看全局模式key的值
   npm set <key> <val> // 设置环境变量
+  npm outdated <package_name> // 检查包是否过时会以列表形式展现
+```
+## npx
+```code
+  // npm5.20版本后引入npx命令
+  解决的问题：
+  1.使用本地项目安装的可执行工具包 不需要在package.json配置scripts字段
+  npx webpack-cli -v // 查看本地项目安装的webpack-cli 版本
+  2.执行一次性命令
+  npx create-react-app my-app // 临时安装可执行依赖包 不用全局安装 不用担心长期的污染
+  3.指定node版本 执行代码
+  npx -p node@<version> node -v 可以使用指定版本的node运行命令
 ```
 ## [参考文章](http://javascript.ruanyifeng.com/nodejs/npm.html#toc0)

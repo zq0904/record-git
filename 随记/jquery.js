@@ -1353,4 +1353,11 @@ label for id 规避 checkbox样式
 // <label for="c">点击看看 </label>
 // <input type="checkbox" id="c">
 
+jquery伪数组 浏览器显示的 实现
+new class {
+  constructor() {
+    this.splice = [].splice;
+    [].push.call(this, '1', '2')
+  }
+}
 

@@ -391,10 +391,97 @@
   wm.delete(dom) // 删除
   wm.has(dom) // 检测是否存在
   ```
-
 ## Proxy
-## Reflect
+  ```javascript
+    // 设置目的：用于在目标对象之前设置一层“拦截” 修改某些操作的默认行为 语言层面做出修改
+    const target = {a: 1} // 所要代理的目标对象
+    const handler = { // 配置对象 定制相应的拦截行为
+      get(...args) { console.log(args[2].a) }
+    }
+    const proxy = new Proxy(target, handler)
+    target.a // 代理行为必须通过proxy实例进行操作
+    proxy.a // [{a: 1}, 'a', proxy]
 
+    // Proxy支持的拦截操作一共13种
+    get(target, key, proxy) {} // 拦截属性的读取 proxy.a
+    set(target, key, value, proxy) {} // 拦截对象属性的设置 proxy.a = 1 返回boolean值 （严格模式下必须返回true）
+    apply(target, ctx, args) {} // 拦截proxy实例作为函数调用的操作 如 proxy() proxy.call() proxy.apply() target目标函数 ctx上下文对象this args函数参数数组
+    has(target, key) {} // 拦截key in proxy操作 返回boolean值 （对for in无效）
+    construct(target, args, newTarget) {} // 拦截proxy实例作为构造函数调用的操作 （必须返回对象） 如 new proxy()
+    deleteProperty(target, key) {} // 拦截delete proxy[key]操作 返回boolean值 true表成功删除 false表不能删除
+    ownKeys(target) {} // 拦截Object.getOwnPropertyNames(proxy)、Object.getOwnPropertySymbols(proxy)、Object.keys(proxy)、for...in
+    getOwnPropertyDescriptor(target, key) {} // 拦截Object.getOwnPropertyDescriptor(proxy, key)
+    defineProperty(target, key, propDesc) {} // 拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)
+    preventExtensions(target) {} // 拦截Object.preventExtensions(proxy)
+    getPrototypeOf(target) {} // 拦截Object.getPrototypeOf(proxy)
+    isExtensible(target) {} // 拦截Object.isExtensible(proxy)
+    setPrototypeOf(target, proto) {} // 拦截Object.setPrototypeOf(proxy, proto)
+
+    // 实现一个类似渲染函数的功能
+    const h = new Proxy({}, {
+	    get(target, key) {
+        return (attr = {}, ...children) => {
+          const el = document.createElement(key)
+          for (let attrKey of Object.keys(attr)) {
+            el.setAttribute(attrKey, attr[attrKey])
+          }
+          for (let child of children) {
+            if (typeof child === 'string') {
+              child = document.createTextNode(child)
+            }
+            el.appendChild(child)
+          }
+          return el
+        }
+      }
+    })
+    // h.div({a: 1},
+    //   '文本',
+    //   h.a({href: '//www.baidu.com'}, '链接'),
+    //   h.ul({},
+    //     h.li({}, '第一行'),
+    //     h.li({}, '第二行')
+    //   )
+    // )
+    // <div a="1">
+    //   "文本"
+    //   <a href="//www.baidu.com">链接</a>
+    //   <ul>
+    //     <li>第一行</li>
+    //     <li>第二行</li>
+    //   </ul>
+    // </div>
+
+    // Proxy.revocable() 静态方法
+    const {proxy, revoke} = Proxy.revocable({}, {})
+    proxy.foo = 123
+    proxy.foo // 123
+    revoke() // 取消proxy实例
+    proxy.foo // TypeError: Revoked
+  ```
+## Reflect
+  ```javascript
+    // 设计目的：
+    // 将Object对象的一些明显属于语言内部的方法放到Reflect对象上（如Object.defineProperty）未来的新方法将只部署在Reflect对象上
+    // 修改某些Object方法的返回结果，让其变得更为合理（如Object.defineProperty在无法定义属性时会抛出错误 而Reflect.defineProperty会返回false）
+    // 让Object操作都变成函数行为 如key in obj可以通过Reflect.has(obj, key)
+    // Reflect的方法与Proxy的方法一一对应 使得Proxy对象可以方便地调用对应的Reflect方法 完成修改行为
+
+    // 静态方法
+    Reflect.get(target, key, receiver) // 获取target[key] 没有返回undefinde (如果target[key]有getter那么其this绑定为receiver)
+    Reflect.set(target, key, value, receiver) // 设置target[key] = val (如果target[key]有setter那么其this绑定为receiver)
+    Reflect.has(target, key) // 判断key是否为target的键 对应key in obj 返回boolean
+    Reflect.deleteProperty(target, key) // 删除target[key] 对应delete target[key] 返回boolean表是否删除成功
+    Reflect.construct(target, args) // 提供了一种不使用new 来调用构造函数的方法 args为数组每一项为调用构造函数的参数
+    Reflect.getPrototypeOf(target) // 获取一个对象的__proto__原型 对应Object.getPrototypeOf(obj)
+    Reflect.setPrototypeOf(target, prototype) // 设置一个对象额原型 对应Object.setPrototypeOf(obj, newProto)
+    Reflect.apply(target, thisArg, args) // 等同于Function.prototype.apply.call(func, thisArg, args)
+    Reflect.ownKeys(target) // 对象的所有属性
+    Reflect.defineProperty(target, name, desc) // 等同于Object.defineProperty
+    Reflect.isExtensible(target) // 等同于Object.isExtensible 返回boolean 表对象是否可扩展
+    Reflect.preventExtensions(target) // 等同于Object.preventExtensions方法 用于让一个对象变为不可扩展 返回boolean 表是否操作成功
+    Reflect.getOwnPropertyDescriptor(target, name) // 等同于Object.getOwnPropertyDescriptor
+  ```
 ## Promise 对象
   ```javascript
   // Promise对象的状态 3种状态 pending 进行中 fulfilled 已成功 rejected 已失败
@@ -1155,7 +1242,7 @@
     class A {}
     new A().foo() // foo
   ```
-## Es6模块规范 Module语法
+## Es6模块规范
   ```javascript
     // commonjs模块规范 运行时确定依赖
     module.export = { a() {} } // 导出 export 为 module.export的引用
@@ -1165,9 +1252,9 @@
     import {a} from 'c.js' // 只加载a方法 不会加载其余方法 效率高 编译时加载 类型检测成为可能
     // Es6自动启用严格模式 即 'use strict' 在严格模式中 顶层this指向undefined
 
-    // export 明确显示声明导出变量 
+    // export 明确显示声明导出变量
     export const a = 1; // 必须具名 错误写法  export 1; const a = 1 export a;
-    export function b() { } // 错误写法 export () => { } 
+    export function b() { } // 错误写法 export () => { }
     // export等价写法 优先使用这种方式 清晰看出导出了那些变量
     export {a as c, b} // 直接指定要输出的一组变量可以起别名 并不是导出一个匿名对象 压根就不支持:
     export default function() {} // 默认导出 可以导出匿名成员 完全等价于export {a as default}
@@ -1181,38 +1268,105 @@
     // export 与 import 的复合写法
     export {a, b} from './c' // 该文件仅仅起到转发作用a,b在该文件中不可用 形式上等价于 import {a, b} from 'c'; export {a, b}
     export {a as default} from './c' // 具名接口改为默认接口
-    // 模块的继承
-    export * from './c' // c模块的默认导出将被忽略 继承c模块除默认导出 同时添加方法
+    export {default as b} from './c' // 默认接口改为具名接口
+    // 模块的继承 （如下实现了 在原有模块基础上，重写默认接口，添加一个常量）
+    export * from './c' // 这种写法导致：c模块导出的默认接口将被忽略
     export const e = 3.14
     export default () => {}
+    // 为了做到形式的对称 通过babel可以实现如下复合写法
+    // m.js
+    export const a = 'a'
+    export default function b() { return 'b' }
+    // h.js
+    export * as s from './m'   // 模块导出 { s: { a: 'a', default: function b() {} } }
+    export s from './m'        // 模块导出 { s: function b() {} }
+    export s, { a } from './m' // 模块导出 { s: function b() {}, a: 'a' }
 
     // import() 由于import指令是编译时执行 无法替代require动态加载的特点 故引入import()
-    // import() 返回promise 是异步加载 而 require() 是同步加载
-    import() 
-
+    // import()是异步加载 而 require()是同步加载
+    import('./c').then(({a, default: def}) => {}).catch() // import()返回promise 在then里直接通过结构赋值 拿到接口(default是保留关键字 通过结构赋值时 必须起别名)
+    Promise.all([import(), import()]).then([{default: a}, {default: b}]).catch() // 加载多个模块
+    // 路由懒加载（按需加载） 当用户跳转到相应的路由 才会去执行函数 才去加载相应的组件
+    const Login = () => import('@/components/Login') // 如果直接写成 Login = import('@/components/Login') 那执行到这一行的时候就已经加载了相应的组件
   ```
-## Module语法实现
-##
+## Es6模块规范 在浏览器 Node中的使用
+  ```javascript
+    1.//浏览器是同步加载常规的script标签 要实现异步加载
+    <script src="foo.js" defer></script> // dom渲染完其他脚本加载完执行 多个defer按出现顺序执行
+    <script src="foo.js" async></script> // 下载完就执行不能保证加载顺序
 
+    // 浏览器中使用es6模块加载 dom渲染完执行 多个module按出现顺序执行
+    <script src="foo.js" type="module"></script>
+    // 拥有模块作用域 模块内部的顶层变量 外部不可见
+    // 可以使用import export等指令
+    // 默认就是严格模式 顶层this指向undefined
+    // 多次import同一个模块只会加载一次
 
+    1.1//commonjs模块输出的是值的拷贝 运行时编译
+    // 1.js
+    let num = 1;
+    function add() { ++num }
+    module.exports = { num, add }
+    // 2.js
+    const obj = require('./1.js');
+    console.log( obj.num ) // 1
+    obj.add()
+    console.log( obj.num ) // 1 原始类型的值 会被缓存
 
+    1.2// Es6模块输出的是值的动态引用 编译时输出接口
+    // 1.js
+    export const num = 1;
+    export function add() { ++num }
+    // 2.js
+    import {num, add} from './1.js';
+    console.log(num) // 1
+    add()
+    console.log(num) // 2
 
+    2.// Node中使用es6模块加载要求文件以.mjs后缀 require命令不能加载.mjs文件 .mjs文件中使用就只能使用import命令
+    // Node8.5.0以上版本 使用--experimental-modules来开启试验阶段
+    node --experimental-modules 2.mjs
 
+    // Es6模块 加载 commonjs模块
+    module.exports = {a: 1}; 会被视做默认导出 export default {a: 1};
+    import obj from '';
+    console.log(obj) // {a: 1}
+    // commonjs模块 加载 Es6模块 不能使用require命令 使用import动态导入
+    export const a = 1;
+    export default {b: 1};
+    import('').then(res => console.log(res)) // { default: {b: 1}, a: 1 }
 
+    // commonjs es6 处理循环加载 问题
+    // commonjs模块加载原理 require指令实际上是加载了一个对象
+    {
+      id: '...', // 模块名
+      exports: { ... }, // 输出的各个接口 再次加载该模块 也是直接在该属性取值 会缓存
+      loaded: true, // 该模块是否执行完毕
+      ...
+    }
+    commonjs模块 处理循环加载 只会输出已执行部分
+    // 2.js
+    const a = require('./1.js');
+    console.log(a, 2);
+    exports.b = 'b';
+    // 1.js
+    const b = require('./2.js');
+    console.log(b, 1);
+    exports.a = 'a';
+    // 执行 node 2.js
+    {} 1
+    { a: 'a' } 2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    es6模块 处理循环加载 会认为想要加载的接口已经存在
+    // 1.mjs
+    import {foo} from './2.mjs';
+    console.log(foo);
+    export const bar = 'bar';
+    // 2.mjs
+    import {bar} from './1.mjs';
+    console.log(bar);
+    export const foo = 'foo';
+    // 执行 node --experimental-modules 2.mjs
+    foo is not defined
+  ```
 

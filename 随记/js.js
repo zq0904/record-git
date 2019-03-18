@@ -248,7 +248,7 @@ Array对象的属性和方法
     a.toString(); //将数组转为字符串 ,号分割
   a.join('|'); //根据分隔符 将数组拼接成字符串
   a.reverse(); //将数组翻转
-  a.concat(b); //不改变原数组 数组合并+扁平化 最多一层 var a = [1,2];console.log(a.concat(3,4));console.log(a.concat([3,4]));-->[1,2,3,4] 返回新数组 将元素的值融入 如果元素为2维数组 则变为一维数组融入
+  a.concat(b); // 不改变原数组 数组合并+扁平化 最多一层 var a = [1,2];console.log(a.concat(3,4));console.log(a.concat([3,4]));-->[1,2,3,4] 返回新数组 将元素的值融入 如果元素为2维数组 则变为一维数组融入
   a.sort();    //数组排序 不稳定 数字正常排 字母按第一个字母大小(a,b | A,a) （更改原数组）
     a.sort(f); function f(a, b) { return a - b; } // 比较函数 修改原数组 a后一项b前一项 1.返回值小于0 a排列在b前 2.返回值等于0 相对不变 3.返回值大于0 b排列到a前
   a.forEach(function (e,i,a){ // IE8 不支持 e每一个元素 i对应索引 a这个数组
@@ -614,8 +614,8 @@ textarea标签是 双边标签 也是表单元素 （设置 获取 表单元素�
 //总结:谷歌是标准的 ，IE8中 获取节点的是 获取元素的 ，获取元素的 都不支持！！！（写兼容）
 
 动态创建元素的方式（三种）
-document.write("标签及内容");//页面全部加载完毕后,使用会覆盖文档！！ 但是在页面加载的时候 可以嵌入广告
-.innerHTML="标签及内容"; //会替换里面的内容 内容过多 可以通过循环的方式 字符串拼接 但是字符串大量拼接效率太低 建议使用数组避免 a.push();
+document.write('<p>标签<\/p>') // 该方法将文本写入打开的文档流 通常解决缓存问题或动态引入广告系统 （如文档流已经关闭（在window.onload等方法中）会自动调用document.open将文档清除）
+dom.innerHTML = '标签及内容' // 会替换里面的内容 内容过多 可以通过循环的方式 字符串拼接 但是字符串大量拼接效率太低 建议使用数组避免 a.push();
 var a = document.createElement("标签名"); //这种方式 创建多标签 通过循环 数组对象 创建
 
 添加元素
@@ -1148,6 +1148,7 @@ var str="    fd  sf  ";console.log(str.replace(/\s+/g,'')); //去除完全的空
 "12332aa438aaf".match(/(?<=aa)[0-9a-z]{2}/) // (?<=) 前面必须跟着aa 但是不捕获 ['43']
 [0-9a-z]{2}(?!aa)  // 匹配两个字符，且后面紧跟着的不是aa 但是不捕获
 (?<!aa)[0-9a-z]{2} // 匹配两个字符，且前面紧跟着的不是aa 但是不捕获
+/^(?![^a-zA-Z]+$)(?!\D+$).{2}$/ // 数字字母都有 位数是2位
 
 伪数组:
 //假的数组,有length属性,能遍历 但是不能使用数组中的方法
@@ -1776,3 +1777,22 @@ dom.getBoundingClientRect() // { bottom: 333, height: 302, left: 0, right: 402, 
 .bottom // 元素下边 距 可视窗口 上边距离
 .left // 元素左边 距 可视窗口 左边距离
 .right // 元素右边 距 可视窗口 左边距离
+
+// 在Mac环境如何将Png转换为icns
+// 新建目录icon.iconset （目录名必须以.iconset结尾）
+// 将原始图片（tp.png）放入文件夹 终端切换至文件夹 执行如下命令
+sips -z 16 16     tp.png --out icon_16x16.png
+sips -z 32 32     tp.png --out icon_16x16@2x.png
+sips -z 32 32     tp.png --out icon_32x32.png
+sips -z 64 64     tp.png --out icon_32x32@2x.png
+sips -z 64 64     tp.png --out icon_64x64.png
+sips -z 128 128   tp.png --out icon_64x64@2x.png
+sips -z 128 128   tp.png --out icon_128x128.png
+sips -z 256 256   tp.png --out icon_128x128@2x.png
+sips -z 256 256   tp.png --out icon_256x256.png
+sips -z 512 512   tp.png --out icon_256x256@2x.png
+sips -z 512 512   tp.png --out icon_512x512.png
+sips -z 1024 1024 tp.png --out icon_512x512@2x.png
+// 终端切换至上层目录 执行命令
+iconutil -c icns icon.iconset icon -o tp.icns // -c转换 -o输出
+
