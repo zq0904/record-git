@@ -397,18 +397,16 @@ location.href   //获取地址栏中完整的地址 可以实现JS的页面跳�
   .search         //查询字符串（地址栏中?号及之后的部分）
   .protocol   //协议（http等）
   .hash     //地址栏上#及后面的内容（#top等）
-  .reload([true]) //刷新网页 如果有true为强制刷新
-  .assign("http://www.baidu.com"); // 跳转页面 保存历史记录 可返回
-  .replace("http://www.baidu.com");// 替换地址,不会保存历史记录 不可返回
+  .reload(true) // 刷新网页 参数 true不走缓存 默认false
+  .assign("http://www.baidu.com") // 跳转页面 保存历史记录 可返回
+  .replace("http://www.baidu.com") // 替换地址,不会保存历史记录 不可返回
 
 history对象（浏览历史）
-  .length    // 历史记录次数 也是可回退次数
-  .forward() //相当于浏览器的前进按钮
-  .back()    //相当于浏览器的后退按钮
-  .go(N)     // history.go(0) 刷新网页
-  history.go(0) 刷新网页
-  history.go(-1) 后退1步
-  history.go(2) 前进2步
+  .length    // 只读属性 历史记录次数 也是可回退次数
+  .back()    // 返回会话历史记录中的上一个页面 等价于.go(-1)和点击浏览器的后退按钮
+  .forward() // 返回会话历史记录中的下一个页面 等价于.go(1)和点击浏览器的前进按钮
+  .go(N)     // .go(0) 刷新网页 若参数超出当前会话历史纪录数 则会不进行操作
+
 navigator对象（浏览器组件）
   .appName        //浏览器名称（用来判断是什么浏览器以便解决更多兼容性问题）
   //如果是IE 返回值为Microsoft Internet Explorer 火狐等返回 Netscape
@@ -1625,6 +1623,8 @@ background-image: url(../../); // 配合使用
 overflow: hidden;
 text-overflow: ellipsis;
 white-space: nowrap;
+// js 如何判断文本溢出
+dom.offsetHeight < dom.scrollHeight // 真实高度小于 实际高度
 
 // 高度超过 显示滚动条
 max-height: 10rem;
@@ -1795,4 +1795,8 @@ sips -z 512 512   tp.png --out icon_512x512.png
 sips -z 1024 1024 tp.png --out icon_512x512@2x.png
 // 终端切换至上层目录 执行命令
 iconutil -c icns icon.iconset icon -o tp.icns // -c转换 -o输出
+
+原声获取qs IE不支持URLSearchParams方法
+const qs = new URLSearchParams(window.location.search)
+qs.get('name')
 

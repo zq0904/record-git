@@ -5,6 +5,9 @@ import PropTypes from 'prop-types'
 // React 推选使用 Flow TypeScript 来检测静态类型
 
 class StaticTypeCheck extends React.Component {
+  static defaultProps = { // 类型检测也适用于默认值 因为默认值在类型检测前就已生效
+    name: 'qi'
+  }
   static propTypes = {
     // 普通类型
     // s: PropTypes.array,
@@ -19,12 +22,13 @@ class StaticTypeCheck extends React.Component {
     // s: PropTypes.node,
 
     // React组件 <MyComponent />
-    // s: PropTypes.element,
+    s: PropTypes.element.isRequired, // 必填
 
     // React元素类型
-    s: PropTypes.elementType,
+    // s: PropTypes.elementType,
   }
   render() {
+    console.log(this.props)
     return (
       <div></div>
     );
@@ -39,6 +43,6 @@ class Asd extends React.Component {
   }
 }
 
-export default () => <StaticTypeCheck s={Asd} />
+export default () => <StaticTypeCheck s={<Asd/>} />
 
 

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>TinyMCE</title>
+  <script src="./node_modules/tinymce/tinymce.min.js"></script>
+  <script src="./js/zh_CN.js"></script>
+  <style>
+  /* 隐藏广告 */
+  .tox .tox-statusbar {
+    display: none !important;
+  }
+  /* 段落宽度 */
+  button[title="格式"][aria-label="格式"] {
+    width: 55px;
+  }
+  </style>
+</head>
+
+<body>
+  <h2>TinyMCE</h2>
+  <form method="post">
+    <textarea id="mytextarea" name="asd">Hello, World!</textarea>
+    <input type="submit" value="提交按钮">
+  </form>
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+  // npm install tinymce
+  a = tinymce.init({
+    selector: '#mytextarea', // 选择器
+    language: 'zh_CN', // 中文 可配置
+    width: 800, // 可编辑区域的宽度和高度
+    height: 300,
+    plugins: [ // 选择加载时应包含的插件
+      'advlist autolink lists link image charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste imagetools wordcount'
+    ],
+    // 工具栏展示
+    toolbar: 'insertfile undo redo | styleselect forecolor backcolor bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | image link',
+    images_upload_url: 'postAcceptor.php', // 必须设置 该选项才会出现上传标签
+    images_upload_credentials: true, // 允许传递cookie
+    images_upload_handler: function (blobInfo, success, failure) { // blobInfo图片信息提供了一系列转换方法 success成功的回调 failure失败的回调
+      console.log(blobInfo)
+      var formData = new FormData()
+      formData.append('tp', blobInfo.blob())
+      $.ajax({
+        url: '/upload',
+        data: formData,
+        type: 'POST',
+        dataType: 'JSON',
+        cache: false, // 不缓存
+        processData: false, // JQ不去处理发送的数据
+        contentType: false, // JQ不去设置请求头
+        success: function (response) {},
+        error: function (err) {}
+      })
+      // 模拟异步请求成功
+      setTimeout(function () {
+        success('http://moxiecode.cachefly.net/tinymce/v9/images/logo.png');
+      }, 300);
+    }
+  })
+  $('form').submit(function(e) {
+    e.preventDefault()
+    console.log('获取文本的内容：', $($(this).find('iframe')[0].contentDocument).find('body')[0].innerHTML)
+  })
+  </script>
+</body>
+
+</html>

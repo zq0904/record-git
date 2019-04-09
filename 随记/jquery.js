@@ -1011,7 +1011,7 @@ $.ajax({
   url: '',
   data: {},
   type: 'POST',
-  dataType: 'json',
+  dataType: 'json', // 必须小写
   // async: false, // 默认 true
   cache: false, // 禁止直接的浏览器缓存 200 OK (from disk cache) 默认 true
   success: function (data) {
@@ -1305,9 +1305,9 @@ git log -p master..origin/master // 比较本地的master分支和origin/master�
 git merge origin/master    // 最后进行合并
 
 mui
-.mui-clearfix  //自带的清除浮动
-.mui-ellipsis-2 //两行超出部分显示省略号  不要设置padding-bottom 底层通过overflow:hidden实现
-.mui-ellipsis   //一行省略超出部分显示省略号
+.mui-clearfix // 自带的清除浮动
+.mui-ellipsis-2 // 两行超出部分显示省略号  不要设置padding-bottom 底层通过overflow:hidden实现
+.mui-ellipsis // 一行省略超出部分显示省略号
 
 javascript:;中的代码依然能执行
 // <a href="javascript:history.back();">后退</a>

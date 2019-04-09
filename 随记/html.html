@@ -104,7 +104,7 @@ I分帧	<frameset cols="200,*">
 <label for="username">输出框</label><input id="username" type="text" size="输入区的长度" maxlength="最多能写几个字" name="" value="默认值" placeholder="占位符">
            <!-- accesskey="u" 设置快捷键(如Alt+u) readonly 只读  disabled 未激活 禁用  -->
  	        密码框  <input type="password" name="">
-	      提交按钮  <input type="submit" value="提交" name="">
+	      提交按钮  <input type="submit" value="提交" name=""> <!-- form表单只有一个input:text 回车会默认提交表单 可以通过加一个<input style="display: none;">来取消这种行为 -->
        选择上传文件 <input type="file" name="" accept="image/*"> <!-- accept="image/*" accept=".png" 弹框只能显示对应的mime类型 或 文件后缀 -->
 		  重置按钮  <input type="reset" value="重置按钮" name="">
 		  图片按钮  <input type="image" src="" width="" height="" name="">
@@ -214,3 +214,25 @@ document.createElement('header').style.display = 'block';
 </div>
 WAI-ARIA（盲人可读）
 <p role=""></ps>
+
+<!-- ios (QQ/Safari浏览器)微信 -->
+	<input type="file" multiple/><input type="file"/><!-- 可选 -->
+	<input type="file" capture="camera"/><!-- 直接调起相机 -->
+	<input type="file" accept="image/*" multiple/><input type="file" accept="image/*"/><!-- 可选 -->
+	<input type="file" accept="image/*" capture="camera"/><!-- 直接调起相机 -->
+<!-- android 浏览器 -->
+	<input type="file" multiple/><input type="file" capture="camera"/><input type="file"/><!-- android(chrome/搜狗/QQ) 可选 -->
+	<input type="file" accept="image/*" multiple/><input type="file" accept="image/*"/><!-- android(chrome/搜狗) 可选 -->
+	<input type="file" accept="image/*" capture="camera"/><!-- android(chrome/搜狗/QQ) 直接调起相机 -->
+
+	<input type="file" capture="camera"/><!-- androidQQ 直接调起相册 其他同别的浏览器 -->
+<!-- android 微信 -->
+	<input type="file" multiple/><input type="file" capture="camera"/><input type="file"/><!-- 直接调起相册 -->
+	<input type="file" accept="image/*" multiple/><input type="file" accept="image/*"/><!-- 可选 -->
+	<input type="file" accept="image/*" capture="camera"/><!-- 直接调起相机 -->
+
+<!-- 兼容 -->
+	<input type="file" accept="image/*" multiple/><!-- 可选 -->
+	<input type="file" accept="image/*" capture="camera"/><!-- 直接调起相机 -->
+
+

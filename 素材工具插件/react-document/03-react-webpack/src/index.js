@@ -27,6 +27,8 @@ const Props = lazy(() => import('./components/Props.jsx'))
 const StaticTypeCheck = lazy(() => import('./components/StaticTypeCheck.jsx'))
 const TS = lazy(() => import('./components/TS.tsx'))
 const StaticMode = lazy(() => import('./components/StaticMode.jsx'))
+const Api = lazy(() => import('./components/Api.jsx'))
+const Event = lazy(() => import('./components/Event.jsx'))
 
 const App = () => (
   <Router>
@@ -55,6 +57,8 @@ const App = () => (
         <Route path="/StaticTypeCheck" component={StaticTypeCheck}></Route>
         <Route path="/TS" component={TS}></Route>
         <Route path="/StaticMode" component={StaticMode}></Route>
+        <Route path="/Api" component={Api}></Route>
+        <Route path="/Event" component={Event}></Route>
       </Switch>
     </Suspense>
   </Router>
@@ -62,7 +66,8 @@ const App = () => (
 
 ReactDom.render(<App/>, document.getElementById('root'))
 
-// 1.遗留的警告
+// 如果使用 react-router-dom@4.3.1 会报警告 Route组件component属性只能接受 函数 而使用lazy得到的是一个一个对象 函数式组件 class组件编译完都是函数
+// react-router-dom@5.0.0修复了这个问题
 // Warning: Failed prop type: Invalid prop `component` of type `object` supplied to `Route`, expected `function`.
 // in Route (created by App)
 // in App
