@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>requestAnimationFrame</title>
+  <style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+  #dv {
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+  }
+  #dv2 {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    transition: all 1s linear;
+  }
+  #dv3 {
+    position: absolute;
+    top: 100px;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    background-color: yellow;
+    transition: all 1s linear;
+  }
+  </style>
+</head>
+
+<body>
+
+  <div id="dv"></div>
+  <div id="dv3">
+    <div id="dv2"></div>
+  </div>
+
+  <script>
+  // window.requestAnimationFrame(callback) 浏览器会在下次重绘之前执行callback并传入 timestamp 与 performance.now() 相同 当前时刻时间ms
+  // 返回值 id 用于取消回调函数 window.cancelAnimationFrame(id)
+  // 不用像以前写个动画还要 计算 1000/60 执行一次函数
+  const el = document.querySelector('#dv')
+  var start = null
+  const callback = timestamp => {
+    if (!start) start = timestamp
+    const progress = timestamp - start // 从第一次回调开始执行 经历的毫秒数
+    el.style.left = Math.min(progress / 10, 100) + 'px'
+    if (progress < 1000) window.requestAnimationFrame(callback) // 递归的调度
+  }
+  window.requestAnimationFrame(callback)
+
+  // 利用css过渡 封装promise版动画函数
+  const dv2 = document.querySelector('#dv2')
+  const dv3 = document.querySelector('#dv3')
+  // promise版 transitionend
+  const promiseTransitionend = el => new Promise((reslove, reject) => {
+    el.addEventListener('transitionend', function _f() {
+      el.removeEventListener('transitionend', _f, false)
+      reslove()
+    }, false)
+  })
+  // promise版 浏览器下次重绘前
+  const promiseRequestAnimationFrame = () => new Promise(reslove => window.requestAnimationFrame(reslove))
+
+  const animate = async (el, style) => {
+    await promiseRequestAnimationFrame()
+    Object.assign(el.style, style)
+    return promiseTransitionend(el)
+  }
+  animate.orderly = async (el, ...args) => {
+    let p;
+    for (const v of args) {
+      p = await animate(el, v)
+    }
+    return p
+  }
+
+  // 链式调用
+  // animate(dv2, {left: '100px'})
+  //   .then(() => Promise.all([animate(dv2, {top: '200px'}), animate(dv2, {left: '0'})]))
+  //   .then(() => animate(dv2, {top: '100px', 'border-radius': '50%'}))
+
+  // Promise.all([animate(dv2, {left: '200px'}), animate(dv2, {top: '200px'})])
+  //   .then(_ => animate(dv2, {left: '100px'}))
+
+  animate.orderly(
+    dv3,
+    { left: '100px' },
+    { top: '200px', 'background-color': 'blue', transition: 'all 2s linear' },
+    { left: '0', transition: 'all 1s linear' },
+    { top: '100px', 'border-radius': '50%' }
+  )
+  .then(_ => animate(dv2, {left: '100px'}))
+
+
+  </script>
+</body>
+
+</html>

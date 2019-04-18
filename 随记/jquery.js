@@ -512,8 +512,8 @@ $.fn.fullpage.moveTo(1,0);
 JQuery中 监听动画的结束
 // animation() show系列 slide系列 fade系列 都是通过 回调函数实现（ 在动画执行完成才会执行 ）
 监听C3 动画调用结束 通过对应的事件
-.a{
-    animation: name 1s linear infinite alternate forwards;
+.a {
+  animation: name 1s linear infinite alternate forwards;
 }
 $('.a').on('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){});
 /* animationend  事件 动画结束事件*/

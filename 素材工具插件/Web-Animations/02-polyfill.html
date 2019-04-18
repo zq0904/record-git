@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>测试 web animations 的 polyfill</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    #dv {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <button onclick="cancel()">取消</button>
+  <button onclick="finish()">完成</button>
+  <button onclick="pause()">暂停</button>
+  <button onclick="play()">开始</button>
+  <button onclick="reverse()">反向</button>
+  <div id="dv"></div>
+  <script src="./js/web-animations-next.min.js"></script>
+  <!-- <script src="https://cdn.bootcss.com/web-animations/2.3.1/web-animations-next.min.js"></script> -->
+  <script>
+  // next.min 支持 Promise
+
+  // 需要测试 promise 是否支持
+  const dv = document.querySelector('#dv')
+  const animate = dv.animate({
+    offsets: [0, 1],
+    transform: ['translate(0, 0)', 'translate(100px, 0)', 'translate(100px, 100px)', 'translate(0, 100px)', 'translate(0, 0)'],
+    backgroundColor: ['red', 'green', 'blue', 'yellow']
+    // key不支持 'background-color' 写法
+  }, {
+    // id: '1', // 用于引用动画的属性
+    // delay: 0, // 延迟时间 ms
+    // direction: 'reverse', // alternate-reverse 第一次反向运动 每次iterations后切换方向
+    duration: 1000, // 动画持续时间 ms 如果设置为0不会运行动画
+    // easing: 'linear', // cubic-bezier(0.42, 0, 0.58, 1) 变化率随着时间的推移而变化
+    // endDelay: 0, // 动画结束后延迟的毫秒数。这主要用于根据另一个动画的结束时间对动画进行排序。
+    // fill: 'none', // backwards forwards both 指示动画的效果是否应该在播放（"backwards"）之前由元素反映，在动画完成播放（"forwards"）之后保留，或者both。默认为"none"
+    // iterationStart: 0, // 描述动画应该在迭代中的哪个点开始。例如，0.5表示在第一次迭代的中途开始
+    // iterations: 1, // Infinity 动画重复的次数
+  })
+
+  console.log('animate', animate) // 实例对象
+  console.log('animate.finished', animate.finished) // 动画是否完成的promise实例
+
+  function cancel () { animate.cancel() }
+  function finish () { animate.finish() }
+  function pause () { animate.pause() }
+  function play () { animate.play() }
+  function reverse () { animate.reverse() }
+  animate.oncancel = function() { console.log('监听 取消') }
+  animate.onfinish = function() { console.log('监听 完成') }
+
+  // dv 元素的第二个动画
+  dv.animate({transform: ['rotate(0)', 'rotate(180deg)']}, {duration: 2000})
+
+  Promise.all(dv.getAnimations().map(v => v.finished)).then(list => {
+    console.log('所有动画都完成了 list', list)
+  })
+
+  </script>
+</body>
+
+</html>

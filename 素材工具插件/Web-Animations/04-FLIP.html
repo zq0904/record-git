@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FLIP</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    .start {
+      transform-origin: right bottom;
+      width: 120px;
+      height: 120px;
+      background-color: red;
+    }
+    .end {
+      position: absolute;
+      /*left: 50%;
+      top: 50%;*/
+      top: 10px;
+      right: 10px;
+      width: 200px;
+      height: 200px;
+      background-color: blue;
+    }
+  </style>
+</head>
+<body>
+  <div id="dv" class="start"></div>
+  <script>
+    const dv = document.querySelector('#dv')
+    const first = dv.getBoundingClientRect() // 获取起始状态信息
+    // first.transformOrigin = window.getComputedStyle(dv).transformOrigin
+    // first.arr = first.transformOrigin.match(/(\d+)px (\d+)px/)
+    dv.classList.add('end')
+    const last = dv.getBoundingClientRect() // 通过添加类名 获取结束状态信息
+    last.transformOrigin = window.getComputedStyle(dv).transformOrigin
+    // last.arr = last.transformOrigin.match(/(\d+)px (\d+)px/)
+    // 反向
+    const translateX = first.left - last.left
+    const translateY = first.top - last.top
+    const scaleX = first.width / last.width
+    const scaleY = first.height / last.height
+    const wdithX = first.width - last.width
+    const heightX = first.height - last.height
+    // 缩放 带来 位置偏移
+    // const correctX = last.width * (scaleX - 1) / 2
+    // const correctY = last.height * (scaleX - 1) / 2
+
+
+    // console.log(`translate(${translateX + correctX}px, ${translateY + correctY}px) scale(${scaleX}, ${scaleY})`)
+    // dv.style.transformOrigin =
+    // dv.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`
+
+    // 执行
+    dv.animate({
+      transformOrigin: ['left top', last.transformOrigin],
+      // transform: [`translate(${translateX + correctX}px, ${translateY + correctY}px) scale(${scaleX}, ${scaleY})`, 'none']
+      transform: [`translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, 'none']
+    }, {
+      duration: 2000,
+      fill: 'both'
+    })
+  </script>
+</body>
+</html>
