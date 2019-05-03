@@ -1,0 +1,13 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": "react-app",
+  "parserOptions": {
+    "ecmaFeatures": { // 允许装饰器 和 类之间使用 export
+      "legacyDecorators": true
+    }
+  },
+  "rules": {}
+}

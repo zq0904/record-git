@@ -1,0 +1,11 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "types": ["node"] // npm i @types/node -D 保证require可用 这个 和版本有关 "core-js": "^2.6.5", "@types/node": "^8.10.48", "ts-node": "^7.0.1", "typescript": "^3.2.4"
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

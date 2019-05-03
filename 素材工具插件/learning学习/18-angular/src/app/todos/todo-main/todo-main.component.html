@@ -1,0 +1,7 @@
+<ul>
+  <li *ngFor="let item of todoList; trackBy: trackByTodoList;">
+    <button (click)="del(item.id)">删除{{item.id}}</button>
+    <span [style.textDecoration]="item.isComplete ? 'line-through' : 'none'"
+      (click)="updateComplete(item.id)">{{item.text}}</span>
+  </li>
+</ul>

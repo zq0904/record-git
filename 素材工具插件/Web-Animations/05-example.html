@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>flip</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #ccc;
+    }
+    .box {
+      position: relative;
+      display: flex;
+      flex-wrap: wrap;
+      width: 90%;
+      height: 50%;
+    }
+    .box .item {
+      flex: 1 1 33.3333333%;
+      padding: 2%;
+      box-sizing: border-box;
+    }
+    .item img {
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+    }
+    /* 结束状态 */
+    .big {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .big img {
+      vertical-align: top;
+      width: 100%;
+      height: 100%;
+    }
+    /* 隐藏 */
+    .none {
+      display: none;
+      opacity: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="item"><img src="./images/1.png" alt="" /></div>
+    <div class="item"><img src="./images/2.png" alt="" /></div>
+    <div class="item"><img src="./images/3.png" alt="" /></div>
+    <div class="item"><img src="./images/4.png" alt="" /></div>
+    <div class="item"><img src="./images/5.png" alt="" /></div>
+    <div class="item"><img src="./images/6.png" alt="" /></div>
+    <div class="item"><img src="./images/7.png" alt="" /></div>
+    <div class="item"><img src="./images/8.png" alt="" /></div>
+    <div class="item"><img src="./images/9.png" alt="" /></div>
+    <!-- 这种dom结构 同一时间只能有一个item被点击 -->
+    <div class="big none">
+      <img class="none" src="" alt="" />
+    </div>
+  </div>
+  <!-- <script src="../node_modules/jquery/dist/jquery.min.js"></script> -->
+  <script>
+    const imgs = document.querySelectorAll('.box .item img')
+    const bigBox = document.querySelector('.big') // 这个容器的目的 是保证同一时间只能有一个被点击
+    const bigImg = bigBox.querySelector('img')
+
+    // 放大处理
+    imgs.forEach(v => handle(v))
+    function handle (v) {
+      v.addEventListener('click', () => {
+        // 获取起始状态
+        const first = v.getBoundingClientRect()
+
+        // 隐藏小图 显示大图
+        v.classList.add('none')
+        if (v.animateInstance && v.animateInstance.playState === 'running') { // 如果缩小动画还没完成 将其取消
+          v.animateInstance.cancel()
+        }
+        bigBox.classList.remove('none') // 阻断操作
+        bigImg.classList.remove('none')
+        bigImg.setAttribute('src', v.getAttribute('src'))
+
+        // 获取结束状态
+        const last = bigBox.getBoundingClientRect() // 放大后的img 与 box同等大小 也不用考虑img加载问题
+
+        const translateX = first.left - last.left
+        const translateY = first.top - last.top
+        const scaleX = first.width / last.width
+        const scaleY = first.height / last.height
+
+        // 结束状态反向
+        bigImg.animateInstance = bigImg.animate({
+          transformOrigin: ['left top', 'left top'],
+          transform: [`translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, 'none']
+        }, {
+          duration: 2000,
+          fill: 'both',
+          easing: 'cubic-bezier(.54,.14,.81,-0.31)',
+        })
+      }, false)
+    }
+
+    // 缩小处理
+    bigImg.addEventListener('click', () => {
+      // 获取起始状态
+      const first = bigImg.getBoundingClientRect()
+      const img = document.querySelector(`.box .item img[src="${bigImg.getAttribute('src')}"]`) // 获取大图对应的小图
+
+      // 隐藏大图 显示小图
+      bigImg.classList.add('none')
+      bigImg.setAttribute('src', '')
+      if (bigImg.animateInstance.playState === 'running') { // 如果放大动画还没有完成 将其取消
+        bigImg.animateInstance.cancel()
+      }
+      img.classList.remove('none')
+
+      // 获取结束状态
+      const last = img.getBoundingClientRect()
+
+      const translateX = first.left - last.left
+      const translateY = first.top - last.top
+      const scaleX = first.width / last.width
+      const scaleY = first.height / last.height
+
+      // 结束状态反向
+      img.animateInstance = img.animate({
+        transformOrigin: ['left top', 'left top'],
+        transform: [`translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, 'none']
+      }, {
+        duration: 600,
+        fill: 'both',
+      })
+      img.animateInstance.onfinish = img.animateInstance.oncancel = () => { // 阻断操作
+        bigBox.classList.add('none')
+      }
+
+    }, false)
+
+    // 描述日志
+    function describeLog (DOMRect, borderColor) {
+      const { height, left, top, width } = DOMRect
+      const arr = []
+      const _createElement = (width, height, left, top) => {
+        const div = document.createElement('div')
+        div.style = `
+          width: ${width}px;
+          height: ${height}px;
+          position: absolute;
+          left: ${left}px;
+          top: ${top}px;
+          background-color: ${borderColor};
+          z-index: 1;
+        `
+        arr.push(div)
+      }
+      _createElement(width, 1, left, top)
+      _createElement(width, 1, left, top + height)
+      _createElement(1, height, left, top)
+      _createElement(1, height, left + width, top)
+      arr.forEach(v => document.querySelector('body').appendChild(v))
+    }
+
+  </script>
+</body>
+
+</html>

@@ -264,11 +264,37 @@ word-break:keep-all;(需要手动设置一个空格或（-）来换行)
 字间距:letter-spacing:30px;
 word-spacing(单词与单词之间的距离 需要设置空格)
 
-设置input中 placehlder属性 兼容性写法
+/* 设置input中 placehlder属性 兼容性写法 */
 input::-webkit-input-placeholder{}
 input::-moz-placeholder{} /* less写法 分开写没有问题 */
 input:-ms-input-placeholder{}
 input::placeholder{}
+
+/* 去除 h5 ios 下 <input type="text" disabled > 默认样式 */
+input:disabled, input:[disabled] {
+	color: #999;
+  -webkit-text-fill-color: #999; /* 设置颜色必须加 */
+  opacity: 1; /* 重置opacity */
+  -webkit-opacity: 1;
+  border-radius: 0; /* 重置默认圆角 */
+}
+/* 去除ie input x样式 */
+input::-ms-clear, input::-ms-reveal{
+  display: none;
+}
+/* 去除safari input锁样式 */
+input::-webkit-credentials-auto-fill-button {
+  display: none !important;
+  visibility: hidden;
+  pointer-events: none;
+  position: absolute; /* 避免占用 input 元素额外的 padding，正常情况下存在 display: none!; 就可以了 */
+  right: 0;
+}
+/* 定制autocomplete自动填充样式 */
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px white inset;
+  -webkit-text-fill-color: #000;
+}
 
 ::first-line{} 		选中文本第一行
 ::first-letter{} 	选中文本第一个字
@@ -556,12 +582,3 @@ iphoneX media
 
 类iphoneX在微信 media兼容
 @media only screen and (min-device-height: 750px) {}
-
-ios 下 <input type="text" disabled /> 会有默认样式
-input:disabled, input:[disabled] {
-	color: #999;
-  -webkit-text-fill-color: #999; /* 设置颜色必须加 */
-  opacity: 1; /* 重置opacity */
-  -webkit-opacity: 1;
-  border-radius: 0; /* 重置默认圆角 */
-}

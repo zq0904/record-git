@@ -383,7 +383,7 @@
   [...map.entries()] // [['name', '张三'], ['content', '内容']]
   [...map] // [['name', '张三'], ['content', '内容']]
 
-  //  WeakMap() 与 Met() 区别 1.成员只能是对象 2.WeakSet中的对象都是弱引用（垃圾回收机制不考虑 WeakSet 对该对象的引用, 如果其他对象都不再引用该对象, 那么垃圾回收机制会自动回收该对象所占用的内存, 不考虑该对象还存在于 WeakSet 之中）
+  //  WeakMap() 与 Mep() 区别 1.成员只能是对象 2.WeakSet中的对象都是弱引用（垃圾回收机制不考虑 WeakSet 对该对象的引用, 如果其他对象都不再引用该对象, 那么垃圾回收机制会自动回收该对象所占用的内存, 不考虑该对象还存在于 WeakSet 之中）
   const wm = new WeakMap()
   const dom = document.querySelector('a')
   wm.set(dom, () => console.log(1)) // 设置
@@ -615,7 +615,7 @@
 
   // 默认调用Iterator接口的场合
   [a, ...b] = [1, 2, 3] // 解构赋值
-  [...'asd'] // 展运算符
+  [...'asd'] // 扩展运算符
   let g = function* () { // yield* 后面跟的是一个可遍历的结构 它会调用该结构的遍历器接口
     yield 1;
     yield* [2, 3];

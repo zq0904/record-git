@@ -1,0 +1,10 @@
+<h2>一级路由目录</h2>
+<ul>
+  <li *ngFor="let v of routes; trackBy:trackByToRoute">
+    <a
+      [routerLink]="[ '/' + v.path ]"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}"
+    >{{ '/' + v.path }}</a>
+  </li>
+</ul>

@@ -8,56 +8,60 @@
       margin: 0;
       padding: 0;
     }
+    /* 起始状态 */
     .start {
-      transform-origin: right bottom;
       width: 120px;
       height: 120px;
+      line-height: 120px;
+      text-align: center;
+      color: blue;
       background-color: red;
     }
+    /* 结束状态 */
     .end {
       position: absolute;
-      /*left: 50%;
-      top: 50%;*/
-      top: 10px;
-      right: 10px;
+      left: 50%;
+      top: 50%;
       width: 200px;
       height: 200px;
+      margin-left: -100px;
+      margin-top: -100px;
+      line-height: 200px;
+      text-align: center;
+      color: red;
       background-color: blue;
     }
   </style>
 </head>
 <body>
-  <div id="dv" class="start"></div>
+  <div id="dv" class="start">文本</div>
   <script>
     const dv = document.querySelector('#dv')
-    const first = dv.getBoundingClientRect() // 获取起始状态信息
-    // first.transformOrigin = window.getComputedStyle(dv).transformOrigin
-    // first.arr = first.transformOrigin.match(/(\d+)px (\d+)px/)
+
+    // 获取起始状态信息
+    const first = dv.getBoundingClientRect()
+    first.color = window.getComputedStyle(dv).color
+    first.backgroundColor = window.getComputedStyle(dv).backgroundColor
+
     dv.classList.add('end')
-    const last = dv.getBoundingClientRect() // 通过添加类名 获取结束状态信息
-    last.transformOrigin = window.getComputedStyle(dv).transformOrigin
-    // last.arr = last.transformOrigin.match(/(\d+)px (\d+)px/)
-    // 反向
+
+    // 获取结束状态信息
+    const last = dv.getBoundingClientRect()
+    last.color = window.getComputedStyle(dv).color
+    last.backgroundColor = window.getComputedStyle(dv).backgroundColor
+
+    // 结束状态反向
     const translateX = first.left - last.left
     const translateY = first.top - last.top
     const scaleX = first.width / last.width
     const scaleY = first.height / last.height
-    const wdithX = first.width - last.width
-    const heightX = first.height - last.height
-    // 缩放 带来 位置偏移
-    // const correctX = last.width * (scaleX - 1) / 2
-    // const correctY = last.height * (scaleX - 1) / 2
-
-
-    // console.log(`translate(${translateX + correctX}px, ${translateY + correctY}px) scale(${scaleX}, ${scaleY})`)
-    // dv.style.transformOrigin =
-    // dv.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`
 
     // 执行
     dv.animate({
-      transformOrigin: ['left top', last.transformOrigin],
-      // transform: [`translate(${translateX + correctX}px, ${translateY + correctY}px) scale(${scaleX}, ${scaleY})`, 'none']
-      transform: [`translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, 'none']
+      transformOrigin: ['left top', 'left top'], // 主要是为了解决scale缩放所带来的偏移
+      transform: [`translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, 'none'],
+      color: [first.color, last.color],
+      backgroundColor: [first.backgroundColor, last.backgroundColor]
     }, {
       duration: 2000,
       fill: 'both'

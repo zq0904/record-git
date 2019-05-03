@@ -28,7 +28,7 @@ export default class TestStore {
   @action.bound UPDATESTORE(payload) {
     Object.assign(this, payload)
   }
-  
+
 }
 
 

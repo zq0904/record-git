@@ -1,7 +1,7 @@
+// Transition
 .react {
   background-color: green;
   transition: all 1s linear;
-
   &-entering {
     background-color: rgb(255, 0, 255);
   }
@@ -16,5 +16,56 @@
 
   &-exited {
     background-color: blue;
+  }
+}
+// CSSTransition
+.default {
+  background-color: green;
+}
+.my {
+  &-enter {
+    background-color: blue;
+  }
+  &-enter-active {
+    transition: all 1s linear;
+    background-color: red;
+  }
+  &-enter-done {
+    background-color: red;
+  }
+
+  &-exit {
+    background-color: red;
+  }
+  &-exit-active {
+    background-color: blue;
+    transition: all 1s linear;
+  }
+  &-exit-done {
+    background-color: blue;
+  }
+}
+// TransitionGroup
+.fate {
+  &.enter {
+    opacity: 0;
+  }
+  &.enter-active {
+    transition: opacity 1s linear;
+    opacity: 1;
+  }
+  &.enter-done {
+    opacity: 1;
+  }
+
+  &.exit {
+    opacity: 1;
+  }
+  &.exit-active {
+    opacity: 0;
+    transition: all 1s linear;
+  }
+  &.exit-done {
+    opacity: 0;
   }
 }

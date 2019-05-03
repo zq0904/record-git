@@ -1,0 +1,69 @@
+<nz-layout class="layout">
+  <nz-header>
+    <div nz-row nzType="flex" nzJustify="space-between">
+        <div nz-col class="logo" [routerLink]="[ '/home' ]"></div>
+      <div nz-col>
+        <nz-badge [nzCount]="2" style="margin-right: 24px;">
+          <nz-avatar
+            [nzSize]="32"
+            nzIcon="user"
+            nzSrc="https://avatars2.githubusercontent.com/u/32778384?s=40&v=4"
+            nz-popover nzTitle="七仔的信息" [nzContent]="contentTemplate" nzPlacement="bottomRight"
+          ></nz-avatar>
+        </nz-badge>
+      </div>
+    </div>
+  </nz-header>
+  <nz-layout>
+    <nz-sider
+      nzCollapsible
+      [(nzCollapsed)]="isCollapsed"
+      [nzBreakpoint]="'sm'"
+      [nzCollapsedWidth]="0"
+      [nzZeroTrigger]="zeroTrigger"
+    >
+      <ul
+        nz-menu
+        nzTheme="dark"
+        [nzMode]="'inline'"
+        (nzClick)="handleClick()"
+      >
+        <li
+          nz-submenu
+          *ngFor="let v of sidebarData; trackBy:trackByToSidebar;"
+          [nzOpen]="!!v.open"
+        >
+          <span title>
+            <i nz-icon nzType="user" nzTheme="outline"></i>
+            {{v.title}}
+          </span>
+          <ul>
+            <li
+              nz-menu-item
+              *ngFor="let item of v.chilren; trackBy:trackByToChilren;"
+              [routerLink]="[ item.routerLink ]"
+              [nzSelected]="!!item.selected"
+            >{{item.text}}</li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-layout class="layout-content" style="padding:0 20px 0;">
+      <nz-breadcrumb style="margin: 15px 0;">
+        <nz-breadcrumb-item *ngFor="let v of breadcrumb">{{v}}</nz-breadcrumb-item>
+      </nz-breadcrumb>
+      <nz-content style="background:#fff; padding: 24px; min-height: 280px;">
+        <router-outlet></router-outlet>
+      </nz-content>
+      <nz-footer style="text-align: center; padding: 15px 20px">Ant Design ©2019 Implement By Angular</nz-footer>
+    </nz-layout>
+  </nz-layout>
+</nz-layout>
+<!-- 模板 -->
+<ng-template #zeroTrigger>
+  <i nz-icon type="menu-fold" theme="outline"></i>
+</ng-template>
+<ng-template #contentTemplate>
+  <p><a [routerLink]="[ '/hrm' ]">登录页面</a></p>
+  <p><a href="javascript:;" nzType="info" (click)="showConfirm()">退出登录</a></p>
+</ng-template>

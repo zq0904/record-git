@@ -1,0 +1,14 @@
+<div>
+  <h2>todo-list</h2>
+  <app-todo-header
+    (add)="add($event)"
+  ></app-todo-header>
+  <app-todo-main
+    [todoList]="todoList"
+    [del]="del"
+    [updateComplete]="updateComplete"
+    (fatherMath)="fatherMath($event)"
+  >
+  </app-todo-main>
+  <p>{{watchTodoList}}</p>
+</div>

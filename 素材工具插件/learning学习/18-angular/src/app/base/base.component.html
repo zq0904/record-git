@@ -1,0 +1,22 @@
+<h2>Base</h2>
+<p title="{{value}}">插值语法：{{ value }}</p>
+<h4>指令</h4>
+<p [title]="value">动态属性绑定</p>
+<a [href]="url" (click)="handleClick($event)">事件绑定 toogle</a>
+<p>双向绑定：{{value}}</p>
+<input type="text" [(ngModel)]="value" />
+<p [ngClass]="{'red': true}">ng-class</p>
+<p [class.red]="true">添加一个class</p>
+<p [ngStyle]="{'background-color': 'red'}">ng-style</p>
+<p [style.backgroundColor]="'red'">添加一个style</p>
+<div *ngIf="boolean">*ngIf</div>
+<div [hidden]=!boolean>[hidden]</div>
+<ul>
+  <!-- 对于 ['1', '2'] 这样的数组 是没有性能问题的 不需要要加 trackBy-->
+  <li *ngFor="let item of arr; let i=index; let odd=odd; trackBy: trackById;">
+    {{ '索引为：' + i + ' 文本为：' + item.text + ' 索引是否为奇数：' + odd }}
+  </li>
+</ul>
+<button (click)="modifyArr()">测试数组 push splice [] 都有效</button>
+<!-- 嵌套路由出口 -->
+<router-outlet></router-outlet>

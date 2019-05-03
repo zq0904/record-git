@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>flip</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html, body {
+      width: 100%;
+    }
+    img {
+      vertical-align: top;
+    }
+    #vm {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+
+    }
+    #vm .card {
+      flex: 0 1 25%;
+      padding: 2%;
+      box-sizing: border-box;
+    }
+    #vm .card > .operation {
+      padding: 5px;
+      background-color: red;
+      text-align: center;
+    }
+    #vm > .operation {
+      flex: 0 1 100%;
+      margin-top: 5px;
+      padding: 10px;
+      background-color: blue;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div id="vm">
+    <div class="operation">
+      <button type="button" @click="add">添加</button>
+    </div>
+    <Card
+      v-for="v of arr"
+      :key="v.id"
+      :v="v"
+      @computed-last-state="computedLastState"
+    >
+      <img src="./images/1.png" alt="" width="100%">
+      <div class="operation"><button type="button" @click="del(v.id)">删除</button></div>
+    </Card>
+  </div>
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <script src="./js/web-animations-next.min.js"></script>
+  <script>
+    // Card 组件
+    Vue.component('Card', {
+      template: `
+        <div class="card" ref="el">
+          <slot name="default"></slot>
+        </div>
+      `,
+      props: {
+        v: {
+          type: Object,
+          require: true
+        }
+      },
+      data() {
+        return {}
+      },
+      created() { console.log('Card created') },
+      mounted() {
+        // 这个组件加载完成 挂载dom引用 触发计算结束状态
+        this.v.el = this.$refs.el
+        this.$emit('computed-last-state')
+      },
+      destroyed() {
+        this.$emit('computed-last-state')
+      }
+    })
+
+    const vm = new Vue({
+      data: {
+        arr: [{
+          id: 1,
+          el: null,
+          first: null,
+          last: null,
+        }]
+      },
+      created() { console.log('Main created') },
+      mounted() { console.log('Main mounted') },
+      methods: {
+        add() {
+          this.computedFirstState()
+          // 插入到第一个位置
+          this.arr.unshift({
+            id: this.arr[0].id + 1
+          })
+        },
+        del(id) {
+          this.computedFirstState()
+          this.arr = this.arr.filter(v => v.id !== id)
+        },
+        // 计算开∑始状态
+        computedFirstState() {
+          this.arr.forEach(v => {
+            v.first = v.el.getBoundingClientRect()
+          })
+        },
+        // 计算结束状态
+        computedLastState() {
+          this.arr.forEach((v, index) => {
+            const last = v.last = v.el.getBoundingClientRect()
+            const first = v.first || v.last
+            const translateX = first.left - last.left
+            const translateY = first.top - last.top
+            const scaleX = first.width / last.width
+            const scaleY = first.height / last.height
+            v.el.style['z-index'] = translateY !== 0 ? 1 : 0 // y轴方向有变动 提升当前元素的层级
+            v.el.animate({
+              transformOrigin: ['left top', 'left top'], // 主要是为了解决scale缩放所带来的偏移
+              transform: [`translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`, 'none'],
+              // color: [first.color, last.color],
+              // backgroundColor: [first.backgroundColor, last.backgroundColor]
+            }, {
+              duration: 600,
+              fill: 'both'
+            })
+          })
+        }
+      }
+    }).$mount('#vm')
+  </script>
+</body>
+</html>
