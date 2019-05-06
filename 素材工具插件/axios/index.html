@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>axios</title>
+</head>
+
+<body>
+  <button onclick="get()">get</button>
+  <button onclick="post()">post</button>
+  <button onclick="concurrent()">处理一组并发请求</button>
+  <button onclick="options()">axios options 发请求</button>
+  <script src="../node_modules/axios/dist/axios.min.js"></script>
+  <script>
+  const Url = 'http://127.0.0.1:3001/list'
+
+  function get() {
+    // get请求 传参 可以手动拼接qs 或者 写入参数
+    axios.get(Url + '?a=1', {
+        params: {
+          b: 1
+        }
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
+  function post() {
+    // post请求 传参
+    axios.post(Url, {
+        a: 1,
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
+  function concurrent() {
+    // 处理一组并发请求
+    axios.all([axios.get(Url), axios.get(Url)])
+      .then(axios.spread(function (...args) {
+        console.log(args)
+      }))
+      .catch(err => console.log(err))
+    // 或者
+    // Promise.all([axios.get(Url), axios.get(Url)])
+    //   .then(axios.spread(function (...args) {
+    //     console.log(args)
+    //   }))
+    //   .catch(err => console.log(err))
+  }
+
+  function options() {
+    // axios(config)
+    // axios(Url) // 默认get请求
+    axios({
+        method: 'POST',
+        url: Url,
+        params: { a: 1 }, // get请求参数
+        data: { b: 1 }, // post请求参数
+      })
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
+  // 请求方法 别名 不需要在config中指定 url method data
+  // axios.request(config)
+  // axios.get(url [, config])
+  // axios.delete(url [, config])
+  // axios.head(url [, config])
+  // axios.post(url [, data [, config]])
+  // axios.put(url [, data [, config]])
+  // axios.patch(url [, data [, config]])
+
+  // 使用自定义配置创建axios的新实例
+  // axios.create([config])
+
+  const instance = axios.create({
+    baseURL: '',
+    timeout: 120000, // 超时时间2分钟
+    headers: {}
+  })
+  </script>
+</body>
+
+</html>
