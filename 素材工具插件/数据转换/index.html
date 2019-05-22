@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>binary</title>
+</head>
+
+<body>
+  <img src="./images/binary-conversion.webp" alt="" />
+  <br />
+  <img id="img" wdith="800" src="data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAeAAD/4QOBaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wLwA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/PiA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJBZG9iZSBYTVAgQ29yZSA1LjYtYzEzOCA3OS4xNTk4MjQsIDIwMTYvMDkvMTQtMDE6MDk6MDEgICAgICAgICI+IDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+IDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZjVlN2NmYTQtODgxMi00YTA5LTllZDgtMGIzMGQ1ZmU4MWMwIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkI5QzNGMThGNkU4MDExRTlCRTI3QjlBMjRBRkJBMzBEIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkI5QzNGMThFNkU4MDExRTlCRTI3QjlBMjRBRkJBMzBEIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE3IChNYWNpbnRvc2gpIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6YzI0Mjg5N2UtN2E5Zi00YTRlLTkwM2EtMDNhNTRiNDhmNzNjIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOmY1ZTdjZmE0LTg4MTItNGEwOS05ZWQ4LTBiMzBkNWZlODFjMCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pv/uAA5BZG9iZQBkwAAAAAH/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoXHh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoaJjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/AABEIABcAFQMBIgACEQEDEQH/xABhAAEBAQEAAAAAAAAAAAAAAAAAAwQBAQEBAQEAAAAAAAAAAAAAAAACAwUGEAEAAQQBBQAAAAAAAAAAAAAAARExAhIDIUGxIjIRAQACAwEAAAAAAAAAAAAAAAABQSGhAiL/2gAMAwEAAhEDEQA/ANPJhtFYui0pcmNPaLd4bkTTj+ZpMOgRtLngE0UdMd/qNbgHnSnrT//Z" alt="" />
+  <br />
+  <video id="video" src="" width="200" controls></video>
+  <br />
+  <script>
+
+  // ArrayBuffer/TypedArray Blob/File DataURL ObjectURL String JSON 互相转换
+
+  // JSON -> String
+  JSON.stringify({a: 1}, null, 2)
+
+  const int8array = new Int8Array([1, 2, 3]) // 直接创建一个 TypedArray视图
+  // TypedArray -> ArrayBuffer
+  int8array.buffer
+
+  // ArrayBuffer -> TypedArray
+  new Int8Array(int8array.buffer)
+
+  // TypedArray + TypedArray -> TypedArray
+  function concatTypedArray(constructor, ...args) {
+    const length = args.reduce((b, a) => b + a.length, 0)
+    const res = new constructor(length)
+    args.reduce((b, a) => {
+      res.set(a, b)
+      return b + a.length
+    }, 0)
+    return res
+  }
+  concatTypedArray(Uint8Array, new Uint8Array([1, 2, 3]), new Uint8Array([4, 5, 6]))
+
+  const blob = new Blob() // new Blob(array, {type: ''}) array可以是ArrayBuffer|TypedArray|Blob type指MIME类型
+  // String|ArrayBuffer|TypedArray -> Blob
+  new Blob('hi'.split(''))
+  new Blob([new ArrayBuffer(8)])
+  new Blob([new Uint8Array([1, 1, 1])])
+
+  // Blob -> ArrayBuffer|DataURL|String
+  function readBlob(blob) {
+    return Promise.all(
+      [
+        'readAsArrayBuffer',
+        'readAsBinaryString',
+        'readAsDataURL',
+        'readAsText'
+      ]
+      .map(v => new Promise((resolve, reject) => {
+        const fileReader = new FileReader()
+        fileReader.onload = e => resolve(e.target.result)
+        fileReader.onerror = err => reject(err)
+        fileReader[v](blob)
+      }))
+    )
+  }
+  readBlob(blob).then(list => {})
+
+  // 受fetch相应结果是response实例对象 可以通过new Response()转换数据类型
+  // String|ArrayBuffer|TypedArray|Blob -> String|ArrayBuffer|Blob
+  function readAny(any) {
+    return Promise.all(
+      [
+        'arrayBuffer',
+        'blob',
+        'text'
+      ]
+      .map(v => new Response(any)[v]())
+    )
+  }
+  readAny('hi').then(list => {})
+  readAny(new ArrayBuffer(8)).then(list => {})
+  readAny(new Uint8Array([1, 2])).then(list => {})
+  readAny(new Blob()).then(list => {})
+
+  // DataURL -> Blob/File (File对象是Blob的子类)
+  function dataURL2blob(base64) { // 参数格式 data:[<mediatype>][;base64],<data>
+    const arr = base64.split(';base64,')
+    const res = window.atob(arr[1])
+    const ab = new ArrayBuffer(res.length)
+    const uint8array = new Uint8Array(ab)
+    for (let i = 0; i < res.length; i++) {
+      uint8array[i] = res.charCodeAt(i)
+    }
+    return new Blob([uint8array], { type: arr[0].split(':')[1] })
+  }
+  function dataURL2file(base64) {
+    const arr = base64.split(';base64,')
+    const res = window.atob(arr[1])
+    const ab = new ArrayBuffer(res.length)
+    const uint8array = new Uint8Array(ab)
+    for (let i = 0; i < res.length; i++) {
+      uint8array[i] = res.charCodeAt(i)
+    }
+    return new File([uint8array], 'fileName.' + arr[0].split(':')[1].split('/')[1], { type: arr[0].split(':')[1] })
+  }
+
+  const img = document.querySelector('#img')
+  const dataURL = img.getAttribute('src')
+
+  dataURL2blob(dataURL)
+  dataURL2file(dataURL)
+
+  // Blob/File -> ObjectURL
+  window[window.webkitURL ? 'webkitURL' : 'URL'].createObjectURL(dataURL2file(dataURL))
+
+  // 应用
+  // 本地上传图片预览 用户通过input表单上传 -> File -> ObjectURL/DataURL
+
+  // 拼接两个音频文件 fetch获取音频资源 -> ArrayBuffer -> TypedArray -> 拼接TypedArray -> Blob -> ObjectURL (在实践中数据确实拼接了 但只能展示第一视频)
+  // Promise.all([fetch('./2.mp4'), fetch('./1.mp4')])
+  // .then(list => Promise.all(list.map(v => v.arrayBuffer())))
+  // .then(list => {
+  //   const typedArray = concatTypedArray(Uint8Array, ...list.map(v => new Uint8Array(v)))
+  //   const blob = new Blob([typedArray], {type:'application/octet-stream'})
+  //   const url = window[window.webkitURL ? 'webkitURL' : 'URL'].createObjectURL(blob)
+  //   const video = document.querySelector('#video')
+  //   video.src = url
+  // })
+
+  // json数据转为demo.json下载 JSON -> String -> Blob -> ObjectURL
+  // new Response(JSON.stringify({a:1,b:2}, null, 2))
+  // .blob().then(res => {
+  //   const url = window[window.webkitURL ? 'webkitURL' : 'URL'].createObjectURL(res)
+  //   const a = document.createElement('a')
+  //   a.download = '2.json'
+  //   a.rel = 'noopener'
+  //   a.href = url
+  //   a.click()
+  //   a.remove()
+  // })
+
+  // Excel的生成 成熟的还是第三方插件
+  // const json = [
+  //   ['姓名,', '电话'],
+  //   ['A,A', ',123'],
+  //   ['BB', '456']
+  // ]
+  // let str = ''
+  // for (const arr of json) {
+  //   const length = arr.length
+  //   for (const [index, val] of arr.entries()) {
+  //     str += `\"${val}\"${index === length - 1 ? '\n' : ','}`
+  //   }
+  // }
+  // // \ufeff 解决中文乱码
+  // const url = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str)
+  // const a = document.createElement('a')
+  // a.download = '2.csv'
+  // a.rel = 'noopener'
+  // a.href = url
+  // a.click()
+  // a.remove()
+
+  // 生成伪Excel
+  // const a = document.createElement('a')
+  // a.download = '2.xls'
+  // a.rel = 'noopener'
+  // a.href = `data:application/vnd.ms-excel;,
+  // <html>
+  //   <head><meta charset="UTF-8"></head>
+  //   <body>
+  //     <table>
+  //       <tr><td>姓名</td></tr>
+  //       <tr><td>ASD</td></tr>
+  //     </table>
+  //   </body>
+  // </html>`
+  // a.click()
+  // a.remove()
+
+  // PDF的生成 成熟的还是第三方插件
+
+  </script>
+</body>
+
+</html>

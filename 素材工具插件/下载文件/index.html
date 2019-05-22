@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>下载</title>
+</head>
+
+<body>
+
+  <button id="download1">下载文件(window.location.href)</button>
+  <button id="download2">下载文件(a标签) !!!移动端不支持download属性</button>
+  <button id="download3">下载文件(form标签)</button>
+  <button id="download4">下载文件(iframe标签)</button>
+
+  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script>
+
+    // window.location.href后台需要设置响应头 Content-Disposition attachment (查询字符串可传参) 以保证是下载 不是打开
+    $('#download1').click(function() {
+      window.location.href = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
+    })
+    // 下载文件(a标签)（查询字符串可传参）!!!移动端不支持download属性
+    // 微信h5 环境图片是不能直接被下载到本地的 需要用户手动长按保存 （一般做法是将这张图片的层级调到最上面 opacity: 0 文案提示用户长按保存）
+    $('#download2').click(function() {
+      var url = './images/1.jpg?a=1&b=2'
+      download(url, '2.jpg')
+
+      function download(url, fileName) {
+        var a = document.createElement('a')
+        a.download = fileName
+        a.rel = 'noopener'
+        a.href = url
+        // 触发模拟点击
+        a.dispatchEvent(new MouseEvent('click')) // a.click()
+        a.remove()
+      }
+
+    })
+    // 下载文件(form标签)（传参 不可拼接查询字符串 只能push input方式加参）
+    $('#download3').click(function() {
+      var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master'
+      $('<form action="' + url + '" method="get" style="display: none;"></form>')
+      .append('<input type="text" name="a" value="1">') // 传参
+      .append('<input type="text" name="b" value="2">')
+      .appendTo($('body'))
+      .submit()
+      .remove()
+    })
+    // 下载文件(iframe标签)
+    $('#download4').click(function() {
+      var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
+      $('<iframe src="' + url + '" style="display: none;"></iframe>')
+      .appendTo($('body'))
+    })
+
+  </script>
+</body>
+
+</html>

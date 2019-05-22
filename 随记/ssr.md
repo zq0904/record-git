@@ -13,7 +13,7 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/dou
 2. 设置端口 密码
 3. 加密方式 aes-256-cfb
 4. 协议插件 auth_sha1_v4
-5. 确定兼容
+5. 确定兼容 y
 6. 混淆插件 plain
 7. 设备数限制
 ## 谷歌BBR加速
@@ -22,32 +22,31 @@ wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
 chmod +x bbr.sh
 ./bbr.sh
 回车回车 等待安装
-输入lsmod | grep bbr 出现tcp_bbr字样表示bbr已安装并启动成功
+lsmod | grep bbr // 查看是否安装成功 出现tcp_bbr字样表示bbr已安装并启动成功
 ## 完成
 ===================================================
 
  ShadowsocksR账号 配置信息：
 
- I  P     : 45.32.7.41
+ I  P     : 202.182.98.13
  端口     : 8888
  密码     :
  加密     : aes-256-cfb
  协议     : auth_sha1_v4_compatible
  混淆     : plain
- 设备数限制 : 3
+ 设备数限制 : 2
  单线程限速 : 0 KB/S
  端口总限速 : 0 KB/S
- SS    链接 : ss://YWVzLTI1Ni1jZmI6Wmhhb3FpMzA1MjgxMkA0NS4zMi43LjQxOjg4ODg
- SS  二维码 : http://doub.pw/qr/qr.php?text=ss://YWVzLTI1Ni1jZmI6Wmhhb3FpMzA1MjgxMkA0NS4zMi43LjQxOjg4ODg
- SSR   链接 : ssr://NDUuMzIuNy40MTo4ODg4OmF1dGhfc2hhMV92NDphZXMtMjU2LWNmYjpwbGFpbjpXbWhoYjNGcE16QTFNamd4TWc
- SSR 二维码 : http://doub.pw/qr/qr.php?text=ssr://NDUuMzIuNy40MTo4ODg4OmF1dGhfc2hhMV92NDphZXMtMjU2LWNmYjpwbGFpbjpXbWhoYjNGcE16QTFNamd4TWc
+ SS    链接 : ss://YWVzLTI1Ni1jZmI6Wmhhb3FpMzA1MjgxMkAyMDIuMTgyLjk4LjEzOjg4ODg
+ SS  二维码 : http://doub.pw/qr/qr.php?text=ss://YWVzLTI1Ni1jZmI6Wmhhb3FpMzA1MjgxMkAyMDIuMTgyLjk4LjEzOjg4ODg
+ SSR   链接 : ssr://MjAyLjE4Mi45OC4xMzo4ODg4OmF1dGhfc2hhMV92NDphZXMtMjU2LWNmYjpwbGFpbjpXbWhoYjNGcE16QTFNamd4TWc
+ SSR 二维码 : http://doub.pw/qr/qr.php?text=ssr://MjAyLjE4Mi45OC4xMzo4ODg4OmF1dGhfc2hhMV92NDphZXMtMjU2LWNmYjpwbGFpbjpXbWhoYjNGcE16QTFNamd4TWc
 
   提示:
  在浏览器中，打开二维码链接，就可以看到二维码图片。
  协议和混淆后面的[ _compatible ]，指的是 兼容原版协议/混淆。
 
 ===================================================
-
 ## ios 手机 Shadowrocket客户端
 美区App Id
 4818800@gmail.com

@@ -28,6 +28,7 @@
     "mockjs": "^1.0.1-beta3",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.0",
+    "qs": "^6.7.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "remarkable": "^1.7.1",
@@ -43,6 +44,6 @@
     "create-react-app": "^3.0.0",
     "json-server": "file:json-server"
   },
-  "author": "",
+  "author": "qixiaoqi",
   "license": "ISC"
 }

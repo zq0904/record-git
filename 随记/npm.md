@@ -20,6 +20,7 @@
   npm i jquery@beta // beta版本
   npm i -S jqeruy@1 // 安装到生成环境依赖dependencies
   npm i -D jqeruy@1 // 安装到开发环境依赖devDependencies
+  npm i --production // 只安装dependencies
   npm uni jqeruy@1 // 移除包 同时移除package.json安装依赖
 ```
 ## 发布 删除包

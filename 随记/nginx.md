@@ -1,5 +1,6 @@
 # nginx [官网](http://www.nginx.org/)
 ## 官方文章
+  [Nginx请求反向代理](https://www.jianshu.com/p/bed000e1830b)
   [通常的 Nginx 陷阱](https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/)
   [if 是恶魔](https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/)
   [location 指令](http://nginx.org/en/docs/http/ngx_http_core_module.html#location)
@@ -190,6 +191,10 @@
     # http://fe.test.com/api/list?a=1&b=2 -> http://127.0.0.1:3002/list?a=1&b=2
     location /api/ {
       proxy_pass http://127.0.0.1:3002/;
+    }
+    # 静态资源 http://cms.zeroer.cc/public/?a=1&b=2 -> http://127.0.0.1:3000/public/?a=1&b=2
+    location /public/ {
+      proxy_pass http://127.0.0.1:3000/public/;
     }
     # http://fe.test.com/api/list?a=1&b=2 -> http://127.0.0.1:3002/list?a=1&b=2
     location /api/ {

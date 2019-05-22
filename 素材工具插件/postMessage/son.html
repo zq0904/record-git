@@ -17,7 +17,7 @@
 
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
   <script>
-    
+
     // 监听发送过来的消息
     $(window).on('message', e => {
       // console.log(e)
@@ -28,13 +28,13 @@
         event.source.postMessage({ msg: '子 -> 父 回反消息' }, event.origin) // 返回消息
       }, 2000)
     })
-    
+
     // 主动向父级发送消息
     $('button').on('click', () => {
       window.parent.postMessage({ msg: '子 -> 父 主动发送消息' }, 'http://127.0.0.1:3000')
     })
 
   </script>
-  
+
 </body>
 </html>

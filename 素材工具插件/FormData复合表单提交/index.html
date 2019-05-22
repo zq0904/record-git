@@ -15,25 +15,24 @@
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
   <script>
     // var formData = new FormData()
-    // console.log(formData)
-    // // formData实力对象 的方法全部在原型中 自己本身没有任何属性和方法
-    // formData.append('name', 'qq') // 添加数据
-    // formData.append('age', 1)
-    // var age = formData.get('age') // 获取数据
+    // console.log(formData) // formData实例对象的方法全部在原型中 自己本身没有任何属性和方法
+    // formData.append('name', '1') // 添加数据（USVString）
+    // formData.append('fileBobl', new Blob(), '123.jpg') // 添加二级制数据 第三个参数可以指定文件名 （Blob对象的默认文件名是“blob” File对象的默认文件名 是文件的文件名）
+    // var name = formData.get('name') // 获取数据
+    // console.log(name)
     // formData.delete('name') // 删除数据
-    // console.log(age, formData.get('name'))
 
     $('#form1').on('submit', function(e) {
       e.preventDefault()
 
-      // 第一种方式通过formData的 append 方法追加 然后上传 append方法的第一个参数充当 name字段
+      // // 第一种方式 通过formData的 append 方法追加 然后上传 append方法的第一个参数充当 name字段
       // var formData = new FormData()
       // // console.log($(this).serialize()) // 表单序列化拿不到 file
       // formData.append('upLoad', $(this).find('[type="file"]')[0].files[0]) // Content-Disposition: form-data; name="upLoad"; filename="头像.jpg" Content-Type: image/jpeg
       // console.log(formData.get('upLoad'))
-      // formData.append('key', 111) // Content-Disposition: form-data; name="a"
+      // formData.append('a', 1) // Content-Disposition: form-data; name="a"
 
-      // 第二种方式通过 new FormData() 传参 表单dom对象 就会把这个表单中含有name属性的表单控件 转成formData对象
+      // 第二种方式 通过new FormData()传参 表单dom对象 就会把这个表单中含有name属性的表单控件 转成formData对象
       var formData = new FormData(this)
       formData.append('a', 1) // 动态添加其余字段
 
@@ -52,7 +51,7 @@
     })
 
     // 对于这种 图片随其他信息一起上传的 用户体验不好 如果图片上传失败或其他字段上传失败 不易单独捕获信息告知用户
-    // 一般 图片还是单独异步上传 最后回传的信息 随表单一起上传
+    // 一般 图片还是单独异步上传 最后回传的id 随表单一起上传
   </script>
 </body>
 </html>

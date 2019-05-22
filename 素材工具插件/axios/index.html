@@ -7,20 +7,31 @@
 </head>
 
 <body>
-  <button onclick="get()">get</button>
-  <button onclick="post()">post</button>
-  <button onclick="concurrent()">处理一组并发请求</button>
-  <button onclick="options()">axios options 发请求</button>
+  <button onclick="get()">get请求传参</button><br />
+  <button onclick="post()">post请求传参</button><br />
+  <button onclick="concurrent()">处理一组并发请求</button><br />
+  <button onclick="options()">axios(options)发请求</button><br />
+  <button onclick="instance()">自定义配置创建axios的新实例axios发请求</button><br />
+  <button onclick="interceptors()">添加拦截器 在发请求</button><br />
+  <button onclick="urlencoded()">application/x-www-form-urlencoded 请求</button><br />
+  <button onclick="encapsulation()">vue中常规封装</button><br />
+  <script src="../node_modules/vue/dist/vue.min.js"></script>
+  <script src="../node_modules/qs/dist/qs.js"></script>
   <script src="../node_modules/axios/dist/axios.min.js"></script>
   <script>
   const Url = 'http://127.0.0.1:3001/list'
 
+  // 全局的axios默认值
+  // axios.defaults.baseURL = ''
+  // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+
   function get() {
     // get请求 传参 可以手动拼接qs 或者 写入参数
     axios.get(Url + '?a=1', {
-        params: {
-          b: 1
-        }
+        // params: {
+        //   b: 1
+        // },
+        params: new URLSearchParams({ b: 1 }) // 也支持URLSearchParams对象
       })
       .then(res => console.log(res))
       .catch(err => console.log(err))
@@ -28,9 +39,7 @@
 
   function post() {
     // post请求 传参
-    axios.post(Url, {
-        a: 1,
-      })
+    axios.post(Url, { a: 1 }) // 也支持URLSearchParams对象
       .then(res => console.log(res))
       .catch(err => console.log(err))
   }
@@ -58,6 +67,11 @@
         url: Url,
         params: { a: 1 }, // get请求参数
         data: { b: 1 }, // post请求参数
+        // baseURL: '',
+        // responseType: 'json', // 服务器将响应的数据类型 arraybuffer blob document json text stream
+        // timeout: 1000, // 请求的超时时间
+        // headers: { a: 1 }, // request headers
+        // 等
       })
       .then(res => console.log(res))
       .catch(err => console.log(err))
@@ -72,14 +86,102 @@
   // axios.put(url [, data [, config]])
   // axios.patch(url [, data [, config]])
 
-  // 使用自定义配置创建axios的新实例
-  // axios.create([config])
+  function instance() {
+    // 自定义配置 创建axios实例
+    // axios.create([config])
+    const instance = axios.create({
+      baseURL: '',
+      timeout: 120000, // 超时时间2分钟
+      headers: { a: 1 }
+    })
+    instance.post(Url, { b: 1 })
+  }
 
-  const instance = axios.create({
-    baseURL: '',
-    timeout: 120000, // 超时时间2分钟
-    headers: {}
-  })
+  function interceptors() {
+    // 拦截器 可以添加到 创建的axios实例 这里以全局axios为例
+    // 请求拦截器
+    const id = axios.interceptors.request.use(function (config) {
+      console.log('请求 拦截信息', config)
+      return config
+    }, function (err) {
+      console.log('请求 拦截错误', err)
+      return err
+    })
+    // 删除拦截器
+    // axios.interceptors.request.eject(id)
+    // 响应拦截器
+    axios.interceptors.response.use(function (response) {
+      console.log('响应 拦截信息', response)
+      return response
+    }, function (err) {
+      console.log('响应 拦截错误', err)
+      return err
+    })
+
+    // 发送一个测试请求
+    axios.get(Url)
+      .then(res => console.log(res))
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  function urlencoded() {
+    const instance = axios.create({
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    // 此时参数的传法
+    // new URLSearchParams({a: 1}) (可以引入 url-search-params-polyfill 保证兼容)
+    // qs.stringify({a: 1})
+    // 手动递归拼接encodeURIComponent
+    instance({
+      method: 'post',
+      url: Url,
+      data: new URLSearchParams({ a: 1 }),
+    })
+  }
+
+  function encapsulation() {
+    const instance = axios.create({
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
+    })
+    // 向Vue原型中
+    Object.defineProperties(Object.getPrototypeOf(Vue), {
+      $fetch: {
+        get() {
+          return ({ data, ...args }) => {
+            return instance({
+                ...args,
+                data: Qs.stringify(data)
+              })
+              .then(res => {
+                if (res.falg !== 1) return Promise.reject(res) // 主要是为了保证 await Promise.reject() 后不执行
+                return Promise.resolve(res)
+              })
+              .catch(err => {
+                window.alert(JSON.stringify(err))
+                return Promise.reject(err)
+              })
+          }
+        }
+      }
+    })
+    // 测试发请求
+    Object.getPrototypeOf(Vue)
+      .$fetch({
+        method: 'POST',
+        url: Url,
+        data: { a: 1, b: 2 }
+      })
+      .then(function(res) {
+        console.log(res)
+      })
+      .catch(function(err) {
+        console.log(err)
+      })
+  }
   </script>
 </body>
 

@@ -151,7 +151,7 @@
         </div>
       `
       $('body').append(html)
-      
+
       // 生成二维码
       $('#download-source .qrCode').qrcode({
         // render: 'table', // 二维码的生成方式 table兼容性好 默认canvas
@@ -164,13 +164,14 @@
 
       // 官网 http://html2canvas.hertzen.com
       // 图片资源 跨域的 必须 做跨域处理 1.前端单独的静态资源 nginx配置 Access-Control-Allow-Origin *; 2.后端的静态资源 设置响应头 Access-Control-Allow-Origin *;
-      // 尽量不要使用css background-img 设置背景图 模糊 img标签更加清晰
+      // 如果条件允许 尽量不要使用css background-img设置背景图 会导致模糊 img标签更加清晰
       // 不要添加css动画 (animation) 会影响导出图片
+      // 一定不要使用transform相关属性
       const source = $('#download-source')
       const width = parseInt(source.css('width'))
       const height = parseInt(source.css('height'))
       const _canvas = document.createElement('canvas')
-      const scale = 5
+      const scale = 2 // 放大的倍数
       _canvas.width = width * scale
       _canvas.height = height * scale
       _canvas.getContext('2d').scale(scale, scale)
@@ -187,7 +188,7 @@
       })
 
     })
-    
+
   </script>
 </body>
 </html>
