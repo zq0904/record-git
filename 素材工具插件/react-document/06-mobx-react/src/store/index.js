@@ -6,6 +6,6 @@ configure({ enforceActions: 'observed' }) // 强制使用action去更改可观�
 
 export default class RootStore {
   constructor() {
-    this.testStore = new TestStore(this)
+    this.testState = new TestStore(this)
   }
 }

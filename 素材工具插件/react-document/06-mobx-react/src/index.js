@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import RootStore from './store' // 开启全局的严格模式 一定要放到所有组件上面
+import { Provider } from 'mobx-react'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import RootStore from './store'
-import { Provider } from 'mobx-react'
+import './index.css';
 
 ReactDOM.render(
   <Provider {...new RootStore()}>

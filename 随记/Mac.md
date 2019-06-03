@@ -5,7 +5,7 @@
     cmd 下运行 sudo spctl --master-disable 输入密码 回车。 (会设置 安全隐藏的任何来源)
     系统偏好设置 -> 安全性和隐私 -> 锁头 -> 选择 未知来源打开
   2. 查看隐藏文件 shift + command + .
-  4. 查看host nginx.conf文件位置 打开Finder Shift+Command+G 搜索 /private/etc/hosts /usr/local/etc/nginx/nginx.conf
+  4. 查看host nginx.conf文件位置 打开Finder Shift+Command+G 搜索 /etc/hosts /usr/local/etc/nginx/nginx.conf
   3. 取消f1到fn的默认功能 使之可以设置快捷键 系统偏好设置 -> 键盘 -> 勾选 将F1、F2等键用作标准功能键
   5. 终端操作 command+n新打开终端窗口 command+t新打开分页终端 command+w关闭当前分页终端
   6. 重启电脑 nginx不会自动启动 需要执行 sudo nginx 来启动nginx

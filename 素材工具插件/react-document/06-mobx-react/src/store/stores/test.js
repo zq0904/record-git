@@ -28,9 +28,7 @@ export default class TestStore {
   @action.bound UPDATESTORE(payload) {
     Object.assign(this, payload)
   }
-
 }
-
 
 // // autorun 初始会执行一次 有点类似计算属性 依赖的可被观测的数据变动 就会执行业务函数
 // const ts = new TestStore()

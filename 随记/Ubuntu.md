@@ -2,8 +2,9 @@
 ```
   // 链接远程服务器 mac终端直接 window使用Git Bash ssh root@45.32.7.41
   // 一段时间没有操作 ssh会自动断开链接
+  // 阿里云 Vultr等服务商 默认就是root超级管理员 命令不需要加sudo
   exit // 手动断开链接
-  // 阿里云Vultr等服务商 默认就是root超级管理员 命令不需要加sudo
+  reboot // 立即重启服务器
   apt-get // Ubuntu自带的Linux包管理工具 16.04版本后引入apt 简单可理解为 apt = apt-get、apt-cache、apt-config 中最常用命令选项的集合
   uname -a // 查看系统版本等信息
 
@@ -141,6 +142,7 @@
   sudo nginx -t // 检测是否有语法错误
   systemctl reload nginx // 重启生效
   curl -4 icanhazip.com // 查阅ip4的地址
+  systemctl start nginx // 启动nginx
 ```
 ## 守护进程 [参考](https://github.com/foreverjs/forever)
 ```
@@ -152,6 +154,16 @@
   forever stopall // 停止所有
   forever restart app.js // 重启
   forever restartall // 重启所有
+  // pm2更加强大
+  npm i -g pm2 // 安装
+  pm2 list // 查看所有
+  pm2 start src/app.js -n cms // 启动 -n 设置App name
+  pm2 restart <name|id> // 重启
+  pm2 stop <name|id> // 停止 pm2 stop all 停止所有
+  pm2 delete <name|id> // 删除 pm2 delete all 删除所有
+  pm2 startup // 生成启动脚本
+  pm2 save // 保存当前进程列表
+  pm2 unstartup // 禁用重启系统
 ```
 ## MySQl 5.7 | 8.0 [参考](https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-18-04)
 ```
@@ -188,8 +200,80 @@
   sudo apt update // 必须更新软件源
   sudo apt-get upgrade
   sudo apt install mysql-server // 正式安装 会提示设置初始密码 加密方式
-  // 调整用户身份验证(随意)
+  // 调整用户身份验证
   use mysql;
   ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'new_password';
   FLUSH PRIVILEGES;
+
+  // 使用Navicat Premium链接远程远程mysql8
+  use mysql;
+  select host,user,authentication_string,plugin from user; // 查看root plugin 是否为 mysql_native_password nivacat12仍然使用这种加密方式
+  update user set host='%' where user='root'; // mysql默认都是localhost登录权限 必须开启远程登录才能使用nivacat %表所有ip
+  GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION; // ALL表所有权限 .表所有数据库
+  FLUSH PRIVILEGES;
+
+  show global variables like 'port'; // 查看mysql 使用端口号
+  netstat -an | grep 3306 // 查看3306端口占用情况
+  tcp    0  0  127.0.0.1:3306    0.0.0.0:*   LISTEN // 用的是本地的需要修改
+  tcp6   0  0  :::3306           :::*        LISTEN // 这样确实是被开放出去了
+```
+## 开放端口
+```
+  sudo netstat -ntlp // 查看端口占用情况
+  // ufw是一种易于使用的处理iptables规则的方法
+  ufw status      // 查看状态 (Vultr上 Status: inactive)
+  ufw enable      // 开启
+  ufw disable     // 禁用
+  ufw allow ARGS  // 添加允许规则
+  ufw deny ARGS   // 添加否定规则
+  ufw reject ARGS // 添加拒绝规则
+  ufw reload      // 重载
+  ufw reset       // 重置
+```
+## 使用acme-tiny搭建https [参考](https://github.com/diafygi/acme-tiny)
+```
+  cd /home
+  mkdir le-ssl
+  cd le-ssl/
+  openssl genrsa 4096 > account.key // 创建帐户私钥
+  openssl genrsa 4096 > domain.key // 创建域私钥
+  openssl req -new -sha256 -key domain.key -subj "/" -reqexts SAN -config <(cat /etc/ssl/openssl.cnf <(printf "[SAN]\nsubjectAltName=DNS:zeroer.cc,DNS:www.zeroer.cc")) > domain.csr // 创建证书签名请求(CSR)
+  mkdir -p /var/www/challenges/ // 托管文件
+  vim /etc/nginx/sites-available/ssl
+  server {
+    listen      443 ssl;
+    server_name zeroer.cc www.zeroer.cc;
+    root        /var/www/html;
+    index       index.html index.htm index.nginx-debian.html;
+    ssl_certificate /home/le-ssl/signed_chain.crt;
+    ssl_certificate_key /home/le-ssl/domain.key;
+  }
+  server {
+    listen      80;
+    server_name zeroer.cc www.zeroer.cc;
+    root        /var/www/html;
+    index       index.html index.htm index.nginx-debian.html;
+    location ^~ /.well-known/acme-challenge/ {
+      alias /var/www/challenges/;
+      try_files $uri =404;
+    }
+    location / {
+      rewrite ^/(.*)$ https://zeroer.cc/$1 permanent;
+    }
+  }
+  sudo ln -s /etc/nginx/sites-available/ssl /etc/nginx/sites-enabled/ssl
+  systemctl reload nginx
+  wget https://raw.githubusercontent.com/diafygi/acme-tiny/master/acme_tiny.py //  acme-tiny.py脚本
+  python acme_tiny.py --account-key ./account.key --csr ./domain.csr --acme-dir /var/www/challenges/ > ./signed_chain.crt // 获取网站证书 (如遇报错ValueError: Wrote file to /var/www/challenges/YrL4gr6QOKVBdelk9prAcJMKry9f4pa2qQJ9z5LF5-s, but couldn't download http://zeroer.cc... 域名解析有问题 建议使用cloudxns)
+  // 设置自动续订cronjob
+  vim /home/le-ssl/renew_cert.sh
+  // 输入以下内容
+  #!/usr/bin/sh
+  python ./acme_tiny.py --account-key ./account.key --csr ./domain.csr --acme-dir /var/www/challenges/ > ./signed_chain.crt || exit
+  service nginx reload
+  // 测试脚本
+  chmod +x renew_cert.sh
+  ./renew_cert.sh
+  // 没有问题 使用crontab设置定时任务 每月第一天执行一次
+  0 0 1 * * /home/le-ssl/renew_cert.sh 2>> /var/log/acme_tiny.log
 ```

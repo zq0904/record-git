@@ -1,6 +1,6 @@
 import React from 'react';
-import { observable, action, autorun } from 'mobx'
-import { inject, observer } from 'mobx-react'
+import { observable, action } from 'mobx'
+import { observer, inject } from 'mobx-react'
 
 // Mobx 版本问题
 // 5+ 任何支持ES6代理的浏览器
@@ -9,30 +9,43 @@ import { inject, observer } from 'mobx-react'
 // 定义状态并使其可观察
 const store = new class {
   @observable time = 0
+  @observable arr = [1]
   @action.bound
   add() { this.time += 1 }
-}
+  @action.bound
+  update() { this.arr.push(1) }
+}()
 
-// autorun 初始会执行一次 依赖的可被观测的数据变动 就会执行
-// autorun(() => {
-//   console.log('Base.js autorun：', state.time)
-// })
+// 纯es5方式完全等价 const Api = observer(class {}) 如对无状态组件 observer(() => {})
+const Chilren = observer(props => <p>{JSON.stringify(props.arr)}</p>)
 
-@inject('testStore')
-@observer // 创建一个响应状态更改的视图
+@inject('testState')
+@observer // observer 如果与其他装饰器一起使用 observer一定要在最里面的调用
 class Base extends React.Component {
+  state = { num: 1 }
+  componentWillReact() { // observer 提供的一个生命周期钩子
+    console.log('componentWillReact') // 当一个组件被安排重新渲染时将触发
+  }
   render() {
     console.log('Base.js this.props ->', this.props)
     return (
       <div>
         <h2>Base</h2>
-        <h3>testStore</h3>
-        <p>{this.props.testStore.num}</p>
-        <button onClick={this.props.testStore.asyncAdd}>更改</button>
+        <h3>state</h3>
+        <p>{this.state.num}</p>
+        <button onClick={() => this.setState({ num: 9 })}>更改</button>
+        <hr/>
+        <h3>testState</h3>
+        <p>{this.props.testState.num}</p>
+        <button onClick={this.props.testState.asyncAdd}>更改</button>
         <hr/>
         <h3>temporaryStore</h3>
         <p>{this.props.temporaryStore.time}</p>
         <button onClick={this.props.temporaryStore.add}>更改</button>
+        <hr/>
+        <p>被@observer装饰器所修饰的组件 会添加类似shouldComponentUpdate 只有该组件“真实用到的”stoer数据发生改变才会更新该组件</p>
+        <Chilren arr={this.props.temporaryStore.arr}></Chilren>
+        <button onClick={this.props.temporaryStore.update}>更改arr 只有子组件会发生变化 父组件是不会更新的 这是极大的性能优化</button>
       </div>
     );
   }
