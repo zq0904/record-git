@@ -27,8 +27,9 @@ const Props = lazy(() => import('./components/Props.jsx'))
 const StaticTypeCheck = lazy(() => import('./components/StaticTypeCheck.jsx'))
 const TS = lazy(() => import('./components/TS.tsx'))
 const StaticMode = lazy(() => import('./components/StaticMode.jsx'))
-const Api = lazy(() => import('./components/Api.jsx'))
+const LifeCycle = lazy(() => import('./components/LifeCycle.jsx'))
 const Event = lazy(() => import('./components/Event.jsx'))
+const Hooks = lazy(() => import('./components/Hooks.jsx'))
 
 const App = () => (
   <Router>
@@ -57,8 +58,9 @@ const App = () => (
         <Route path="/StaticTypeCheck" component={StaticTypeCheck}></Route>
         <Route path="/TS" component={TS}></Route>
         <Route path="/StaticMode" component={StaticMode}></Route>
-        <Route path="/Api" component={Api}></Route>
+        <Route path="/LifeCycle" component={LifeCycle}></Route>
         <Route path="/Event" component={Event}></Route>
+        <Route path="/Hooks" component={Hooks}></Route>
       </Switch>
     </Suspense>
   </Router>

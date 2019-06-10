@@ -49,6 +49,4 @@ lsmod | grep bbr // 查看是否安装成功 出现tcp_bbr字样表示bbr已安�
 ===================================================
 ## ios 手机 Shadowrocket客户端
 美区App Id
-4818800@gmail.com
-Freeidxyz1688
 下载 Shadowrocket

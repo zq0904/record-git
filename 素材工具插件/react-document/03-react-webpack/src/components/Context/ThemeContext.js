@@ -9,7 +9,7 @@ export const t = {
   }
 }
 
-export const ThemeContext = createContext(t.dark)
+export const ThemeContext = createContext(t.dark) // 指定默认值 仅当组件在树中没有匹配的Provider 时才使用该defaultValue参数
 
 export const t2 = {
   background: 'red',

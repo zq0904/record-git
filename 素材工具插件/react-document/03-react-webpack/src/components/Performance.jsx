@@ -65,7 +65,7 @@ class ShowWord extends React.Component {
   }
 }
 
-// 继承React.PureComponent 相当于实现shouldComponentUpdate 不用自己去写 但仅仅是“浅比较”
+// 继承React.PureComponent 相当于实现shouldComponentUpdate 不用自己去写 但仅仅是“浅比较”props和state
 class ShowWord2 extends React.PureComponent {
   render() {
     return (

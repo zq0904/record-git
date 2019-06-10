@@ -12,7 +12,6 @@ function Tds(props) {
 }
 
 export default class Fragment extends React.Component {
-
   render() {
     return (
       <div>
@@ -35,6 +34,6 @@ export default class Fragment extends React.Component {
           }
         </dl>
       </div>
-    );
+    )
   }
 }

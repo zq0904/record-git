@@ -11,7 +11,7 @@ const isPrd = process.env.NODE_ENV === 'production'
 
 module.exports = {
   mode: isPrd ? 'production' : 'development',
-  entry: './src/index.js',
+  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     path: resolve('dist'),
     filename: './js/[name].[hash:7].js',
