@@ -1152,7 +1152,7 @@ $('div').find('ul').find('li').end().end().css({
 // }
 // f1();   //2
 
-a:focus,input:focus,button:focus{
+a:focus, input:focus, button:focus {
   // 当光标聚集时触发
   // 点击 a标签 点击button 就算光标聚集 在点击空白处 光标消失
 }

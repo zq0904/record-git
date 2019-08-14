@@ -13,6 +13,7 @@
   </form>
 
   <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="../node_modules/axios/dist/axios.min.js"></script>
   <script>
     // var formData = new FormData()
     // console.log(formData) // formData实例对象的方法全部在原型中 自己本身没有任何属性和方法
@@ -36,17 +37,27 @@
       var formData = new FormData(this)
       formData.append('a', 1) // 动态添加其余字段
 
-      // 复合表单提交
-      $.ajax({
+      // 复合表单提交 jquery
+      // $.ajax({
+      //   url: 'http://192.168.199.142:8080/api/attach/upload',
+      //   data: formData,
+      //   type: 'POST',
+      //   dataType: 'JSON',
+      //   cache: false, // 不缓存
+      //   processData: false, // JQ不去处理发送的数据
+      //   contentType: false, // JQ不去设置请求头
+      //   success: function(response) {},
+      //   error: function(err) {}
+      // })
+
+      // 复合表单提交 axios
+      axios({
+        method: 'POST',
         url: 'http://192.168.199.142:8080/api/attach/upload',
+        headers: {
+          'content-type': 'multipart/form-data' // 'application/x-www-form-urlencoded'
+        },
         data: formData,
-        type: 'POST',
-        dataType: 'JSON',
-        cache: false, // 不缓存
-        processData: false, // JQ不去处理发送的数据
-        contentType: false, // JQ不去设置请求头
-        success: function(response) {},
-        error: function(err) {}
       })
     })
 

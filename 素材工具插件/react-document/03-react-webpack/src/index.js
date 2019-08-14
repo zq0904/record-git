@@ -30,6 +30,7 @@ const StaticMode = lazy(() => import('./components/StaticMode.jsx'))
 const LifeCycle = lazy(() => import('./components/LifeCycle.jsx'))
 const Event = lazy(() => import('./components/Event.jsx'))
 const Hooks = lazy(() => import('./components/Hooks.jsx'))
+const Api = lazy(() => import('./components/Api.jsx'))
 
 const App = () => (
   <Router>
@@ -61,6 +62,7 @@ const App = () => (
         <Route path="/LifeCycle" component={LifeCycle}></Route>
         <Route path="/Event" component={Event}></Route>
         <Route path="/Hooks" component={Hooks}></Route>
+        <Route path="/Api" component={Api}></Route>
       </Switch>
     </Suspense>
   </Router>

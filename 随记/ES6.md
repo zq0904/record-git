@@ -683,6 +683,7 @@
   for (let [key, val] of Object.entries({a: 1, b: 2})) { console.log(key, val) } // a 1   b 2 entries() keys() values() 都返回遍历器对象
   for (let [key, val] of [1, 2].entries()) { console.log(key, val) } // 0 1   1 2
   for (let v of document.querySelectorAll('a')) { console.log(v) }
+  for await (const v of [promise, promise]) console.log(v) // 等价于 for (const v of [promise, promise]) console.log(await v)
   ```
 ## Generator 函数
   ```javascript
@@ -1156,10 +1157,10 @@
       }
     }
   ```
-## 修饰器
+## 修饰器 | 装饰器
   ```javascript
     // 1.类的 修饰器 @后跟 函数名 或 匿名函数
-    @d // 等价于 @(target) => target.a =1 等价于 @function(target) { target.a =1 }
+    @d // 等价于 @(target) => target.a = 1 等价于 @function(target) { target.a = 1 }
     class A {}      // 被修饰的类
     function d(target) { target.a = 1 } // 类的修饰器只会接收到1个参数为 类本身
     console.log(A.a) // 1

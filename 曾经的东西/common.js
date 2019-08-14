@@ -49,7 +49,7 @@
 		}else{
 			var ele = e.previousSibling;
 			while(ele&&ele.nodeType!=1){
-				ele.previousSibling;
+				ele = ele.previousSibling;
 			}
 			return ele;
 		}
@@ -61,7 +61,7 @@
 		}else{
 			var ele = e.nextSibling;
 			while(ele&&ele.nodeType!=1){
-				ele.nextSibling;
+				ele = ele.nextSibling;
 			}
 			return ele;
 		}
@@ -166,7 +166,7 @@
 	//                 d += b;
 	//                 e.style[attr] = d + 'px'; //总是忘记加'px'
 	//             }
-	//             if(d!=t){//只要有一个属性不到达位置 
+	//             if(d!=t){//只要有一个属性不到达位置
 	//                 x = false;
 	//             }
 	//         }

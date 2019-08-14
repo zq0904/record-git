@@ -41,7 +41,7 @@
 - 文件操作
 ```
   touch 1.js // 创建文件
-  rm 1.js // 删除文件
+  rm *.d.ts // 删除所有.d.ts文件
   mv 1.html images/1.js // 移动文件 或 更改文件名
   cp 1.js foo/ // 将文件拷贝到目录下
   cp -r foo/ bar/ // 将当前目录foo/下的所有文件复制到新目录bar/下
@@ -52,6 +52,7 @@
 - 目录操作
 ```
   mkdir dirname  // 新建目录
+  mkdir -p 1/2/3 // 目录不存在 会递归创建目录
   rmdir dirname // 删除目录
   rm -rf dirname // 递归强制删除目录及目录下的文件
   open dirname // 打开目录

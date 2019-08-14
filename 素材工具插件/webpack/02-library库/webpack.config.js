@@ -1,13 +1,11 @@
-// 遗留问题
-// 1. C3前缀如何配置 npm i -D postcss-loader autoprefixer postcss-import postcss-url
-// 2. require.context() 不好使 报错误 未定义
-// 3. babel-polyfill 只在入口文件main.js中 import 报错
+// postcss npm i -D postcss-loader autoprefixer postcss-import postcss-url
+// postcss 根据 browserslist 才能 添加前缀
 
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const WorkboxPlugin = require('workbox-webpack-plugin') // 工作箱 脱机仍可用
+// const WorkboxPlugin = require('workbox-webpack-plugin') // 工作箱 脱机仍可用
 const webpack = require('webpack')
 
 module.exports = {
@@ -45,10 +43,10 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({ _: 'lodash' }), // 提供 可以不写 import _ from 'loadsh' 直接使用 _
-    new WorkboxPlugin.GenerateSW({ // 脱机仍可用
-      clientsClaim: true,
-      skipWaiting: true
-    })
+    // new WorkboxPlugin.GenerateSW({ // 脱机仍可用
+    //   clientsClaim: true,
+    //   skipWaiting: true
+    // })
   ]
 }
 

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>js复制文本</title>
+</head>
+<body>
+  <p>文本内容</p>
+  <button onclick="copy(document.querySelector('p').innerText)">复制文本内容</button>
+  <hr />
+  <input id="input" type="text" value="输入框内容">
+  <br/>
+  <button onclick="copy(document.querySelector('#input').value)">复制input框中的内容</button>
+  <script>
+
+    function copy(text) {
+      if (!(window.clipboardData || document.execCommand)) return window.alert('您的浏览器不支持脚本复制,请尝试手动复制!')
+      // IE的复制
+      if (window.clipboardData && window.clipboardData.setData) {
+        window.clipboardData.setData('Text', text)
+        return window.alert('复制成功!')
+      }
+      var textarea = document.createElement('textarea')
+      // display: none; visibility: hidden; 无法复制
+      textarea.style = 'position: absolute;top: -999px;left: -999px;width: 0px;height: 0px;'
+      textarea.value = text
+      document.body.appendChild(textarea)
+      textarea.select()
+      document.execCommand('Copy')
+      document.body.removeChild(textarea)
+      window.alert('复制成功')
+    }
+
+  </script>
+</body>
+</html>

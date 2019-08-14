@@ -13,7 +13,7 @@ class StaticTypeCheck extends React.Component {
     // s: PropTypes.array,
     // s: PropTypes.bool,
     // s: PropTypes.func,
-    // s: PropTypes.number,
+    // s: PropTypes.number.isRequired,
     // s: PropTypes.object,
     // s: PropTypes.string,
     // s: PropTypes.symbol,

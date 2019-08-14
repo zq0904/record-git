@@ -295,9 +295,15 @@ const useRect = () => {
 
 const Using = () => {
   const [num, setNum] = useState(0)
-  useDidMount(() => console.log('useDidMount'))
-  useDidUpdate(() => console.log('useDidUpdate'))
-  useWillUnmount(() => console.log('useWillUnmount'))
+  useDidMount(() => {
+    console.log('useDidMount')
+  })
+  useDidUpdate(() => {
+    console.log('useDidUpdate')
+  })
+  useWillUnmount(() => {
+    console.log('useWillUnmount')
+  })
   const form = useForm(1)
   const [data, setDate] = useMergeState({a: 1, b: 2})
   const prevData = usePrev(data)
@@ -313,6 +319,7 @@ const Using = () => {
       <span>{JSON.stringify(data)}</span>
       <button onClick={() => setDate({a:data.a+1})}>更新</button>
       <button onClick={() => setDate(prev => ({a:prev.a+1}))}>更新</button>
+      <button onClick={() => console.log(data)}>获取data</button>
       <span ref={callback}>rect</span>
     </div>
   )

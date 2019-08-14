@@ -1,16 +1,20 @@
-# npm [官网](https://www.npmjs.com)
+# npm [官网](https://www.npmjs.com) [参考](http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html)
 ## 执行脚本
 ```code
   {
     "script": {
       "start": "", // start test 可以省略run
-      "test": "", // npm run 是 npm run-script 的缩写 执行该命令会 临时将node_modules/.bin加入PATH变量 避免全局安装npm模块
+      "test": "", // npm run 是 npm run-script 的缩写 执行该命令会 临时将node_modules/.bin加入PATH变量 避免全局安装npm模块(意味着npm run脚本 可以直接执行本地node_modules包)
+      "lint": "eslint **/*.js", // **表任意一层子目录 *表任意文件名
       "dev": "npm test && npm start", // &&继发 &并发 |管道符(前一个输出是后一个输入)
       "prebuild": "", // pre - 钩子
       "build": "", // 当执行 npm run build 相当于 npm run prebuild && npm run build && npm run postbuild
       "postbuild": "" // post - 钩子
+      "open": "opener http://localhost:3004" // 打开浏览器
     }
   }
+  // npm 有一些内置钩子如 prepublish 等 (prepublish钩子 在 npm publish 和 npm install 都会运行)(npm4 引入了一个新的钩子 prepare 等同于 prepublish)(npm5 prepublish 将只在 npm publish 命令之前运行)
+  // process.env.npm_package_name (通过npm_package_前缀 npm 脚本可以拿到package.json里面的字段)
 ```
 ## 安装 移除包
 ```code
@@ -61,8 +65,8 @@
   npm init -y // 生成默认的配置文件(文件夹名称不能有中文) -f(--force)
   npm search <package_name> // 在发布包前 检测这个包名是否已经存在
   npm info <package_name> // 显示包的信息 维护者等
-  npm view <package_name> versions // 显示包的所有版本信息 ['1.2.7', '1.2.8']
-  npm view <package_name> version // 显示包的所有版本信息 1.2.8
+  npm view <package_name> versions // 显示包的所有版本 ['1.2.7', '1.2.8']
+  npm view <package_name> version // 显示包的最新版本 1.2.8
   npm ls <package_name> // 查看本地包的版本 显示的是node_modules里的版本
   npm ls <package_name> -g // 查看全局安装包的版本
   npm owner ls <package_name> // 查看包的维护者

@@ -15,6 +15,7 @@
   <button onclick="interceptors()">添加拦截器 在发请求</button><br />
   <button onclick="urlencoded()">application/x-www-form-urlencoded 请求</button><br />
   <button onclick="encapsulation()">vue中常规封装</button><br />
+  <button onclick="requestCancel()">测试取消请求</button><button onclick="cancel('请求被取消了')">取消请求</button><br />
   <script src="../node_modules/vue/dist/vue.min.js"></script>
   <script src="../node_modules/qs/dist/qs.js"></script>
   <script src="../node_modules/axios/dist/axios.min.js"></script>
@@ -23,7 +24,7 @@
 
   // 全局的axios默认值
   // axios.defaults.baseURL = ''
-  // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
+  // axios.defaults.headers.head['Content-Type'] = 'application/x-www-form-urlencoded'
 
   function get() {
     // get请求 传参 可以手动拼接qs 或者 写入参数
@@ -182,6 +183,27 @@
         console.log(err)
       })
   }
+
+  // 测试 axios 的取消请求
+  const CancelToken = axios.CancelToken
+  let cancel; // 声明取消方法
+  function requestCancel() {
+    axios.post(
+      'http://localhost:3004/list',
+      { name: 'name' },
+      {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        cancelToken: new CancelToken(c => cancel = c) // 赋值取消方法
+      }
+    )
+    .then(res => {
+      console.log(res)
+    })
+    .catch(err => {
+      console.log('err', err)
+    })
+  }
+
   </script>
 </body>
 

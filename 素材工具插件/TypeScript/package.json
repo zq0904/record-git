@@ -1,11 +1,11 @@
 {
-  "name": "TypeScript",
+  "name": "typescript",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "hs -o -p 3009 -c-1",
-    "tsc-inline": "tsc -w --outDir ./dist/ ./src/*.ts",
+    "tsc:inline": "tsc -w -t ES5 --experimentalDecorators --outDir ./dist/ ./src/*.ts",
     "tsc": "tsc -w -p ./tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,5 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "typescript": "^3.5.1"
-  }
+  },
+  "dependencies": {},
+  "types": "./src/Declaration-file.d.ts"
 }
