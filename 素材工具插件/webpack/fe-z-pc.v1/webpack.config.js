@@ -1,5 +1,5 @@
 const path = require('path')
-const CleanWebpackPlugin = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
@@ -7,11 +7,11 @@ const isProduction = process.env.NODE_ENV === 'production'
 const resolve = p => path.resolve(__dirname, p)
 
 module.exports = {
-  mode: isProduction ? 'production' : 'development',
+  mode: 'development', // isProduction ? 'production' : 'development',
   entry: './src/index.js',
   output: {
     path: resolve(__dirname, 'dist'),
-    filename: './dist/js/[name].[hash:7].js',
+    filename: './js/[name].[hash:7].js',
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'], // 省略后缀
@@ -43,7 +43,7 @@ module.exports = {
     ]
   },
   plugins: [
-    // new CleanWebpackPlugin(),
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
       minify: {
