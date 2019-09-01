@@ -13,7 +13,7 @@
   // console.log(process.argv.slice(2)) // [ 'one', '--a=1', '--b', '2', '-c', '3', '-d=4', 'two' ] 参数格式凌乱
   // minimist(process.argv.slice(2)) // { _: [ 'one', 'two' ], a: 1, b: 2, c: 3, d: 4 } 不管是 --a=1 --b 2 -c 3 -d=4 都能统一参数
 ```
-## process.cwd() package.json路面命令执行目录
+## process.cwd() package.json目录 命令执行目录
 ## 执行的是.bin目录中的 软连接 __dirname拿到的是原文件的__dirname
 // console.log('__dirname', __dirname) // /Users/zhaozhaoqi/zhaoqi/fe/fe-h2-pc/v5/node_modules/@fet/fe-reactcli-webpack-tools/bin
 ## execa 2.0.0+版本

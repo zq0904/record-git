@@ -24,6 +24,7 @@
   npm i jquery@beta // beta版本
   npm i -S jqeruy@1 // 安装到生成环境依赖dependencies
   npm i -D jqeruy@1 // 安装到开发环境依赖devDependencies
+  npm i --no-save jqeruy@1 // 安装相应的包 不保存到依赖
   npm i --production // 只安装dependencies
   npm uni jqeruy@1 // 移除包 同时移除package.json安装依赖
 ```
@@ -54,6 +55,13 @@
   npm unpublish <package_name> // 删除包 遇权限方面的错误 加 --force （只有发布没超过24小时的包才能删除, 其他的一律使用弃用操作）
   npm deprecate <package_name>@"< 1.2.0" 'This package is no longer maintained' // 弃用某个包给与友好的提示(会在安装这个包的版本小于1.2.0给予提示)
   "version": "x.y.z" // 版本控制 z bug级别小改动 y 新特性方法仍兼容 x 大版本不兼容
+```
+``` 本地开发cli包 调试
+  npm link // 1.会将该文件目录 软连接 到全局node_modules包下 2.根据package.json的bin字段 将全局bin增加相关指令 软连接 到全局node_modules包下
+  /usr/local/bin/zero-cli -> /usr/local/lib/node_modules/zero-cli/bin/index.js
+  /usr/local/lib/node_modules/zero-cli -> .../zero-cli
+  npm link <package_name> // 1.在本地node_modules 创建软连接目录 到全局node_modules包下 2.根据package.json的bin字段 向本地node_modules/.bin添加命令
+  .../fe-z-pc.v1/node_modules/zero-cli -> /usr/local/lib/node_modules/zero-cli -> .../zero-cli
 ```
 ## 其他命令
 ```code

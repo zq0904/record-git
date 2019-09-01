@@ -9,7 +9,7 @@ const log = (string, color = 'green') => console.log(chalk[color](string))
 const exit = () => process.exit(1)
 
 // 将换行后的空白去除
-function trim(str) {
+function trim (str) {
   return str.replace(/\n(\s*)/g, '\n').trim()
 }
 
@@ -22,7 +22,7 @@ function trim(str) {
 // })
 const execP = command => new Promise(resolve => {
   shell.exec(command, { async: true, silent: true }, (code, stdout, stderr) => {
-    if (code !== 0 &&stderr) return log(stderr, 'red')
+    if (code !== 0 && stderr) return log(stderr, 'red')
     resolve(stdout)
   })
 })
@@ -62,8 +62,8 @@ const getVersion = async tool => {
 const isLessThan = (vs1, vs2) => {
   const [, a1, b1, c1] = vs1.trim().match(/^(\d+)\.(\d+)\.(\d+)[^\s]*/)
   const [, a2, b2, c2] = vs2.trim().match(/^(\d+)\.(\d+)\.(\d+)[^\s]*/)
-	if (a1 !== a2) return a1 - a2 < 0
-	if (b1 !== b2) return b1 - b2 < 0
+  if (a1 !== a2) return a1 - a2 < 0
+  if (b1 !== b2) return b1 - b2 < 0
   if (c1 !== c2) return c1 - c2 < 0
   return false
 }

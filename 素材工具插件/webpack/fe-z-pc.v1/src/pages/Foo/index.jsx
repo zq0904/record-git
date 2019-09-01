@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { inject, observer } from 'mobx-react'
-import './index.less'
+import './style'
 
 @inject('testStore')
 @observer

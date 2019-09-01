@@ -1,0 +1,8 @@
+# 根据需要的浏览器环境 autoprefixer 自动添加私有前缀
+# 参考 https://github.com/browserslist/browserslist#queries
+
+> 90%
+last 2 version
+Firefox ESR
+> 1%
+ie >= 10
