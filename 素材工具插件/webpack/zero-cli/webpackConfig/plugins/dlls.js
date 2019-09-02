@@ -1,6 +1,7 @@
+const webpack = require('webpack')
 const globby = require('globby')
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin') // 向模板html中添加额外的链接资源 如 js css 
-const { isPrd, projectConfig, paths: { dllPath } } = require('../../utils')
+const { env: { isPrd }, projectConfig, paths: { dllPath } } = require('../../utils')
 const { projectVersion } = projectConfig
 const fileNames = Object.keys(projectConfig['dll-entry'])
 

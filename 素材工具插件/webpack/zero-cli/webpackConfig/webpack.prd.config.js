@@ -1,5 +1,5 @@
-const webpack = require('webpack')
 const merge = require('webpack-merge')
+const webpack = require('webpack')
 const base = require('./webpack.base.config')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取css
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin') // 压缩css

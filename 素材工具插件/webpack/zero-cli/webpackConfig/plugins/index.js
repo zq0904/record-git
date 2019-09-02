@@ -3,12 +3,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const dlls = require('./dlls')
-const { paths: { publicPath, distPath }, projectConfig } = require('../../utils')
+const { log, paths: { publicPath, distPath }, projectConfig } = require('../../utils')
 
 const { projectVersion } = projectConfig
 
 module.exports = [
-  new webpack.ProgressPlugin(), // 进度条 命令行 --progress
+  new webpack.ProgressPlugin((percentage, message, ...args) => log((percentage * 100).toFixed(2) + '% ' + message)), // 进度条 命令行 --progress
   new CleanWebpackPlugin(), // 根据output.path去清空
   new CopyWebpackPlugin([{
     from: `${publicPath}/!(dll)/**/*.*`, // 项目根目录 public下 一级目录除dll目录(dll会通过AddAssetHtmlPlugin拷贝) 会被当做静态资源

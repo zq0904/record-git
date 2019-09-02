@@ -1,6 +1,6 @@
 const rules = require('./rules')
 const plugins = require('./plugins')
-const { isPrd, paths: { srcPath, distPath }, projectConfig: { projectVersion } } = require('../utils')
+const { env: { isPrd }, paths: { srcPath, distPath }, projectConfig: { projectVersion } } = require('../utils')
 
 module.exports = {
   // production模式自带的优化

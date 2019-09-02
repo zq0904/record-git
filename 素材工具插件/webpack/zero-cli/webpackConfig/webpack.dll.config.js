@@ -1,12 +1,10 @@
 const webpack = require('webpack')
-const { projectConfig, paths: { dllPath } } = require('../utils')
-
-const isPrd = process.env.NODE_ENV === 'production'
+const { env: { isPrd }, projectConfig, paths: { dllPath } } = require('../utils')
 
 // 打包生成dll动态链接库 生成相应的清单文件 提供给DllReferencePlugin映射依赖项
 module.exports = {
   mode: isPrd ? 'production' : 'development',
-  entry: projectConfig['dll-entry'], // entry入口所引用的 vue react node_modules中根据环境变量process.env.NODE_ENV 选用了生产还是开发版本 我们引入包时不用区分
+  entry: projectConfig['dll-entry'], // entry入口所引用的 vue react包 node_modules包中根据环境变量process.env.NODE_ENV 选用了生产还是开发版本 我们引入包时不用区分
   output: {
     path: dllPath,
     filename: `[name].${isPrd ? 'prd.[contenthash:7]' : 'dev'}.js`,

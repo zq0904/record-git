@@ -1,6 +1,6 @@
 
 const style = require('./style')
-const { isPrd, resolve, paths: { srcPath }, projectConfig: { projectVersion } } = require('../../utils')
+const { env: { isPrd }, resolve, paths: { srcPath }, projectConfig: { projectVersion } } = require('../../utils')
 
 const name = `[name]${isPrd ? '.[contenthash:7]' : ''}.[ext]`
 

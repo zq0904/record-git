@@ -1,7 +1,7 @@
 const merge = require('webpack-merge')
 const base = require('./webpack.base.config')
 const { paths: { distPath } } = require('../utils')
-console.log(process.env.NODE_ENV)
+
 module.exports = merge(base, {
   devServer: { // webpack-dev-server 提供了对资产的快速 内存 访问 内存效率更高
     open: true,

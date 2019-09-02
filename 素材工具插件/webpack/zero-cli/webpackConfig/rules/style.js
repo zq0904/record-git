@@ -1,5 +1,5 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取css
-const { isPrd, resolve } = require('../../utils')
+const { env: { isPrd }, resolve } = require('../../utils')
 
 module.exports = {
   test: /\.(sc|sa|c)ss$/,

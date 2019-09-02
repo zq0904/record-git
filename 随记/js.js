@@ -1733,7 +1733,9 @@ git push origin :refs/tags/v1.0 // 可以删除一个远程标签 需要先删�
 设置一个 神奇的快捷键
 // git lg
 // git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
-
+设置用户信息
+git config --global user.name "zhaoqi"
+git config --global user.email "154809748@qq.com"
 如何在 手机查看 做好的H5网页
 // 必须以服务器形式打开 电脑和手机必须链接的是同一个内网 或者 wifi
 // 终端cmd中输入 ipconfig    其中IPv4的 10.3.82.192   替换拼接到你服务的前面 比如原来node起的服务 localhose:3000/a --> 10.3.82.192:3000/a 草料等生成二维码工具（10.3.82.192:3000/a） 扫一扫
