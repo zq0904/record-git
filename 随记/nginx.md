@@ -11,6 +11,9 @@
   -ef|grep nginx 查看进程 master
   kill -QUIT 2072 杀死进程 关闭nginx的一种方式
   sudo nginx -t 测试nginx语法等有没有问题
+  // 设置mac nginx(brew安装的) 开机自启
+  sudo cp /usr/local/opt/nginx/*.plist /Library/LaunchDaemons
+  sudo launchctl load -w /Library/LaunchDaemons/homebrew.mxcl.nginx.plist
 ## http代理
   - 正向代理 (小飞机 翻墙)
   - 反向代理（按照某种 负载均衡策略 转发给多台web服务器）

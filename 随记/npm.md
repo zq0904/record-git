@@ -1,5 +1,7 @@
 # npm [官网](https://www.npmjs.com) [参考](http://www.ruanyifeng.com/blog/2016/10/npm_scripts.html)
+
 ## 执行脚本
+
 ```code
   {
     "script": {
@@ -16,7 +18,9 @@
   // npm 有一些内置钩子如 prepublish 等 (prepublish钩子 在 npm publish 和 npm install 都会运行)(npm4 引入了一个新的钩子 prepare 等同于 prepublish)(npm5 prepublish 将只在 npm publish 命令之前运行)
   // process.env.npm_package_name (通过npm_package_前缀 npm 脚本可以拿到package.json里面的字段)
 ```
+
 ## 安装 移除包
+
 ```code
   npm i // 根据package.json的dependencies和devDependencies安装依赖
   npm i jquery@1 // 下载指定版本的包用@符跟版本号 如@liepin/im@1.2.9-beta
@@ -28,7 +32,9 @@
   npm i --production // 只安装dependencies
   npm uni jqeruy@1 // 移除包 同时移除package.json安装依赖
 ```
+
 ## 发布 删除包
+
 ```code
   // 需注册npm账号
   npm adduser // 第一次发布包 输入注册的 账号 密码 邮箱
@@ -56,14 +62,17 @@
   npm deprecate <package_name>@"< 1.2.0" 'This package is no longer maintained' // 弃用某个包给与友好的提示(会在安装这个包的版本小于1.2.0给予提示)
   "version": "x.y.z" // 版本控制 z bug级别小改动 y 新特性方法仍兼容 x 大版本不兼容
 ```
-``` 本地开发cli包 调试
+
+```本地开发cli包 调试
   npm link // 1.会将该文件目录 软连接 到全局node_modules包下 2.根据package.json的bin字段 将全局bin增加相关指令 软连接 到全局node_modules包下
   /usr/local/bin/zero-cli -> /usr/local/lib/node_modules/zero-cli/bin/index.js
   /usr/local/lib/node_modules/zero-cli -> .../zero-cli
   npm link <package_name> // 1.在本地node_modules 创建软连接目录 到全局node_modules包下 2.根据package.json的bin字段 向本地node_modules/.bin添加命令
   .../fe-z-pc.v1/node_modules/zero-cli -> /usr/local/lib/node_modules/zero-cli -> .../zero-cli
 ```
+
 ## 其他命令
+
 ```code
   npm help // npm命令列表
   npm <command> -h // 查看某个命令的帮助
@@ -85,8 +94,11 @@
   npm get <key> // 查看全局模式key的值
   npm set <key> <val> // 设置环境变量
   npm outdated <package_name> // 检查包是否过时会以列表形式展现
+  npm list -g --depth 0 // 查看全局安装的包
 ```
+
 ## npx
+
 ```code
   // npm5.20版本后引入npx命令
   解决的问题：
@@ -97,4 +109,5 @@
   3.指定node版本 执行代码
   npx -p node@<version> node -v 可以使用指定版本的node运行命令
 ```
+
 ## [参考文章](http://javascript.ruanyifeng.com/nodejs/npm.html#toc0)
