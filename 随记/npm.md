@@ -64,11 +64,13 @@
 ```
 
 ```本地开发cli包 调试
-  npm link // 1.会将该文件目录 软连接 到全局node_modules包下 2.根据package.json的bin字段 将全局bin增加相关指令 软连接 到全局node_modules包下
+  npm link // 添加全局链接符号 (1.会将该目录 ”软连接“ 到全局node_modules包下 2.根据目录package.json的bin字段 向全局bin增加相关指令 ”软连接“ 到全局node_modules包下)
   /usr/local/bin/zero-cli -> /usr/local/lib/node_modules/zero-cli/bin/index.js
   /usr/local/lib/node_modules/zero-cli -> .../zero-cli
-  npm link <package_name> // 1.在本地node_modules 创建软连接目录 到全局node_modules包下 2.根据package.json的bin字段 向本地node_modules/.bin添加命令
+  npm unlink // 删除全局链接符号
+  npm link <package_name> // 引用全局链接符号 (1.在本地node_modules 创建”软连接“目录 到全局node_modules包下 2.根据package.json的bin字段 向本地node_modules/.bin添加命令)
   .../fe-z-pc.v1/node_modules/zero-cli -> /usr/local/lib/node_modules/zero-cli -> .../zero-cli
+  npm unlink <package_name> // 删除引用全局链接符号
 ```
 
 ## 其他命令
