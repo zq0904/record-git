@@ -1,4 +1,6 @@
-module.exports = {
+// 自己构建一个babel预设 不能导出对象 只允许导出函数 否则会收到这个错误
+// Error: Plugin/Preset files are not allowed to export objects, only functions
+module.exports = () => ({
   "presets": [
     ["@babel/preset-env", {
       // useBuiltIns: 'usage',
@@ -25,4 +27,4 @@ module.exports = {
       ]
     }],
   ]
-}
+})

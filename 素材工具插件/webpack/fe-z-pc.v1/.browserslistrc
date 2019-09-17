@@ -1,4 +1,4 @@
-# 根据需要的浏览器环境 autoprefixer 自动添加私有前缀
+# 在不同的前端工具之间共享目标浏览器 如Autoprefixer(必须提供.browserslistrc 才能根据浏览器环境去自动添加私有前缀) Stylelint babel-preset-env
 # 参考 https://github.com/browserslist/browserslist#queries
 
 > 90%

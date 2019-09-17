@@ -12,7 +12,7 @@ module.exports = [
     use: {
       loader: 'babel-loader',
       options: {
-        configFile: resolve('babelConfig', false)
+        // configFile: resolve('babelConfig', false) // 手动指定配置文件
         // cacheDirectory: true, // 在node_modules/.cache/babel-loader缓存
       }
     },

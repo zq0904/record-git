@@ -21,9 +21,10 @@
     chrome
     Password:
   11. mac右键含终端 系统偏好设置 -> 键盘 -> 快捷键 -> 服务 -> 勾选新建位于文件夹位置的终端窗口和标签页 （每次 选中文件夹右键->服务->）
-  12. mac全局安装需要 使用 在 install 命令前使用 sudo
-  npm config get prefix // 获取npm所在目录的路径 一般为/usr/local
-  sudo chown -R 账号名 npm所在目录的路径/{lib/node_modules,bin,share} // chown全称为change owner（改变所有者即赋予权限） -R表示对指定目录下所有子目录和文件采取同种操作
+  12. mac npm全局安装一些包 有时需要权限 在使用命令前加 sudo
+  13. npm config get prefix // 获取npm所在目录的路径 一般为/usr/local
+  14. sudo chown -R 账号名 npm所在目录的路径/{lib/node_modules,bin,share} // chown全称为change owner（改变所有者即赋予权限） -R表示对指定目录下所有子目录和文件采取同种操作
+  15. 检索node_modules包下内容 首次点击node_modules目录 按住fn 输入字母予以检索
 ```
 - 常用操作
 ```

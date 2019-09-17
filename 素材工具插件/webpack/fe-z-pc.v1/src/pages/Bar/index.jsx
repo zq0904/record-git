@@ -56,10 +56,10 @@ class Bar extends Component {
             transform: translate(0);
             background: url(${require('./images/tp.jpg')}) no-repeat 0 0 / 100% 100%;
             .red {
-              color: yellow;
+              color: red;
             }
             .white {
-              color: wheat;
+              color: white;
             }
           }
         `}</style>
