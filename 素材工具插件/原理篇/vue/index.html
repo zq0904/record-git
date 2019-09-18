@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>mock vue</title>
+</head>
+<body>
+  <div id="app">
+    {{msg}}
+    <p v-text="msg" title="哈哈"></p>
+    <p v-text="a.b"></p>
+    <p v-html="html"></p>
+    <input type="text" v-model="msg">
+    <button v-on:click="fn">{{1+1}}</button>
+    <button @click="fn(1, '2', msg, $event)">点击</button>
+  </div>
+  <script type="module" src="./index.js"></script>
+  <!-- <script src="./node_modules/vue/dist/vue.min.js"></script> -->
+  <!-- <script>
+    const vm = new Vue({
+      el: '#app', // 应该支持dom
+      data: {
+        msg: '信息',
+        html: '<h4>h4标签</h4>',
+        a: {
+          b: 'bbb'
+        }
+      },
+      methods: {
+        fn(...args) {
+          console.log('fn 执行了 this是', this, args)
+        }
+      }
+    })
+  </script> -->
+</body>
+</html>
