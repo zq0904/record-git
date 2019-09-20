@@ -18,9 +18,7 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/dou
 7. 设备数限制
 ## 谷歌BBR加速
 输入(注：开机自动启动，部署一次就可以了)
-wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
-chmod +x bbr.sh
-./bbr.sh
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
 回车回车 等待安装
 lsmod | grep bbr // 查看是否安装成功 出现tcp_bbr字样表示bbr已安装并启动成功
 ## 完成

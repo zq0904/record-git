@@ -66,7 +66,7 @@ class Compile {
   // 解析文本节点
   parsingTextNode = (node) => {
     if (node.textContent.match(/\{\{(.*)\}\}/)) {
-      // 这里占时不对 RegExp.$1.trim() 进一步解析
+      // 这里暂时不对 RegExp.$1.trim() 进一步解析
       const res = this.getDataVal(RegExp.$1.trim())
       node.textContent = node.textContent.replace(/\{\{.*\}\}/, res)
     }
