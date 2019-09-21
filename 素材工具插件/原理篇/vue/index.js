@@ -1,6 +1,6 @@
-import Vue from './src/vue.js'
+import Vue from './src/Vue.js'
 
-const vm = new Vue({
+window.vm = new Vue({
   el: '#app', // 应该支持dom
   data: {
     msg: '信息',
@@ -12,8 +12,7 @@ const vm = new Vue({
   methods: {
     fn(...args) {
       console.log('fn 执行了 this是', this, args)
+      this.msg = '信息'
     }
   }
 })
-
-// console.log('vm', vm)

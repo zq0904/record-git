@@ -1,5 +1,16 @@
-import { log, isTextNode, isElNode, toArray, isInstruction, isEventInstruction } from './util.js'
+import Watcher from './Watcher.js'
+import {
+  log,
+  isTextNode,
+  isElNode,
+  toArray,
+  isInstruction,
+  isEventInstruction,
+  getValByExp,
+  setValByExp
+} from './util.js'
 
+// 初始解析渲染
 class Compile {
   constructor(vm) {
     this.$vm = vm
@@ -16,16 +27,29 @@ class Compile {
     rootNode.appendChild(fragment)
   }
   parsingInstruction = {
-    text: (node, value) => node.innerText = this.getDataVal(value),
-    html: (node, value) => node.innerHTML = this.getDataVal(value),
-    model: (node, value) => node.value = this.getDataVal(value),
-    event: (node, name, value) => {
+    text: (node, exp) => {
+      node.innerText = getValByExp(this.$vm.$data, exp)
+      new Watcher(this.$vm.$data, exp, newVal => node.innerText = newVal)
+    },
+    html: (node, exp) => {
+      node.innerHTML = getValByExp(this.$vm.$data, exp)
+      new Watcher(this.$vm.$data, exp, newVal => node.innerHTML = newVal)
+    },
+    model: (node, exp) => {
+      // todo 这里 我们暂时 认为就是 input:text
+      node.value = getValByExp(this.$vm.$data, exp)
+      node.addEventListener('input', e => { // v -> vm
+        setValByExp(this.$vm.$data, exp, e.target.value)
+      })
+      new Watcher(this.$vm.$data, exp, newVal => node.value = newVal)
+    },
+    event: (node, name, exp) => {
       const eventName = name.startsWith('@') ? name.substr(1) : name.split(':')[1]
-      if (!value.match(/\(.*\)/)) {
-        node.addEventListener(eventName, this.$vm.$methods[value].bind(this.$vm))
+      if (!exp.match(/\(.*\)/)) { // 不存在形式参数
+        node.addEventListener(eventName, this.$vm.$methods[exp].bind(this.$vm))
       } else { // 具有形式参数 调用形式 $event
         const EVENT = '$event'
-        const arr = value.match(/(.*)\((.*)\)/)
+        const arr = exp.match(/(.*)\((.*)\)/)
         const args = arr[2].split(',').map(v => {
           const val = v.trim()
           if (val === EVENT) { // "$event"
@@ -35,7 +59,7 @@ class Compile {
           } else if (!isNaN(Number(val))) { // "1"
             return Number(val)
           } else { // "msg"
-            return this.getDataVal(val)
+            return getValByExp(this.$vm.$data, val)
           }
         })
         node.addEventListener(eventName, event => {
@@ -43,18 +67,6 @@ class Compile {
         })
       }
     }
-  }
-  // 根据字符串获取数据的值
-  getDataVal = value => {
-    let res = this.$vm.$data
-    if (value.includes('.')) {
-      for (const v of value.split('.')) {
-        res = res[v]
-      }
-    } else {
-      res = res[value]
-    }
-    return res
   }
   // 解析childNodes
   parsingChildNodes = (childNodes) => {
@@ -64,17 +76,18 @@ class Compile {
     }
   }
   // 解析文本节点
-  parsingTextNode = (node) => {
+  parsingTextNode = node => {
     if (node.textContent.match(/\{\{(.*)\}\}/)) {
-      // 这里暂时不对 RegExp.$1.trim() 进一步解析
-      const res = this.getDataVal(RegExp.$1.trim())
-      node.textContent = node.textContent.replace(/\{\{.*\}\}/, res)
+      // todo 这里暂时不对 RegExp.$1.trim() 进一步解析
+      const exp = RegExp.$1.trim()
+      node.textContent = node.textContent.replace(/\{\{.*\}\}/, getValByExp(this.$vm.$data, exp))
+      new Watcher(this.$vm.$data, exp, newVal => node.textContent = newVal)
     }
   }
   // 解析标签节点
   parsingElNode = (node) => {
     for (const { name, value } of node.attributes) {
-      if (isEventInstruction(name)) { // 属性指令中事件指令
+      if (isEventInstruction(name)) { // 事件指令
         this.parsingInstruction.event(node, name, value)
       } else if (isInstruction(name)) { // 常规属性指令
         const fn = this.parsingInstruction[name.substr(2)]
