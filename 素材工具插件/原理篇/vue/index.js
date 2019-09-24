@@ -11,7 +11,9 @@ window.vm = new Vue({
   },
   methods: {
     fn(...args) {
-      console.log('fn 执行了 this是', this, args)
+      console.log('fn 执行了')
+      console.log('this', this)
+      console.log('args', args)
       this.msg = '信息'
     }
   }

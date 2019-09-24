@@ -29,11 +29,11 @@ class Compile {
   parsingInstruction = {
     text: (node, exp) => {
       node.innerText = getValByExp(this.$vm.$data, exp)
-      new Watcher(this.$vm.$data, exp, newVal => node.innerText = newVal)
+      new Watcher(this.$vm, exp, newVal => node.innerText = newVal)
     },
     html: (node, exp) => {
       node.innerHTML = getValByExp(this.$vm.$data, exp)
-      new Watcher(this.$vm.$data, exp, newVal => node.innerHTML = newVal)
+      new Watcher(this.$vm, exp, newVal => node.innerHTML = newVal)
     },
     model: (node, exp) => {
       // todo 这里 我们暂时 认为就是 input:text
@@ -41,7 +41,7 @@ class Compile {
       node.addEventListener('input', e => { // v -> vm
         setValByExp(this.$vm.$data, exp, e.target.value)
       })
-      new Watcher(this.$vm.$data, exp, newVal => node.value = newVal)
+      new Watcher(this.$vm, exp, newVal => node.value = newVal)
     },
     event: (node, name, exp) => {
       const eventName = name.startsWith('@') ? name.substr(1) : name.split(':')[1]
@@ -63,7 +63,7 @@ class Compile {
           }
         })
         node.addEventListener(eventName, event => {
-          this.$vm.$methods[arr[1]].call(this.$vm, ...args.map(v => v === EVENT ? event : v))
+          this.$vm.$methods[arr[1]].apply(this.$vm, args.map(v => v === EVENT ? event : v))
         })
       }
     }
@@ -81,7 +81,7 @@ class Compile {
       // todo 这里暂时不对 RegExp.$1.trim() 进一步解析
       const exp = RegExp.$1.trim()
       node.textContent = node.textContent.replace(/\{\{.*\}\}/, getValByExp(this.$vm.$data, exp))
-      new Watcher(this.$vm.$data, exp, newVal => node.textContent = newVal)
+      new Watcher(this.$vm, exp, newVal => node.textContent = newVal)
     }
   }
   // 解析标签节点

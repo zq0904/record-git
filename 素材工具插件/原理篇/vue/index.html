@@ -17,8 +17,8 @@
     <button @click="fn(1, '2', msg, $event)">点击</button>
   </div>
   <script type="module" src="./index.js"></script>
-  <!-- <script src="./node_modules/vue/dist/vue.min.js"></script> -->
-  <!-- <script>
+  <!-- <script src="./node_modules/vue/dist/vue.min.js"></script>
+  <script>
     const vm = new Vue({
       el: '#app', // 应该支持dom
       data: {
@@ -30,7 +30,10 @@
       },
       methods: {
         fn(...args) {
-          console.log('fn 执行了 this是', this, args)
+          console.log('fn 执行了')
+          console.log('this', this)
+          console.log('args', args)
+          this.msg = '信息'
         }
       }
     })

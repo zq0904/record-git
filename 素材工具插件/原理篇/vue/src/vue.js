@@ -8,24 +8,19 @@ class Vue {
     this.$methods = methods
     new Observer(this.$data)
     new Compile(this)
-    this.proxy(this.$data)
     this.proxy(this.$methods)
+    this.proxy(this.$data)
   }
-  // 代理到 
-  proxy = (obj) => {
+  // 代理到vm实例上
+  proxy = obj => {
     for (const key of Object.keys(obj)) {
       Object.defineProperty(this, key, {
         enumerable: true,
         configurable: true,
-        get() {
-          return obj[key]
-        },
-        set(val) {
-          obj[key] = val
-        }
+        get() { return obj[key] },
+        set(val) { obj[key] = val }
       })
     }
-    
   }
 }
 
