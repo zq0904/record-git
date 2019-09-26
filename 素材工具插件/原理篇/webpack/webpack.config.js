@@ -6,5 +6,8 @@ module.exports = {
   output: {
     path: path.resolve('dist'),
     filename: 'index.js'
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json', '.scss', '.sass'], // 省略后缀
   }
 }
