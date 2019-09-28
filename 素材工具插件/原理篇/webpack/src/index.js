@@ -1,3 +1,3 @@
-const a = require('./a.js')
+const a = require('./a')
 
-console.log('今天的' + a)
+console.log(`今天的 ${a}`)
