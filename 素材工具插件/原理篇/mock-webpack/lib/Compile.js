@@ -53,52 +53,47 @@ class Compile {
     }
     log(`Module not found: '${moduleAbsolutePath}'`)
   }
-  handlerLoader(source, modulePath) {
-    const _
-    // loader的本质就是一个函数 用来处理 满足规则的源代码 loader的加载顺序为 ”双倒序“
+  useLoaderToProcess(source, modulePath) {
+    // loader的本质就是一个函数 用来处理满足规则的 源代码 loader的加载顺序为 ”双倒序“
     const { rules } = this.config.module
+    let medianSource = source
+    const _loadLoader = function(p) {
+      // todo node_modules模块
+      if (!isRelativeModule(p)) {
+        medianSource = ''
+      }
+      medianSource = require(path.resolve(projectPath, p)).call(
+        this,
+        medianSource
+      )
+    }
     for (let i = rules.length - 1; i >= 0; i--) {
       const { test, use } = rules[i]
-      if (test.test(modulePath)) { // 规则匹配
+      if (test.test(modulePath)) {
+        // 规则匹配
         if (isString(use)) {
-          // todo node_modules模块
-          if (!isRelativeModule(use)) {
-            return ''
-          }
-          return require(path.resolve(projectPath, use))(source)
+          _loadLoader(use)
+          continue
         }
         if (isObject(use)) {
-          // todo node_modules模块
-          if (!isRelativeModule(use.loader)) {
-            return ''
-          }
-          return require(path.resolve(projectPath, use.loader)).call({ query: use.options }, source)
+          _loadLoader.call({ query: use.options }, use.loader)
+          continue
         }
-        // {
-        //   test: /\.js$/,
-        //   use: [
-        //     {
-        //       loader: './loader/1.js',
-        //       options: {
-        //         name: '昨天'
-        //       }
-        //     },
-        //     './loader/2.js',
-        //   ]
-        // },
         if (isArray(use)) {
           for (let j = use.length - 1; j >= 0; j--) {
             if (isString(use[j])) {
-               // todo node_modules模块
-              if (!isRelativeModule(use[j])) {
-                return ''
-              }
-              return require(path.resolve(projectPath, use.loader)).call({ query: use.options }, source)
+              _loadLoader(use[j])
+              continue
+            }
+            if (isObject(use[j])) {
+              _loadLoader.call({ query: use[j].options }, use[j].loader)
+              continue
             }
           }
         }
       }
     }
+    return medianSource
   }
   async getSource(modulePath) {
     // todo node_modules模块
@@ -107,11 +102,13 @@ class Compile {
     }
     // 相对模块 包含后缀
     const moduleAbsolutePath = path.resolve(projectPath, modulePath)
-    return fse.readFile(moduleAbsolutePath, 'utf8').catch(err => log(`Module not found: '${moduleAbsolutePath}'`))
+    return fse
+      .readFile(moduleAbsolutePath, 'utf8')
+      .catch(err => log(`Module not found: '${moduleAbsolutePath}'`))
   }
   async parsing(modulePath) {
     let source = await this.getSource(modulePath)
-    source = this.handlerLoader(source, modulePath)
+    source = this.useLoaderToProcess(source, modulePath)
     const relyPaths = [] // 用于存放该模块 依赖其他模块的路径
     const ast = babelParser.parse(source)
     babelTraverse(ast, {
@@ -120,18 +117,26 @@ class Compile {
         if (node.node.callee.name === 'require') {
           // 调用表达式 的名字 是 require
           node.node.callee.name = '__webpack_require__'
-          let relyPath = './' + path.join(modulePath, '../', node.node.arguments[0].value)
+          let relyPath =
+            './' + path.join(modulePath, '../', node.node.arguments[0].value)
           // 相对模块 且 没有后缀 尝试使用extensions解析
-          if (/^\/|\./.test(relyPath) && !isIncludesSuffix(relyPath)) relyPath = this.extensions(relyPath)
+          if (/^\/|\./.test(relyPath) && !isIncludesSuffix(relyPath))
+            relyPath = this.extensions(relyPath)
           node.node.arguments[0].value = relyPath
-          Object.keys(this.modules).every(p => p !== relyPath) && relyPaths.push(relyPath) // 循环引用的处理
+          // 处理循环引用 (缓存模块不存在 且 没有加载自己)
+          !Object.keys(this.modules).includes(relyPath) &&
+            relyPath !== modulePath &&
+            relyPaths.push(relyPath)
         }
       }
     })
     const { code } = babelGenerator(ast)
     this.modules[modulePath] = escape(code)
-    relyPaths.length > 0 &&
-      (await Promise.all(relyPaths.map(p => this.parsing(p))))
+    if (relyPaths.length > 0) {
+      for (const relyPath of relyPaths) {
+        await this.parsing(relyPath)
+      }
+    }
   }
 }
 

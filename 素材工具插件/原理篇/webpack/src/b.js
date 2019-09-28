@@ -1,5 +1,3 @@
-const a = require('./a.js')
+const c = require('./c.js')
 
-module.exports = {
-  content: '晴天'
-}
+module.exports = '晴天'
