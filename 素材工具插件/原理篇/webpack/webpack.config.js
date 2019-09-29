@@ -1,4 +1,6 @@
 const path = require('path')
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('./mock-plugin/html-webpack-plugin')
 
 module.exports = {
   mode: 'development',
@@ -16,27 +18,32 @@ module.exports = {
         test: /\.js$/,
         use: [
           {
-            loader: './loader/1.js',
+            loader: './mock-loader/1.js',
             options: {
               name: '明天'
             }
           },
-          './loader/2.js'
+          './mock-loader/2.js'
         ]
       },
       {
         test: /\.js$/,
-        use: './loader/3.js'
+        use: './mock-loader/3.js'
       },
       {
         test: /\.js$/,
         use: {
-          loader: './loader/4.js',
+          loader: './mock-loader/4.js',
           options: {
             name: '昨天'
           }
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html'
+    })
+  ]
 }
