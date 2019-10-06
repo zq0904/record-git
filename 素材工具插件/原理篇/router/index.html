@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>router</title>
+  </head>
+  <body>
+    <h4>原生 hash 路由</h4>
+    <div id="app">
+      <a href="#/home">home</a>
+      <a href="#/details">details</a>
+      <div id="router-view"></div>
+    </div>
+    <hr />
+    <h4>原生 history 路由</h4>
+    <div id="vm">
+      <a href="/home">home</a>
+      <a href="/details">details</a>
+      <div id="router-view"></div>
+    </div>
+    <script src="./src/original-router.js"></script>
+
+    <hr />
+    <h4>react hash 路由</h4>
+    <div id="react-hash-app"></div>
+    <hr />
+    <h4>react history 路由</h4>
+    <div id="react-history-vm"></div>
+    <script src="./node_modules/react/umd/react.development.js"></script>
+    <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+    <script src="./node_modules/react-router-dom/umd/react-router-dom.min.js"></script>
+    <!-- babel浏览器运行时转换 -->
+    <script src="../../node_modules/@babel/standalone/babel.js"></script>
+    <script type="text/babel" src="./src/react-router.jsx"></script>
+
+    <hr />
+    <h4>vue hash 路由</h4>
+    <div id="vue-hash-app"></div>
+    <hr />
+    <script src="./node_modules/vue/dist/vue.min.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.min.js"></script>
+    <script src="./src/vue-router.js"></script>
+  </body>
+</html>

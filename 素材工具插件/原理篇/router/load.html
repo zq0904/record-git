@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>load</title>
+  </head>
+  <body>
+    <script>
+      document.addEventListener('readystatechange', event => {
+        console.log('readystatechange', document.readyState)
+      })
+      document.addEventListener('DOMContentLoaded', event => {
+        console.log(
+          'DOMContentLoaded',
+          '页面DOM被加载后立即触发，而无需等待资源完成加载'
+        )
+      })
+      window.addEventListener('load', event => {
+        console.log(
+          'load',
+          '整个页面都加载完了（包括所有相关资源，例如样式表图像）'
+        )
+      })
+      // document.readyState 这个属性是用来描述document的加载状态的 有3种值
+      // loading 文档仍在加载
+      // interactive 文档已完成加载，并且已对文档进行了解析，但是仍在加载子资源，例如图像，样式表和框架 DOMContentLoaded事件即将触发
+      // complete 文档和所有子资源均已完成加载。load事件即将触发
+    </script>
+  </body>
+</html>

@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web:
+    image: qixiaoqi/web:1.0
+    restart: always
+    ports:
+      - 8081:80
+
+  server:
+    image: qixiaoqi/server:1.0
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on: # 依赖关系 先启动mongodb 在启动server
+      - mongodb
+    links:
+      - mongodb:locahost # server容器连接到mongodb容器的一个自定义名称 对应于 dbconfig.js
+
+  mongodb:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456

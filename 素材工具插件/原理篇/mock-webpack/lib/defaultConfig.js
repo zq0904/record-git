@@ -1,10 +1,12 @@
 const path = require('path')
-const { path: { projectPath } } = require('./util')
+const {
+  path: { projectPath }
+} = require('./util')
 
 module.exports = {
   mode: 'production',
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.js']
   },
   entry: './src/index.js',
   output: {
@@ -13,5 +15,6 @@ module.exports = {
   },
   module: {
     rules: []
-  }
+  },
+  plugins: []
 }

@@ -3,6 +3,8 @@ const path = require('path')
 const babelParser = require('@babel/parser') // 将代码解析为ast语法抽象树
 const { default: babelTraverse } = require('@babel/traverse') // 对ast语法抽象树的 进一步遍历和更新节点
 const { default: babelGenerator } = require('@babel/generator')
+const { AsyncSeriesHook } = require('tapable')
+const defaultConfig = require('./defaultConfig')
 const ejs = require('ejs')
 const webpackMerge = require('webpack-merge')
 const {
@@ -15,21 +17,31 @@ const {
   isString,
   path: { projectPath, packagePath }
 } = require('./util')
-const defaultConfig = require('./defaultConfig')
 
 // todo 只处理cjs规范
-class Compile {
+class Compiler {
   constructor(config) {
-    this.config = webpackMerge(defaultConfig, config)
+    this.config = this.options = webpackMerge(defaultConfig, config)
     this.modules = {}
-    this.start()
+    this.hooks = {
+      afterEmit: new AsyncSeriesHook(['compilation'])
+    }
+    for (const pluginInstance of this.config.plugins) {
+      pluginInstance.apply(this)
+    }
   }
+  // 主流程
   async start() {
-    await this.parsing(this.config.entry)
+    await this.analyse(this.config.entry)
     console.log('modules', this.modules)
-    this.generate()
+    this.emitFile()
+    // todo 这里只是模拟一个 compilation对象
+    this.hooks.afterEmit.callAsync(
+      { assets: { [this.config.output.filename]: {} } },
+      () => {}
+    )
   }
-  generate() {
+  emitFile() {
     ejs.renderFile(
       path.resolve(packagePath, 'lib/template.ejs'),
       {
@@ -106,7 +118,7 @@ class Compile {
       .readFile(moduleAbsolutePath, 'utf8')
       .catch(err => log(`Module not found: '${moduleAbsolutePath}'`))
   }
-  async parsing(modulePath) {
+  async analyse(modulePath) {
     let source = await this.getSource(modulePath)
     source = this.useLoaderToProcess(source, modulePath)
     const relyPaths = [] // 用于存放该模块 依赖其他模块的路径
@@ -134,10 +146,10 @@ class Compile {
     this.modules[modulePath] = escape(code)
     if (relyPaths.length > 0) {
       for (const relyPath of relyPaths) {
-        await this.parsing(relyPath)
+        await this.analyse(relyPath)
       }
     }
   }
 }
 
-module.exports = Compile
+module.exports = Compiler
