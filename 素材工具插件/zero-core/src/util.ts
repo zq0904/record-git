@@ -1,4 +1,4 @@
-type Fn = () => void
+type Fn = (...args: any[]) => void
 type TimeId = number | NodeJS.Timeout
 
 // 节流
@@ -24,10 +24,10 @@ const throttle = (fn: Fn, time = 300) => {
 // 防抖
 const debounce = (fn: Fn, time = 300) => {
   let timeId: TimeId
-  return () => {
+  return function (this: any, ...agrs: any[]) {
     clearTimeout(timeId as number | undefined)
     timeId = setTimeout(() => {
-      fn && fn()
+      fn && fn.apply(this, agrs)
     }, time)
   }
 }
@@ -52,7 +52,7 @@ const userAgent = {
   isMobile: ua.indexOf('mobile') > -1, // 移动终端
   isMac: ua.indexOf('mac os x') > -1, // mac
   isWin: ua.indexOf('windows') > -1, // windows
-  
+
   version: ua.match(/(edge|msie|firefox|chrome|version).*?([\d.]+)/) ? (ua.match(/(msie|firefox|opera|chrome|version).*?([\d.]+)/) as RegExpMatchArray)[2] : '未知', // 版本
   // 浏览器类型
   browserType: (() => {
@@ -71,7 +71,7 @@ const userAgent = {
   })(),
 }
 // 浏览器 版本
-// ie 需要知道 版本 
+// ie 需要知道 版本
 // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/17.17134
 // Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.140 Safari/537.36 Edge/18.17763
 // ff 需要知道 版本 Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101 Firefox/68.0

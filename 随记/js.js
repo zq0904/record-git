@@ -1706,10 +1706,14 @@ git log // 查看历史版本 后更新的在前 commit ca7fd8a9f12... (commitId
 git log -2 // 查看最近2次的commit版本
 git reset --hard HEAD~2 // 后退2个版本 git reset --hard HEAD^^
 cat 文件名 // 查看某个文件
-git reset --hard HEAD a9092d160a4a // 到固定的commitId版本 log只会存储该commitId之前的 所以需要保留git的历史
+
 // 撤销修改
-git checkout -- 文件名 // 撤销红色没有推到暂存区的修改  不会撤销推到暂存区的修改  // 用本地 版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原” 不会更改 暂存区
-git reset HEAD 文件名  // 撤销推到暂存区的修改          不会撤销红色没有推到暂存区的修改
+git checkout -- 文件名 // 撤销红色 没有推到暂存区的修改  不会撤销推到暂存区的修改  // 用本地 版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原” 不会更改 暂存区
+git checkout -- . // 撤销所有没有推到暂存区的修改
+git reset HEAD 文件名  // 撤销绿色 推到暂存区的修改      不会撤销红色没有推到暂存区的修改
+git reset HEAD // 撤销所有推到暂存区的修改
+git reset --hard a9092d160a4a // 到固定的commitId版本 log只会存储该commitId之前的 所以需要保留git的历史
+git push -f // 强制提交本地落后的分支
 
 // 远程分支显示不及时 （人家刚推完 你要拉取 显示没有这个分支）
 git fetch // 不要在master分支用这个命令 在其余分支更新远程分支

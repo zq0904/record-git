@@ -1115,10 +1115,10 @@ less数组的循环（构建不同的rem）
 }
 
 四种布局 （混用效果很好 less+rem效果最好）
-// display:flex;       //利用伸缩盒子
+// display: flex;    //利用伸缩盒子
 // 流式布局（%布局）   //PC端 只能做到盒子,img等的缩放  文字,非%图片都是固定大小
-// 响应式布局          //基于媒体查询  PC端 M端
-// less+rem布局        //PC端 通常整体布局 使用流式布局 图片%自动缩放 其他的涉及font-size等带px 采用rem布局
+// 响应式布局         //基于媒体查询  PC端 M端
+// less+rem布局      //PC端 通常整体布局 使用流式布局 图片%自动缩放 其他的涉及font-size等带px 采用rem布局
 实现图片适配
 P端  单独充满width: 100%   响应式 定高背景图适配只是左右被裁剪 height:400px; background-position:center;background-size:cover;
 M端  单独充满width: 100%   对于图片不是单独充满  基于父容器%  或 rem
