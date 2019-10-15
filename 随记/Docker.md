@@ -67,7 +67,7 @@ docker run -itd --name nginx1 -v /Users:/use/share/nginx/html -p 8000:80 nginx /
 docker run -itd --name myslq1 -v /Users/zhaoqi/docker-mysql-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 8100:3306 mysql // -e 表设置环境变量(这里就是设置 root 用户的密码) -p 表映射端口(格式 宿主机端口:容器端口)
 docker exec -it [name|container id] /bin/bash // 进入这个容器
 docker commit [container id] mysql:1.0 // 在本地保存一个 tag
-docker run -itd --name mysql2 -v /Users/zhaoqi/docker-mysql-volume:/var/lib/mysql -p 8101:3306 mysql:1.0 // 直接使用本地的 tag 镜像去创建 数据数据如果需要保留必须使用 -v 单独挂载出来
+docker run -itd --name mysql2 -v /Users/zhaoqi/docker-mysql-volume:/var/lib/mysql -p 8101:3306 mysql:1.0 // 直接使用本地的 tag 镜像去创建 数据库数据如果需要保留必须使用 -v 单独挂载出来（可以将 2 个 mysql 挂载同一个路径 但不能同时连接 必须先断掉一个）
 docker images // 查看本地有哪些镜像
 docker ps // 查看 运行的容器
 docker ps -a // 查看 所有容器容器
