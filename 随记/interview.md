@@ -40,7 +40,7 @@
 14. 熟练使用npm、yarn、webpack，了解Gulp等构建工具，能够与后端协商设计出           规范的目录结构
 
 
-call apply原理
+
 
 工作经历
 2015.4-2017.11 公司名称：长春南北科技技术有限公司     部门岗位：研发部  Web前端开发工程师
@@ -56,5 +56,79 @@ call apply原理
               2.完成静态页面布局、样式编写
               3.使用JS、Jquery实现页面动态效果和事件绑定
               4.对已上线的项目进行定期维护
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# call apply bind原理 模拟实现 (主要考对this的理解)
+```javascript
+  Function.prototype.myCall = function (context, ...args) {
+    context = context || window
+    context._fn = this
+    const res = context._fn(...args)
+    delete context._fn
+    return res
+  }
+  Function.prototype.myApply = function (context, args) {
+    context = context || window
+    context._fn = this
+    const res = context._fn(...args)
+    delete context._fn
+    return res
+  }
+  Function.prototype.myBind = function (context, ...args) {
+    context = context || window
+    context._fn = this
+    return () => {
+      const res = context._fn(...args)
+      delete context._fn
+      return res
+    }
+  }
+  // 使用
+  const fn = function (...args) {
+    console.log(this, ...args)
+  }
+  fn.myCall({ a: 1 }, 1)
+  fn.myApply({ a: 1 }, [1])
+  const fnc = fn.myBind({ a: 1 }, 1)
+  fnc()
+```
+
+
+
+
+
+
+
+
+
 
 `
