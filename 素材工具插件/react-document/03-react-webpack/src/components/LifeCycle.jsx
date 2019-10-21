@@ -8,8 +8,8 @@ import React from 'react';
 // 更新组件 执行顺序 内层组件的componentDidUpdate 外层组价的componentDidUpdate
 // 卸载组件 执行顺序 外层组价的componentWillUnmount 内层组件的componentWillUnmount
 
-class LifeCycle extends React.Component {
-  static displayName = 'API组件' // devtool 中名字 方便调试HOC设置
+class Son extends React.Component {
+  static displayName = 'Son组件' // devtool 中名字 方便调试HOC设置
   static defaultProps = {} // 设置默认props
   state = {
     A: 'state的A'
@@ -19,19 +19,19 @@ class LifeCycle extends React.Component {
     super(props)
     console.log('constructor')
   }
-  // componentWillReceiveProps(nextProps, prevProps) { // 缺陷 一次更新中可能被调用多次
-  //   console.log('componentWillReceiveProps', nextProps, prevProps)
+  // componentWillReceiveProps(nextProps) { // 缺陷 一次更新中可能被调用多次 尝试使用componentDidUpdate
+  //   console.log('componentWillReceiveProps', nextProps, 'prevProps ->', this.props)
   // }
-  static getDerivedStateFromProps(nextProps, nextState) { // 用来替换原来的 componentWillReceiveProps 初始就会执行一次
+  static getDerivedStateFromProps(nextProps, State) { // 用来替换原来的 componentWillReceiveProps 初始就会执行一次
     // 返回的对象 会混入state中
-    console.log('getDerivedStateFromProps', nextProps, nextState)
+    console.log('getDerivedStateFromProps', nextProps, State)
     return { c: 1 }
   }
   shouldComponentUpdate(nextProps, nextState) {
     console.log('shouldComponentUpdate', nextProps, nextState, JSON.stringify(this.state), JSON.stringify(this.props)) // this.state this.props 拿到的是上一次的
-    return false // 返回true 表允许更新
+    return true // 返回true 表允许更新
   }
-  // componentWillMount() {
+  // componentWillMount() { // 尝试使用componentDidMount
   //   console.log('componentWillMount')
   // }
   // componentWillUpdate() { // 缺陷 一次更新中可能被调用多次
@@ -41,12 +41,12 @@ class LifeCycle extends React.Component {
     console.log('render', this)
     return (
       <div>
-        <h4>生命周期</h4>
+        <h4>Son</h4>
         <p>this.props.a：{this.props.a}</p>
         <p>this.state.A：{this.state.A}</p>
         <button onClick={() => this.setState({A: 'A'})}>更改state</button>
         <button onClick={() => this.forceUpdate()}>forceUpdate()强制更新</button>
-        <button onClick={e => console.log(e, e.nativeEvent)}>SyntheticEvent</button>
+        <button onClick={e => console.log(e, e.nativeEvent)}>SyntheticEvent 合成事件</button>
       </div>
     );
   }
@@ -77,7 +77,7 @@ class LifeCycle extends React.Component {
 // render
 // componentDidMount
 
-// props state 发生变更
+// props 或 state 发生变更
 // getDerivedStateFromProps
 // shouldComponentUpdate
 // render
@@ -92,18 +92,18 @@ class LifeCycle extends React.Component {
 // componentDidCatch
 
 
-export default class extends React.Component {
+export default class Father extends React.Component {
   state = { a: 1 }
-  handleClick = () => this.setState(prevState => ({a: prevState.a+1}))
   render() {
     return (
       <div>
-        <LifeCycle {...this.state} />
-        <button onClick={this.handleClick}>更改props</button>
+        <button onClick={() => this.setState(prevState => ({ a: prevState.a + 1 }))}>更改父级state</button>
+        <hr/>
+        <Son {...this.state} />
       </div>
     )
   }
-  componentDidMount() { console.log('f componentDidMount') }
-  componentDidUpdate() { console.log('f componentDidUpdate') }
-  componentWillUnmount() { console.log('f componentWillUnmount') }
+  componentDidMount() { console.log('Father -> componentDidMount') }
+  componentDidUpdate() { console.log('Father -> componentDidUpdate') }
+  componentWillUnmount() { console.log('Father -> componentWillUnmount') }
 }

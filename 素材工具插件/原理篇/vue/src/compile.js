@@ -20,7 +20,7 @@ class Compile {
     // childNodes 虽然具备iterator接口可以直接循环 但是它是“实时响应”的 如果其内部节点移除会直接导致childNodes长度实时变化 导致循环错乱
     // 这里只是复制一份数组 避免“实时响应”所引起的循环错乱
     const nodes = toArray(rootNode.childNodes)
-    // 使用文档片段 以优化性能
+    // 使用文档片段 减少重绘和回流 以优化性能
     const fragment = document.createDocumentFragment()
     nodes.forEach(node => fragment.appendChild(node))
     this.parsingChildNodes(fragment.childNodes)

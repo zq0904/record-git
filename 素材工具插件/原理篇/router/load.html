@@ -11,7 +11,7 @@
       document.addEventListener('readystatechange', event => {
         console.log('readystatechange', document.readyState)
       })
-      document.addEventListener('DOMContentLoaded', event => {
+      window.addEventListener('DOMContentLoaded', event => {
         console.log(
           'DOMContentLoaded',
           '页面DOM被加载后立即触发，而无需等待资源完成加载'
