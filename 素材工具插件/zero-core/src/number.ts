@@ -5,6 +5,13 @@ const complement = (number: number, length: number) => {
   return prefix + '0'.repeat(length - s.length > 0 ? length - s.length : 0) + s
 }
 
+// 随机生成一个包含 min max 的整数
+const random = (min: number, max: number) => {
+  if (max < min) [min, max] = [max, min]
+  return Math.floor(Math.random() * (max + 1 - min) + min)
+}
+
 export {
-  complement
+  complement,
+  random,
 }

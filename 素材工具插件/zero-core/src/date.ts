@@ -1,5 +1,5 @@
-import { isDate, isNumber, isString } from './object'
-import { complement as c } from './number'
+import { isDate, isNumber, isString } from './Object'
+import { complement as c } from './Number'
 
 type NSD = number | string | Date
 

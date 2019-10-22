@@ -1784,7 +1784,7 @@ dom.getBoundingClientRect() // { bottom: 333, height: 302, left: 0, right: 402, 
 .left // 元素左边 距 可视窗口 左边距离
 .right // 元素右边 距 可视窗口 左边距离
 
-// 在Mac环境如何将Png转换为icns
+// 在Mac环境如何将png转换为icns
 // 新建目录icon.iconset （目录名必须以.iconset结尾）
 // 将原始图片（tp.png）放入文件夹 终端切换至文件夹 执行如下命令
 sips -z 16 16     tp.png --out icon_16x16.png

@@ -1,4 +1,4 @@
-import { isObject, isString, extend } from './object'
+import { isObject, isString, extend } from './Object'
 
 interface Obj {
   [k: string]: any;
@@ -32,15 +32,7 @@ const parse = (str: string): Obj => {
   }, {})
 }
 
-// get() => { key: '1' }
-// get('key') => '1'
-const get = (key?: string) => {
-  const obj = parse(window.location.search.substr(1))
-  return key ? obj[key] : obj
-}
-
 export {
   stringify,
   parse,
-  get
 }

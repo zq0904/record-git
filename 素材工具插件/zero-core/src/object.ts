@@ -1,6 +1,6 @@
 const noop: () => void = () => {}
 
-// 声明类型保护 (针对 Array 等 是否有必要声明？: arg is any[])
+// 声明类型保护
 const isNull = (arg: any): arg is null => arg === null
 
 const isUndefined = (arg: any): arg is undefined => typeof arg === 'undefined'
@@ -11,11 +11,11 @@ const isString = (arg: any): arg is string => typeof arg === 'string'
 
 const isBoolean = (arg: any): arg is boolean => typeof arg === 'boolean'
 
-const isArray = (arg: any) => Object.prototype.toString.call(arg) === '[object Array]'
+const isArray = (arg: any): arg is any[] => Object.prototype.toString.call(arg) === '[object Array]'
 
-const isObject = (arg: any) => Object.prototype.toString.call(arg) === '[object Object]'
+const isObject = (arg: any): arg is { [key: string]: any } => Object.prototype.toString.call(arg) === '[object Object]'
 
-const isFunction = (arg: any) => typeof arg === 'function'
+const isFunction = (arg: any): arg is Function => typeof arg === 'function'
 
 const isDomElement = (arg: any): arg is HTMLElement => arg && arg.nodeType === 1
 
@@ -23,7 +23,7 @@ const isRegExp = (arg: any): arg is RegExp => Object.prototype.toString.call(arg
 
 const isDate = (arg: any): arg is Date => Object.prototype.toString.call(arg) === '[object Date]'
 
-const isBuffer = (arg: any) => { // 只针对node环境
+const isBuffer = (arg: any): arg is Buffer => { // 只针对node环境
   if (isNull(arg) || isUndefined(arg)) return false
   return !!(arg.constructor && arg.constructor.isBuffer && arg.constructor.isBuffer(arg))
 }

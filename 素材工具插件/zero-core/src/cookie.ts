@@ -1,4 +1,4 @@
-import { isNumber, isDate, isString } from './object'
+import { isNumber, isDate, isString } from './Object'
 
 type Days = number | Date | string | boolean
 
@@ -13,7 +13,7 @@ const set = (name: string, val: string, days: Days = false, path?: string, domai
   } else if (isString(days)) {
     expires = new Date(days.replace(/-/g, '/')).toUTCString() // 兼容ios
   } else {
-    expires = false
+    expires = false // 过期时间为 会话过期浏览器完全关闭
   }
   document.cookie = name + '=' + encodeURIComponent(val) +
     (expires ? (';expires=' + expires) : '') +
@@ -37,5 +37,5 @@ const del = (name: string) => {
 export {
   set,
   get,
-  del
+  del,
 }

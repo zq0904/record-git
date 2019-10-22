@@ -10,15 +10,15 @@ import progress from 'rollup-plugin-progress' // 构建进度
 import banner from 'rollup-plugin-banner' // banner
 import { terser } from 'rollup-plugin-terser' // uglify只能压缩es5语法 terser可以压缩es6语法
 import browsersync from 'rollup-plugin-browsersync'
-import { main, module, version, name } from './package.json'
+import { main as mainPath, module as modulepath, version, name } from './package.json'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const extensions = ['.js', '.jsx', '.mjs', '.ts', '.tsx']
 
 const output = [{
-  file: main,
-  format: 'umd', // amd cjs esm iife umd
-  name: 'Zero', // (iife/umd格式必须) 全局导出的变量名
+  file: mainPath,
+  format: 'umd', // 可选值 amd cjs esm iife umd
+  name: 'Zero', // (如果是iife/umd格式 则必填) 全局导出的变量名
   globals: { // 配合外控者依赖的全局变量
     react: 'React',
     'react-dom': 'ReactDOM',
@@ -26,8 +26,8 @@ const output = [{
   sourcemap: !isProduction
 }]
 
-if (isProduction && module) output.push({
-  file: module,
+if (isProduction && modulepath) output.push({
+  file: modulepath,
   format: 'esm',
   globals: {
     react: 'React',

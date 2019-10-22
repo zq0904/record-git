@@ -1,3 +1,4 @@
+// 用于插件的汉字编码
 const encode = (str: string) => {
   const arr = []
   for (const s of str) {
