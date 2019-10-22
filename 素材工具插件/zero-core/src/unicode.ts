@@ -9,7 +9,4 @@ const encode = (str: string) => {
 
 const decode = (str: string) => unescape(str.replace(/\\/g, '%')) // unescape兼容safari
 
-export {
-  encode,
-  decode
-}
+export { encode, decode }

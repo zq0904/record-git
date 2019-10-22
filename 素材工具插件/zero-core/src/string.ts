@@ -1,4 +1,3 @@
-
 import { isObject, isString } from './Object'
 import { stringify, parse } from './Qs'
 
@@ -42,9 +41,7 @@ interface SetParameter {
 
 const setQs = (obj: SetParameter) => {
   if (!obj) return window.location.href
-  if ('url' in obj) {
-    const { url, data } = obj
-    let href = url
+  function calculate (href: string, obj = {}) {
     let hash = ''
     // 去除hash
     const index = href.indexOf('#')
@@ -52,29 +49,20 @@ const setQs = (obj: SetParameter) => {
       hash = href.substr(index)
       href = href.replace(hash, '')
     }
-    if (href.match(/^(.*?\?)(.*)$/) && RegExp.$2) {
+    if (href.match(/^(.*?\?)(.*)$/)) {
+      // if (RegExp.$2) {
       const newQs = Object.assign(parse(RegExp.$2), obj)
       return RegExp.$1 + stringify(newQs) + hash
-    }
-    return href + '?' + stringify(obj) + hash
-  } else {
-    let { href } = window.location
-    let hash = ''
-    // 去除hash
-    const index = href.indexOf('#')
-    if (index > -1) {
-      hash = href.substr(index)
-      href = href.replace(hash, '')
-    }
-    if (href.match(/^(.*?\?)(.*)$/) && RegExp.$2) {
-      const newQs = Object.assign(parse(RegExp.$2), obj)
-      return RegExp.$1 + stringify(newQs) + hash
+      // }
     }
     return href + '?' + stringify(obj) + hash
   }
+  if (isString(obj.url)) {
+    const { url, data } = obj
+    return calculate(url, data)
+  } else {
+    return calculate(window.location.href, obj)
+  }
 }
 
-export {
-  getQs,
-  setQs,
-}
+export { getQs, setQs }

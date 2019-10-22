@@ -60,13 +60,14 @@ console.log('Qs.parse ', z.Qs.parse('a=1&b%5Bc%5D=c&b%5Bd%5D%5Be%5D=e&b%5Bd%5D%5
 // String
 console.log('String.getQs ', z.String.getQs(), z.String.getQs('s'), z.String.getQs({
   url: 'http://localhost:4321/test/api.html?a=1&b%5Bc%5D=c&b%5Bd%5D%5Be%5D=e&b%5Bd%5D%5Br%5D%5Ba%5D=1&c=3#hash',
-  // data: 'c'
+  data: 'c'
 }))
 console.log(
   'String.setQs ',
   z.String.setQs(),
   z.String.setQs({ b: 1, s: 5 }),
-  z.String.setQs({ url: 'http://localhost:4321/test/api.html?a', data: { s: 5 } }),
+  z.String.setQs({ url: 'http://localhost:4321/test/api.html?a#hash', data: { s: 5 } }),
+  z.String.setQs({ url: 'http://localhost:4321/test/api.html?#hash', data: { s: 5 } }),
 )
 // Unicode
 console.log('Unicode.encode ', z.Unicode.encode('今天'))
