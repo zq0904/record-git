@@ -16,22 +16,27 @@
 ## 注意问题
 ```
   兼容性 支持IE10及以上
-  vue 自行扩展
+  vue 使用 自行 插件 原型扩展
 ```
 ## 新增
 ```
-  
+  数组做差
+  getQs
+  setQs
+  Event 事件订阅发布模型
+  SessionStorage 兼容Safari无痕
+
   对 react组件 .tsx .less 支持
-  uA 判断的完善 // 移动端未测试
+  
   // 后续新增
-  localStorage 1.实现cookie相同功能 2.兼容无痕safari问题
+  
 ```
 ## 遗留问题
 ```
-  订阅发布模式
-  数组做差等
+  uA 判断的完善 // 移动端未测试
+  localStorage 1.如果存储有限 优先删除低权重的 实现cookie相同功能 2.兼容无痕safari问题
 
-  tree swing的测试
+  tree swing 的测试
 
   单元测试 集成部署测试
   覆盖率

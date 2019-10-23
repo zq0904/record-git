@@ -36,7 +36,18 @@ event.emit('custom1', 'custom1', 1)
 event.emit('custom2', 'custom2', 1)
 event.emit('custom3', 'custom3', 1)
 event.emit('custom3', 'custom3', 1)
-// LocalStorage
+// SessionStorage
+z.SessionStorage.setItem('a', { a: 1 })
+z.SessionStorage.setItem('b', '1')
+z.SessionStorage.setItem('c', 1)
+// z.SessionStorage.clear()
+z.SessionStorage.removeItem('b')
+console.log(
+  'SessionStorage.getItem ',
+  z.SessionStorage.getItem('a'),
+  z.SessionStorage.getItem('b'),
+  z.SessionStorage.getItem('c'),
+)
 // Number
 console.log('Number.complement ', z.Number.complement('-1', 3))
 console.log('Number.random ', z.Number.random(1, 10))
