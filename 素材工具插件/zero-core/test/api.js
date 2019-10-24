@@ -9,9 +9,9 @@ console.log('Array.subtract ', z.Array.subtract([1, 2, 3], [2, 3]))
 // Browser
 console.log('Browser.userAgent', z.Browser.userAgent)
 // Cookie
-z.Cookie.set('a', 'a-val', '2019/10/22 16:34')
-z.Cookie.set('b', 'b-val')
-z.Cookie.del('b')
+z.Cookie.set('a', 'a-val', '2019/10/24 16:47')
+z.Cookie.set('b', 'b-val', 1, '/')
+z.Cookie.del('b', '/')
 console.log('Cookie.get ', z.Cookie.get('a'), z.Cookie.get('b'))
 // Date
 console.log('Date.diff ', z.Date.diff('2018/01/01', '2018/01/02 13:00:00', 'H'))
@@ -48,6 +48,9 @@ console.log(
   z.SessionStorage.getItem('b'),
   z.SessionStorage.getItem('c'),
 )
+// LocalStorage
+z.LocalStorage.setItem('a', 1)
+console.log()
 // Number
 console.log('Number.complement ', z.Number.complement('-1', 3))
 console.log('Number.random ', z.Number.random(1, 10))

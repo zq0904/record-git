@@ -1,6 +1,7 @@
 import { isString } from './Object'
 import { set, get, del } from './Cookie'
 
+// 兼容Safari无痕
 const { sessionStorage } = window
 const PREFIX = '_sS_'
 let isSupport = true

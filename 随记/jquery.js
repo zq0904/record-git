@@ -650,8 +650,10 @@ window.onpopstate = function(){
 
 // 11. 利用 pushState();
 
+cookie 时效 默认浏览器进程期间（浏览器关闭）
+
 本地存储 只能存储字符串，可以将JSON.stringify(对象) 编码后存储
-sessionStorage //会话级别的本地存储 （只能同一页面下访问 关闭窗口，存储的数据清空） 约5M
+sessionStorage // 会话级别的本地存储 （新开一个浏览器窗口会新建会话 浏览器关闭 都会使session过期） 约5M
 sessionStorage.setItem('name',1);  //设置
 sessionStorage.getItem('name');    //获取
 sessionStorage.removeItem('name'); //删除单个
