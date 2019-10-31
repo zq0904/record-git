@@ -96,7 +96,8 @@ const state = new class Store {
       this.num = data
     }, 1000)
   }
-  // flow 只能作为函数使用 不能作为装饰器使用 由于使用Generator必须bind(this) 好处是异步部分不需要手动操作包装runInAction
+  // flow 只能作为函数使用 不能作为装饰器使用 由于使用Generator必须bind(this) 或者使用@action.bound包装 好处是异步部分不需要手动操作包装runInAction
+  @action.bound
   asyncC = flow(function *() {
     try {
       const data = yield new Promise((resolve, reject) => {
@@ -107,7 +108,7 @@ const state = new class Store {
     } catch (err) {
       console.log('reject')
     }
-  }).bind(this)
+  })
 }()
 
 // autorun 初始会执行一次 依赖的数据发生改变会再次执行 (适合执行一些副作用 记录日志等)

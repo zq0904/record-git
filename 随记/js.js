@@ -1681,10 +1681,10 @@ git commit -m "备注信息" // 存到 当前分支的 本地仓库
 git add .
 git commit -m 更新
 git push origin 你的分支名20171225 // 他就可以在远程 下载你的分支了
-
+git branch -a // 查询所有分支 如 master remotes/origin/20191013_zq_ffh
 git branch -d <branch_name> // 删除本地分支
 git branch -D <branch_name> // 删除本地分支 自己还没转移到另外的分支上 Git就会给出一个警告 并拒绝该删除操作
-git push origin --delete <branch_name> // 删除远程分支
+git push origin --delete <branch_name> // 删除远程分支 !!!注意branch_name不包括这部分(remotes/origin/)
 
 // 更新自己开发分支上的master基础
 git checkout master           // 切换到master分支

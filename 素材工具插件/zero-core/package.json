@@ -1,6 +1,6 @@
 {
   "name": "zero-core",
-  "version": "1.1.6-beta.3",
+  "version": "1.1.6-beta.4",
   "author": {
     "name": "qixiaoqi"
   },
@@ -16,8 +16,7 @@
     "build:types": "rm -rf types && tsc --emitDeclarationOnly --declarationDir types",
     "check:types": "tsc --noEmit -w",
     "lint": "eslint src --ext .js,.ts --fix",
-    "prepublish": "node hook/publish.js",
-    "test": ""
+    "prepublish": "node hook/publish.js"
   },
   "dependencies": {
     "@babel/runtime-corejs3": "^7.5.5"

@@ -49,8 +49,14 @@ console.log(
   z.SessionStorage.getItem('c'),
 )
 // LocalStorage
-z.LocalStorage.setItem('a', 1)
-console.log()
+z.LocalStorage.setItem('a', { a: 1 }) // 随浏览器进程
+z.LocalStorage.setItem('b', { b: 1 }, 1) // 存1天
+z.LocalStorage.setItem('c', { c: 1 }, '2019/10/31')
+// z.LocalStorage.removeItem('c')
+// z.LocalStorage.clear()
+console.log('LocalStorage.getItem ', z.LocalStorage.getItem('a'))
+console.log('LocalStorage.getItem ', z.LocalStorage.getItem('b'))
+console.log('LocalStorage.getItem ', z.LocalStorage.getItem('c'))
 // Number
 console.log('Number.complement ', z.Number.complement('-1', 3))
 console.log('Number.random ', z.Number.random(1, 10))
