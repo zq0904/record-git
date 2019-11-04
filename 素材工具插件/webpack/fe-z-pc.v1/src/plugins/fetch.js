@@ -12,7 +12,7 @@ const $fetch = axios.create({
   // 如果有 transformRequest Content-Type 默认就是 application/x-www-form-urlencoded
   transformRequest(data, headers) {
     if (!(data instanceof FormData)) return Qs.stringify(data, {
-      arrayFormat: 'brackets', // {a:[1,2]} 解析为：'a[]=1&a[]=2'
+      arrayFormat: 'brackets', // {a:[1,2]} 解析为：'a[]=1&a[]=2' // indices a[1]
       allowDots: true, // {a:{b:2}} 解析为：'a.b=2', 设为false  解析为 'a[b]=2'
       skipNulls: true, // {a:null}时 解析为：''，设为false 解析为：'a='
     })

@@ -13,6 +13,7 @@
   "dependencies": {
     "@fancyapps/fancybox": "^3.5.0",
     "animate.css": "^3.7.0",
+    "animejs": "^3.1.0",
     "art-template": "^4.13.1",
     "axios": "^0.18.0",
     "bootstrap": "^3.3.7",
@@ -33,7 +34,8 @@
     "react-dom": "^16.7.0",
     "remarkable": "^1.7.1",
     "vue": "^2.5.17",
-    "zepto": "^1.2.0"
+    "zepto": "^1.2.0",
+    "zero-core": "^1.1.6-beta.5"
   },
   "devDependencies": {
     "@angular/cli": "^7.3.8",

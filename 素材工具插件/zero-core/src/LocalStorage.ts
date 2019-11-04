@@ -32,6 +32,9 @@ const removeExpired = () => {
   }
 }
 
+// setItem('a', { a: 1 }) 随浏览器进程
+// setItem('a', { a: 1 }, 1) 存1天
+// setItem('a', { a: 1 }, '2019/10/31') 到2019/10/31
 const setItem = (name: string, val: any, days: Days | false = false) => {
   removeExpired()
   // 如果设置的过期时间 本身就已经过期 则return掉

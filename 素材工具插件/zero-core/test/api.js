@@ -1,4 +1,4 @@
-var z = Zero
+var z = Zero // eslint-disable-line
 
 console.log(z)
 
