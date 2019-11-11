@@ -126,7 +126,7 @@ const UC = props => {
 }
 
 // useContext
-const MyContext = React.createContext({a:1}) // 只有在组件树中没有匹配Provider 才会使用默认值
+const MyContext = React.createContext({a: 1}) // 只有在组件树中没有匹配Provider 才会使用默认值
 const Ucontext = props => {
   const value = useContext(MyContext) // 相当于class组件中的 static contextType = MyContext
   console.log('value', value)

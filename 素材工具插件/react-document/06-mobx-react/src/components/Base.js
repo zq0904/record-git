@@ -11,13 +11,13 @@ const store = new class {
   @observable time = 0
   @observable arr = [1]
   @action.bound
-  add() { this.time += 1 }
+  addTime() { this.time += 1 }
   @action.bound
-  update() { this.arr.push(1) }
+  addArr() { this.arr.push(1) }
 }()
 
 // 纯es5方式完全等价 const Api = observer(class {}) 如对无状态组件 observer(() => {})
-const Chilren = observer(props => <p>{JSON.stringify(props.arr)}</p>)
+const Box = observer(props => <p>{JSON.stringify(props.arr)}</p>)
 
 @inject('testState')
 @observer // observer 如果与其他装饰器一起使用 observer一定要在最里面的调用
@@ -41,11 +41,11 @@ class Base extends React.Component {
         <hr/>
         <h3>temporaryStore</h3>
         <p>{this.props.temporaryStore.time}</p>
-        <button onClick={this.props.temporaryStore.add}>更改</button>
+        <button onClick={this.props.temporaryStore.addTime}>更改</button>
         <hr/>
-        <p>被@observer装饰器所修饰的组件 会添加类似shouldComponentUpdate 只有该组件“真实用到的”stoer数据发生改变才会更新该组件</p>
-        <Chilren arr={this.props.temporaryStore.arr}></Chilren>
-        <button onClick={this.props.temporaryStore.update}>更改arr 只有子组件会发生变化 父组件是不会更新的 这是极大的性能优化</button>
+        <p>被@observer装饰器所修饰的组件 会添加类似shouldComponentUpdate 只有该组件“真实用到的”store发生改变才会更新该组件</p>
+        <Box arr={this.props.temporaryStore.arr}></Box>
+        <button onClick={this.props.temporaryStore.addArr}>更改arr 只有子组件会发生变化 父组件是不会更新的 这是极大的性能优化</button>
       </div>
     );
   }

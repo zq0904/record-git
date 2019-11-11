@@ -15,11 +15,14 @@
   <button onclick="interceptors()">添加拦截器 在发请求</button><br />
   <button onclick="urlencoded()">application/x-www-form-urlencoded 请求</button><br />
   <button onclick="encapsulation()">vue中常规封装</button><br />
-  <button onclick="requestCancel()">测试取消请求</button><button onclick="cancel('请求被取消了')">取消请求</button><br />
+  <button onclick="testCancel()">测试 取消请求</button><button onclick="cancel('请求被取消了')">取消请求</button><br />
+
   <script src="../node_modules/vue/dist/vue.min.js"></script>
-  <script src="../node_modules/qs/dist/qs.js"></script>
+  <script src="./node_modules/mobx/lib/mobx.umd.min.js"></script>
   <script src="../node_modules/axios/dist/axios.min.js"></script>
+  <script src="../node_modules/qs/dist/qs.js"></script>
   <script>
+
   const REQ_URL = 'http://127.0.0.1:3004/list'
 
   // 全局的axios默认值
@@ -127,6 +130,7 @@
       })
   }
 
+  // 自定义Content-Type
   function urlencoded() {
     const instance = axios.create({
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
@@ -151,16 +155,16 @@
         'X-Requested-With': 'XMLHttpRequest', // 自定义头 后端标识为 ajax请求
         // 'Content-Type': 'application/x-www-form-urlencoded',
       },
-      transformRequest: [
+      transformRequest: [ // 一但设置了transformRequest headers 中的Content-Type默认就是application/x-www-form-urlencoded
         data => {
           if (data && !(data instanceof FormData)) {
+            try { data = JSON.parse(JSON.stringify(data)) } catch (err) {} // 解决 mobx@4 中 数组 传递问题 toJS不能将一个对象中包含的mobx对象转化
             return Qs.stringify(data, {
                 arrayFormat: 'indices', // 数组的解析方式 a[0]=1&a[1]=2
-                allowDots: true, // 对象被字符串化的方式 默认a[b] 设置为trque a.b
-                skipNulls: true, // 对字段为null 的 跳过解析 
-                 
+                allowDots: true, // 对象被字符串化的方式 a.b
+                skipNulls: true, // 对字段为null 的 跳过解析
               })
-          } else { // 上传文件
+          } else { // data为FormData对象时 不使用Qs解析 通常用于上传文件
             return data
           }
         }
@@ -170,24 +174,31 @@
     Object.defineProperties(Object.getPrototypeOf(Vue), {
       $fetch: {
         get() {
-          return arg => instance(arg)
-            .then(res => {
-              if (res.falg !== 1) return Promise.reject(res) // 主要是为了保证 await Promise.reject() 后不执行
-              return Promise.resolve(res)
-            })
-            .catch(err => {
-              window.alert(JSON.stringify(err))
-              return Promise.reject(err)
-            })
+          return ({ errDispose = true , ...arg }) => {
+            return instance(arg)
+              .then(({ data }) => {
+                // 多数情况下flag不为1 应该弹提示信息 但有些特殊场景用户应自定义错处处理
+                // 主要是为了保证 await Promise.reject() 后不执行
+                if (errDispose && data.flag !== 1) {
+                  window.alert(data.msg)
+                  return Promise.reject(data)
+                }
+                return Promise.resolve(data)
+              }, err => {
+                console.log('请求出错', err)
+                return Promise.reject(err)
+              })
+          }
         }
       }
     })
     // 测试发请求
     Object.getPrototypeOf(Vue)
       .$fetch({
+        errDispose: false, // 设置为false 拥有完全处理的权限
         method: 'POST',
         url: REQ_URL,
-        data: { a: 1, b: 2 }
+        data: { a: mobx.observable({ a: { b: 'b', c: [1, 2] }, d: null, e: '', f: undefined }) },
       })
       .then(function(res) {
         console.log(res)
@@ -200,12 +211,11 @@
   // 测试 axios 的取消请求
   const CancelToken = axios.CancelToken
   let cancel; // 声明取消方法
-  function requestCancel() {
+  function testCancel() {
     axios.post(
-      'http://localhost:3004/list',
+      'http://localhost:3004/test/cancel',
       { name: 'name' },
       {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         cancelToken: new CancelToken(c => cancel = c) // 赋值取消方法
       }
     )
@@ -213,6 +223,7 @@
       console.log(res)
     })
     .catch(err => {
+      // 请求被取消了
       console.log('err', err)
     })
   }

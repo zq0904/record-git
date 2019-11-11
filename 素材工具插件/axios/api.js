@@ -4,11 +4,15 @@ const cors = require('cors')
 const app = new express()
 
 // app.use(compression())
-app.use(cors()) // 跨域中间件 如果axios请求头设置了 withCredentials: true, 允许跨域携带cookie 那么相应头中的Access-Control-Allow-Origin 不能设置为* 必须明确指定具体
+app.use(cors({
+  'origin': 'http://127.0.0.1:3001',
+  'Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+  'credentials': true, // 跨域中间件 如果axios请求头设置了 withCredentials: true, 允许跨域携带cookie 那么相应头中的Access-Control-Allow-Origin 不能设置为* 必须明确指定具体
+}))
 
 app.use('/list', (req, res, next) => {
   console.log('list', req.url)
-  // res.setHeader("Access-Control-Allow-Origin", "http://fet-proxy.lietou.com:3000")
+  // res.setHeader("Access-Control-Allow-Origin", "http://127.0.0.1:3001")
   // res.setHeader("Access-Control-Allow-Credentials", "true")
   // res.setHeader("Access-Control-Allow-Headers", "cache-control,x-requested-with")
   // res.setHeader("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS")
@@ -49,13 +53,15 @@ app.use('/list', (req, res, next) => {
   }, 0)
 })
 
-app.use('/', (req, res, next) => {
-  console.log('/', req.url)
-  res.status(200).json({
-    flag: '1',
-    msg: '请求成功',
-    data: '/'
-  })
+app.use('/test/cancel', (req, res, next) => {
+  console.log('/test/cancel', req.url)
+  setTimeout(() => {
+    res.status(200).json({
+      flag: '1',
+      data: '/test/cancel',
+      msg: '请求成功',
+    })
+  }, 3000)
 })
 
 app.listen(3004, () => console.log('running 3004'))

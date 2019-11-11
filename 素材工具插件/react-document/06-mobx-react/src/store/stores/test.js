@@ -1,12 +1,10 @@
-import { observable, action, autorun, computed, runInAction, when, reaction } from 'mobx'
+import { observable, action, computed, runInAction, flow, autorun, when, reaction } from 'mobx'
 
 export default class TestStore {
+  constructor(rootStore) { this.rootStore = rootStore }
   @observable num = 0 // 将普通的数据 变为可观测的数据
   @observable price = 100
-  constructor(rootStore) {
-    this.rootStore = rootStore
-  }
-  @action.bound
+  @action.bound // 自动 bind this
   add() { this.num ++ }
   @computed // 计算属性 依赖缓存
   get totalPrice() {
@@ -28,6 +26,11 @@ export default class TestStore {
   @action.bound UPDATESTORE(payload) {
     Object.assign(this, payload)
   }
+  @action.bound
+  asyncAdd2 = flow(function *() {
+    yield Promise.resolve(1)
+    this.num ++
+  })
 }
 
 // // autorun 初始会执行一次 有点类似计算属性 依赖的可被观测的数据变动 就会执行业务函数

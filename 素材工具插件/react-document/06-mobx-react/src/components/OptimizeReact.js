@@ -8,7 +8,7 @@ const state = new class {
   @observable arr = new Array(9999).fill(1)
   @action add = () => ++this.a
   @action psuh = () => this.arr.push(1)
-}
+}()
 
 // 虽然
 const Bad = observer(() => (
