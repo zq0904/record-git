@@ -27,3 +27,41 @@
     "src/**/*",
   ]
 }
+
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "outDir": "build",
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "preserve",
+    "lib": ["es2018", "dom"],
+    "rootDir": "src",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "baseUrl": "./src/",
+    "paths": {
+      "@common/*": ["common/*"],
+      "@components/*": ["components/*"],
+      "@business/*": ["components/business/*"],
+      "@ui/*": ["components/ui/*"]
+    }
+  },
+  "include": [
+    "./src"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "useBabel": true,
+    "useCache": true
+  }
+}
