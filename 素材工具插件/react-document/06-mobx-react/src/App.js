@@ -5,7 +5,7 @@ import Api from './components/Api' // 绝大部分api的使用
 import ToolFunction from './components/ToolFunction' // 工具函数 如 toJS的使用
 import OptimizeReact from './components/OptimizeReact' // 性能优化
 import MobxReactLite from './components/MobxReactLite' // mobx-react-lite的使用
-import MobxReactLiteTS from './components/MobxReactLiteTS' // mobx-react-lite 在TS中的使用
+import MobxReactLiteTS from '@/components/MobxReactLiteTS' // mobx-react-lite 在TS中的使用
 import './App.css';
 
 function App() {

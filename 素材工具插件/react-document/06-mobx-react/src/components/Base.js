@@ -23,9 +23,9 @@ const Box = observer(props => <p>{JSON.stringify(props.arr)}</p>)
 @observer // observer 如果与其他装饰器一起使用 observer一定要在最里面的调用
 class Base extends React.Component {
   state = { num: 1 }
-  componentWillReact() { // observer 提供的一个生命周期钩子
-    console.log('componentWillReact') // 当一个组件被安排重新渲染时将触发
-  }
+  // componentWillReact() { // observer 提供的一个生命周期钩子 在mobx-react@6已经移除
+  //   console.log('componentWillReact') // 当一个组件被安排重新渲染时将触发
+  // }
   render() {
     console.log('Base.js this.props ->', this.props)
     return (

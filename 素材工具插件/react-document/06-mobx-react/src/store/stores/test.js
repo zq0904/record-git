@@ -6,7 +6,7 @@ export default class TestStore {
   @observable price = 100
   @action.bound // 自动 bind this
   add() { this.num ++ }
-  @computed // 计算属性 依赖缓存
+  @computed // 计算属性 (依赖缓存 该方法所直接包括的属性变更方法会重新执行 否则直接使用缓存  对比get只要视图更新就会重新执行)
   get totalPrice() {
     return this.num * this.price
   }

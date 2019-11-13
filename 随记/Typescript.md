@@ -155,6 +155,7 @@
       return [{a: 1}]
     }
   }
+  type FnType = typeof fn1 // 获取函数的类型
 ```
 ## 泛型
 ```typescript
