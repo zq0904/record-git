@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { action } from 'mobx'
-import { inject } from 'mobx-react' // @6 版本依赖于mobx-react-lite
-import { observer, useLocalStore, Observer, useObserver, useAsObservableSource } from 'mobx-react-lite'
+// mobx-react@6 版本依赖于mobx-react-lite
+import { inject, observer, useLocalStore, Observer, useObserver, useAsObservableSource } from 'mobx-react'
 
-// mobx-react 中的 observer 对于hooks不是很友好 函数组件通过observer包装不能使用hooks
-// mobx-react-lite 提供的 observer 对上述不足做出了支持 同时 还提供了useLocalStore为函数组件中 直接使用响应式数据提供支持
+// mobx-react @4 @5 中的 observer 对于hooks不是很友好 函数组件通过observer包装不能使用hooks
+// mobx-react-lite | mobx-react @6 提供的 observer 对上述不足做出了支持 同时 还提供了useLocalStore为函数组件中 直接使用响应式数据提供支持
 
 // 函数组件 react hooks 与 mobx联合使用
 const FnC = ({ testState }) => {

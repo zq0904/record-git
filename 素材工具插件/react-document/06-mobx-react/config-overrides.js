@@ -8,8 +8,6 @@ const {
 } = require('customize-cra')
 const path = require('path')
 
-console.log(path.resolve(__dirname, 'src'))
-
 module.exports = override(
   addWebpackResolve({
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'], // 省略后缀

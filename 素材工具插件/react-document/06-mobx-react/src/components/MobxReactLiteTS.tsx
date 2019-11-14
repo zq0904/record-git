@@ -2,9 +2,10 @@ import React, { useState } from 'react'
 import { flow } from 'mobx'
 import { inject, observer, useLocalStore, Observer } from 'mobx-react'
 // import { useStore, storesContext } from '../store/utils'
-import { useStore, storesContext } from '@/store/utils' 
-console.log(useStore, storesContext)
-// import { useStore, storesContext } from '@/store/utils'
+// 在ts文件中 如果想使用别名 需要配置 tsconfig.json中的 baseUrl 和 paths 但CRA不支持会重置
+// https://stackoverflow.com/questions/57070052/create-react-app-typescript-3-5-path-alias
+// 常见的解决方案 https://github.com/facebook/create-react-app/issues/5118 但是ts类型检测将受到影响
+import { useStore, storesContext } from '@/store/utils'
 
 // 1. inject 虽然用起来没什么问题 很方便 但是对ts支持不友好
 // 2. 对于useLocalStore 中的this ts支持问题
