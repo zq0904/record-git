@@ -1049,13 +1049,14 @@ function ff(e){
 }
 
 
-css3规范 :伪类  :: 为元素
+css3规范 : 伪类  :: 伪元素
 p:first-of-type //css3选择器 通过p找父元素 在通过父元素找所有子元素类型为p 然后再找第几个
-  // <p></p>
-  // <p class="red"></p>
-  // .box .red:first-of-type // 匹配父元素.box内同类型标签元素p中的第一个元素.test 然而并没有
-p:first-child   //通过P找到父元素 在通过父元素找所有的子元素 找第一个元素 匹配判断类型(如果不是选择器失效)
-p:nth-of-type
+
+p:first-child   // 通过P找到父元素 在通过父元素找所有的子元素 找第一个元素 匹配判断类型(如果不是选择器失效)
+// <p>1</p>
+// <p>1</p>
+// <p class="bar">1</p>
+.bar:nth-of-type(2) {} // 匹配同类型节点的第2个 (这里是p元素节点 第二个没有bar类 故不作用)
 
 less （简化CSS编写 降低CSS维护成本 less向下兼容支持css语法）
 @charset "UTF-8"; //声明字符集
