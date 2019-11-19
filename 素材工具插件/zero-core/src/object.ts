@@ -13,6 +13,7 @@ const isBoolean = (arg: any): arg is boolean => typeof arg === 'boolean'
 
 const isArray = (arg: any): arg is any[] => Object.prototype.toString.call(arg) === '[object Array]'
 
+// 这里不应该使用泛型 使用泛型会失去类型保护 (如下面的 如果arg是对象 ts就能确定其具体的对象类型 不会认为对象的类型是{ [key: string]: any })
 const isObject = (arg: any): arg is { [key: string]: any } => Object.prototype.toString.call(arg) === '[object Object]'
 
 const isFunction = (arg: any): arg is Function => typeof arg === 'function'
@@ -28,7 +29,10 @@ const isBuffer = (arg: any): arg is Buffer => { // 只针对node环境
   return !!(arg.constructor && arg.constructor.isBuffer && arg.constructor.isBuffer(arg))
 }
 
-const extend = (...args: any[]) => {
+// 参考官方assign类型校验
+// const extend = (...args: any[]) => {
+// function extend<T>(,...args: any[])
+function extend (...args: any[]) {
   isObject(args[0]) ? args.unshift(false) : args[0] = !!args[0] // 统一入参
   const [deep, target, ...other] = args
   let targetVal, oVal

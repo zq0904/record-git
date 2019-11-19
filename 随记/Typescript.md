@@ -145,24 +145,23 @@
   function fn5(x?: number) { x = x ? x : 1 } // 很繁琐的写法
   const fn6: (x?: number) => void = (x = 1) => {} // 依赖于fn5
   function fn7(a:string, x: nuumber = 1, y?: number) {} // xy均为可选参数 可选参数必须在必填参数后面 可选参数的默认值可以通过传递undefinde触发
-  // 函数重载 (为同一个函数提供多个函数类型定义 函数调用时必须符合重载规则 会依次查找重载列表尝试重载定义)
-  function sel(x: {a: number}[]): number
-  function sel(x: number): {a: number}[]
-  function sel(x): any {
-    if (typeof x === 'object') {
-      return 1
-    } else if (typeof x === 'number') {
-      return [{a: 1}]
-    }
+  // 函数重载 (为同一个函数提供多个函数类型 函数调用时 ts会依次查找重载列表尝试重载定义 以确定当前函数的类型) 官方 建议将”精准“的重载 放到前面
+  // 函数重载复用性较强时应该考虑泛型
+  function fn8(s: number): number
+  function fn8(s: any[]): any[]
+  function fn8(s: any[] | number) {
+    if (typeof s === 'number') return s
+    return s
   }
-  type FnType = typeof fn1 // 获取函数的类型
+  const n = fn8(1) // ts明确知道 在这种情况下 n是number类型 如果不使用重载ts会认为n是 number | any[]
+  type FnType = typeof fn1 // 获取函数的类型 (一个class A 通过 typeof A 来获取类A的类型)
 ```
-## 泛型
+## 泛型 (解决 函数 接口 类的 类型得复用性)
 ```typescript
-  // 泛型函数 (当调用这个函数的时候传入类型 以确定T的类型)
+  // 泛型函数
   function fn1<T>(arr: Array<T>) { return arr }
   fn1<string>(['1']) // 直接使用<>来明确传入的类型
-  fn1(['1']) // 使用 类型推断
+  const arr = fn1(['1']) // 使用 类型推断 ts会直接认为此时 T类型为string[]
   const fn2: { <U>(a: Array<U>): Array<U> } = fn1 // 使用带有调用签名的对象字面量来定义泛型函数 (像 内联的 接口)
   // 泛型接口
   interface Fn1 { <T>(a: Array<T>): Array<T> }
