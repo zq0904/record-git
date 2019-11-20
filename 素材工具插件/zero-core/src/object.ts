@@ -29,32 +29,29 @@ const isBuffer = (arg: any): arg is Buffer => { // 只针对node环境
   return !!(arg.constructor && arg.constructor.isBuffer && arg.constructor.isBuffer(arg))
 }
 
-// 参考官方assign类型校验
-// const extend = (...args: any[]) => {
-// function extend<T>(,...args: any[])
-function extend (...args: any[]) {
+const extend = (...args: any[]) => {
   isObject(args[0]) ? args.unshift(false) : args[0] = !!args[0] // 统一入参
   const [deep, target, ...other] = args
-  let targetVal, oVal
+  let targetVal, otherVal
   for (const o of other) {
     for (const key in o) {
       targetVal = target[key]
-      oVal = o[key]
+      otherVal = o[key]
       // 深拷贝 且 配置项是对象或数组
-      if (deep && (isObject(oVal) || isArray(oVal))) {
+      if (deep && (isObject(otherVal) || isArray(otherVal))) {
         // 目标对象不是对象或者数组 应直接替换  等效替代为深拷贝  {a: '123'} {a: {...}} => {a: {}} {a: {...}}
-        targetVal = isArray(oVal) ? (
+        targetVal = isArray(otherVal) ? (
           isArray(targetVal) ? targetVal : []
         ) : (
           isObject(targetVal) ? targetVal : {}
         )
-        target[key] = extend(deep, targetVal, oVal)
-      } else if (!isUndefined(oVal)) {
-        target[key] = oVal
+        target[key] = extend(deep, targetVal, otherVal)
+      } else if (!isUndefined(otherVal)) {
+        target[key] = otherVal
       }
     }
   }
-  targetVal = oVal = null
+  targetVal = otherVal = null
   return target
 }
 

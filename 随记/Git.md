@@ -1,0 +1,102 @@
+# Git [官网](https://git-scm.com/) git是分布式版本控制系统
+## 全局信息
+```
+  git config --global user.name "zhaoqi" // 设置用户名
+  git config --global user.email "154809748@qq.com" // 设置邮箱
+  git config -l // 查看信息
+  git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit" // 自定义一个git指令 git lg
+```
+## 创建存储库
+```
+  git init // 初始化仓库 创建一个.git的隐藏目录
+  git remote add origin git@github.com:zq0904/public-test.git // 添加 别名
+  git push -u origin master // 把本地仓库推送到远程仓库 并 关联
+  // 当用户直接 git pull 或 fetch 时 可以直接跟别名 不跟git默认取的是 关联的别名 地址
+  // 可以实现同一个仓库向不同的地址push (如 git push o1  git push o2)(git push 走默认关联的地址)
+  git remote -v // 显示详细的 别名映射
+  // origin	git@github.com:zq0904/public-test.git (fetch)
+  // origin	git@github.com:zq0904/public-test.git (push)
+  git remote rename origin newOrigin // 修改 别名
+  // newOrigin	git@github.com:zq0904/public-test.git (fetch)
+  // newOrigin	git@github.com:zq0904/public-test.git (push)
+  git remote set-url origin git@new.address.get // 修改 别名的地址
+  // origin	git@new.address.get (fetch)
+  // origin	git@new.address.get (push)
+  git remote rm origin // 删除 别名
+```
+## 克隆
+```
+  git clone git@github.com:zq0904/public-test.git
+  // 克隆的项目 默认会添加 origin别名
+  // origin	git@github.com:zq0904/public-test.git (fetch)
+  // origin	git@github.com:zq0904/public-test.git (push)
+```
+## 查看状态 添加到暂存区 提交到本地
+```
+  touch 1.js
+  git status // 查看状态 红色(文件有更改) 绿色(已经推到暂存区)
+  git add . // 将所有更改的文件 添加到暂存区
+  git commit -m add:添加1.js // 将暂存区中的文件 提交到当前分支的本地仓库
+```
+## 拉取 提交 获取
+```
+  git pull // 拉取代码 
+  git push // 提交代码到远程
+  git fetch // 获取 (用于检查本地仓库的状态 保持最新)
+```
+## 分支
+```
+  git branch // 查看本地分支
+  git branch -a // 查看所有分支
+  git branch 20190101_star_zq // 基于当前分支 创建 新分支 (理论上创建分支 都应该基于主干 所以创建分支一般都会切到主干)
+  git branch -d 20190101_star_zq // 删除 本地分支 (用户不应该处于这个分支)
+  git branch -D 20190101_star_zq // 强制删除 本地分支 (当一个分支没有完全合并删除时git将给予警告)
+  git push origin --delete 20190101_star_zq // 删除 远程分支 (注意分支名 不应该包括 remotes/origin/ 这部分)
+  git checkout 20190101_star_zq // 切换 分支
+  git checkout -b 20190101_star_zq // 创建 并移动到这个 分支
+  git checkout -b 20190101_star_zq remotes/origin/20190101_star_zq // 创建并移到这个分支 拉取远程分支 (远程分支必须存在)
+  git push origin 本地分支名:远程分支名 // 将本地分支推到远程服务器 (远程分支与本地分支同名 可以简写 git push origin 本地分支名)
+  git merge master // 将master 合并到当前分支
+```
+## 对比 撤销 
+```
+  git diff 1.js // 在git中查看文件的改动 红色是删除的 绿色是添加的
+  git log // 查看历史版本
+  git log -2 // 查看最近2次的历史版本
+  // 撤销 没有推到暂存区的修改 修改和删除 (新增文件不能撤销)
+  git checkout -- 1.js // 撤销1.js没有推到暂存区的修改
+  git checkout -- . // 撤销所有没有推到暂存区的修改
+  // 撤销 add
+  git reset HEAD 1.js // 将1.js从 暂存区 中撤销
+  git reset HEAD // 撤销所有推到暂存区的更改
+  // 撤销 commit
+  git reset --hard HEAD~2 // 本地后退2个版本 (回滚后git log不会存储以前的记录 所以需要自己保留commit的历史)
+  git reset --hard a9092d160a4a // 后退到固定commit_id的版本
+  git push -f // 本地回滚后 强制提交本地分支 达到回滚远程分支的目的
+
+// git 的文件忽略 (.gitignore文件本身要放到版本库里，并且可以对.gitignore做版本管理)
+// 在Git工作区的根目录下创建一个特殊的 .gitignore文件
+// Windows系统会提示你必须输入文件名 放到编译其中就好了
+// git add .   git commit -m 添加忽略配置   git push
+  
+```
+## 标签
+```
+// 创建标签  标签也是一个快照
+git checkout master // 先切换到 需要打标签的分支上
+git tag v1.0 // 打一个新标签 默认为HEAD
+// 指定一个commit id 打标签
+// git log --pretty=oneline --abbrev-commit
+// git tag v0.9 6224937
+git tag // 查看
+git push origin v1.0 // 可以推送一个本地标签到远程
+git push origin --tags // 可以推送全部未推送过的本地标签
+git tag -d v1.0 // 可以删除一个本地标签
+git push origin :refs/tags/v1.0 // 可以删除一个远程标签 需要先删除本地标签
+```
+## 使用SSH连接到GitHub git push等操作 免账号密码 (参考)[https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh]
+```
+  ls -al ~/.ssh // 查看是否有现成的SSH密钥 id_rsa 密钥 id_rsa.pub 公钥
+  ssh-keygen -t rsa -b 4096 -C "154809748@qq.com" // 一路回车 将在 ~/.ssh 生成密钥公钥
+  // 在github settings keys 中添加生成的 公钥 (https://github.com/settings/keys New SSH key)
+```
