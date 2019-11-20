@@ -7,8 +7,7 @@
     "mobx-react": "^6.1.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-router-dom": "^5.0.0",
-    "react-scripts": "^3.2.0"
+    "react-router-dom": "^5.0.0"
   },
   "scripts": {
     "start": "react-app-rewired start",
@@ -40,6 +39,7 @@
     "@types/react-dom": "^16.9.4",
     "customize-cra": "^0.8.0",
     "react-app-rewired": "^2.1.5",
+    "react-scripts": "^3.2.0",
     "typescript": "^3.7.2"
   }
 }

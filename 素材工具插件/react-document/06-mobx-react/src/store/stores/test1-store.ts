@@ -5,7 +5,7 @@ class Test1Store {
   // eslint-disable-next-line no-useless-constructor
   constructor(private rootStore: RootStore) { }
   @observable
-  num = 0
+  num = 1
   @computed
   get price() {
     return this.num * 100
