@@ -156,7 +156,7 @@
   const n = fn8(1) // ts明确知道 在这种情况下 n是number类型 如果不使用重载ts会认为n是 number | any[]
   type FnType = typeof fn1 // 获取函数的类型 (一个class A 通过 typeof A 来获取类A的类型)
 ```
-## 泛型 (解决 函数 接口 类的 类型得复用性)
+## 泛型 (解决 函数 接口 类 的类型的 复用性)
 ```typescript
   // 泛型函数
   function fn1<T>(arr: Array<T>) { return arr }
