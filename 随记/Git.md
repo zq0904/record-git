@@ -4,7 +4,7 @@
   git config --global user.name "zhaoqi" // 设置用户名
   git config --global user.email "154809748@qq.com" // 设置邮箱
   git config -l // 查看信息
-  git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit" // 自定义一个git指令 git lg
+  git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit" // 设置一个自定义指令 git lg
 ```
 ## 创建存储库
 ```
@@ -31,12 +31,31 @@
   // origin	git@github.com:zq0904/public-test.git (fetch)
   // origin	git@github.com:zq0904/public-test.git (push)
 ```
-## 查看状态 添加到暂存区 提交到本地
+## 查看状态 添加到暂存区 提交到本地 重写
 ```
   touch 1.js
   git status // 查看状态 红色(文件有更改) 绿色(已经推到暂存区)
-  git add . // 将所有更改的文件 添加到暂存区
+  git add . // 将所有更改的文件 添加到暂存区（git@1版本 不能添加删除的文件）
+  git add -A // 将所有更改的文件 添加到暂存区（尽量使用）
   git commit -m add:添加1.js // 将暂存区中的文件 提交到当前分支的本地仓库
+  git commit --amend // 修改最近一次的提交信息 进入vi模式:wq保存退出就好
+  git commit -a -m update:更新 // 将修改和删除的文件 自动推到暂存区后直接提交（新增的不会 不建议使用）
+  // 重写（合并 删除 修改 commit）
+  git rebase -i aba0aac // -i 表直接进入vi模式（你可以编辑该commit_id之后的信息）
+  // vi模式这里是倒序 最近修改的commit在下面
+  
+  // pick aba0aac add1
+  // s 1f59bfb add2 // 将add2合并到add1中
+  // r e3b3fc8 add3 // 修改add3的提交信息
+  // # p, pick = use commit 使用该提交
+  // # r, reword = use commit, but edit the commit message 使用该提交，但编辑提交信息
+  // # e, edit = use commit, but stop for amending 使用该提交，但停止修改
+  // # s, squash = use commit, but meld into previous commit 使用该提交，但融合到之前的提交 // 多用于合并多个commit节点
+  // # f, fixup = like "squash", but discard this commit's log message 类似于squash，但是放弃这个提交的日志消息
+  // # x, exec = run command (the rest of the line) using shell 使用shell运行命令(行其余部分)
+  // # d, drop = remove commit 删除提交
+
+  // :wq 保存退出后 会依次进入vi模式 操作编辑合并信息页面 修改信息页面
 ```
 ## 拉取 提交 获取
 ```
@@ -103,10 +122,48 @@
   git checkout v1.0 // 切换到标签上（不应该修改代码 应该仅用于快速回滚等 如果你希望保留修改应该基于这个标签创建分支）
   git checkout -b branch_name v1.0 // 基于某个标签创建分支
 ```
+## 项目的 子模块（多个git仓库嵌套）
+```
+  git submodule add <git_url> <local_path> // 为项目在本地添加子模块（会直接克隆子模块到local_path 会在.git/config .git/module/* .gitmodules记录子模块信息）
+  git submodule add git@github.com:zq0904/test-submodule.git src/test-submodule // 默认就会推到暂存区
+  git status
+  git commit -m add:添加子模块
+  git push // 将子模块推到远程（实际上”只“添加了.gitmodules）
+
+  // 克隆 初始化并拉取 子模块
+  git clone <git_url> // 克隆的项目如果包含子模块默认是不会克隆子模块 子模块目录会为空 整个项目只有.gitmodules描述子模块
+  git submodule init // 初始化子模块 根据.gitmodules 写入.git/config
+  git submodule update // 更新拉取子模块 写入.git/module/*
+  git submodule update --remote // 将子模块更新为远程最新
+
+  // 在项目中 更新 子模块（子模块项目有了更新后，使用子模块的项目必须手动更新才能应用最新提交）
+  cd src/test-submodule // 直接进入子模块目录
+  git pull
+  cd ../../
+  git add -A
+  git commit -m update:更新子模块
+  git push
+
+  // 如果子模块是自己维护的
+  // 在父模块中修改子模块 至少要将子模块的内容变更提交（commit） 在父模块中才能暂存提交这个子模块 （建议 应该将子模块完全push后 再在父模块中暂存提交这个子模块）
+
+  // 子模块的删除
+  rm -rf src/test-submodule // 删除子模块的目录
+  vim .gitmodules // 删除相关子模块信息
+  vim .git/config // 删除相关子模块信息
+  rm .git/module/src/test-submodule // 删除git存储的子模块
+  git rm --cached src/test-submodule // 删除子模块的跟踪
+  git add -A
+  git commit -m del:删除子模块
+  git push
+```
+## .gitignore文件 项目根目录新建.gitignore指定忽略的文件
+```
+  git rm --cached <file_name> // 取消跟踪某个文件（如果之前就跟踪了某个文件 之后想通过.gitignore忽略它 默认git是不会忽略该文件的 必须执行该命令）
+```
 ## 使用SSH连接到GitHub git push等操作 免账号密码 (参考)[https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh]
 ```
   ls -al ~/.ssh // 查看是否有现成的SSH密钥 id_rsa 密钥 id_rsa.pub 公钥
   ssh-keygen -t rsa -b 4096 -C "154809748@qq.com" // 一路回车 将在 ~/.ssh 生成密钥公钥
   // 在github settings keys 中添加生成的 公钥 (https://github.com/settings/keys New SSH key)
 ```
-## .gitignore 文件 项目根目录新建.gitignore指定忽略的文件
