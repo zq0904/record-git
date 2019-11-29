@@ -80,6 +80,7 @@
 ## 储藏（不想由于切分支而被迫提交）
 ```
   git stash // 储藏当前变更
+  git stash save 暂存信息 // 储藏当前变更 添加提示信息
   git stash list // 查看现有储藏 包含一些描述（如在哪个分支上的储藏）
   // stash@{0}: WIP on master: 5424fef Merge branch 'master' of github.com:zq0904/public-test
   git stash apply // 应用最近的储藏 默认只会弹出未提交的文件
@@ -124,6 +125,8 @@
 ```
 ## 项目的 子模块（多个git仓库嵌套）
 ```
+  git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)' // 递归修复所有子模块的 detached head（默认 master branch）
+
   git submodule add <git_url> <local_path> // 为项目在本地添加子模块（会直接克隆子模块到local_path 会在.git/config .git/module/* .gitmodules记录子模块信息）
   git submodule add git@github.com:zq0904/test-submodule.git src/test-submodule // 默认就会推到暂存区
   git status
@@ -131,18 +134,19 @@
   git push // 将子模块推到远程（实际上”只“添加了.gitmodules）
 
   // 克隆 初始化并拉取 子模块
-  git clone <git_url> // 克隆的项目如果包含子模块默认是不会克隆子模块 子模块目录会为空 整个项目只有.gitmodules描述子模块
+  git clone <git_url> --recursive // 克隆的项目（如果包含子模块默认是不会克隆子模块 子模块目录会为空 整个项目只有.gitmodules描述子模块） --recursive表递归克隆 会直接克隆子模块
   git submodule init // 初始化子模块 根据.gitmodules 写入.git/config
-  git submodule update // 更新拉取子模块 写入.git/module/*
-  git submodule update --remote // 将子模块更新为远程最新
+  git submodule update // 更新子模块为”项目最新“ 写入.git/module/*
+  git submodule update --init // 初始化子模块 更新子模块为”项目最新“
 
-  // 在项目中 更新 子模块（子模块项目有了更新后，使用子模块的项目必须手动更新才能应用最新提交）
-  cd src/test-submodule // 直接进入子模块目录
-  git pull
-  cd ../../
+  // 在项目中 更新子模块（项目中的子模块有了更新后，项目必须手动更新才能使用最新的子模块）
+  git submodule update --remote // 更新子模块为”远端最新“ 或者（cd 到相应子模块中 git pull 更新子模块）
+  cd 项目根目录
   git add -A
   git commit -m update:更新子模块
   git push
+
+  git pull && git submodule update // 更新项目
 
   // 如果子模块是自己维护的
   // 在父模块中修改子模块 至少要将子模块的内容变更提交（commit） 在父模块中才能暂存提交这个子模块 （建议 应该将子模块完全push后 再在父模块中暂存提交这个子模块）
