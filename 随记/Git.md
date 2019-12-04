@@ -39,7 +39,7 @@
   git add -A // 将所有更改的文件 添加到暂存区（尽量使用）
   git commit -m add:添加1.js // 将暂存区中的文件 提交到当前分支的本地仓库
   git commit --amend // 修改最近一次的提交信息 进入vi模式:wq保存退出就好
-  git commit -a -m update:更新 // 将修改和删除的文件 自动推到暂存区后直接提交（新增的不会 不建议使用）
+  git commit -am update:更新 // 将修改和删除的文件 自动推到暂存区后直接提交（新增的不会 不建议使用）
   // 重写（合并 删除 修改 commit）
   git rebase -i aba0aac // -i 表直接进入vi模式（你可以编辑该commit_id之后的信息）
   // vi模式这里是倒序 最近修改的commit在下面
@@ -79,7 +79,7 @@
 ```
 ## 储藏（不想由于切分支而被迫提交）
 ```
-  git stash // 储藏当前变更
+  git stash // 储藏当前变更 （注意：新增的文件不会被储藏 必须先git add）
   git stash save 暂存信息 // 储藏当前变更 添加提示信息
   git stash list // 查看现有储藏 包含一些描述（如在哪个分支上的储藏）
   // stash@{0}: WIP on master: 5424fef Merge branch 'master' of github.com:zq0904/public-test
@@ -125,33 +125,39 @@
 ```
 ## 项目的 子模块（多个git仓库嵌套）
 ```
-  git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)' // 递归修复所有子模块的 detached head（默认 master branch）
-
-  git submodule add <git_url> <local_path> // 为项目在本地添加子模块（会直接克隆子模块到local_path 会在.git/config .git/module/* .gitmodules记录子模块信息）
-  git submodule add git@github.com:zq0904/test-submodule.git src/test-submodule // 默认就会推到暂存区
+  // 添加子模块
+  git submodule add -b <branch> <git_url> <local_path> // 为项目在本地添加子模块（会直接克隆子模块到local_path 会在.git/config .git/module/* .gitmodules记录子模块信息） -b表追踪子模块指定的分支
+  git submodule add -b master git@github.com:zq0904/test-submodule.git src/test-submodule // 默认就会推到暂存区
   git status
   git commit -m add:添加子模块
   git push // 将子模块推到远程（实际上”只“添加了.gitmodules）
 
-  // 克隆 初始化并拉取 子模块
-  git clone <git_url> --recursive // 克隆的项目（如果包含子模块默认是不会克隆子模块 子模块目录会为空 整个项目只有.gitmodules描述子模块） --recursive表递归克隆 会直接克隆子模块
-  git submodule init // 初始化子模块 根据.gitmodules 写入.git/config
+  // 克隆项目 并 初始化 拉取 子模块
+  git clone <git_url> --recursive // 克隆的项目 --recursive表递归克隆 会直接克隆子模块（如果项目包含子模块默认是不会克隆子模块 子模块目录为空 整个项目只有.gitmodules描述子模块）
+  git submodule init // 初始化子模块本地配置文件 根据.gitmodules 写入.git/config
   git submodule update // 更新子模块为”项目最新“ 写入.git/module/*
   git submodule update --init // 初始化子模块 更新子模块为”项目最新“
 
-  // 在项目中 更新子模块（项目中的子模块有了更新后，项目必须手动更新才能使用最新的子模块）
-  git submodule update --remote // 更新子模块为”远端最新“ 或者（cd 到相应子模块中 git pull 更新子模块）
+  // 由于项目的索引仅包含子模块块的commitid作为其索引中的特殊条目导致“分离的头” [参考](https://stackoverflow.com/questions/20794979/git-submodule-is-in-detached-head-state-after-cloning-and-submodule-update)
+  git submodule foreach -q --recursive 'current_commit_id=$(git rev-parse HEAD); git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master) && git reset --hard ${current_commit_id}' // 递归操作 所有子模块切换到跟踪的分支 默认master 并 回滚到相应的commit_id（解决所有子模块的 detached head）
+  
+  git pull && git submodule update // 更新项目 并 更新子模块为”项目最新“
+
+  // 更新子模块（项目中的子模块有了更新后，项目必须手动更新才能使用最新的子模块）
+  // 1.1 在包含子模块的项目上工作 不修改子模块 只更新子模块
+  git submodule update --remote // 更新所有子模块为”远端最新“ 或者（cd 到相应子模块中 git pull 更新子模块）
+  git submodule update --remote src/test-submodule // 更新指定的子模块为”远端最新“
   cd 项目根目录
   git add -A
   git commit -m update:更新子模块
   git push
 
-  git pull && git submodule update // 更新项目
+  // 1.2 在子模块上工作
+  // 如果我们在主项目中提交并推送但并不推送子模块上的改动，其他尝试检出我们修改的人会遇到麻烦，因为他们无法得到依赖的子模块改动。（你仍应该将子模块完全push后 再在父模块中暂存提交这个子模块）
+  git push --recurse-submodules=check // 推送主项目前 检查所有子模块是否都已推送 如果没有推送那么会直接导致项目push失败
+  git push --recurse-submodules=on-demand // 推送主项目前 “尝试”先推送所有子模块 在推送项目
 
-  // 如果子模块是自己维护的
-  // 在父模块中修改子模块 至少要将子模块的内容变更提交（commit） 在父模块中才能暂存提交这个子模块 （建议 应该将子模块完全push后 再在父模块中暂存提交这个子模块）
-
-  // 子模块的删除
+  // 删除子模块
   rm -rf src/test-submodule // 删除子模块的目录
   vim .gitmodules // 删除相关子模块信息
   vim .git/config // 删除相关子模块信息
@@ -160,6 +166,9 @@
   git add -A
   git commit -m del:删除子模块
   git push
+
+  // 修改.gitmodules
+  git config -f .gitmodules submodule.src/test-submodule.branch master
 ```
 ## .gitignore文件 项目根目录新建.gitignore指定忽略的文件
 ```
