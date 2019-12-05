@@ -276,23 +276,24 @@
     }
   }
   new Calculator().add(1).add(2)
-  // 索引类型 K extends keyof T (K类型是T类型的键的联合 T[K][]类型是数组每一项是T[K])
+  // 索引类型 K extends keyof T (K类型是T类型的键(string)的联合 T[K][]类型是数组每一项是T[K])
   function pluck<T, K extends keyof T>(obj: T, arr: K[]): T[K][] {
     return arr.map(key => obj[key])
   }
   pluck({ a: 1 }, ['a'])
   // 映射类型
-  interface Person { name: string; age: number }
-  type ReadOnly<T> = {
-    readonly [K in keyof T]: T[K] // 在索引位置 in keyof 相当于 泛型中的 extends keyof
-  }
-  const p: ReadOnly<Person> = {name: '1', age: 12} // 将得到一个 基于Person接口的 只读的类型
-  const pick: Pick<Person, 'name'> = {name: '1'} // ts内置的Pick映射类型 从一个现有类型中挑选出一部分作为新类型 Readonly
-  // 内置的有条件类型
-  type T1 = Exclude<string|number, string> // number Exclude<T, U> 从T中剔除可以赋值给U的类型
-  type T2 = Extract<string, string|number> // string Extract<T, U> 提取T中可以赋值给U的类型
-  type T3 = NonNullable<string|null> // string NonNullable<T> 从T中剔除null和undefined
-  type T4 = ReturnType<{(): void}> // void ReturnType<T> 获取函数返回值类型
+  interface State { a: string; b: string }
+  type T0 = ReadOnly<State> // 将得到一个 基于State类型的 只读类型
+  type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+  };
+  // 内置的条件类型
+  type T0 = Pick<{ a: string; b: string; }, 'a'> // { a: string } Pick<T, U> 从T类型中挑选出 以 U类型 为键的 作为新的类型
+  type T0 = Omit<{ a: string; b: string; }, 'a'> // { b: string } Omit<T, U> 从T类型中忽略出 以 U类型 为键的 作为新的类型
+  type T1 = Exclude<string | number, string> // number Exclude<T, U> 从联合类型T中 剔除 可以赋值给U的类型
+  type T2 = Extract<string, string | number> // string Extract<T, U> 从联合类型T中 提取 可以赋值给U的类型
+  type T3 = NonNullable<string | null> // string NonNullable<T> 从T中剔除null和undefined
+  type T4 = ReturnType<{ (): void }> // void ReturnType<T> 获取函数返回值类型
   type T5 = InstanceType<typeof C> // C InstanceType<T> 根据一个类的类型获取实例的类型
 ```
 ## 模块 和 命名空间
