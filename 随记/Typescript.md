@@ -177,14 +177,19 @@
   new A<string>('1')
   // 泛型参数
   const fn3: <U>(a: Array<U>) => Array<U> = fn1 // 泛型参数 也是形式参数
-  interface Length { length: number }
-  function fn6<T extends Length>(obj: T): T { return obj } // 泛型参数 可以继承 接口
-  fn6({length: 1})
-  function getObjVal<O, K extends keyof O>(obj: O, key: K): O[K] { return obj[key] } // 一个泛型参数 可以受另一个泛型参数约束
-  getObjVal({ a: 1 }, 'a')
-  function fn7<T>(fn: { new(): T }): T { return fn() } // 泛型中使用 类的类型
+  function fn7<T>(fn: { new(): T }): T { return fn() }
   class A {}
   const a: A = fn7(A)
+  // 泛型参数 通过 extends 关键字 继承extends后面的类型
+  const fn = <T, U extends T>(a: T, b: U) => {} // U类型 和 T类型 完全一致
+  // 泛型参数 通过 extends keyof 关键字 将一个类型的键 组成联合的字符串类型
+  const fn = <T, U extends keyof T>(a: T, b: U) => {} // fn({ a: 1, b: 1 }, 'b')
+  // interface接口中不能使用in关键字 type类型别名（类型映射）”体中“可以使用 in 关键字 来获取 联合类型的每个值
+  type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+  };
+  // type类型别名（类型映射）”体中“可以使用 extends ?
+  type Exclude<T, U> = T extends U ? never : T; // 从T这个联合类型中取每个类型 去匹配 U 类型 匹配则never忽略这个类型 不匹配则保留这个类型
 ```
 ## 枚举 (大部分枚举在编译阶段会产生真实的对象)
 ```typescript
@@ -284,9 +289,6 @@
   // 映射类型
   interface State { a: string; b: string }
   type T0 = ReadOnly<State> // 将得到一个 基于State类型的 只读类型
-  type Readonly<T> = {
-    readonly [P in keyof T]: T[P];
-  };
   // 内置的条件类型
   type T0 = Pick<{ a: string; b: string; }, 'a'> // { a: string } Pick<T, U> 从T类型中挑选出 以 U类型 为键的 作为新的类型
   type T0 = Omit<{ a: string; b: string; }, 'a'> // { b: string } Omit<T, U> 从T类型中忽略出 以 U类型 为键的 作为新的类型
@@ -295,6 +297,13 @@
   type T3 = NonNullable<string | null> // string NonNullable<T> 从T中剔除null和undefined
   type T4 = ReturnType<{ (): void }> // void ReturnType<T> 获取函数返回值类型
   type T5 = InstanceType<typeof C> // C InstanceType<T> 根据一个类的类型获取实例的类型
+  // 一些内置类型的实现
+  type Readonly<T> = {
+    readonly [P in keyof T]: T[P];
+  };
+  type Pick<T, K extends keyof T> = {
+    [P in K]: T[P];
+  };
 ```
 ## 模块 和 命名空间
 ```typescript
@@ -356,6 +365,48 @@
   enum Col { span = 1 }
   namespace Col { export const mixCol = '2' } // 相当于扩展 属性成员 { span: 1, 1: 'span', mixCol: '2' }
 ```
+## TypeScript 3.7新增内容
+  1. 可选链接 [参考](https://github.com/tc39/proposal-optional-chaining/)
+  ```typescript
+    // 可选链（类似&&）对于那些可能为undefined或null的表达式 可以立即停止表达式的后续运行
+    // 可选链?. 不同于 &&
+    // && 专门针对“falsy”（fasle 0 '' undefined null NaN）值
+    // ?. 只针对于 undefined null 但是这是构建的有意功能（ts就是要这么做 因为有了类型检测 你不可能在出现 0 '' 除非是你真的声明了 那面你应该处理）
+    const fn = (a?: any[], log?: () => {}) => {
+      console.log(a?.length) // 可选属性访问 等价于 a === undefined || a === null ? undefined : a.length
+      console.log(a?.[3]) // 可选元素访问 ?.[] 没有办法写成 ?[] AST解析会直接当成三元表达式处理
+      log?.() // 可选的调用
+    }
+    const computedUnitPrice = (bread?: { price: number }) => {
+      // return bread?.price / 100 // 可选链具有的“短路”行为是有限的属性访问 不会阻止后续 / 100 表达式的运行
+      return bread ? bread.price / 100 : undefined
+    }
+  ```
+  2. 空合并 [参考](https://github.com/tc39/proposal-nullish-coalescing/)
+  ```typescript
+    // 空合并（类似||）用于赋默认值 避免了使用||由于0（“falsy”）也使用了默认值
+    function scroll (obj?: { val: number }) {
+      const s = obj?.val
+      return s ?? 100 // 等价于 s !== undefined && s !== null ? s : 100
+    }
+  ```
+  3. 递归类型别名
+  ```typescript
+    // 元组中递归引用类型别名
+    type VirtualNode = string | [string, { [key: string]: any }, ...VirtualNode[]];
+  ```
+  4. 本地的声明和import进来的声明现在冲突 如果要扩展导入的类型 应编写适当的模块扩展在导出
+  ```typescript
+    // a.ts
+    epxort interface Obj {
+      a: string;
+    }
+    // b.ts
+    import { Obj } from './a' // 导入声明与“Obj”的局部声明冲突。
+    interface Obj {
+      b: string;
+    }
+  ```
 ## 声明文件 .d.ts
 ```typescript
   // .d.ts 声明文件 不能有具体的实现 比如函数的具体实现 和 变量的具体实现（赋值）
@@ -408,10 +459,15 @@
   declare function getHtml(a: HTMLDivElement): void
   declare function getHtml(a: HTMLElement): void
 ```
+## 忽略ts检测
+```
+  // @ts-nocheck // 忽略整个文件的检测
+  // @ts-ignore // 忽略下一行的检测
+```
 ## 发布 声明文件
-  1. 与你的npm包捆绑在一起
+  1. 与你的npm包捆绑在一起 (axios mobx等)
   - 使用 package.json typings | types 字段指定 主 .d.ts文件位置 然后主.d.ts中引入其他.d.ts文件
   - tsconfig.json 中设置 "declaration": true, // 生成相应的 '.d.ts' 文件
   - tsc --emitDeclarationOnly --declarationDir types // tsc命令 --emitDeclarationOnly只生成声明文件  --declarationDir types 直接设置声明文件的生成路径
-  2. 在npm上发布到@types组织
+  2. 在npm上发布到@types组织 (react等)
 ## 与 Babel 合作构建流程问题 [参考](https://github.com/Microsoft/TypeScript-Babel-Starter#readme)

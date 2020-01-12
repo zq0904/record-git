@@ -8,7 +8,7 @@
 ```
 ## 创建存储库
 ```
-  git init // 初始化仓库 创建一个.git的隐藏目录
+  git init <dir_name> // 初始化仓库 会在dir_name（默认是当前目录）中创建.git的隐藏目录
   git remote add origin git@github.com:zq0904/public-test.git // 添加 别名
   git push -u origin master // 把本地仓库推送到远程仓库 并 关联
   // 当用户直接 git pull 或 fetch 时 可以直接跟别名 不跟git默认取的是 关联的别名 地址
@@ -26,7 +26,7 @@
 ```
 ## 克隆
 ```
-  git clone git@github.com:zq0904/public-test.git
+  git clone git@github.com:zq0904/public-test.git <custom_dir_name>
   // 克隆的项目 默认会添加 origin别名
   // origin	git@github.com:zq0904/public-test.git (fetch)
   // origin	git@github.com:zq0904/public-test.git (push)
@@ -43,7 +43,7 @@
   // 重写（合并 删除 修改 commit）
   git rebase -i aba0aac // -i 表直接进入vi模式（你可以编辑该commit_id之后的信息）
   // vi模式这里是倒序 最近修改的commit在下面
-  
+
   // pick aba0aac add1
   // s 1f59bfb add2 // 将add2合并到add1中
   // r e3b3fc8 add3 // 修改add3的提交信息
@@ -76,6 +76,7 @@
   git checkout -b 20190101_star_zq remotes/origin/20190101_star_zq // 创建并移到这个分支 拉取远程分支 (远程分支必须存在)
   git push origin 本地分支名:远程分支名 // 将本地分支推到远程服务器 (远程分支与本地分支同名 可以简写 git push origin 本地分支名)
   git merge master // 将master 合并到当前分支
+  git merge --abort // 撤销合并
 ```
 ## 储藏（不想由于切分支而被迫提交）
 ```
@@ -140,7 +141,7 @@
 
   // 由于项目的索引仅包含子模块块的commitid作为其索引中的特殊条目导致“分离的头” [参考](https://stackoverflow.com/questions/20794979/git-submodule-is-in-detached-head-state-after-cloning-and-submodule-update)
   git submodule foreach -q --recursive 'current_commit_id=$(git rev-parse HEAD); git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master) && git reset --hard ${current_commit_id}' // 递归操作 所有子模块切换到跟踪的分支 默认master 并 回滚到相应的commit_id（解决所有子模块的 detached head）
-  
+
   git pull && git submodule update // 更新项目 并 更新子模块为”项目最新“
 
   // 更新子模块（项目中的子模块有了更新后，项目必须手动更新才能使用最新的子模块）

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>rem</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      font-size: 15.625vw;
+    }
+    @media (min-width: 560px) {
+      html {
+        font-size: 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    // rem的原理 rem单位是基于 html的font-size大小进行计算的
+
+    // 1.通过js根据屏幕宽度动态计算 设置html的font-size
+    // 以750设计稿为例
+    // 当前设备html应设置的font-size / 当前设备屏幕宽度 = 750html的基准font-size / 此时屏幕宽度750
+    // 当前设备html应设置的font-size = 750html的基准font-size / 750 * document.documentElement.clientWidth
+    // 为了方便换算 从设计稿量取的px单位转换为rem单位 所以一般将750html的基准font-size设置为100px
+    // 这样在 xxxrem * 100px = 计稿量取的px
+    // xxxrem = 计稿量取的px / 100px
+    // 注意应尽量避免将html的font-size设置为10px 因为移动端webkit内核浏览器最小字体是12px
+
+    // var handlerResize = function() {
+    //   document.getElementsByTagName('html')[0].style = `font-size: ${100 / 750 * document.documentElement.clientWidth}px;`
+    // }
+    // window.addEventListener('resize', handlerResize) // 可以加个防抖
+    // window.addEventListener('DOMContentLoaded', handlerResize)
+
+    // 2.通过vw 直接设置html的font-size
+    // 以750设计稿为例
+    // 由上面可以知道 我希望在750html的基准font-size 是 100px 对应的vw 那我在写rem就很方便了
+    // x / 100vw = 100px / 750px
+    // x = 13.333333333333334vw 除不尽 所以我们可以将750设计改为640
+    // x = 100 * 100 / 640 // 15.625vw
+    // 设置html的font-size为15.625vw // 可以使用媒体查询对pc端做更友好的处理
+    // 我们将设计稿宽度设置为640px 量取的任何单位都 除100
+  </script>
+</body>
+</html>

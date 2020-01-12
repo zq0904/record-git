@@ -1244,67 +1244,6 @@ $v.on('play', () => id = setInterval(() => ctx.drawImage(v, 0, 0, 150, 140), 20)
 
 canvas 适配浏览器或者移动端 js判断设置 .width .height
 
-shift + 右键 在当前文件夹打开cmd
-Git 直接右键 在当前文件夹打开Git Bash Here
-// 版本控制:可以非常方便的恢复到任意的备份（版本）状态
-// 本地版本控制系统     难实现多人协同开发
-// 集中式版本控制系统 代表为SVN 通过单一的集中管理的服务器 实现在不同终端上的协同开发工作 严重依赖网络
-// 分布式版本控制系统 不需要中央服务器 不再受网络影响 代表就是Git
-// Git 项目的三个工作区域的概念：Git 仓库、工作目录、暂存区域
-
-意义在于记录开发者信息 （安装第一设置 就行了！！！）
-// git config --global user.name 自已的名字
-// git config --global user.email 自已的邮箱地址
-// --global 配置当前用户所有仓库
-// --system 配置当前计算机上所有用户的所有仓库
-
-ctrl+c   //退出当前命令
-
-git status //查看文件状态 (git忽略空的目录 红色表示修改过的 绿色表示暂存区)
-git add -A   // . 或 *  都可以 添加所有修改文件到暂存区
-  git add "./" //添加文件到暂存区
-git status
-git commit -m "备注信息"  //存到本地仓库
-  git log //查看提交的历史 按键盘q键退出
-git remote add origin 'git@github.com:154809748/2018_1_12.git' //远程地址起别名 origin 没有空格
-git push -u origin master // 把本地仓库推送到远程仓库 并关联
-git push origin master //推倒远程仓库 （分支默认是master） 项目不能建在桌面 不是空项目 必须先拉git pull  提示信息（shift+:一起按 输入q ）在提交 git push ！！！
-
-远程仓库
-git init --bare  //创建远程（共享）仓库  必须以.git结尾的目录
-
-本地仓库
-git pull origin xxx
-git fetch origin admittance_20171211
-
-git pull "./" //拉取分支  前提 git init   git pull origin 是拉取所有分支
-git pull      //拉取所有分支 前提 git pull "./"
-git clone "./" 自定义文件夹名 //克隆远程仓库里的内容
-git pull origin master
-
-git branch 新分支名 //创建新分支
-git branch -a //查看本地和远程的所有分支
-git branch -r //查看远程分支
-git branch    //查看本地分支 （绿色表示当前所在的分支）
-git checkout 分支名 //切换分支
-//切换完分支 修改信息完 git add -A git commit -m 'name' 必须放到分支的仓库中 在切换分支到master 才不显示分支的内容
-git checkout -b 新的分支名 //创建新分支 并 切换到该分支
-git checkout -b 新本地分支名 origin/远程分支名  // 创建新分支 并 切换到该分支 从远程仓库下载
-
-git branch -d 分支名 //删除分支
-git branch -D 分支名 //强行删除没有合并的分支
-git merge 分支名称   //合并分支  要先切换到主分支master,在master中执行命令
-// 出现编辑器 按“esc” 写“：wq”
-// git push --set-upstream origin test
-
-ssh-keygen -t rsa 一路回车 //id_rsa密钥 id_rsa.pub公钥 复制公钥 到Key
-
-git fetch //更新本地仓库 和远程（共享）仓库保持一致
-
-git fetch origin master    // 从远程的origin的master主分支下载最新的版本到origin/master分支上
-git log -p master..origin/master // 比较本地的master分支和origin/master分支的差别
-git merge origin/master    // 最后进行合并
-
 mui
 .mui-clearfix // 自带的清除浮动
 .mui-ellipsis-2 // 两行超出部分显示省略号  不要设置padding-bottom 底层通过overflow:hidden实现

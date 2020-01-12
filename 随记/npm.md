@@ -39,8 +39,8 @@
   // 需注册npm账号
   npm adduser // 第一次发布包 输入注册的 账号 密码 邮箱
   npm login // 非第一次发布包 输入注册的 账号 密码 邮箱
-  npm publish // 在要发布的包的根目录执行 默认发布正式版本
-  npm publish --tag beta // 发布测试版本
+  npm publish // 在要发布的包的根目录执行 默认 --tag latest 发布正式版本
+  npm publish --tag <tag_name> // 发布测试版本 alpha beta rc 分别表示 内测版本（bug较多） 公测版本（bug较少） 预览版本（很接近正式版了）
   // 常见问题
   // You do not have permission to publish "qixiaoqi". Are you logged in as the correct user? : qixiaoqi (发布包 网上已经发布的包的名字重复)
   // package.json遵循 严格的json格式 不能有注释 必须双引号 最后一个属性后不能多加一个,号
@@ -52,7 +52,7 @@
     "scripts": {},
     "deprecated": "This package is no longer maintained", // 弃用描述
     "dependencies": { // 该包所依赖的包 安装这个包时会自动安装包所对应的依赖
-      "jquery": "^1.12.4"
+      "jquery": "^1.12.4" // ~会对1.12.xx进行更新 ^会对1.xx.xx进行更新 *会对xx.xx.xx进行更新
     },
     "author": { // 作者信息
       "name": "qixiaoqi"

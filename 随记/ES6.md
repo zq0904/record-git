@@ -580,7 +580,7 @@
   });
   Promise.all(arr.map(v => loadImg(v)))
   .then(list => console.log(list)) // 只有数组中所有promise实例的状态都变为resolve才会执行 list为数组 每一项为每个promise实例的返回值
-  .catch(err => console.log(err)) // 只要有一个promise实例的状态为reject 就会执行一次
+  .catch(err => console.log(err)) // 只要有一个promise实例的状态为reject 就会执行
 
   const p1 = new Promise((resolve, reject) => resolve(1))
   const p2 = new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // p2 有自己的 .catch 发生错误先调用自己的.catch 状态变更为resolve

@@ -1,65 +1,14 @@
-Webstorm 浏览器查看 Alt+F2
-     代码格式化 Ctrl+Alt+L
-     按住 Alt 鼠标左键 滑选 隔选
-script标签属性
-  async  //异步 立即下载，下载完了就执行
-  defer  //异步  等到文档显示完了在执行，只有外链可用
-  sync   //同步 立即下载，下载完了就执行
 
-  alert();      //弹出对话框  转义字符\r回车 \n换行 \\ \"等
-  confirm();      //弹出对话框 多了一个取消按钮 点击确定返回true 取消false
-  prompt();         //接收用户输入的信息 window.prompt("提示信息","默认值") 点击确定返回一个字符串 点击取消返回一个null
-  console.log();    //在控制台输出消息 JS调试试用
-  console.log('before %c middle %c after','color: red; font-size:20px', 'color: blue;') // 在控制台输出带有颜色的字体
-  document.write(); //在页面输出信息  可以识别标签
-  console.dir();    // 显示出一个对象的所有属性和方法 获取的dom元素用于展开查找属性方法
-
-简单数据类型：
-  number      //数字类型 整型数字 浮点型数字 NaN
-  string      //字符串类型 (""和0的内容是相等的 ==为true ===为false)
-  boolean     //布尔类型(true=1 false=0) (转换最后为false的值有 0 NaN "" undefined null)
-  undefined   //变量未初始化(定义变量 未赋值) undefined+1 结果是NaN   void 0 === undefined 结果为true void 0防止undefined重写 省3个字节
-  null      //值为空 用来销毁变量(var n1=null; n1用typeof判断是object类型)(null==undefined 为true  ===为false)(var a = null + 1;//结果是 1 number类型)
-复杂数据类型：
-  object      //对象
-
-alert(typeof(x))   //判断数据类型 它将返回一个字符串 "number" "string" "boolean" "undefined" "objct"(null 数组 对象) "function"
-alert(typeof x)
   +         //2个数字类型相加得到数字类型，其他相加都是连接作用得到字符串
   console.log(1+true);//加法的隐式转换 true为1
   -         //得到数字类型（隐转），有非数字字符串得到NaN仍是数字类型
   /     //有非数字字符串得到的是NaN,0做为除数的时候得到Infinity(无限大),均是数字类型
-转意字符 \t制表 \b空格 \f进纸 \\斜杠 \r回车 \n换行
+  
 console.log(Number.MIN_VALUE);//数的最小值 是正数
 console.log(Number.MAX_VALUE);//数的最大值
 //不要比较2个浮点数是否相等,非要比较 *10 parseInt()在比较
 
-转数字类型
-  n2=Number(n1);   //不能转数字开头的非纯数字字符串
-    console.log(Number("123")); //123
-    console.log(Number(""));  //0
-    console.log(Number(true));  //1
-    console.log(Number(false)); //0
-    console.log(Number(undefined)); //NaN
-    console.log(Number(null));  //0
-    console.log(Number([]));  //0
-    console.log(Number([3])); //3
-    console.log(Number([3,2])); //NaN
-    console.log(Number({}));  //NaN
-  n2=parseInt(n1); //取整 能转数字开头的非纯数字字符串
-    console.log(parseInt('123.5asd'));//123
-    console.log(parseInt(""));//NaN
-    console.log(parseInt(true));//NaN
-    console.log(parseInt(false));//NaN
-    console.log(parseInt(undefined));//NaN
-    console.log(parseInt(null));//NaN
-    console.log(parseInt([]));//NaN
-    console.log(parseInt({}));//NaN
-    console.log(parseInt("0x10"));//16
-    console.log(parseInt("a",16));//10
-    console.log(parseInt("010"));//10
-    console.log(parseInt("010",8));//8
-  n2=parseFloat(n1); //能转数字开头的非纯数字字符串 parseFloat(".1") 转为0.1
+
 转字符串类型
   s1 = n1.toString(); // 大部分都能转只有null和undefined不能转
   // 1.toString() 报错 JS引擎无法确定这里的.是什么意思 是点运算符（对象方法）还是浮点数

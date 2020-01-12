@@ -1,16 +1,19 @@
-@charset "utf-8";
 *, *::before, *::after {
   margin: 0;
   padding: 0;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  tap-highlight-color: transparent;
   -webkit-tap-highlight-color: transparent; /* 去除所有的点击样式 */
+  tap-highlight-color: transparent;
 }
 body {
-  font-family: "Microsoft YaHei",sans-serif;
-  font-size: 14px;
+  font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+  font-size: 12px;
+  color: #333;
+}
+a, a:hover {
+  text-decoration: none;
   color: #333;
 }
 ul, ol, dl {
@@ -18,7 +21,7 @@ ul, ol, dl {
 }
 img {
   border: 0 none;
-  vertical-align: top;
+  vertical-align: middle;
 }
 input, textarea {
   border: 0 none;
@@ -30,21 +33,9 @@ input, textarea {
   -o-webkit-appearance: none;
   webkit-appearance: none;
 }
-h1, h2, h3, h4, h5, h6 {
-  font-size: 14px;
-  font-weight: 400;
-}
-a, a:hover {
-  text-decoration: none;
-  color: #333;
-}
-/*版心*/
-.plate-center {
-  position: relative;
-  width: 100%;
-  min-width: 320px;
-  max-width: 750px;
-  margin: 0 auto;
+em, i, ins, u {
+	font-style: normal;
+	text-decoration: none;
 }
 .clearfix::before, .clearfix::after {
   content: '';
@@ -56,12 +47,6 @@ a, a:hover {
 }
 .clearfix {
 	zoom: 1;
-}
-.pull-left {
-  float: left;
-}
-.pull-right {
-  float: right;
 }
 /* 非淘宝flexible 真正1px细线 */
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-device-pixel-ratio: 1.5) {

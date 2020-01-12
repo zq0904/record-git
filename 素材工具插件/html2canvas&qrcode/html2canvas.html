@@ -166,7 +166,7 @@
       // 图片资源 跨域的 必须 做跨域处理 1.前端单独的静态资源 nginx配置 Access-Control-Allow-Origin *; 2.后端的静态资源 设置响应头 Access-Control-Allow-Origin *;
       // 如果条件允许 尽量不要使用css background-img设置背景图 会导致模糊 img标签更加清晰
       // 不要添加css动画 (animation) 会影响导出图片
-      // 一定不要使用transform相关属性
+      // 一定不要使用transform相关属性 部分不支持
       const source = $('#download-source')
       const width = parseInt(source.css('width'))
       const height = parseInt(source.css('height'))
