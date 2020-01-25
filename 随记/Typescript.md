@@ -1,4 +1,8 @@
 # TypeScript [官网](http://www.typescriptlang.org/docs/home.html)
+## 推选
+  [TypeScript深入研究](https://basarat.gitbook.io/typescript/)
+  [深入理解 TypeScript](https://jkchao.github.io/typescript-book-chinese/#%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3-typescript)
+  [巧用 TypeScript（一 - 四）](https://segmentfault.com/a/1190000018514540?utm_source=tag-newest)
 ## 基本类型
 ```typescript
   const n: number = 0o744 // 数字 ts中所有数字均为浮点数  还支持二进制和八进制
@@ -124,6 +128,14 @@
   }
   const c: C = new C('f') //  // 声明了一个类 实际上就是声明了一种类型 即类的实例类型 （正因为这样 接口才能继承类）
   const Cla: typeof C = C // typeof C 根据实例类型获取 类的类型
+
+  // 类 实现 接口（非同名 | 同名）
+  interface CLifecycle { componentDidMount?(): void; }
+  interface C extends CLifecycle { n: number; }
+  class CC implements C { n = 1 } //（非同名）类 实现 接口 就要实现接口所有的属性和方法
+  class C { state = {} } //（同名）这个类不需要实现接口的属性和方法 因为这个类的实例类型 必然会与接口 声明合并!!!
+  const c = new C(); console.log(c.state, c.n);
+
   // 抽象类 不能被实例化 其抽象方法 不能有具体实现 继承的子类必须有具体实现
   abstract class Asd {
     constructor(public a: string) {}
@@ -146,14 +158,15 @@
   const fn6: (x?: number) => void = (x = 1) => {} // 依赖于fn5
   function fn7(a:string, x: nuumber = 1, y?: number) {} // xy均为可选参数 可选参数必须在必填参数后面 可选参数的默认值可以通过传递undefinde触发
   // 函数重载 (为同一个函数提供多个函数类型 函数调用时 ts会依次查找重载列表尝试重载定义 以确定当前函数的类型) 官方 建议将”精准“的重载 放到前面
-  // 函数重载复用性较强时应该考虑泛型
-  function fn8(s: number): number
+  // 函数重载复用性较强时“可能”考虑泛型 但泛型不能替代重载
+  function fn8(s: number, flag: boolean): boolean
   function fn8(s: any[]): any[]
-  function fn8(s: any[] | number) {
-    if (typeof s === 'number') return s
+  function fn8(s: number | any[], flag?: boolean) {
+    if (typeof s === 'number') return flag
     return s
   }
-  const n = fn8(1) // ts明确知道 在这种情况下 n是number类型 如果不使用重载ts会认为n是 number | any[]
+  const n = fn8(1, true) // ok
+  const n = fn8([], false) // err
   type FnType = typeof fn1 // 获取函数的类型 (一个class A 通过 typeof A 来获取类A的类型)
 ```
 ## 泛型 (解决 函数 接口 类 的类型的 复用性)
@@ -304,6 +317,12 @@
   type Pick<T, K extends keyof T> = {
     [P in K]: T[P];
   };
+  // ThisType 参考 https://github.com/Microsoft/TypeScript/pull/14141
+  // infer 参考 https://github.com/Microsoft/TypeScript/pull/21496
+  type ReturnPromiseType<T> =
+    T extends (...args: any[]) => Promise<infer U> ? U :
+    T extends Promise<infer U> ? U :
+    any;
 ```
 ## 模块 和 命名空间
 ```typescript

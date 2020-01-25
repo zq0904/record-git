@@ -28,11 +28,11 @@
   typeof '1' // 'string'
   typeof Symbol('1') // 'symbol
   typeof(() => {}) // 'function'
-  typeof {} | typeof [] | typeof null // 'object'
+  typeof {}; typeof []; typeof null // 'object'
 ```
 ## 隐式转换
 ```javascript
-  +'1' | '1' - 0 // + - * / 都具备隐式转换
+  + true; '1' - 0 // + - * / 都具备隐式转换
 ```
 ## 转意字符
 ```javascript

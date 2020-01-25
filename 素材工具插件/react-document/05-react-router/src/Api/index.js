@@ -49,10 +49,10 @@ export default class index extends Component {
           <Route path="/Api" exact component={A} />
           <Route path="/Api" exact render={() => <A />} />
           {/*
-            children 无论路由是否匹配 都会渲染对应组件
+            children 无论路由是否匹配 都会执行 是否渲染取决于 return 组件 还是 null
             接受参数与 render component 相同
-            吧这个组件渲染权 交到你手里
-            优先级 component > render > children
+            把这个组件渲染权 交到你手里
+            优先级 children > component > render
           */}
           <Route
             path="/Api/asd"

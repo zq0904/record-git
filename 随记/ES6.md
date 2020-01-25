@@ -1157,12 +1157,12 @@
       }
     }
   ```
-## 修饰器 | 装饰器
+## 装饰器 | 注解
   ```javascript
-    // 1.类的 修饰器 @后跟 函数名 或 匿名函数
+    // 1.类的 装饰器 @后跟 函数名 或 匿名函数
     @d // 等价于 @(target) => target.a = 1 等价于 @function(target) { target.a = 1 }
-    class A {}      // 被修饰的类
-    function d(target) { target.a = 1 } // 类的修饰器只会接收到1个参数为 类本身
+    class A {}      // 被装饰的类
+    function d(target) { target.a = 1 } // 类的装饰器只会接收到1个参数为 类本身
     console.log(A.a) // 1
     // 编译后的结果为
     let _class
@@ -1177,25 +1177,25 @@
       }
     }
     console.log(A.a)
-    // 修饰器对类行为的改变是在编译时发生的 而非 运行时
+    // 装饰器对类行为的改变是在编译时发生的 而非 运行时
     // 实际开发中React结合Redux
     class A extends React.Component {}
     export default connect(mapStateToProps, mapDispatchToProps)(A)
-    // 修饰器写法
+    // 装饰器写法
     @connect(mapStateToProps, mapDispatchToProps)
     export default class A extends React.Component {}
 
-    // 2.类方法的 修饰器 提供对属性的修饰 也就是 描述属性
+    // 2.类方法的 装饰器 提供对属性的修饰 也就是 描述属性
     class A {
       @d
       add() {}
     }
-    function d(classPrototype, matchName, descriptor) { // 类方法的修饰器接收到的参数为 类的原型 该属性(方法名) 该方法的描述对象
+    function d(classPrototype, matchName, descriptor) { // 类方法的装饰器接收到的参数为 类的原型 该属性(方法名) 该方法的描述对象
       descriptor.enumerable = true
       // 默认取descriptor 不用显示声明(return descriptor)
     }
     // 在解析的时候会调用 Object.defineProperty(classPrototype, matchName, descriptor)
-    for (let v in new A()) console.log(v) // add 正常class原型属性都是不可枚举的通过修饰器改变这一行为
+    for (let v in new A()) console.log(v) // add 正常class原型属性都是不可枚举的通过装饰器改变这一行为
     class A {
       @log
       add(a, b) { return a + b }
@@ -1208,7 +1208,7 @@
       }
     }
     new A().add(1, 2) // '日志信息' 3
-    // 方法有多个修饰器
+    // 方法有多个装饰器
     class A {
       @d(1)
       @dd(2)
@@ -1228,11 +1228,11 @@
         console.log('dd')
       }
     }
-    // 1 2 dd d 函数调用的执行顺序为从外而内 但修饰器执行顺序由内而外
+    // 1 2 dd d 函数调用的执行顺序为从外而内 但装饰器执行顺序由内而外
     new A().add // 1
-    // 修饰器不能用于函数 因为函数存在提升 类不存在提升可以使用
+    // 装饰器不能用于函数 因为函数存在提升 类不存在提升可以使用
 
-    // 用修饰器实现mixin混入模式 mixin.js
+    // 用装饰器实现mixin混入模式 mixin.js
     export function mixin(...list) {
       return function(target) {
         Object.assign(target.prototype, ...list)
