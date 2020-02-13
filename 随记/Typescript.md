@@ -195,7 +195,7 @@
   const a: A = fn7(A)
   // 泛型参数 通过 extends 关键字 继承extends后面的类型
   const fn = <T, U extends T>(a: T, b: U) => {} // U类型 和 T类型 完全一致
-  // 泛型参数 通过 extends keyof 关键字 将一个类型的键 组成联合的字符串类型
+  // 泛型参数 通过 keyof 关键字 将一个类型的键组成联合类型
   const fn = <T, U extends keyof T>(a: T, b: U) => {} // fn({ a: 1, b: 1 }, 'b')
   // interface接口中不能使用in关键字 type类型别名（类型映射）”体中“可以使用 in 关键字 来获取 联合类型的每个值
   type Readonly<T> = {

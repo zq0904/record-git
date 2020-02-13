@@ -5,7 +5,7 @@
 ## SSR mac 终端操作
 
 自己 ping IP 选一个满意的 日本延迟低但丢包严重
-链接远程 ssh root@45.32.7.41
+链接远程 ssh root@45.32.7.41 （如遇 Add correct host key in /Users/zhaoqi/.ssh/known_hosts to get rid of this message.）rm ~/.ssh/known_hosts
 输入 yes 回车 出现系统信息 root@vultr:~# 说明链接成功
 Ubuntu 没有 yum 有 wget
 输入(注：代码主要做了 下载 ssr.sh 给权限 运行 每次可以单独运行 bash ssr.sh 此脚本是开机自动启动，部署一次即可)
@@ -32,7 +32,7 @@ lsmod | grep bbr // 查看是否安装成功 出现 tcp_bbr 字样表示 bbr 已
 
 ===================================================
 
-I P : 202.182.115.182
+I P : 207.148.100.200
 端口 : 8888
 
 ===================================================

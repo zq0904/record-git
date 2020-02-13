@@ -13,8 +13,9 @@ module.exports = {
     filename: 'index.js'
   },
   module: {
-    rules: [
+    rules: [ // rules 规则是双倒序
       {
+        // enforce: 'pre', // 可以理解为默认都是'post'优先级最低 pre优先级高于post
         test: /\.js$/,
         use: [
           {
