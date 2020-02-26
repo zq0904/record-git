@@ -1,20 +1,25 @@
 {
-  "name": "babel",
-  "version": "1.0.0",
+  "name": "zero-test-babel",
+  "version": "0.0.18",
   "description": "",
   "scripts": {
-    "start": "browser-sync start --server --directory --files **/*.* *.*",
-    "build": "babel src -s -d dist"
+    "build:babel": "babel src -s -d dist",
+    "build:webpack": "webpack",
+    "server": "hs -o -p 3009 -c-1"
   },
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-stage-2": "^6.24.1",
-    "babel-standalone": "^6.26.0"
+    "@babel/runtime-corejs3": "^7.8.4",
+    "core-js": "^3.6.4",
+    "http-server": "^0.12.1",
+    "object-defineproperty-ie8": "^1.0.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.41.6"
   },
   "keywords": [],
   "author": "",

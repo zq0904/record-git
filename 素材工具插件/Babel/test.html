@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>test</title>
+</head>
+<body>
+  <script src="./object-defineproperty-ie8.js"></script>
+  <script>
+    try {
+      console.log('全局 [].includes("1") =>', [].includes('1'))
+    } catch (err) {
+      console.log('catch =>', err)
+    }
+  </script>
+  <script src="./dist/main.js"></script>
+  <script>
+    console.log('全局 [].includes("1") =>', [].includes('1'))
+  </script>
+</body>
+</html>
