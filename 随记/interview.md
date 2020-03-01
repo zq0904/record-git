@@ -9,16 +9,16 @@
 ### 非凡hunter2018 实现原生路由 html2canvas实现下载海报 封装基本图片加载Promise实现下载海报优化
 ### 谷露项目 使用 pastMessage 跨ifram 通信
 
-`
+
 1. 拥有React、Vue项目开发经验，理解MVVM开发模式，熟练掌握SPA开发流程
 2. 熟练使用ES6语法，理解Promise、Async、Awai异步解决方案
-3. 熟悉TypeScript
+3. 熟练使用TypeScript
 3. 理解vue双向绑定原理 router原理 webpack原理
-4. 熟练使用React及其相关框架（create-react-app、react、mobx、classnames、AntD、sass）
-5. 熟练使用Vue及其相关框架（vue-cli、vue、vue-router、vuex、axios、Element、sass）
+4. 熟练使用React及其相关框架（react、react-router-dom、mobx、AntD、classnames、sass等）
+5. 熟练使用Vue及其相关框架（vue、vue-router、vuex、axios、Element、less等）
 6. 拥有自己写的核心库 脚手架
 
-1. 熟练使用html css js根据ui提供的设计稿，快速搭建符合w3c标准的页面结构
+1. 熟练使用html、css、js根据ui/ue提供的设计/交互稿，快速搭建符合w3c标准的页面结构
 2. 对三层架构、性能优化有一定理解，能够解决常见的兼容性问题，有着良好的代码编写习惯
 3. 熟练使用ajax发送异步请求从后台获取json格式数据，按需动态渲染页面
 5. 熟练使用基础类库及ui框架，如jquery、zepto、bootstrap、Element、AntD等
@@ -37,7 +37,7 @@
 18. 个人随笔 https://github.com/zq0904/record-git/tree/master/%E9%9A%8F%E8%AE%B0
 16. 拥有自己的ubuntu服务器 使用pm2做自动部署
 
-14. 熟练使用npm、yarn、webpack，了解Gulp等构建工具，能够与后端协商设计出           规范的目录结构
+14. 熟练使用npm、yarn、webpack，了解Gulp等构建工具，能够与后端协商设计出规范的目录结构
 
 
 
@@ -87,8 +87,9 @@
 
 
 
-# call apply bind原理 模拟实现 (主要考对this的理解)
+## call apply bind原理 模拟实现 (主要考对this的理解)
 ```javascript
+  // 模拟call的实现 1.调用该函数 2.改变this指向 3.传参以单个传递
   Function.prototype.myCall = function (context, ...args) {
     context = context || window
     context._fn = this
@@ -96,6 +97,7 @@
     delete context._fn
     return res
   }
+  // 模拟apply的实现 1.调用函数 2.改变this指向 3.传参数组形式
   Function.prototype.myApply = function (context, args) {
     context = context || window
     context._fn = this
@@ -103,6 +105,7 @@
     delete context._fn
     return res
   }
+  // 模拟bind的实现 1.拷贝一个函数 2.改变this指向 3.传参以单个形式
   Function.prototype.myBind = function (context, ...args) {
     context = context || window
     context._fn = this
@@ -121,7 +124,7 @@
   const fnc = fn.myBind({ a: 1 }, 1)
   fnc()
 ```
-# readystatechange DOMContentLoaded load 事件的区别
+## readystatechange DOMContentLoaded load 事件的区别
 ```
   // document.readyState 这个属性是用来描述document的加载状态的 有3种值
   // loading 文档仍在加载
@@ -134,13 +137,13 @@
   window.addEventListener('DOMContentLoaded', event => console.log('DOMContentLoaded'))
   // load 事件 会在整个页面都加载完成时执行（包括样式图片加载）
 ```
-# 浏览器的渲染机制
+## 浏览器的渲染机制
   1.处理HTML 构建DOM树
   2.处理CSS 构建CSSOM树（css对象模型）
   3.将DOM树 与 CSSOM树 合并为一个渲染树
   4.根据渲染树来布局 计算每个节点的位置
   5.调用GPU绘制 合成图层 显示在屏幕上
-# 图层
+## 图层
   - 一般来说可以吧普通的文档流看成一个图层，特定的属性可以生成一个新的图层。
   - 不同的图层渲染互不影响，所以对于某些频繁需要渲染的建议单独生成一个新图层，提高性能。
   - 图层也不能过多
@@ -148,7 +151,7 @@
     1. 3D 变换 translate3d
     2. video、iframe 标签
     3. position: fixed
-# 重绘（Repaint）和 回流（Reflow）
+## 重绘（Repaint）和 回流（Reflow）
   - 重绘 Repaint 需要更改外观而不会影响布局的属性发生变动触发 如 color 等
   - 回流 Reflow 布局或盒模型发生改变的属性发生变动触发 如 width float 等
   - 回流必定会触发重绘 重绘不一定会触发回流
@@ -157,7 +160,7 @@
     2. 动画实现的速度的选择，动画速度越快，回流次数越多，也可以选择使用 window.requestAnimationFrame（保证在下次重绘之前调用指定的回调函数）
     3. 将频繁运行的动画变为图层，图层能够阻止该节点回流影响别的元素。如 video 标签，浏览器会自动将该节点变为图层
     4. 使用GPU硬件加速提升渲染性能 写一些动画可以硬编码 如：transform: translateZ(0) 浏览器会开启一个独立图层使用GPU进行预处理并且触发了硬件加速
-# 性能
+## 性能
   - 服务端压缩 gzip 如nginx很简单就能开启
   - CDN （加快文件的访问速度）
   - 缓存 浏览器缓存策略分为两种
