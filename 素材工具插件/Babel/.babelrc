@@ -1,7 +1,0 @@
-{ // plugins插件在presets之前执行 plugins插件中的每一项 正序执行 presets预设中的每一项 倒序执行
-  "presets": [["env", {
-    "modules": false,
-    "target": { "browser": ["> 1%", "last 2 versions", "not ie <= 8"] }
-  }], "stage-2"], // 定义转码规则
-  "plugins": ["transform-runtime"]
-}
