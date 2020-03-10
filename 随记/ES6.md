@@ -182,8 +182,12 @@
   [1, 2, 3, 4].copyWithin(1) // [1, 1, 2, 3] .copyWithin(目标起始index, 复制的起始index默认为0, 复制的结束index默认为this.length) 修改原数组
   [1, 2, 3, 4].copyWithin(0, 2, 3) // [3, 2, 3, 4]
   [1, 2, 3].find((v, i, a) => v > 1) // 2 查找满足条件的第一项并返回
-  [1, 2, 3].findIndex(function(v) { return v > this.id}, {id: 1}) // 1 查找满足条件的第一项的索引并返回 都没查到返回 -1 第二个参数绑定的this
+  [1, 2, 3].findIndex(function(v) { return v > this.id }, {id: 1}) // 1 查找满足条件的第一项的索引并返回 都没查到返回 -1 第二个参数绑定的this
   ['a', 'b', 'c', 'd'].fill({f: 1}, 1, 3)[1].f = 2 // ['a', {f: 2}, {f: 2}, 'd'] .fill(填充的值, 填充起始位置的index默认0, 填充结束位置的index默认this.length) 填充属于浅拷贝
+  [3, 4, 5].reduce((b, a) => b + a, 0) // 12 执行3次 03 34 75
+  [3, 4, 5].reduce((b, a) => b + a) // 12 执行2次 34 75
+  [].reduce(() => {}, 123) // 123 以初始值作为返回值
+  ['3', '4'].reduceRight((a, b) => a + b) // '43' 从右向左执行
 
   // .keys() .values() .entries() 都返回遍历器对象 对 键、值、键和值
   for (let key of ['a', 'b'].keys()) { console.log(key) } // 0  1

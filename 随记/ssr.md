@@ -16,7 +16,7 @@ wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/dou
 1. 安装 ShadowsocksR
 2. 设置端口 密码
 3. 加密方式 aes-256-cfb
-4. 协议插件 auth_sha1_v4
+4. 协议插件 origin
 5. 确定兼容 y
 6. 混淆插件 plain
 7. 设备数限制
