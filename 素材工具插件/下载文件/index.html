@@ -20,6 +20,7 @@
     $('#download1').click(function() {
       window.location.href = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
     })
+
     // 下载文件(a标签)（查询字符串可传参）!!!移动端不支持download属性
     // 微信h5 环境图片是不能直接被下载到本地的 需要用户手动长按保存 （一般做法是将这张图片的层级调到最上面 opacity: 0 文案提示用户长按保存）
     $('#download2').click(function() {
@@ -37,6 +38,7 @@
       }
 
     })
+
     // 下载文件(form标签)（传参 不可拼接查询字符串 只能push input方式加参）
     $('#download3').click(function() {
       var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master'
@@ -47,12 +49,36 @@
       .submit()
       .remove()
     })
+
     // 下载文件(iframe标签)
     $('#download4').click(function() {
       var url = 'https://codeload.github.com/douban/douban-client/legacy.zip/master?a=1&b=2'
       $('<iframe src="' + url + '" style="display: none;"></iframe>')
       .appendTo($('body'))
     })
+
+    // 以流的形式下载图片/视频 等
+    const downLoad = (url, fileName) => {
+      return fetch(url)
+        .then(res => res.blob())
+        .then(blob => {
+          const reader = new FileReader()
+          reader.onload = e => {
+            const a = document.createElement('a')
+            a.download = fileName
+            a.rel = 'noopener'
+            a.href = e.target.result
+            a.dispatchEvent(new MouseEvent('click'))
+            a.remove()
+          }
+          reader.readAsDataURL(blob)
+        })
+        .catch(err => {
+          console.log(fileName + '下载失败！')
+          console.error(err)
+        })
+    }
+    downLoad('https://dss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=991890567,3530662074&fm=58&s=0FF6E812C5A54D035854BAF400000035', 'tp.jpeg')
 
   </script>
 </body>
