@@ -37,7 +37,7 @@
   npx lerna clean // 删除所有包的node_modules
   npx lerna updated // 当包的变更提交到本地后 执行该命令可以检测有那些包有变更
   npx lerna diff // 查看包的变更详细
-  npx lerna create // 会以询问式的方式在packages下新建目录包 一般是完全新建一个包才使用这种方式
+  npx lerna create <name> // 会以询问式的方式在packages下新建目录包 一般是完全新建一个包才使用这种方式
 ```
 ## 添加依赖
 ```
