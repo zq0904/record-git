@@ -15,12 +15,12 @@
 3. 熟练使用TypeScript
 3. 理解vue双向绑定原理 router原理 webpack原理
 4. 熟练使用React及其相关框架（react、react-router-dom、mobx、AntD、classnames、sass等）
-5. 熟练使用Vue及其相关框架（vue、vue-router、vuex、axios、Element、less等）
-6. 拥有自己写的核心库 脚手架
+5. 熟练使用Vue及其相关框架（vue、vue-router、vuex、Element、less等）
+6. 拥有自己写的核心库 脚手架 构建工具均抽离
 
 1. 熟练使用html、css、js根据ui/ue提供的设计/交互稿，快速搭建符合w3c标准的页面结构
-2. 对三层架构、性能优化有一定理解，能够解决常见的兼容性问题，有着良好的代码编写习惯
-3. 熟练使用ajax发送异步请求从后台获取json格式数据，按需动态渲染页面
+2. 对性能优化有一定理解，能够解决常见的兼容性问题，有着良好的代码编写习惯
+3. 熟练使用axios/ajax发送请求从后台获取json格式数据，按需动态渲染页面
 5. 熟练使用基础类库及ui框架，如jquery、zepto、bootstrap、Element、AntD等
 6. 熟悉常见插件及工具库，如echarts、lodash、moment、animate.css、ejs等
 7. 熟练使用多种布局方案（流式布局、rem布局、flex布局、响应式布局），能够使用媒体查询做部分兼容处理
@@ -123,6 +123,235 @@
   fn.myApply({ a: 1 }, [1])
   const fnc = fn.myBind({ a: 1 }, 1)
   fnc()
+```
+## js运算符的优先级
+```
+    function Foo() {
+      getName = function () { console.log(1) }
+      return this
+    }
+    Foo.getName = function () { console.log(2) }
+    Foo.prototype.getName = function () { console.log(3) }
+
+    var getName = function () { console.log(4) }
+    function getName() { console.log(5) }
+
+    // 请写出以下输出结果：
+    Foo.getName() // 静态方法 2
+    getName() // 变量提升 函数提升 函数表达式覆盖 4
+    Foo().getName() // 覆盖全局window.getName 调用window.getName 1
+    getName() // 1
+    new Foo.getName() // new无参 < 成员访问 等价于 new (Foo.getName)() 2
+    new Foo().getName() // new有参 = 成员访问 从左到右以此执行 3
+    new new Foo().getName() // new ((new Foo()).getName)() 3
+```
+## ['1', '2', '3'].map(parseInt) 执行结果
+```
+  parseInt('1', 0) // radix为0时，且string参数不以“0x”和“0”开头时，按照10为基数处理。这个时候返回1
+  parseInt('2', 1) // 基数为1（1进制）表示的数中，最大值小于2，所以无法解析，返回NaN
+  parseInt('3', 2) // 基数为2（2进制）表示的数中，最大值小于3，所以无法解析，返回NaN
+  结果 [1, NaN, NaN]
+```
+## 防抖debounce 节流throttle (参考)[https://github.com/zq0904/zeroer/blob/master/packages/zeroer-core/src/util/throttle.ts]
+## 深度优先遍历和广度优先遍历，如何实现 (参考)[https://github.com/Advanced-Frontend/Daily-Interview-Question/issues/9]
+```
+    // 深度优先遍历 DFS Depth-First-Search
+    const depthFirstSearch = (rootNode, resNodes = []) => {
+      if (!rootNode) return resNodes
+      resNodes.push(rootNode)
+      for (let node of rootNode.children) {
+        depthFirstSearch(node, resNodes)
+      }
+      return resNodes
+    }
+
+    const depthFirstSearch = node => {
+      const tasks = []
+      const res = []
+      if (!node) return res
+      tasks.push(node)
+      while (tasks.length) {
+        const firstNode = tasks.shift()
+        res.push(firstNode)
+        for (let itemNode of Array.prototype.slice.call(firstNode.children).reverse()) {
+          tasks.unshift(itemNode)
+        }
+      }
+      return res
+    }
+    // 广度优先遍历 BFS Breadth-First-Search
+    const breadthFirstSearch = node => {
+      const tasks = []
+      const nodeList = []
+      if (!node) return nodeList
+      tasks.push(node)
+      while (tasks.length) {
+        const firstNode = tasks.shift()
+        nodeList.push(firstNode)
+        for (let itemNode of firstNode.children) { // 核心就是维护了一个先进进出的队列
+          tasks.push(itemNode)
+        }
+      }
+      return nodeList
+    }
+```
+## ES5/ES6 的继承除了写法以外还有什么区别
+```
+    function A(name) {
+      this.name = name
+    }
+    function B(name) {
+      A.call(this, name)
+    }
+    B.prototype = new A()
+    console.log(B.prototype.__proto__ === A.prototype)
+    console.log(B.__proto__ === Function.prototype)
+
+    class Foo {
+      constructor(name) {
+        this.name = name
+      }
+    }
+    class Bar extends Foo {
+      constructor(name) {
+        super(name)
+      }
+    }
+    console.log(Bar.prototype.__proto__ === Foo.prototype)
+    console.log(Bar.__proto__ === Foo)
+    // ES5
+    1.子类和父类一样，都是先由Function创建好，再实现继承的
+    2.函数有函数提升
+    // ES6
+    1.子类是由父类创建的
+    2.类在使用时必须先声明好 没有函数提升
+    3.class 的所有方法（包括静态方法和实例方法）都是不可枚举的
+    4.必须使用 new 调用 class
+```
+## 浏览器 事件循环
+  1. javascript为什么是单线程的
+    - 浏览器js的作用是操作dom 这决定了它只能单线程的 否则会带来很复杂的同步问题 比如 假定js同时有2个线程 一个线程在某个dom节点上添加内容 一个线程删除了这个节点 这时浏览器以那个线程为准
+    - js是单线程的 但是js是一门异步语言 不会做无谓的等待 任务 广义上分为同步任务和异步任务 细分为宏任务和微任务
+
+  2. 任务队列
+    - 所有同步任务 都在主线程上执行 形成一个执行栈
+    - 主线程之外还存在一个任务队列 只要异步任务有了运行结果 就在任务队列之中放置一个事件（callback）
+    - 一旦执行栈中的所有同步任务都执行完毕，系统就会读取任务队列中（callback），于是等待结束进入执行栈开始执行
+    - 主线程不断重复前3步（主线程不断从任务队列中读取事件，整个过程是循环不断的，这种运行机制称为Event Loop 事件循环）
+
+  3. 宏任务 微任务
+    - 宏任务macrotask：script（整体代码），setTimeout，setInterval，setImmediate，I/O，UI rendering
+    - 微任务microtask：process.nextTick，Promise，Object.observe，MutationObserver
+    - 宏任务进入主线程，执行过程中会收集微任务加入微任务队列，宏任务执行完毕后，立即执行微任务中的任务，微任务在执行过程中将再次收集宏任务，并加入宏任务队列，反复执行
+    - 一轮事件循环是 执行一次宏任务和所有的微任务
+    - I/O 中操作 谁先到时间先放置callback callback是先进先出的
+    - 执行栈每次拿callback ”只能一个一个的拿“ 比如有2个setTimeout 那就有3轮事件循环
+    ```
+      // 这3个的输出顺序都一致
+      1.
+      setTimeout(() => console.log('setTimeout'), 0)
+      Promise.resolve().then(() => console.log('Promise'))
+      console.log('main')
+      2.
+      setTimeout(() => console.log('setTimeout'), 0)
+      let startTime = Date.now()
+      new Promise((resolve) => {
+        while(Date.now() - startTime < 1000) {}
+        resolve()
+      }).then(() => console.log('Promise'))
+      console.log('main')
+      3.
+      setTimeout(() => console.log('setTimeout'), 1000)
+      Promise.resolve().then(() => console.log('Promise'))
+      console.log('main')
+
+      // setTimeout入栈 () => console.log('setTimeout')加入I/O setTimeout出栈
+      // Promise.resolve().then(() => console.log('Promise'))入栈  () => console.log('Promise')加入微队列 Promise.resolve().then(() => console.log('Promise'))出栈
+      // console.log('main')入栈 输出'main' console.log('main')出栈（到此一轮宏任务执行完成）
+
+      // console.log('Promise')入栈 输出'Promise' console.log('Promise')出栈（到此一轮微任务执行完成 并且没有其他的微任务 一轮事件循环结束）
+
+      // I/O中的() => console.log('setTimeout')到时间了 console.log('setTimeout')加入宏任务中 输出'setTimeout' （就算I/O中的任务早就到时间了 也只能被上一次的微任务所收集 加入到下次的宏任务中 从属下轮事件循环）
+
+      4.
+      setTimeout(() => console.log('setTimeout'), 0)
+      Promise.resolve().then(() => {
+        console.log('Promise1')
+        Promise.resolve().then(() => {
+          console.log('Promise2')
+        })
+      })
+      console.log('main')
+      // main 宏任务
+      // Promise1 微任务
+      // Promise2 微任务
+
+      // setTimeout 宏任务
+      // 一共2轮事件循环
+
+      5.
+      setTimeout(() => {
+        console.log('setTimeout1')
+        Promise.resolve().then(() => console.log('Promise1'))
+      }, 0)
+      Promise.resolve().then(() => {
+        console.log('Promise2')
+        setTimeout(() => console.log('setTimeout2'), 0)
+      })
+      console.log('main')
+
+      // main 宏任务
+      // Promise2 微任务
+      // setTimeout1 宏任务
+      // Promise1 微任务
+      // setTimeout2 宏任务
+      // 一共3轮事件循环
+    ```
+
+## NodeJS 事件循环
+  nodejs启动时会初始化event loop，每一个event loop都会包含如下6个阶段（nodejs事件循环和浏览器事件循环完全不一样）
+  1. timers（定时器） 此阶段执行哪些由setTimout、setInterval调度的回调
+  2. I/O callback（I/O回调） 此阶段会执行几乎所有的回调 除了 close callback（关闭回调）和那些由timers与setImmediate调度的回调
+  3. idle，prepare（空转） 此阶段只在内部使用
+  4. poll（轮询） 检索新的I/O事件 在恰当的时候node会阻塞在这个阶段
+  - 代码未设定timer
+    + poll阶段 queue不为空
+      event loop 将同步执行队列中的callback直到队列为空 或执行callback达到系统上线
+    + poll阶段 queue为空
+      - 设定setImmediate(callback) event loop将结束poll阶段进入check阶段，并执行check阶段里的队列（check阶段的队列是setImmediate设定的）
+      - 没有设定setImmediate(callback) event loop将阻塞在该阶段等待callback加入队列一旦加入立即执行
+  - 代码设定timer
+    + poll阶段 queue为空
+      - event loop将检查timers 如果有一个或多个timers时间已经到达 event loop将按循环顺序进入timers阶段 并执行timer队列
+  5. check（检查） setImmediate 设置的回调会在该阶段执行
+  6. close callbacks（关闭事件的回调） 如socket.on('close', ...) 此类的回调在此阶段被调用
+  在事件循环的每次运行之间 nodejs会检查是否在等待异步I/O或定时器 如果没有的话就自动关闭
+```
+  1.
+  const fs = require('fs')
+  const startDate = Date.now()
+  setTimeout(() => console.log(`setTimeout：${Date.now() - startDate}`), 10)
+
+  fs.readFile('./blogs.js', () => {
+    const nowTime = Date.now()
+    console.log(`fileReadTime：${nowTime - startDate}`)
+    while(Date.now() - nowTime < 20) {}
+  })
+
+  // 事件循环阻塞在poll阶段 读取文件大约需要2ms
+  // 输出 fileReadTime：2ms
+  // while(Date.now() - nowTime < 20) {} 阻塞 20ms
+  // 22ms时 setTimeout回调早就执行完 此时直接进入下一轮事件循环timers阶段执行setTimeout回调
+  // 输出 setTimeout：22ms
+
+  2.
+  // 在浏览器中 setTimeout(() => {}, 0) === setTimeout(() => {}, 4)
+  // node中 setTimeout(() => {}, 0) === setTimeout(() => {}, 1)
+
+  setImmediate(() => console.log('setImmediate'))
+  setTimeout(() => console.log('setTimeout'), 0)
+  // event loop 启动时需要时间的 如果第一轮事件循环
+
 ```
 ## readystatechange DOMContentLoaded load 事件的区别
 ```
