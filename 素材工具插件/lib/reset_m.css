@@ -25,9 +25,9 @@ img {
 }
 input, textarea {
   border: 0 none;
-  outline-style: none;
+  outline-style: none; /* 去消除轮廓线 */
   resize: none;
-  -webkit-webkit-appearance: none;
+  -webkit-webkit-appearance: none; /* 清除原有样式 ios input默认圆角 */
   -moz-webkit-appearance: none;
   -ms-webkit-appearance: none;
   -o-webkit-appearance: none;
