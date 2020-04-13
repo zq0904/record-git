@@ -1,4 +1,29 @@
-# interview
+# 面试
+
+1. 熟练使用html、css、js根据ui/ue提供的设计/交互稿，快速搭建符合w3c标准的页面结构
+2. 对性能优化有一定理解，能够解决常见的兼容性问题，有着良好的代码编写习惯
+// 00. 熟练使用axios发送请求从后端获取json数据，按需动态渲染页面，能够与后端协商设计出符合规范的接口
+3. 熟练使用多种布局方案（流式布局、rem布局、flex布局、响应式布局），能够使用媒体查询做部分兼容处理
+4. 熟练使用和理解jsonp跨域、doman跨域、nginx反向代理、cors等跨域访问方式，理解cookie和session机制
+5. 理解JavaScript高级特性（oop、继承、原型链、闭包等）
+6. 熟练使用基础类库及ui框架，如jquery、zepto、bootstrap、Element、AntD等
+7. 熟练使用常见插件及工具库，如echarts、lodash、dayjs、animate、ejs等
+
+8. 拥有React、Vue项目开发经验，理解MVVM开发模式，熟练掌握SPA开发流程
+9. 熟练使用ES6语法，理解Promise、Async、Awai异步解决方案
+10. 熟练使用TypeScript
+11. 理解vue双向绑定原理 router原理 webpack原理
+12. 熟练使用React及其相关框架（react、react-router-dom、mobx、AntD、classnames、sass等）
+13. 熟练使用Vue及其相关框架（vue、vue-router、vuex、Element、less等）
+
+14. 熟练使用json-server mockjs等接口类测试工具模拟后台数据 Browsersync浏览器同步测试工具 tinypng压缩等工具
+15. 熟练使用npm、yarn包管理工具，webpack、rollup等构建工具,了解Gulp
+16. 熟练使用git进行代码版本管理，了解SVN
+17. 熟悉node，express、koa、mysql、docker docker-compose
+18. 熟悉Mac开发环境及工具 如基本的linux操作 SwitchHosts、Charles、Postman、Sketch、Ps
+// 00. 熟练的使用vsocde 结合 node的--inspect-brk 进行node调试
+19. 拥有自己写的核心库 脚手架 构建工具均抽离，拥有自己的ubuntu服务器 使用pm2做自动部署
+20. 个人随笔 https://github.com/zq0904/record-git/tree/master/%E9%9A%8F%E8%AE%B0
 
 ## 总结
 ### 描述： h-admin-pc重构 对 猎头管理下 正式用户 认证不通过用户 禁用登录用户 删除用户 禁用用户 模块的改版 优化了操作日志 审核记录 （技术栈 react + raect-router-dom + mobx ）
@@ -9,38 +34,8 @@
 ### 非凡hunter2018 实现原生路由 html2canvas实现下载海报 封装基本图片加载Promise实现下载海报优化
 ### 谷露项目 使用 pastMessage 跨ifram 通信
 
-
-1. 拥有React、Vue项目开发经验，理解MVVM开发模式，熟练掌握SPA开发流程
-2. 熟练使用ES6语法，理解Promise、Async、Awai异步解决方案
-3. 熟练使用TypeScript
-3. 理解vue双向绑定原理 router原理 webpack原理
-4. 熟练使用React及其相关框架（react、react-router-dom、mobx、AntD、classnames、sass等）
-5. 熟练使用Vue及其相关框架（vue、vue-router、vuex、Element、less等）
-6. 拥有自己写的核心库 脚手架 构建工具均抽离
-
-1. 熟练使用html、css、js根据ui/ue提供的设计/交互稿，快速搭建符合w3c标准的页面结构
-2. 对性能优化有一定理解，能够解决常见的兼容性问题，有着良好的代码编写习惯
-3. 熟练使用axios/ajax发送请求从后台获取json格式数据，按需动态渲染页面
-5. 熟练使用基础类库及ui框架，如jquery、zepto、bootstrap、Element、AntD等
-6. 熟悉常见插件及工具库，如echarts、lodash、moment、animate.css、ejs等
-7. 熟练使用多种布局方案（流式布局、rem布局、flex布局、响应式布局），能够使用媒体查询做部分兼容处理
-7. 熟练使用和理解jsonp跨域、doman跨域、nginx反向代理、cors等跨域访问方式，理解cookie和session机制
-10. 理解JavaScript高级特性（oop、继承、原型链、闭包等）
-
-12. 熟悉Mac开发环境及工具 如基本的linux操作 SwitchHosts、Charles、Postman、Sketch、Ps
-13. 熟练使用Sourcetree + git进行代码版本管理，了解SVN
-14. 熟练使用json-server mockjs等接口类测试工具模拟后台数据 Browsersync浏览器同步测试工具 tinypng压缩等工具
-15. 熟悉Nodejs，Express框架，熟悉MySQL数据库
-16. 熟练的使用vsocde 结合 node的--inspect-brk 进行node调试
-17. 熟悉docker docker-compose
-
-18. 个人随笔 https://github.com/zq0904/record-git/tree/master/%E9%9A%8F%E8%AE%B0
-16. 拥有自己的ubuntu服务器 使用pm2做自动部署
-
-14. 熟练使用npm、yarn、webpack，了解Gulp等构建工具，能够与后端协商设计出规范的目录结构
-
-
-
+- 自己的核心库 脚手架
+- 公司的话 就是 h-admin h clt h5 前后端分离 全球通
 
 工作经历
 2015.4-2017.11 公司名称：长春南北科技技术有限公司     部门岗位：研发部  Web前端开发工程师

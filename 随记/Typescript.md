@@ -136,7 +136,7 @@
   class C { state = {} } //（同名）这个类不需要实现接口的属性和方法 因为这个类的实例类型 必然会与接口 声明合并!!!
   const c = new C(); console.log(c.state, c.n);
 
-  // 抽象类 不能被实例化 其抽象方法 不能有具体实现 继承的子类必须有具体实现
+  // 抽象类 不能被实例化 （其抽象方法 不能有具体实现 继承的子类必须有具体实现）非抽象方法可以有具体实现并且能被子类继承
   abstract class Asd {
     constructor(public a: string) {}
     abstract b(): void
