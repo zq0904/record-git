@@ -51,7 +51,6 @@
   }
   // 为了考虑到Link标签的通用性
   class Link extends React.PureComponent {
-    get res() {}
     render() {
       const { to, children, ...args } = this.props
       return (

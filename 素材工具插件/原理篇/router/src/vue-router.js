@@ -26,6 +26,19 @@
   Vue.use(mockVueRouter)
 
   Vue.component('mock-router-link', {
+    props: ['to'],
+    computed: {
+      mode() {
+        return this._router.options.mode
+      }
+    },
+    methods: {
+      handlerClick(e) {
+        e.preventDefault()
+        window.history.pushState(null, '', this.to)
+        this.$root.$emit('handlerPopState')
+      }
+    },
     render(h) {
       if (this.mode === HASH_TAG) {
         return h(
@@ -52,19 +65,6 @@
         )
       }
     },
-    props: ['to'],
-    computed: {
-      mode() {
-        return this._router.options.mode
-      }
-    },
-    methods: {
-      handlerClick(e) {
-        e.preventDefault()
-        window.history.pushState(null, '', this.to)
-        this.$root.$emit('handlerPopState')
-      }
-    }
   })
 
   Vue.component('mock-router-view', {
@@ -101,6 +101,7 @@
       } else if (this.mode === HISTORY_TAG) {
         window.removeEventListener('popstate', this.handlerPopState)
       }
+      this.$root.$off('handlerPopState', this.handlerPopState)
     },
     methods: {
       handlerHashChange() {
