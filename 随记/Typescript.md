@@ -136,7 +136,7 @@
   class C { state = {} } //（同名）这个类不需要实现接口的属性和方法 因为这个类的实例类型 必然会与接口 声明合并!!!
   const c = new C(); console.log(c.state, c.n);
 
-  // 抽象类 不能被实例化 其抽象方法 不能有具体实现 继承的子类必须有具体实现
+  // 抽象类 不能被实例化 （其抽象方法 不能有具体实现 继承的子类必须有具体实现）非抽象方法可以有具体实现并且能被子类继承
   abstract class Asd {
     constructor(public a: string) {}
     abstract b(): void
@@ -425,6 +425,35 @@
     interface Obj {
       b: string;
     }
+  ```
+
+## TypeScript 3.8新增内容
+  ```
+    // 1. 仅类型导入 导入的类型不能与变量的名称重复 有点坑
+    import type { TimeId } from './types'
+    import { timeId } from './types'
+    // 2. 私有字段支持 鸡肋...
+    // 私有字段 必须先声明 才能分配给他们值（private 可以在constructor中简写 不必非要在类中声明）
+    // 私有字段以#字符开头，是真正意义上严格的隐私，无法在包含的类之外被检测到（private 编译完和普通属性没有区别 仅仅在编译阶段起到提示的作用）
+    // 编译完最终会以WeakMaps来实现 意味着仅支持es6+的目标版本 速度相对普通属性较慢（private 修饰符可用于所有目标-甚至es3）
+    // ts辅助功能修饰符，如public，private不能在私有字段上使用
+    class Person {
+      #name: string
+      constructor(private name: string) {
+        this.#name = name
+      }
+    }
+    // 3. export * as ns 语法支持 [参考](https://github.com/tc39/proposal-export-ns-from)
+    // ts3.8支持 @babel/preset-env@3.9仍不包含 仍需使用'@babel/plugin-proposal-export-namespace-from'
+    // import * as flat from './flat'
+    // export { flat }
+    // 等价于
+    export * as flat from './flat'
+    // 4. 顶层 await
+    // 顶级 await 只在模块的顶层起作用，而文件只有在TypeScript找到import或export时才被认为是模块。
+    // 在一些基本的情况下，您可能需要将export{}作为一些样板来确保这一点。
+    const res = await req('...')
+    export {} // 样板
   ```
 ## 声明文件 .d.ts
 ```typescript
