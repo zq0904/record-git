@@ -2,7 +2,7 @@
   "name": "",
   "version": "",
   "dependencies": {
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "swiper": "^4.0.7"
   }
 }
