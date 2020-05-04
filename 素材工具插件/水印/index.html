@@ -95,8 +95,8 @@
     if (options.isRolling) {
       div.style = 'pointer-events: none; z-index: 9999; opacity: 0.8;' + 'position: absolute; top: 0; left: 0;'
       var handlerResize = function () {
-        div.style.width = document.documentElement.offsetWidth + 'px'
-        div.style.height = document.documentElement.offsetHeight + 'px'
+        div.style.width = document.documentElement.scrollHeight + 'px'
+        div.style.height = document.documentElement.scrollHeight + 'px'
       }
       // TODO height变化监听不到
       window.addEventListener('resize', debounce(handlerResize, 300))
