@@ -135,16 +135,18 @@
 
   // 克隆项目 并 初始化 拉取 子模块
   git clone <git_url> --recursive // 克隆的项目 --recursive表递归克隆 会直接克隆子模块（如果项目包含子模块默认是不会克隆子模块 子模块目录为空 整个项目只有.gitmodules描述子模块）
+
+  git clone <git_url>
   git submodule init // 初始化子模块本地配置文件 根据.gitmodules 写入.git/config
   git submodule update // 更新子模块为”项目最新“ 写入.git/module/*
   git submodule update --init // 初始化子模块 更新子模块为”项目最新“
 
-  // 由于项目的索引仅包含子模块块的commitid作为其索引中的特殊条目导致“分离的头” [参考](https://stackoverflow.com/questions/20794979/git-submodule-is-in-detached-head-state-after-cloning-and-submodule-update)
+  // !!!（初次clone的项目是必须要执行的） 由于项目的索引仅包含子模块的commitid作为其索引中的特殊条目导致“分离的头” [参考](https://stackoverflow.com/questions/20794979/git-submodule-is-in-detached-head-state-after-cloning-and-submodule-update)
   git submodule foreach -q --recursive 'current_commit_id=$(git rev-parse HEAD); git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master) && git reset --hard ${current_commit_id}' // 递归操作 所有子模块切换到跟踪的分支 默认master 并 回滚到相应的commit_id（解决所有子模块的 detached head）
 
   git pull && git submodule update // 更新项目 并 更新子模块为”项目最新“
 
-  // 更新子模块（项目中的子模块有了更新后，项目必须手动更新才能使用最新的子模块）
+  // 更新子模块（项目中的子模块有了更新后，项目必须手动更新才能应用最新的子模块）
   // 1.1 在包含子模块的项目上工作 不修改子模块 只更新子模块
   git submodule update --remote // 更新所有子模块为”远端最新“ 或者（cd 到相应子模块中 git pull 更新子模块）
   git submodule update --remote src/test-submodule // 更新指定的子模块为”远端最新“
