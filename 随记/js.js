@@ -3,7 +3,7 @@
   console.log(1+true);//加法的隐式转换 true为1
   -         //得到数字类型（隐转），有非数字字符串得到NaN仍是数字类型
   /     //有非数字字符串得到的是NaN,0做为除数的时候得到Infinity(无限大),均是数字类型
-  
+
 console.log(Number.MIN_VALUE);//数的最小值 是正数
 console.log(Number.MAX_VALUE);//数的最大值
 //不要比较2个浮点数是否相等,非要比较 *10 parseInt()在比较
@@ -230,10 +230,10 @@ Array对象的属性和方法
   a.pop();   //删除数组中最后个元素 返回删除的值 数组长度-1（元素往前窜）
   a.unshift('1','2'); //在数组前面添加元素 返回数组的长度 数组长度改变（若数组为空 返回undefined）
   a.push('1','2');  //在数组后面增加元素 返回数组长度
-  a.splice(index,length,添加的元素); //截取一段数组 如果没写length 一直到最后(改变原数组！！！)
-    a.splice(index,1); 数组中删除 指定索引的元素
-    a.splice(index,1,element); 在数组中替换元素
-    a.splice(index+1,0,element); 改变原数组 向数组index后面添加元素
+  a.splice(index, length, 添加的元素); //截取一段数组 如果没写length 一直到最后(改变原数组！！！)
+    a.splice(index, 1); 数组中删除 指定索引的元素
+    a.splice(index, 1, element); 在数组中替换元素
+    a.splice(index + 1, 0, element); 改变原数组 向数组index后面添加元素
     // a.splice(index,1,a[index],element);  备用方法
     [1, 2].splice(9, 1, 99) // 会得到 [1, 2, 99] 并不会在指定位置填充 Vue中对数组操作 可以先使用 arr[9] = 99 在使用深拷贝 最后赋值的方式来实现响应式的数组
   a.slice(startindex,endindex);//返回一个子数组 根据下标 不返回endindex对应的元素 没指定endindex 返回到最后 如果index为负代表倒数第几个 (原数组不会改变)

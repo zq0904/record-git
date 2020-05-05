@@ -8,7 +8,7 @@
 ## 命令
   sudo nginx 启动nginx
   sudo nginx -s reload 重启nginx
-  -ef|grep nginx 查看进程 master
+  ps -ef | grep nginx 查看nginx是否启动
   kill -QUIT 2072 杀死进程 关闭nginx的一种方式
   sudo nginx -t 测试nginx语法等有没有问题
   // 设置mac nginx(brew安装的) 开机自启
