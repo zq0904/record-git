@@ -62,6 +62,7 @@
   git pull // 拉取代码
   git push // 提交代码到远程
   git fetch // 获取（用于检查本地仓库的状态 保持最新）
+  git fetch -p origin // 修剪 git fetch会更新远程分支列表，但默认不会删除远程分支，因为远程分支上不再有对应的分支
 ```
 ## 分支
 ```
