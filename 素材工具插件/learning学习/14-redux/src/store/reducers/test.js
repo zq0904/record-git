@@ -1,12 +1,15 @@
-const ds = {
+const defaultState = {
   num: 1,
-  price: 100
+  price: 100,
 }
-export default (state = ds, {type, payload}) => {
-  switch(type) {
+
+const test = (state = defaultState, { type, payload }) => {
+  switch (type) {
     case 'add':
       return { ...state, num: state.num + 1 }
     default:
       return state
   }
 }
+
+export default test

@@ -1,10 +1,10 @@
 import { UPDATEGOODS, reduceInventory } from '../type'
-// 默认值
-const ds = {
+
+const defaultState = {
   goods: [] // [{ id: '1', title: 'iphone XR', price: 4999, inventory: 2 }]
 }
 
-export default (state = ds, {type, payload}) => {
+const goods = (state = defaultState, { type, payload }) => {
   switch(type) { // 相当于vuex中的mutation
     case UPDATEGOODS:
       return Object.assign({}, state, payload)
@@ -17,3 +17,5 @@ export default (state = ds, {type, payload}) => {
       return state
   }
 }
+
+export default goods
