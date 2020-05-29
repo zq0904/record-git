@@ -304,3 +304,55 @@
     Child componentDidMount
   Parent componentDidMount
 ## 最新的cookie属性机制 [参考]（https://github.com/zq0904/zeroer/blob/master/packages/zeroer-core/src/cookie/lib.ts）
+## 异步任务调度器
+  ```js
+    class A {
+      constructor(maxCeiling) {
+        this.maxCeiling = maxCeiling
+        this.ongoing = 0
+        this.awaitArr = []
+      }
+      async add(fn) {
+        this.ongoing >= this.maxCeiling && (await new Promise((resolve) => this.awaitArr.push(resolve)))
+        this.ongoing++
+        await fn()
+        this.ongoing--
+        const func = this.awaitArr.shift()
+        typeof func === 'function' && func()
+      }
+    }
+
+    const d = new A(2)
+    console.time('a')
+    console.time('b')
+    console.time('c')
+    d.add(
+      () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.timeEnd('a')
+          resolve()
+        }, 1000)
+      })
+    )
+    d.add(
+      () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.timeEnd('b')
+          resolve()
+        }, 300)
+      })
+    )
+    d.add(
+      () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.timeEnd('c')
+          resolve()
+        }, 500)
+      })
+    )
+
+    // statr 0
+    // b 300
+    // c 800
+    // a 1000
+  ```
