@@ -699,9 +699,9 @@
   ```
 ## Generator 函数
   ```javascript
-  // Generator函数是一个状态机 封装了多个内部状态 还是一个遍历器对象 生成函数 返回遍历器对象
+  // Generator 函数是一个状态机 封装了多个内部状态 还是一个遍历器对象 生成器函数 返回遍历器对象
   // Generator.prototype.next() Generator函数 返回的 遍历器对象 next方法 可以恢复执行 将上一个yield表达式替换为 next方法中的参数
-  function* g() {
+  function * g() {
     yield 1; // 遇到 yield 暂停执行后面的操作
     return 2;
   }
@@ -710,15 +710,15 @@
   i.next() // {value: 2, done: true} value表示当前的内部状态的值 是yield表达式后面的值 或者 return语句后面表达式的值 （执行到return done就为true）
   i.next() // {value: undefined, done: true} done表示是否遍历结束
 
-  function* g() { console.log('执行了') } // 调用一个Generator函数 即便没有yield也不会立执行 必须调用next()方法
+  function * g() { console.log('执行了') } // 调用一个Generator函数 即便没有yield也不会立执行 必须调用next()方法
   let i = g()
   setTimeout(() => i.next(), 2000)
-  function* g() {
+  function * g() {
     console.log(1 + (yield 2)) // yield在一个表达式中 必须放到()中
   }
 
   // yield表达式本身没有返回值 或者说总是返回undefined next方法可以带一个参数 该参数就会被当作 (!!! 上一个 !!!) yield表达式的返回值
-  function* foo() {
+  function * foo() {
     yield yield 1
   }
   let f = foo()
