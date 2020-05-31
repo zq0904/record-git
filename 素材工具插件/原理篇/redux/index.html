@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>redux</title>
+</head>
+
+<body>
+  <script>
+  function compose(...args) {
+    if (args.length === 0) return initialVal => initialVal
+    return args.reduceRight((a, b) => (...parameters) => b(a(...parameters)))
+  }
+
+  function applyMiddleware(...middleware) {
+    return createStore => (...args) => {
+      const store = createStore(...args)
+
+      const middlewareApi = {
+        getState: store.getState,
+        dispatch: () => { throw new Error('不允许在构造中间件时进行调度。') }
+      }
+
+      // 每个中间件都可以使用 getState方法 使用compose来组合多个中间件（核心原理就是 使用compose函数将多个中间件串联）
+      const chain = middleware.map(middleware => middleware(middlewareApi))
+      const dispatch = compose(...chain)(store.dispatch)
+
+      return {
+        ...store,
+        dispatch
+      }
+    }
+  }
+
+  function createStore(rootReducer, preloadedState, enhancer) {
+    if (typeof preloadedState === 'function' && typeof enhancer === 'undefined') {
+      enhancer = preloadedState
+      preloadedState = undefined
+    }
+
+    let state = preloadedState // 闭包的运用
+
+    if (typeof enhancer === 'function') return enhancer(createStore)(rootReducer, preloadedState)
+
+    const list = [] // 一个小型的订阅发布模式
+
+    const getState = () => state
+
+    const subscribe = fn => {
+      list.push(fn)
+      // 卸载订阅方法
+      return () => {
+        const index = list.indexOf(fn)
+        index !== -1 && list.splice(index, 1)
+      }
+    }
+
+    const dispatch = (action) => {
+      const nextState = rootReducer(state, action)
+      state = nextState
+      for (const fn of list) fn()
+      return action
+    }
+
+    dispatch({}) // 获取初始值
+
+    return {
+      getState,
+      dispatch,
+      subscribe
+    }
+  }
+
+  function combineReducers(obj) {
+    const keys = Object.keys(obj)
+    const res = {}
+    return (state = {}, action) => {
+      for (const key of keys) {
+        res[key] = obj[key](state[key], action)
+      }
+      return res
+    }
+  }
+
+  // test
+  // import { createStore, combineReducers } from 'redux'
+  const reducerA = (state = {}, action) => {
+    switch (action.type) {
+      case 'SET_MODULE_A':
+        return Object.assign({}, state, action.payload)
+      default:
+        return state
+    }
+  }
+  const reducerB = (state = {}, action) => {
+    switch (action.type) {
+      case 'SET_MODULE_B':
+        return Object.assign({}, state, action.payload)
+      default:
+        return state
+    }
+  }
+
+  // const rootReducer = (state = {}, action) => {
+  //   return {
+  //     moduleA: reducerA(state.moduleA, action),
+  //     moduleB: reducerB(state.moduleB, action),
+  //   }
+  // }
+
+  const rootReducer = combineReducers({
+    moduleA: reducerA,
+    moduleB: reducerB,
+  })
+
+  // 日志中间件
+  function logger(store) {
+    return next => {
+      return action => {
+        console.log('日志before', store.getState())
+        const res = next(action)
+        console.log('日志after', store.getState())
+        return res
+      }
+    }
+  }
+
+  function logger2(store) {
+    return next => {
+      return action => {
+        console.log('日志before2', store.getState())
+        const res = next(action)
+        console.log('日志after2', store.getState())
+        return res
+      }
+    }
+  }
+
+  const store = createStore(
+    rootReducer,
+    applyMiddleware(
+      logger,
+      logger2
+    )
+  )
+
+  console.log('获取moduleA', store.getState().moduleA)
+
+  const unSubscribe = store.subscribe(() => {
+    console.log('有变化了', store.getState().moduleA)
+  })
+  // unSubscribe()
+  a = store.dispatch({ type: 'SET_MODULE_A', payload: { a: 2 } })
+  console.log(a)
+
+  console.log('获取moduleA', store.getState().moduleA)
+  </script>
+</body>
+
+</html>

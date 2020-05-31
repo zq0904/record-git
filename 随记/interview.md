@@ -1,5 +1,4 @@
 # interview
-
 ## call apply bind原理 模拟实现 (主要考对this的理解)
   ```js
     // 模拟call的实现 1.调用该函数 2.改变this指向 3.传参以单个传递
@@ -360,23 +359,23 @@
     数据库不会存储明文的密码 会对用户传递过来的信息做加盐在加密的处理 如 md5(md5(salt + password)) // 加盐并不能阻止别人盗取账号，只能确保即使数据库泄露，也不会暴露用户的真实密码
     对于暴力破解方式 一般限制尝试次数 或 使用验证码增加延时
 ## Vue原理
-```
-  核心模块
-  1. Observer
-    数据劫持（Object.defineProperty）
-    数据中的每个key 只new了一个dep实例（闭包运用）
-    当get获取值时 如果在Dep上有静态属性（当前的watcher实例）则会将watcher实例push进dep队列中
-    当set设置属性时 调用dep实例的发布
-  2. Compiler
-    负责初始解析dom
-    new Watcher() 每个指令都会new一个 如{{}} v-html等
-  3. Watcher（关联Compiler 和 Observer）
-    初始化会将watcher实例添加到Dep类的静态属性上 // 利用Dep的静态属性 因为是同步执行没有问题
-    获取数据的值 作为老值 将触发get 将watcher实例push进dep队列中
-    删除Dep类的静态属性watcher实例
-    提供了一个 更新视图的回调方法
-  4. Dep 事件订阅发布模型 本质就是一个队列 提供 一个添加进队列的方法（订阅） 和 一个执行队列中所有方法的方法（发布）
-```
+  ```
+    核心模块
+    1. Observer
+      数据劫持（Object.defineProperty）
+      数据中的每个key 只new了一个dep实例（闭包运用）
+      当get获取值时 如果在Dep上有静态属性（当前的watcher实例）则会将watcher实例push进dep队列中
+      当set设置属性时 调用dep实例的发布
+    2. Compiler
+      负责初始解析dom
+      new Watcher() 每个指令都会new一个 如{{}} v-html等
+    3. Watcher（关联Compiler 和 Observer）
+      初始化会将watcher实例添加到Dep类的静态属性上 // 利用Dep的静态属性 因为是同步执行没有问题
+      获取数据的值 作为老值 将触发get 将watcher实例push进dep队列中
+      删除Dep类的静态属性watcher实例
+      提供了一个 更新视图的回调方法
+    4. Dep 事件订阅发布模型 本质就是一个队列 提供 一个添加进队列的方法（订阅） 和 一个执行队列中所有方法的方法（发布）
+  ```
 ## Router原理
   ```js
 
@@ -406,17 +405,7 @@
   ```
 ## webpack 环境 import 多次 同一个文件 会打包多次吗为什么？
   不会多次打包，因为对应的模块函数只有一个，只是在使用的地方多次调用函数
-
-
-
-
-
-
-
-
-
-
-
-
-
-`
+## Vue和React数据绑定对比
+  ```
+    数据绑定上来说，vue的特色是双向数据绑定，而在react中是单向数据绑定
+  ```

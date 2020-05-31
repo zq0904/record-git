@@ -574,35 +574,43 @@
   }
 
   // Promise 静态方法
-  // 1.Promise.all() 接受一个数组作为参数 数组中的每项均为promise实例
-  const arr = ['1.jpg', '2.jpg', '3.jpg']
-  const loadImg = url => new Promise((resolve, reject) => {
-    const img = new Image()
-    img.onload = () => resolve(img)
-    img.onerror = err => reject(err)
-    img.src = url
-  });
-  Promise.all(arr.map(v => loadImg(v)))
-  .then(list => console.log(list)) // 只有数组中所有promise实例的状态都变为resolve才会执行 list为数组 每一项为每个promise实例的返回值
-  .catch(err => console.log(err)) // 只要有一个promise实例的状态为reject 就会执行
+  // 1.Promise.all() 接受一个promise实例数组 所有promise实例状态都为resolve执行then 只要有一个promise实例状态为reject执行reject
+    const arr = ['1.jpg', '2.jpg', '3.jpg']
+    const loadImg = url => new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => resolve(img)
+      img.onerror = err => reject(err)
+      img.src = url
+    });
+    Promise.all(arr.map(v => loadImg(v)))
+      .then(list => console.log(list)) // 所有img都请求成功会执行
+      .catch(err => console.log(err)) // 只要有一个img请求失败 就会执行
 
-  const p1 = new Promise((resolve, reject) => resolve(1))
-  const p2 = new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // p2 有自己的 .catch 发生错误先调用自己的.catch 状态变更为resolve
-  Promise.all([p1, p2]).then(list => console.log(list)).catch(err => console.log(err)) // 2个都为resolve 执行then
-  // [1, Error: 报错了]
+    const p1 = new Promise((resolve, reject) => resolve(1))
+    const p2 = new Promise((resolve, reject) => reject(new Error('报错了'))).catch(err => err) // p2 有自己的 .catch 发生错误先调用自己的.catch 状态变更为resolve
+    Promise.all([p1, p2]).then(list => console.log(list)).catch(err => console.log(err)) // 2个都为resolve 执行then
+    // [1, Error: 报错了]
 
-  // 2.Promise.race() 接受一个数组作为参数 数组中的每项为promise实例 只要其中一个promise实例状态发生改变就会去执行对应的方法
-  Promise.race([fetch('/asd'), new Promise((resolve, reject) => setTimeout(() => reject(), 5000))])
-  .then(console.log) // 5000ms内 fetch请求成功或者失败 状态都变为resolve 执行.then方法
-  .catch(console.error) // 5000ms后 fetch仍处于请求状态 后一个promise实例状态变更为reject 执行.catch方法
+  // 2.Promise.race() 接受一个promise实例数组 只要其中一个promise实例状态发生改变就会去执行对应的方法
+    const p1 = Promise.reject(1)
+    const p2 = new Promise((resolve) => setTimeout(resolve, 1000, 'foo'))
+    Promise.race([p1, p2])
+      .then(console.log)
+      .catch(console.log) // 1
 
-  // 3.Promise.resolve() 将参数转为Promise对象 这个promise的状态一般为resolve
-  Promise.resolve('foo') // Promise {<resolved>: foo} 等价于 new Promise(resolve => resolve('foo'))
-  Promise.resolve(new Promise(resolve => resolve(1))) // Promise {<resolve>: 1} 参数（也是resolve中的参数）如果为promise实例 则原封不动的返回这个 promise实例
-  Promise.resolve({ then(resolve, reject) { reject(5) } }) // Promise {<reject>: 5} 参数（也是resolve中的参数）如果为一个具备then方法的对象 则将这个对象转化为promise对象 并调用then方法
+  // 3.Promise.allSettled() 接受一个promise实例数组 每个promise实例状态都确定了（不管是resolve还是reject）只会执行then
+    const p1 = Promise.resolve(1)
+    const p2 = new Promise((resolve, reject) => setTimeout(reject, 1000, 'foo'))
+    const promises = [promise1, promise2];
+    Promise.allSettled([p1, p2]).then((res) => console.log(res)) // [{ status: 'fulfilled', value: 1 }, { status: 'rejected', value: 'foo' }]
 
-  // 4.Promise.reject() 将参数转为 状态为reject的 Promise对象
-  Promise.reject(new Promise((resolve, reject) => resolve(1))) // Promise {<rejected>: Promise} 无论参数为什么都仅作为promise的值
+  // 4.Promise.resolve() 将参数转为Promise对象 状态为resolve
+    Promise.resolve('foo') // Promise {<resolved>: foo} 等价于 new Promise(resolve => resolve('foo'))
+    Promise.resolve(new Promise(resolve => resolve(1))) // Promise {<resolve>: 1} 参数（也是resolve中的参数）如果为promise实例 则原封不动的返回这个 promise实例
+    Promise.resolve({ then(resolve, reject) { reject(5) } }) // Promise {<reject>: 5} 参数（也是resolve中的参数）如果为一个具备then方法的对象 则将这个对象转化为promise对象 并调用then方法
+
+  // 5.Promise.reject() 将参数转为Promise对象 状态为reject的
+    Promise.reject(new Promise((resolve, reject) => resolve(1))) // Promise {<rejected>: Promise} 无论参数为什么都仅作为promise的值
   ```
 ## Iterator 和 for of 循环
   ```javascript
@@ -691,9 +699,9 @@
   ```
 ## Generator 函数
   ```javascript
-  // Generator函数是一个状态机 封装了多个内部状态 还是一个遍历器对象 生成函数 返回遍历器对象
+  // Generator 函数是一个状态机 封装了多个内部状态 还是一个遍历器对象 生成器函数 返回遍历器对象
   // Generator.prototype.next() Generator函数 返回的 遍历器对象 next方法 可以恢复执行 将上一个yield表达式替换为 next方法中的参数
-  function* g() {
+  function * g() {
     yield 1; // 遇到 yield 暂停执行后面的操作
     return 2;
   }
@@ -702,15 +710,15 @@
   i.next() // {value: 2, done: true} value表示当前的内部状态的值 是yield表达式后面的值 或者 return语句后面表达式的值 （执行到return done就为true）
   i.next() // {value: undefined, done: true} done表示是否遍历结束
 
-  function* g() { console.log('执行了') } // 调用一个Generator函数 即便没有yield也不会立执行 必须调用next()方法
+  function * g() { console.log('执行了') } // 调用一个Generator函数 即便没有yield也不会立执行 必须调用next()方法
   let i = g()
   setTimeout(() => i.next(), 2000)
-  function* g() {
+  function * g() {
     console.log(1 + (yield 2)) // yield在一个表达式中 必须放到()中
   }
 
   // yield表达式本身没有返回值 或者说总是返回undefined next方法可以带一个参数 该参数就会被当作 (!!! 上一个 !!!) yield表达式的返回值
-  function* foo() {
+  function * foo() {
     yield yield 1
   }
   let f = foo()

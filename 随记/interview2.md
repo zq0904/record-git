@@ -1,3 +1,26 @@
+# interview2
+
+## 实现一个new
+  ```
+    function myNew (Fn, ...args) {
+      const obj = Object.create(Fn.prototype)
+      const res = Fn.apply(obj, args)
+      return Object.prototype.toString.call(res) === '[object Object]' ? res : obj
+    }
+  ```
+## instanceof 的实现
+  ```
+    function myInstanceof (v, Obj) {
+      try {
+        Obj()
+      } catch(err) {
+        throw new Error(err)
+      }
+      if (v === null) return false
+      const nowPrototype = Object.getPrototypeOf(v)
+      return nowPrototype === Obj.prototype ? true : myInstanceof(nowPrototype, Obj)
+    }
+  ```
 ## 下面代码babel编译完的结果是什么 原型链
   ```js
     class A extends B {
@@ -29,7 +52,38 @@
     // 函数有2条原型链 A.__proto__ === Function.prototype 其实例对象的__proto__ === A.prototype
     // a.__proto__ === A.prototype 但A.prototype 由Object所创建（A.prototype.__proto__ === Object.prototype）
   ```
-## 设计一个评星组件
+## 通过forEach 实现[].reduce
+  ```
+    Array.prototype.myReduce = function (cb, initialVal) {
+      const hasInitialVal = typeof initialVal !== 'undefined'
+      if (!Array.isArray(this) || (!hasInitialVal && this.length === 0)) throw new Error('Reduce of empty array with no initial value')
+      let prvVal = hasInitialVal ? initialVal : this[0]
+      this.forEach((v, i, a) => {
+        if (!hasInitialVal && i === 0) return
+        prvVal = cb(prvVal, v, i, a)
+      })
+      return prvVal
+    }
+  ```
+## 只用Promise 实现 Promise.all()
+  ```
+    Promise.myAll = (ps) => new Promise((resolve, reject) => {
+      if (!Array.isArray(ps)) return
+      let length = ps.length
+      const res = []
+
+      const handleThen = (v) => {
+        res.push(v)
+        --length
+        if (length === 0) resolve(res)
+      }
+
+      for (const p of ps) {
+          p.then(handleThen).catch(reject)
+      }
+    })
+  ```
+## 设计一个评星组件 （没啥用）
   ```tsx
     interface SProps {
       count?: number;
@@ -199,6 +253,23 @@
     }
     时间复杂度O(n^2)
   ```
+## 给定一个数组，移除所有相邻相同的元素，直到没有相邻相同元素为止
+  ```
+    // 例如：Input: [1, 2, 3, 3, 4, 4, 2, 5, 7, 7, 5, 6, 8, 1] Output: [1, 6, 8, 1]
+    function fn(arr) {
+      let flag = false // 是否有重复的
+      for (let i = 0; i <= arr.length - 2; i++) {
+        if (arr[i] === arr[i + 1]) {
+          arr.splice(i, 2) // 删除2项
+          i = i - 1 // 重置索引
+          flag = true
+        }
+      }
+      return flag ? fn(arr) : arr
+    }
+    const res = fn([1, 2, 3, 3, 4, 4, 2, 5, 7, 7, 5, 6, 8, 1])
+    console.log(res)
+  ```
 ## react 中setStore 什么时候是同步的 什么时候是异步的
   由react控制的生命周期函数及事件处理程序调用setState不会同步更新，而会合并到一起批量更新（优化策略）
   原声js绑定的事件和setTimeout等 都只能同步更新
@@ -232,6 +303,59 @@
     Child render
     Child componentDidMount
   Parent componentDidMount
+## 最新的cookie属性机制 [参考]（https://github.com/zq0904/zeroer/blob/master/packages/zeroer-core/src/cookie/lib.ts）
+## 异步任务调度器
+  ```js
+    class A {
+      constructor(maxCeiling) {
+        this.maxCeiling = maxCeiling
+        this.ongoing = 0
+        this.awaitArr = []
+      }
+      async add(fn) {
+        this.ongoing >= this.maxCeiling && (await new Promise((resolve) => this.awaitArr.push(resolve)))
+        this.ongoing++
+        await fn()
+        this.ongoing--
+        const func = this.awaitArr.shift()
+        typeof func === 'function' && func()
+      }
+    }
+
+    const d = new A(2)
+    console.time('a')
+    console.time('b')
+    console.time('c')
+    d.add(
+      () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.timeEnd('a')
+          resolve()
+        }, 1000)
+      })
+    )
+    d.add(
+      () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.timeEnd('b')
+          resolve()
+        }, 300)
+      })
+    )
+    d.add(
+      () => new Promise((resolve, reject) => {
+        setTimeout(() => {
+          console.timeEnd('c')
+          resolve()
+        }, 500)
+      })
+    )
+
+    // statr 0
+    // b 300
+    // c 800
+    // a 1000
+  ```
 ## 最新的cookie属性机制
 1. 非对称加密；
 2. cookie和session的区别；
@@ -240,4 +364,3 @@
 5. 计数调度器，保持多个请求并发
 6. Vue的Ui渲染是异步的还是同步的；
 7. Vue.$nextTick()有啥性能优化点
-

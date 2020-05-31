@@ -180,10 +180,11 @@ String对象的属性和方法
   s.lastIndexOf("as");//返回(从右往左)
   "a,b,c".split(',');//根据分割符将字符串分割成数组 分隔符两边没有用""自动补到数组里
 
-  s.replace('a',1);     //将字符串中的一个子字符'a'替换成1 并返回 不改变原字符串
-    .replace(/a/g,1); //全局替换
-    .replace(/a/gi,1);//全局替换 忽略大小写
-'./asd.vue'.replace(/\.\/(.+)\..+/, '$1') // 'asd' replace正则表达式也可以使用捕获
+  s.replace('a', 1) // 将字符串中的一个子字符'a'替换成1 并返回 不改变原字符串
+    .replace(/a/g, 1) // 全局替换
+    .replace(/a/gi, 1) // 全局替换 忽略大小写
+  './asd.vue'.replace(/\.\/(.+)\..+/, '$1') // 'asd' replace正则表达式也可以使用捕获
+
   s.search('123');      //查找子字符对应的index（最左面的） 如果没有返回 -1 对大小写敏感
     .search(/123/i);  //查找 忽略大小写
   s.match(/ain/gi);     //检索符合条件的子字符串 以数组形式返回 （提取邮箱 等）没有找到返回null
@@ -191,53 +192,54 @@ String对象的属性和方法
 准确判断数组 Array.isArray([]); //是数组返回true 是ECMA5里的 底本版不兼容 MDN中找兼容写法
         [] instanceof Array; //对象是不是某个类型的
         const a = 1; //设置一个常量 1 常量不能被随便更改
-Array对象的属性和方法
-  var a= [a,b,c];
-  a.length;  //返回数组长度(如果设置的值比它的当前值小，数组将被截断，其尾部的元素将丢失。如果设置的值比它的当前值大，数组将增大，新元素被添加到数组尾部，它们的值为undefined。)
-    a.toString(); //将数组转为字符串 ,号分割
-  a.join('|'); //根据分隔符 将数组拼接成字符串
-  a.reverse(); //将数组翻转
-  a.concat(b); // 不改变原数组 数组合并+扁平化 最多一层 var a = [1,2];console.log(a.concat(3,4));console.log(a.concat([3,4]));-->[1,2,3,4] 返回新数组 将元素的值融入 如果元素为2维数组 则变为一维数组融入
-  a.sort();    //数组排序 不稳定 数字正常排 字母按第一个字母大小(a,b | A,a) （更改原数组）
-    a.sort(f); function f(a, b) { return a - b; } // 比较函数 修改原数组 a后一项b前一项 1.返回值小于0 a排列在b前 2.返回值等于0 相对不变 3.返回值大于0 b排列到a前
-  a.forEach(function (e,i,a){ // IE8 不支持 e每一个元素 i对应索引 a这个数组
-    console.log(e,i,a, this); // this 是 window
-  })
-  a.filter(function(e, i, a) { // return true 该元素保留 组成一个新的数组 但其中的每一项仍是原来的 引用
-    return true
-  })
-  a.map(function (e,i,a){ // map方法 返回新数组 数组中的每项使用原引用 不改变原数组
-    return e * 2;
-  })//必须 return 每个元素 做相同的操作 并放回原位置
-  a.every(function (e,i,a){
-    return e > 0;
-  })//如果 所有元素 都>0 返回true 否则false
-  a.some(function (e,i,a){
-    return e > 0;
-  })// 只要有一个元素满足条件就返回true;
-  ES6 中
-  arr.find(function(e){ //返回 满足条件 那一项 不满足返回undefined
-    return e.id == 3;
-  })
-  arr.findIndex(function(e){ // 返回满足条件那一项对应的 索引 不满足返回undefined  都满足 返回第一个索引 如：[1, 1].findIndex(e => e === 1) // 0
-    return e.id == 3;
-  })
-  [1, 2].reduce((a, b) => (!a[b] && (a[b] = b), a), {'A': 'A', '2': '已存在'}) // {1: 1, 2: "已存在", A: "A"}
-  Array.from($('div'), (e,i) => i); // ES6中提供 Array.from 用于将伪数组转化为真数组 第2个参数和map方法一致 对转化后的真的数组进行统一的处理
-  数组元素的删除和添加
-  delete a[0]; //只删除数组的内容 数组的长度不会改变 （删除对象的属性，是真的删除了）(for in 不会循环 被删除数组的下标)
-  a.unshift('1', '2') // 向数组前面添加元素 返回数组的长度
-  a.shift() // 取出数组中第一个元素 并返回 数组长度-1（元素往前窜）
-  a.push('1','2') // 在数组后面增加元素 返回数组长度
-  a.pop(); // 删除数组中最后个元素 返回删除的值 数组长度-1（元素往前窜）
-  a.splice(index, length, 添加的元素); //截取一段数组 如果没写length 一直到最后(改变原数组！！！)
-    a.splice(index, 1); 数组中删除 指定索引的元素
-    a.splice(index, 1, element); 在数组中替换元素
-    a.splice(index + 1, 0, element); 改变原数组 向数组index后面添加元素
-    // a.splice(index,1,a[index],element);  备用方法
-    [1, 2].splice(9, 1, 99) // 会得到 [1, 2, 99] 并不会在指定位置填充 Vue中对数组操作 可以先使用 arr[9] = 99 在使用深拷贝 最后赋值的方式来实现响应式的数组
-  a.slice(startindex,endindex);//返回一个子数组 根据下标 不返回endindex对应的元素 没指定endindex 返回到最后 如果index为负代表倒数第几个 (原数组不会改变)
-  a.indexOf(val[, startIndex]) // 在数组中查找val存不存在 严格=== 查到了返回对应索引 没查到-1 第2个参数开始查找的索引位置 -2表示从倒数第2个向后查找
+Array
+// 属性
+  arr.length // 3 返回数组长度（如果设置的值比它的当前值小，数组将被截断尾部元素将丢失。如果设置的值比它的当前值大，undefined被添加到数组尾部。）
+// 静态方法
+  Array.from(document.querySelectorAll('div'), (v, i) => v) // 直接将伪数组转化为真数组 第2个参数和map方法一致
+// 原型方法
+  arr.toString() // '1,2,3' 将数组中的每一项调用toString()在逗号拼接
+  arr.indexOf(2) // 在数组中查找值对应的索引 查到了返回对应索引 没查到返回-1 第2个参数表示开始查找的索引位置 -2表示从倒数第2个向后查找
+  arr.join('|') // 根据入参作为分隔符，将数组的每一项拼接成字符串
+
+  // 直接改变原数组
+  arr.unshift(-1, 0) // 向数组最前面添加一个元素 返回length
+  arr.shift() // 取出数组中的第一个元素 返回这个值
+  arr.push(4, 5) // 向数组最后面添加一个元素 返回length
+  arr.pop() // 取出数组中的最后一个元素 返回这个值
+  arr.reverse() // 将数组翻转
+  arr.sort(cFn) // cFn为比较函数
+    // cFn如果省略，元素按照转换为的字符串的各个字符的Unicode位点进行排序
+    // cFn(a, b) 返回值 小于0，a 会被排列到 b 之前
+    // cFn(a, b) 返回值 等于0，a 和 b 的相对位置不变（ECMAScript 标准并不保证这一行为）
+    // cFn(a, b) 返回值 大于0，b 会被排列到 a 之前
+    ['BC', 'A'].sort() // ['A', 'BC']
+    [9, 80].sort() // [80, 9]
+    arr.sort((a, b) => a - b) // 从小到大排列
+
+  // 得到新数组 但也修改了原数组
+  arr.splice(index, length, el) // 截取一段数组 如果没写length一直截取最后 返回截取后的新数组
+    arr.splice(index, 1) // 删除指定索引的元素
+    arr.splice(index, 1, el) // 替换元素
+    arr.splice(index + 1, 0, el) // 向index后面添加元素 备用方法 arr.splice(index, 1, arr[index], el)
+    [1, 2].splice(9, 1, 99) // 会得到 [1, 2, 99] 并不会在指定位置填充
+    // vue中对数组操作 可以先使用arr[9] = 99 在使用拷贝[...arr] 最后赋值的方式来实现响应式的数组
+
+  // 得到新数组 但其成员仍是原来的引用 原数组不会改变
+  arr.slice(startIndex, endIndex) // 根据startIndex（包括）endIndex（不包括）返回一个子数组 没指定endindex返回到最后
+  arr.map((v, i, a) => v * 2) // 用于做数据映射
+  arr.filter((v, i, a) => v) // 返回true表保留该元素false表去除该元素
+  arr.concat(4, [5]) // [1, 2, 3, 4, 5] 数组合并 扁平化
+
+  // 功能型
+  arr.forEach((v, i, a) => console.log(v, i, a)) // 主要用于遍历 只返回undefined
+  arr.every((v, i, a) => v > 0) // 每一都满足条件 结果为true 否则为false
+  arr.some((v, i, a) => v > 0) // 只要有一个满足条件 结果为true 否则为false
+  arr.find(v => v.id === 3) // 返回满足条件那一项 没有满足的返回undefined
+  arr.findIndex(v => v.id === 3) // 返回满足条件那一项对应的索引（都满足返回第一个索引） 没有满足的返回undefined
+  [1, 2, 3].reduce((preVal, v, i, a) => preVal + v, 0) // 执行3次 求和
+  [1, 2, 3].reduce((preVal, v) => preVal + v) // 执行2次 求和
+
 Date对象 //使用Date对象 必须先创建 否则无法使用属性和方法
   var today = new Date(); //创建当前（现在的）日期对象，不带任何参数
   var today = new Date(1000); //创建指定时间日期对象，参数为毫秒（是创建了距1970.1.1之后多少毫秒的日期对象）
