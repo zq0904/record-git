@@ -104,7 +104,7 @@
 
     function App(props) {
       const sequenceRef = useRef(0)
-      
+
       const localStore = useLocalStore(() => ({
         value: '',
         list: [],
@@ -128,7 +128,7 @@
           localStore.setStore({ list: data })
         }
       }
-      
+
       return (
         <div>
           <input
@@ -233,3 +233,11 @@
     Child componentDidMount
   Parent componentDidMount
 ## 最新的cookie属性机制
+1. 非对称加密；
+2. cookie和session的区别；
+3. web worker；
+4. 实现一个new 函数；
+5. 计数调度器，保持多个请求并发
+6. Vue的Ui渲染是异步的还是同步的；
+7. Vue.$nextTick()有啥性能优化点
+
