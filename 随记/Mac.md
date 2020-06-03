@@ -3,15 +3,16 @@
   1. 安装软件 提示来自身份不明的开发者
     cmd 下运行 sudo spctl --master-disable 输入密码 回车。 (会设置 安全隐藏的任何来源)
     系统偏好设置 -> 安全性和隐私 -> 锁头 -> 选择 未知来源打开
-  2. 查看隐藏文件 shift + command + .
+  2. 提示软件已损坏 sudo xattr -d com.apple.quarantine /xxx/xxx.app （/xxx/xxx.app替换成app路径）
+  3. 查看隐藏文件 shift + command + .
   4. 查看host nginx.conf文件位置 打开Finder Shift+Command+G 搜索 /etc/hosts /usr/local/etc/nginx/nginx.conf
-  3. 取消f1到fn的默认功能 使之可以设置快捷键 系统偏好设置 -> 键盘 -> 勾选 将F1、F2等键用作标准功能键
-  5. 终端操作 command+n新打开终端窗口 command+t新打开分页终端 command+w关闭当前分页终端
-  6. 重启电脑 nginx不会自动启动 需要执行 sudo nginx 来启动nginx
-  7. 不小心关闭浏览器 重新打开关闭的页面 shift+command+t
-  8. Safari浏览器模拟 IE浏览器 （在Safari浏览器 -> 偏好设置 -> 高级 -> 在菜单栏中显示开发菜单 -> 开发选项中的用户代理）
-  9. 开启三键拖拽功能 系统偏好设置 -> 辅助功能 -> 鼠标与触控板 -> 启用拖移（三指拖移）
-  10. 编写别名指令(清除缓存)(终端输入chrome 回车 清空缓存)
+  5. 取消f1到fn的默认功能 使之可以设置快捷键 系统偏好设置 -> 键盘 -> 勾选 将F1、F2等键用作标准功能键
+  6. 终端操作 command+n新打开终端窗口 command+t新打开分页终端 command+w关闭当前分页终端
+  7. 重启电脑 nginx不会自动启动 需要执行 sudo nginx 来启动nginx
+  8. 不小心关闭浏览器 重新打开关闭的页面 shift+command+t
+  9. Safari浏览器模拟 IE浏览器 （在Safari浏览器 -> 偏好设置 -> 高级 -> 在菜单栏中显示开发菜单 -> 开发选项中的用户代理）
+  10. 开启三键拖拽功能 系统偏好设置 -> 辅助功能 -> 鼠标与触控板 -> 启用拖移（三指拖移）
+  11. 编写别名指令(清除缓存)(终端输入chrome 回车 清空缓存)
     cd ~
     touch .bash_profile
     open .bash_profile
@@ -19,12 +20,12 @@
     source .bash_profile
     chrome
     Password:
-  11. mac右键含终端 系统偏好设置 -> 键盘 -> 快捷键 -> 服务 -> 勾选新建位于文件夹位置的终端窗口和标签页 （每次 选中文件夹右键->服务->）
-  12. mac npm全局安装一些包 有时需要权限 在使用命令前加 sudo
-  13. npm config get prefix // 获取npm所在目录的路径 一般为/usr/local
-  14. sudo chown -R 账号名 npm所在目录的路径/{lib/node_modules,bin,share} // chown全称为change owner（改变所有者即赋予权限） -R表示对指定目录下所有子目录和文件采取同种操作
-  15. 检索node_modules包下内容 首次点击node_modules目录 按住fn 输入字母予以检索
-  16. 切换输入法 control + 空格
+  12. mac右键含终端 系统偏好设置 -> 键盘 -> 快捷键 -> 服务 -> 勾选新建位于文件夹位置的终端窗口和标签页 （每次 选中文件夹右键->服务->）
+  13. mac npm全局安装一些包 有时需要权限 在使用命令前加 sudo
+  14. npm config get prefix // 获取npm所在目录的路径 一般为/usr/local
+  15. sudo chown -R 账号名 npm所在目录的路径/{lib/node_modules,bin,share} // chown全称为change owner（改变所有者即赋予权限） -R表示对指定目录下所有子目录和文件采取同种操作
+  16. 检索node_modules包下内容 首次点击node_modules目录 按住fn 输入字母予以检索
+  17. 切换输入法 control + 空格
 
 ## 常用操作
 ```
