@@ -484,7 +484,7 @@ align-content: flex-start;
 align-self:; 定义单独一个子项 在侧轴的对其方式
 auto (默认继承父元素align-content 没有取stretch) flex-start (上) flex-end (下) center (中) baseline  stretch
 给子元素设置flex:值; 沿主轴 占的份数 如果伸缩盒子中已经有了固定宽度的盒子，那么占的份数 指的是相对父元素中余下的宽度的比例;
-flex 属性是 flex-grow flex-shrink flex-basis 的简写
+flex 属性是 flex-grow flex-shrink flex-basis 的简写 flex: 1; (等价于 felx: 1 1 0;)
 flex-grow:;   子元素分配父元素剩余空间比 默认为0
 flex-shrink:; 当所有子元素的宽度和超出父元素时 子元素都要做收缩 该项设置收缩比 默认1
 flex-basis:20%;  子元素所占宽度 设置百分比基于父元素 默认为auto

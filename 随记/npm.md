@@ -99,6 +99,18 @@
   npm list -g --depth 0 // 查看全局安装的包
 ```
 
+## 使用淘宝源加速
+
+```code
+  npm config list // 查看配置信息 registry字段标识注册表地址指向
+  npm config get registry // 当前注册表地址指向
+  npm --registry https://registry.npm.taobao.org i express // 临时使用淘宝源 安装包
+  npm config set registry http://registry.npm.taobao.org // 全局设置淘宝源
+  npm config set registry https://registry.npmjs.org // 还原
+
+  // 不建议使用cnpm 只建议全局设置淘宝源
+```
+
 ## npx
 
 ```code

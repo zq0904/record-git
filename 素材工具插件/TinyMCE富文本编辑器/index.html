@@ -24,7 +24,9 @@
     <textarea id="mytextarea" name="asd">Hello, World!</textarea>
     <input type="submit" value="提交按钮">
   </form>
-  <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+  <h3>内容展示区</h3>
+  <div id="exhibit"></div>
+  <script src="./node_modules/jquery/dist/jquery.min.js"></script>
   <script>
   // npm install tinymce
   a = tinymce.init({
@@ -64,7 +66,9 @@
   })
   $('form').submit(function(e) {
     e.preventDefault()
-    console.log('获取文本的内容：', $($(this).find('iframe')[0].contentDocument).find('body')[0].innerHTML)
+    const content = $($(this).find('iframe')[0].contentDocument).find('body')[0].innerHTML
+    console.log('获取文本的内容：', content)
+    $('#exhibit').html(content)
   })
   </script>
 </body>

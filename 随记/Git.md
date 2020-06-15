@@ -1,6 +1,7 @@
 # Git [官网](https://git-scm.com/) git是分布式版本控制系统
 ## 全局信息
 ```
+  // 设置用户名 邮箱只是用来提供commit中作者信息 不涉及权限校验 但是有些公司也会关联权限
   git config --global user.name "zhaoqi" // 设置用户名
   git config --global user.email "154809748@qq.com" // 设置邮箱
   git config -l // 查看信息
