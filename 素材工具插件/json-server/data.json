@@ -7,14 +7,16 @@
       "label": "标签",
       "validDate": "2019-12-12 10:00:00",
       "creditScoreDecreaseForms": {
-        "list": [{
-          "deductScore": -2,
-          "remainScore": 10,
-          "deductReason": "违规收费，诈骗风险，涉嫌传销（被举报的职位：XXXXXXXX）",
-          "violateLevel": 1,
-          "deductDate": "2019.01.12",
-          "status": 1
-        }],
+        "list": [
+          {
+            "deductScore": -2,
+            "remainScore": 10,
+            "deductReason": "违规收费，诈骗风险，涉嫌传销（被举报的职位：XXXXXXXX）",
+            "violateLevel": 1,
+            "deductDate": "2019.01.12",
+            "status": 1
+          }
+        ],
         "totalCount": 2,
         "crrentPage": 1
       }
@@ -23,7 +25,8 @@
   "query": {
     "flag": 1,
     "data": {
-      "list": [{
+      "list": [
+        {
           "deductScore": -2,
           "remainScore": 10,
           "deductReason": "违规收费，诈骗风险，涉嫌传销（被举报的职位：XXXXXXXX）",
