@@ -22,7 +22,7 @@ router.post('/upload', async ctx => {
   const imgSrc = path.resolve(__dirname, 'images')
   fse.emptyDirSync(imgSrc)
   // 创建写入流 指定图片路径文件名（即上传图片存储目录）
-  const stream = fse.createWriteStream(`${imgSrc}/file.name`)
+  const stream = fse.createWriteStream(`${imgSrc}/${file.name}`)
   // 用管道将读出流 "倒给" 输入流
   reader.pipe(stream)
   ctx.body = {
