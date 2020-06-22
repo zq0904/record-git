@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "@koa/router": "^9.0.1",
     "fs-extra": "^9.0.1",
     "koa": "^2.13.0"
