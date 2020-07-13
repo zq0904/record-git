@@ -64,6 +64,8 @@
 ```
 ## 其他操作
 ```
+  lsof -i tcp:3010 // 查看端口被那些程序占用
+  kill PID // 杀掉PID对应的程序
   scp -r 本地文件路径 root@1.2.3.4:/root // 上传本地文件到远程/root目录下 目录需要加-r
   chmod 777 [filename|foldername] // 更改文件或文件夹权限 https://www.runoob.com/linux/linux-comm-chmod.html
   tar cvf target.tar source // 打包 .tar
