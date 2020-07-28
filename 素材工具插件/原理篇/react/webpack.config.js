@@ -5,12 +5,16 @@ const outputDir = resolve(__dirname, 'dist')
 
 module.exports = {
   mode: 'development',
+  // mode: 'production',
   entry: './src/index.jsx',
   output: {
     path: outputDir,
     filename: 'index.js'
   },
-  // devtool: 'eval-source-map',
+  // devtool: 'inline-source-map',
+  resolve: {
+    extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
+  },
   optimization: {
     minimize: false
   },
@@ -19,16 +23,15 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env']
-          }
-        }
+        use: 'babel-loader',
       }
     ]
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: resolve(__dirname, 'public/index.html')
+    })
+  ],
   devServer: {
     open: true,
     contentBase: outputDir,
