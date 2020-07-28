@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+  <input type="file" >
+  <script>
+    // 参考 https://moxo.io/blog/2017/01/16/using-javascript-to-read-file-real-mime-type/
+    // 文件签名列表 https://en.wikipedia.org/wiki/List_of_file_signatures
+    // 所有文件签名 https://filesignatures.net/index.php?page=all&order=EXT&alpha=J
+
+    // js 本地读取图片 校验图片类型 和宽高（用户可以修改后缀 不影响）
+    const input = document.querySelector('input')
+    input.onchange = function () {
+      const file = this.files[0]
+
+      // 大小校验
+      const MaxMB = 5
+      const isSizeOk = file.size < 1024 * 1024 * MaxMB
+
+      console.log('图片大小', file.size)
+
+      // 类型校验
+      const validations = [
+        'FFD8FFE0', // image/jpeg
+        'FFD8FFE1',
+        'FFD8FFE2',
+        'FFD8FFE3',
+        'FFD8FFE8',
+        '89504E47', // image/png
+        '47494638', // gif
+      ]
+      const fileReader = new FileReader()
+      fileReader.onload = function (e) {
+        const arrayBuffer = this.result
+        const view = new DataView(arrayBuffer)
+        const before4Byte = view.getUint32(0, false)
+        const hexValue = Number(before4Byte).toString(16)
+
+        console.log('是图片？', validations.includes(hexValue.toUpperCase()))
+        
+        return validations.includes(hexValue.toUpperCase())
+      }
+      fileReader.readAsArrayBuffer(file.slice(0, 4))
+
+      // 宽高校验
+      const img = new Image
+      const url = window[window.webkitURL ? 'webkitURL' : 'URL'].createObjectURL(file) // 
+      img.src = url
+      img.onload = function () {
+        console.log('图片宽高', this.width, this.height)
+      }
+    }
+  </script>
+</body>
+</html>

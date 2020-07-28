@@ -30,7 +30,7 @@ router.post('/upload', async ctx => {
   // 用管道将读出流 "倒给" 输入流
   reader.pipe(stream)
   ctx.body = {
-    flag: Object.keys(ctx.query).length > 0 ? 0 : 1,
+    code: Object.keys(ctx.query).length > 0 ? 0 : 580200,
     msg: '服务器错误了！',
     data: {
       url: `http://127.0.0.1:${port}/images/${file.name}`
