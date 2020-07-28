@@ -6,6 +6,9 @@
   git config --global user.email "154809748@qq.com" // 设置邮箱
   git config -l // 查看信息
   git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit" // 设置一个自定义指令 git lg
+  // 修改文件名的大小写 git默认对大小写不敏感
+  git mv <file_from> <file_to> // 更新目录名 使git能够监听到
+  git config core.ignorecase false // 开启git对大小写敏感
 ```
 ## 创建存储库
 ```
