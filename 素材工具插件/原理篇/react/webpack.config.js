@@ -11,7 +11,7 @@ module.exports = {
     path: outputDir,
     filename: 'index.js'
   },
-  // devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   resolve: {
     extensions: ['.tsx', '.ts', '.jsx', '.js', '.json'],
   },
@@ -36,6 +36,6 @@ module.exports = {
     open: true,
     contentBase: outputDir,
     compress: true,
-    port: 9000
+    port: 9788
   }
 }

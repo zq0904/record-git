@@ -1,23 +1,8 @@
-import MockReact, { Component } from './react/react'
+import MockReact from './react/react'
 import ReactDOM from './react/react-dom'
-
-class MyC extends Component {
-  render() {
-    console.log('this.props', this.props)
-    return (
-      <div a="1">
-        <span>1</span>
-        <span>2</span>
-        { this.props.children }
-      </div>
-    )
-  }
-}
+import App from './App'
 
 ReactDOM.render(
-  <MyC className="box">
-    <span>3</span>
-    <span>4</span>
-  </MyC>,
+  <App />,
   document.getElementById('app')
 )

@@ -6,15 +6,15 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "webpack": "^4.44.0",
-    "webpack-dev-server": "^3.11.0"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "webpack": "^4.44.0",
+    "webpack-dev-server": "^3.11.0",
     "@babel/core": "^7.10.5",
     "@babel/plugin-transform-react-jsx": "^7.10.4",
     "@babel/preset-env": "^7.10.4",
