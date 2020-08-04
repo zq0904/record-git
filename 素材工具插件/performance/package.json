@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "hs -o -p 4009 -c-1",
-    "service": "hs -o -p 4009 -c-1"
+    "dev": "nodemon src/index.js & open http://localhost:4567/home",
+    "client": "hs -o -p 4009 -c-1"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,11 @@
   "dependencies": {
     "@koa/cors": "^3.1.0",
     "@koa/router": "^9.3.1",
+    "better-opn": "^2.0.0",
     "fs-extra": "^9.0.1",
-    "koa": "^2.13.0"
+    "koa": "^2.13.0",
+    "koa-body": "^4.2.0",
+    "koa-static": "^5.0.0",
+    "koa-views": "^6.3.0"
   }
 }

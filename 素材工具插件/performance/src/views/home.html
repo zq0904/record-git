@@ -8,30 +8,41 @@
       margin: 0;
       padding: 0;
     }
-    header {
-      height: 44px;
-      line-height: 44px;
-      background-color: red;
-    }
-    section {
-      flex: 1;
-      background-color: blue;
-    }
-    .box {
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
   </style>
 </head>
 <body>
-  <div class="box">
-    <header>1</header>
-    <section>
-     
-    </section>
+  <div id="app">
+    <ul v-if="list.length">
+      <li v-for="({ name, url }, i) of list">
+        <p>{{ name }}</p>
+        <img :src="url" alt="mv" height="200" />
+      </li>
+    </ul>
+    <img width="100%" src="https://s1.ax1x.com/2020/08/04/aDRO6H.jpg" alt="tp" />
   </div>
+  <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script>
+    console.time('test')
+  </script>
+  <script src="/test.js"></script>
+  <script>
+    console.timeLog('test')
+    new Vue({
+      el: '#app',
+      data: {
+        list: []
+      },
+      async created() {
+        const { code, data } = await fetch('/list').then(res => res.json())
+        this.list = data
+        console.log(this.list)
+      },
+      methods: {
+        a: () => {
+          console.log('a')
+        }
+      }
+    })
     // 测试性能api相关
 
     // const { timing } = window.performance
