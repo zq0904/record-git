@@ -263,10 +263,7 @@
       k: 's'; // 具备普通的单例类型(特征属性)
       s: number;
     }
-    interface Circle {
-      k: 'c';
-      r: number;
-    }
+    interface Circle { k: 'c'; r: number; }
     type Shape = Square | Circle
     function getPerimeter(shape: Shape): number {
       switch (shape.k) { // 特征属性上的类型保护
