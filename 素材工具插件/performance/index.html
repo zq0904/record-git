@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>performance</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      height: 44px;
+      line-height: 44px;
+      background-color: red;
+    }
+    section {
+      flex: 1;
+      background-color: blue;
+    }
+    .box {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <header>1</header>
+    <section>
+     
+    </section>
+  </div>
+  <script>
+    // 测试性能api相关
+
+    // const { timing } = window.performance
+
+    // const performances = {
+    //   // pageloadtime页面加载耗时
+    //   plt: timing.loadEventStart - timing.navigationStart,
+    //   // 域名解析的耗时
+    //   dns: timing.domainLookupEnd - timing.domainLookupStart,
+    //   // TCP的耗时
+    //   tcp: timing.connectEnd - timing.connectStart,
+    //   // 读取页面第一个字节之前的耗时
+    //   ttfb: timing.responseStart - timing.navigationStart,
+    //   // 从发出请求到收到全部字节的时间
+    //   rqt: timing.responseEnd - timing.requestStart,
+    //   // dom interpret time: dom解析时间，不包括资源，到DOMContentLoaded为止
+    //   dit: timing.domInteractive - timing.domLoading,
+    //   // dom加载时间，包括所有资源
+    //   dlt: timing.domComplete - timing.domLoading,
+    // }
+    console.time('test')
+    setTimeout(() => {
+      console.timeLog('test')
+    }, 1000)
+    setTimeout(() => {
+      console.timeLog('test')
+    }, 1000)
+    const { timing } = window.performance
+    console.log('pageloadtime页面加载耗时', timing.loadEventStart - timing.navigationStart)
+    console.log('域名解析的耗时', timing.domainLookupEnd - timing.domainLookupStart)
+    console.log('TCP的耗时', timing.connectEnd - timing.connectStart)
+    console.log('读取页面第一个字节之前的耗时', timing.responseStart - timing.navigationStart)
+    console.log('从发出请求到收到全部字节的时间', timing.responseEnd - timing.requestStart)
+    console.log('dom interpret time: dom解析时间，不包括资源，到DOMContentLoaded为止', timing.domInteractive - timing.domLoading)
+    console.log('dom加载时间，包括所有资源', timing.domComplete - timing.domLoading)
+
+  </script>
+</body>
+</html>
