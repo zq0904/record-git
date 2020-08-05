@@ -43,41 +43,77 @@
         }
       }
     })
-    // 测试性能api相关
+    
 
-    // const { timing } = window.performance
+    setTimeout(() => {
+      // 测试性能api相关
 
-    // const performances = {
-    //   // pageloadtime页面加载耗时
-    //   plt: timing.loadEventStart - timing.navigationStart,
-    //   // 域名解析的耗时
-    //   dns: timing.domainLookupEnd - timing.domainLookupStart,
-    //   // TCP的耗时
-    //   tcp: timing.connectEnd - timing.connectStart,
-    //   // 读取页面第一个字节之前的耗时
-    //   ttfb: timing.responseStart - timing.navigationStart,
-    //   // 从发出请求到收到全部字节的时间
-    //   rqt: timing.responseEnd - timing.requestStart,
-    //   // dom interpret time: dom解析时间，不包括资源，到DOMContentLoaded为止
-    //   dit: timing.domInteractive - timing.domLoading,
-    //   // dom加载时间，包括所有资源
-    //   dlt: timing.domComplete - timing.domLoading,
-    // }
-    console.time('test')
-    setTimeout(() => {
-      console.timeLog('test')
-    }, 1000)
-    setTimeout(() => {
-      console.timeLog('test')
-    }, 1000)
-    const { timing } = window.performance
-    console.log('pageloadtime页面加载耗时', timing.loadEventStart - timing.navigationStart)
-    console.log('域名解析的耗时', timing.domainLookupEnd - timing.domainLookupStart)
-    console.log('TCP的耗时', timing.connectEnd - timing.connectStart)
-    console.log('读取页面第一个字节之前的耗时', timing.responseStart - timing.navigationStart)
-    console.log('从发出请求到收到全部字节的时间', timing.responseEnd - timing.requestStart)
-    console.log('dom interpret time: dom解析时间，不包括资源，到DOMContentLoaded为止', timing.domInteractive - timing.domLoading)
-    console.log('dom加载时间，包括所有资源', timing.domComplete - timing.domLoading)
+      const { timing } = window.performance
+
+      console.log('timing', timing)
+
+      const {
+        navigationStart,
+        redirectStart,
+        redirectEnd,
+        fetchStart,
+        domainLookupStart,
+        domainLookupEnd,
+        connectStart,
+        connectEnd,
+        secureConnectionStart,
+        responseStart,
+        responseEnd,
+        unloadEventStart,
+        unloadEventEnd,
+        domLoading,
+        domInteractive,
+        domContentLoadedEventStart,
+        domContentLoadedEventEnd,
+        domComplete,
+        loadEventStart,
+        loadEventEnd,
+      } = timing
+      
+      console.log('navigationStart', navigationStart, '同一个浏览器上一个页面卸载结束时的时间戳。如果没有上一个页面的话，那么该值会和fetchStart的值相同')
+      console.log('redirectStart', redirectStart, '第一个http重定向开始的时间戳，如果没有重定向，或者重定向到一个不同源的话，那么该值返回为0')
+      console.log('redirectEnd', redirectEnd, '最后一个HTTP重定向完成时的时间戳。如果没有重定向，或者重定向到一个不同的源，该值也返回为0')
+      console.log('fetchStart', fetchStart, '浏览器准备好使用http请求抓取文档的时间(发生在检查本地缓存之前)')
+      console.log('domainLookupStart', domainLookupStart, 'DNS域名查询开始的时间，如果使用了本地缓存话，或 持久链接，该值则与fetchStart值相同')
+      console.log('domainLookupEnd', domainLookupEnd, 'DNS域名查询完成的时间，如果使用了本地缓存话，或 持久链接，该值则与fetchStart值相同')
+      console.log('connectStart', connectStart, 'HTTP 开始建立连接的时间，如果是持久链接的话，该值则和fetchStart值相同，如果在传输层发生了错误且需要重新建立连接的话，那么在这里显示的是新建立的链接开始时间')
+      console.log('connectEnd', connectEnd, 'HTTP完成建立连接的时间(完成握手)。如果是持久链接的话，该值则和fetchStart值相同')
+      console.log('secureConnectionStart', secureConnectionStart, 'HTTPS 连接开始的时间，如果不是安全连接，则值为 0')
+      console.log('responseStart', responseStart, '开始接收到响应的时间(获取到第一个字节的那个时候)。包括从本地读取缓存')
+      console.log('responseEnd', responseEnd, 'HTTP响应全部接收完成时的时间(获取到最后一个字节)。包括从本地读取缓存')
+      console.log('unloadEventStart', unloadEventStart, '前一个网页（和当前页面同域）unload的时间戳，如果没有前一个网页或前一个网页是不同的域的话，那么该值为0')
+      console.log('unloadEventEnd', unloadEventEnd, '和 unloadEventStart 相对应，返回是前一个网页unload事件绑定的回调函数执行完毕的时间戳')
+      console.log('domLoading', domLoading, '开始解析渲染DOM树的时间')
+      console.log('domInteractive', domInteractive, '完成解析DOM树的时间（只是DOM树解析完成，但是并没有开始加载网页的资源）')
+      console.log('domContentLoadedEventStart', domContentLoadedEventStart, 'DOM解析完成后，网页内资源加载开始的时间')
+      console.log('domContentLoadedEventEnd', domContentLoadedEventEnd, 'DOM解析完成后，网页内资源加载完成的时间')
+      console.log('domComplete', domComplete, 'DOM树解析完成，且资源也准备就绪的时间。Document.readyState 变为 complete，并将抛出 readystatechange 相关事件')
+      console.log('loadEventStart', loadEventStart, 'load事件发送给文档。也即load回调函数开始执行的时间，如果没有绑定load事件，则该值为0')
+      console.log('loadEventEnd', loadEventEnd, 'load事件的回调函数执行完毕的时间，如果没有绑定load事件，该值为0')
+
+      console.log('==========')
+
+      console.log('重定向耗时 !', timing.redirectEnd - timing.redirectStart)
+      console.log('DNS查询耗时 !', timing.domainLookupEnd - timing.domainLookupStart)
+      console.log('TCP链接耗时 !', timing.connectEnd - timing.connectStart)
+      console.log('从发出请求到收到全部字节的时间 ?', timing.responseEnd - timing.requestStart)
+      console.log('解析dom树耗时', timing.domComplete - timing.domInteractive)
+      console.log('白屏时间 ?', timing.responseStart - timing.navigationStart)
+      console.log('DOMready时间', timing.domContentLoadedEventEnd - timing.navigationStart)
+      console.log('onload时间', timing.loadEventEnd - timing.navigationStart)
+      console.log('pageloadtime页面加载耗时', timing.loadEventStart - timing.navigationStart)
+      console.log('dom interpret time: dom解析时间，不包括资源，到DOMContentLoaded为止', timing.domInteractive - timing.domLoading)
+      console.log('dom加载时间，包括所有资源', timing.domComplete - timing.domLoading)
+    }, 10000)
+
+    // 自己认为的
+    console.log('页面的请求时间', responseEnd - navigationStart)
+    console.log('红线时间 页面“初始化”资源都已经加载完成 如图片 js同步代码 不包括异步代码如ajax请求的数据渲染等', domComplete - navigationStart)
 
   </script>
 </body>

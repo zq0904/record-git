@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/index.js & open http://localhost:4567/home",
+    "dev": "nodemon src/index.js",
     "client": "hs -o -p 4009 -c-1"
   },
   "keywords": [],
