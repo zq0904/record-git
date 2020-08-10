@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="/test1.css">
 </head>
 <body>
-  <button id="btn">getPerformanceInfo</button>
+  <button id="btn">获取性能相关数据</button>
   <div id="app">
     <ul v-if="list.length">
       <li v-for="({ name, url }, i) of list">
@@ -37,10 +37,6 @@
           console.log('a')
         }
       }
-    })
-
-    document.getElementById('btn').addEventListener('click', () => {
-      console.log(getPerformanceInfo())
     })
 
     // 记录性能相关
@@ -101,7 +97,7 @@
           '4 页面请求 时间': responseEnd - requestStart,
           '5 解析dom、加载内嵌资源、执行同步代码的时间': domContentLoadedEventEnd - responseEnd,
           '6 白屏时间 蓝线DCL DOMContentLoaded的时间 包括 页面请求、解析dom、加载内嵌资源、执行同步代码的时间': domContentLoadedEventEnd - navigationStart,
-          '7 红线LCP onload的时间 页面“初始化”资源全部加载完成 包括 蓝线DCL + 如图片资源下载完成，不包括异步代码如ajax请求的数据渲染等': loadEventStart - navigationStart,
+          '7 首屏时间 红线LCP onload的时间 页面“初始化”资源全部加载完成 包括 蓝线DCL + 如图片资源下载完成，不包括异步代码如ajax请求的数据渲染等': loadEventEnd - navigationStart,
         }
 
         // 获取资源 script link 图片 fetch
@@ -127,6 +123,13 @@
       }
     }
 
+    document.getElementById('btn').addEventListener('click', () => {
+      console.log(getPerformanceInfo())
+    })
+    
+    // onload事件没有触发 loadEventStart为0 最起码发请求的实际是onload事件 但是对于vue react 初始异步发请求渲染第一屏
+    console.log(JSON.parse(JSON.stringify(getPerformanceInfo())))
+    window.addEventListener('load', () => console.log(getPerformanceInfo()))
   </script>
 </body>
 </html>
