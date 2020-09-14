@@ -27,6 +27,10 @@
   - 检索node_modules包下内容 首次点击node_modules目录 按住fn 输入字母予以检索
   - 切换输入法 control + 空格
   - touchbar 音量和亮度调节消失 终端执行 killall ControlStrip
+  - 屏幕保护后在进入蓝牙键盘频繁失去连接问题
+    系统偏好设置 -> 蓝牙 勾选“在菜单栏中显示蓝牙”
+    按住Shift + Option 点击蓝牙图标 点击“调试”选项 还原蓝牙模块
+    如果不使用蓝牙及时关闭
 
 ## 常用操作
 ```
@@ -74,10 +78,12 @@
   zip -q -r -m target.zip source // 压缩 .zip -q不显示压缩进度 -r递归压缩 -m删除原文件
   unzip target.zip -d targetDir // 解压 到targetDir目录
   ln -s source target // 建立软链接 设置环境变量 -s标识软连接(不会占用磁盘空间)
-  which  node // 查看当前要执行的命令 在PATH路径中第一个路径(可以看某个系统命令是否存在 以及执行的到底是哪一个位置的命令)
+  which node // 查看当前要执行的命令 在PATH路径中第一个路径(可以看某个系统命令是否存在 以及执行的到底是哪一个位置的命令)
   whereis nginx.conf // 查看一个命令或者文件所在的路径(只能用于程序名的搜索，而且只搜索二进制文件（参数-b）、man说明文件（参数-m）和源代码文件（参数-s）)
 
   vim /lib/systemd/system/mongodb.service // 配置mongodb服务
+
+  cat ~/.ssh/config | grep HostName // grep 再次过滤查找
 
   echo '文本' // 输出文本
   echo '文本' > 1.js // 将文本 输入到指定文件 如果文件存在则覆盖

@@ -15,11 +15,16 @@
   HostName  202.182.98.13
   Port      22
   IdentityFile ~/.ssh/id_rsa
+
+  HostName igit.58corp.com
+  IdentityFile ~/.ssh/zq_igit
+  PreferredAuthentications publickey
+
   :wq
   cat ~/.ssh/config | grep 'host' // 查看配置了那些服务器别名
 
   // 配置ssh 免密登录
-  ssh-keygen -t rsa -C '154809748@qq.com' // 如果没有生成过密钥 本地生成一个 生成过直接使用
+  ssh-keygen -t rsa -C '154809748@qq.com' -f ~/.ssh/id_rsa // 如果没有生成过密钥 本地生成一个 生成过直接使用
   ssh-copy-id root@202.182.98.13 // 将本地的id_rsa.pub公钥 拷贝到 远程服务器目录~/.ssh/authorized_keys(或者自己手动copy)
   cat ~/.ssh/authorized_keys // 在服务器查看
   chmod 777 ~/.ssh // 如果后续还是需要密码登录 可能由于权限问题 修改权限

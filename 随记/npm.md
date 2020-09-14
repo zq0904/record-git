@@ -107,7 +107,8 @@
   npm --registry https://registry.npm.taobao.org i express // 临时使用淘宝源 安装包
   npm config set registry http://registry.npm.taobao.org // 全局设置淘宝源
   npm config set registry https://registry.npmjs.org // 还原
-
+  npm config set @w:registry http://cnpm.58v5.cn // @w/xxx 包 走http://cnpm.58v5.cn源
+  // 修改了npm registry yarn registry自动就会修改 用的一个
   // 不建议使用cnpm 只建议全局设置淘宝源
 ```
 

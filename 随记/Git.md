@@ -8,7 +8,7 @@
   git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit" // 设置一个自定义指令 git lg
   // 修改文件名的大小写 git默认对大小写不敏感
   git mv <file_from> <file_to> // 更新目录名 使git能够监听到
-  git config core.ignorecase false // 开启git对大小写敏感
+  git config core.ignorecase false // 开启git对大小写敏感 默认是true
 ```
 ## 创建存储库
 ```
@@ -185,6 +185,25 @@
 ## 使用SSH连接到GitHub git push等操作 免账号密码 (参考)[https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh]
 ```
   ls -al ~/.ssh // 查看是否有现成的SSH密钥 id_rsa 密钥 id_rsa.pub 公钥
-  ssh-keygen -t rsa -b 4096 -C "154809748@qq.com" // 一路回车 将在 ~/.ssh 生成密钥公钥
+  ssh-keygen -t rsa -b 4096 -C "154809748@qq.com" -f ~/.ssh/id_rsa // 一路回车 将在 ~/.ssh 生成密钥公钥 -t 加密方式 -f 输出文件名
   // 在github settings keys 中添加生成的 公钥 (https://github.com/settings/keys New SSH key)
+
+  使用ssh 关联 多个托管平台（git gitlab igit）
+  通过 ssh clone 项目时 git@igit.58corp.com:wuxianfe/message-center-h5.git @前为User 后为Host
+  vim ~/.ssh/config
+
+  Host github.com # 别名
+  HostName github.com # 域名
+  IdentityFile ~/.ssh/id_rsa # 使用的密匙位置
+  PreferredAuthentications publickey # 登录时用什么权限认证
+  User git
+
+  Host igit.58corp.com
+  HostName igit.58corp.com
+  IdentityFile ~/.ssh/zq_igit
+  PreferredAuthentications publickey
+  User git
+
+  ssh -T github.com // 检测连接 如成功 Hi zq0904! You've successfully authenticated, but GitHub does not provide shell access.
+
 ```

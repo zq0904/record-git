@@ -433,15 +433,28 @@
     // interface 可以被使用 extends implements
     // type 本身就可以是 基本类型 联合类型 而且只有在type中才可以使用in等映射操作
 
-    // 尽量多的使用 泛型的类型推断
+    // keyof 可以用于获取 接口键的联合类型 与js中的Object.keys很像
+    interface A { a: string; b: true; c: () => 1; }
+    type Foo = keyof A // 'a' | 'b' | 'c'
+    // 获取 接口的值的联合类型
+    type Foo2 = A[keyof A] // string | true | () => 1
+
+    // 应用 泛型的类型推断
     const obj = { a: 1, b: '2' }
-    // function getVal<T>(obj: T, key: keyof T) { // 仅仅是限制了key范围
+    // function getVal<T>(obj: T, key: keyof T) { // key的类型就是 keyof T
     //   return obj[key]
     // }
-    function getVal<T, K extends keyof T>(obj: T, key: K) { // 不光限制了key的范围 还可以类型推断
+    function getVal<T extends object, K extends keyof T>(obj: T, key: K) { //  key的类型就是范围 keyof T 还可以类型推断
       return obj[key]
     }
     const val = getVal(obj, 'a') // number
+
+    // in 用于遍历联合类型
+    type Foo = { [key in 'vue' | 'react']: true } // { vue: true; react: true }
+
+    // Partial & Pick 实现
+    type Partial<T> = { [P in keyof T]?: T[P]; }
+    type Pick<T, K extends keyof T> = { [P in K]: T[P]; }
 
     // infer 参考 https://github.com/Microsoft/TypeScript/pull/21496
     type ReturnPromiseType<T> =
@@ -454,11 +467,7 @@
     type Foo<T extends string = 'a'> = T
     type Foo<T extends boolean> = T extends true ? string : number
 
-    // in 用于遍历联合类型
-    type Foo = { [key in 'vue' | 'react']: true } // { vue: true; react: true }
-
-    // keyof 关键字 可以用于直接 动态获取 接口键的联合类型
-    type Foo = keyof { a: 1; b: 2; } // 'a' | 'b'
+    
 
     // never 代表空集 never用于联合类型会被过滤
     type Exclude2<T, U> = T extends U ? never : T
@@ -466,10 +475,6 @@
     // 对联合类型的map操作
     type MapX<T> = T extends any ? () => T : never
     type a = MapX<'vue' | 'react'> // (() => "vue") | (() => "react")
-
-    // 获取 接口的值的联合类型
-    interface B { a: string; b: true; c: () => 1; }
-    type Foo = B[keyof B] // string | true | () => 1
 
     // 对元组 做类型映射 操作（push、pop、shift、unshift、concat）
     // @ts-expect-error
