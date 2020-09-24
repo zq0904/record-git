@@ -9,68 +9,87 @@
     const n: number = 0o744 // 数字 ts中所有数字均为浮点数  还支持二进制和八进制
     const s: string = `s${1}` // 字符串 包括模板字符串
     const b: boolean = true // 布尔
-    const arr1: (number|string)[] = [1, '2'] // 数组
+    const arr1: string[] = ['1'] // 数组
     const arr2: Array<number|string> = [1, '2'] // 数组
     const tuple: [number, string] = [1, '2'] // 元组类型 表示固定数量和类型的数组
     enum Color { Red, Blue } // 枚举 为数值集提供友好名称的一种方式
     const c: Color = Color.Red
     const any: any = 1 // any类型 允许您在编译期间逐步选择加入和退出类型检查
     const fn1 = (): void => {} // void 描述没有返回值的函数的返回类型
-    // const fn2: () => void = () => {}
-    const nu: null = null // null undefined 并不是非常常用
-    const un: undefined = undefined
-    const fn2 = (): never => { throw new Error('x') } // never 函数返回的端点必须是不可到达的
+    const nul: null = null // null undefined 并不是非常常用
+    const und: undefined = undefined
+    const fn2 = (): never => { throw new Error('x') } // never 函数返回的端点必须是不可到达的（函数并不能有效的运行完成）
     const fn3 = (): never => { while (true) {} }
-    const obj: object = [] // object 表任何不是 number string boolean symbol null undefined 的类型
+    const obj: object = [] // object 表任何不是 number string boolean null undefined 的类型
   ```
-## 类型断言 (有些情况下 开发者比ts更了解当前的状况 - 使用类型转换，但不执行特殊检查或重组数据的方式)
+## 类型、结构赋值、默认值
+  ```typescript
+    const { a: aa, b = 'b' }: { a: number, b?: string } = { a: 1 } // 对象结构 console.log(aa, b) // 1 'b'
+    const fn1 = ({ a = 1, b = 'b' } = {}) => {} // 2层默认值
+    function fn2(a:string, b = 1, c?: number) {} // b 有默认值 就相当于可选的 可选参数必须在必填参数后面
+  ```
+## 类型断言 (有些情况下 开发者比ts更了解当前的状况)
   ```typescript
     const str: any = '123'
     const strLength1: number = (<string>str).length
     const strLength2: number = (str as string).length // 推选 tsx只允许使用as
+    // const [state, setState] = useState({
+    //   loading: false,
+    //   materialInfos: ([] as MaterialInfo[]), // 一个比较好的场景 由于利用类型推断 导致推断出[]类型 使用类型断言来更改
+    // })
   ```
-## 结构赋值 默认值 中 使用类型检测
+## 类型推断
   ```typescript
-    const { a: aa, b = 'b' }: { a: number, b?: string } = { a: 1 } // 对象结构 console.log(aa, b) // 1 'b'
-    const fn1 = ({ a, b = 'b' }: { a: number, b?: string }) => {} // 函数第一个参数结构
-    type C = { a: number; b?: string } // 别名
-    const fn2 = (obj: C) => { const { a, b = 'b' } = obj }
-    const fn3 = ({ a = 1, b = 'b' } = {}) => {} // fn3() console.log(a, b) // 1 'b'
+    function fn(arg: number) { return arg } // 简单函数不写返回值 默认推断函数的返回值类型
+    const a: string[] = []
+    const b = a // 没有声明类型可以 推断承接上一个变量的类型
+    // 泛型的类型推断
+    const fn2 = <T>(arg: T) => arg
+    const c = fn2('s') // 没有指定泛型时 ts可以根据你传入的类型动态推到出返回的变量类型 基于泛型
+  ```
+## 类型保护（类型守卫）[类型分流]
+  ```typescript
+    // 内置的类型保护 typeof instanceof in === !== 等
+    function fn1(arg: string | number) {
+      if (typeof arg === 'string') {
+        console.log(arg) // string
+      } else {
+        console.log(arg) // number
+      }
+    }
+    // 自定义类型保护
+    function isArray<T>(arg: any): arg is T[] {
+      return Object.prototype.toString.call(arg) === '[object Array]'
+    }
+    let arr: null | string[]
+    if (isArray(arr)) console.log(arr) // string[]
   ```
 ## 接口
   ```typescript
-    interface I { a: number; b?: string }
-    const fn1 = (obj: I) => {}
-    fn1({a: 1, c: 'c'}) // ts接口会约束“规格” (“c”不在类型“I”中)
-    fn1({a: 1, c: 'c'} as I) // 使用类型断言 绕过
-    interface Ip { a: number; b?: string; [propName: string]: any }
-    fn1({a: 1, c: 'c'} as Ip) // 使用索引签名+类型断言 绕过
-    const obj = { a: 1, b: 1 }
-    fn1(obj) // 利用 类型兼容 但你不应该这么做
-    interface Point {
-      readonly: x: number; // 只读属性 只能在首次创建对象时进行修改
+    interface I {
+      readonly a: number; // 只读属性 只能在首次创建进行修改
+      b?: string; // 可选属性
+      [propName: string]: any; // string索引类型（string索引类型包括 a 他的类型必然包括number）
     }
-    const p: Point = { x: 1 } // p.x = 2 不能修改
-    const arr: ReadonlyArray<number> = [1, 2] // 只读数组 arr.push(1) arr.length = 1 不能修改数组
-    // 接口 描述函数 使用调用签名
-    interface Fn {
-      (a: sting): void; // a 是形式参数 不一定非得叫a
+    const fn1 = (obj: I) => {
+      // obj.a = 2 // 不能修改只读属性
     }
-    const fn: Fn = (b) => {}
-    // 接口 描述数组 (能够“通过索引得到”的类型)
+    fn1({ a: 1, c: 'c' }) // a能在首次创建进行修改
+    // 接口 描述 数组
     interface ArrString {
-      [index: number]: string;
+      [index: number]: string; // number索引类型
     }
     const arr: ArrString = ['1']
-    const str: string = arr[0]
-    interface Nd {
-      name: string; // name 一定包含在了 字符串索引签名中 所以索引签名必须包含string类型
-      [i: string]: string | number;
+    // 接口 描述 函数 使用调用签名
+    interface Fn {
+      (a: sting): void; // a 是形式参数 不一定非得叫a
+      // (a: string, b: number): void; // 描述 函数重载
     }
+    const fn: Fn = (b) => {}
     // 接口 描述类
     interface ClassDate {
-      time: Date;
-      set(d: Date): void;
+      time: Date; // 类的实例属性
+      set(d: Date): void; // 类的实例方法
     }
     class D implements ClassDate { // 类实现接口
       time: Date
@@ -80,9 +99,9 @@
       set(t: Date) { this.time = t }
     }
     // 接口 描述混合类型
-    interface Counter { // 描述了一个函数 具有1个静态属性和一个静态方法
-      (a: number): void;
-      index: number;
+    interface Counter { // 描述了一个函数
+      (a: number): void; // 静态方法
+      index: number; // 静态属性
       end(): void;
     }
     function counter(): Counter  {
@@ -91,17 +110,17 @@
       fn.end = () => {}
       return fn
     }
-    // 接口继承接口 利于接口的模块化 可以多继承（类是不可以多继承的）
-    interface A { name: string }
-    interface B { age: number }
-    interface C extends A, B { alias: string }
-    const p: C = { name: '张三', age: 12, alias: '小胡' }
-    // 接口继承类 会继承其成员
+    // 接口多继承 利于接口的模块化（类是不可以多继承的）
+    interface X { x: number }
+    interface Y { y: number }
+    interface Z extends X, Y { z: number }
+    const z: Z = { x: 1, y: 1, z: 1' }
+    // 接口继承“类”（其实是继承类的实例类型）私有或受保护的类成员时 只能是其子类才能实现这个接口（只有子类才有声明在父类的私有或受保护的类
     class A {
       private s: any
       protected b: boolean
     }
-    interface B extends A { // 当一个接口继承了 私有或受保护的类成员时 意味着 只能是其子类才能实现这个接口（只有子类才有声明在父类的私有或受保护的类成员）
+    interface B extends A {
       end(): void;
     }
     class SubA extends A implements B {
@@ -112,8 +131,8 @@
   ```typescript
     class C {
       public a: string // 不写默认就是 public
-      private b: string // 私有成员 只能在该类内部使用
       protected c: string // 受保护成员 只能在类的内部及其子类(通过extends继承的子类)中使用
+      private b: string // 私有成员 只能在该类内部使用
       readonly d: string = 'd' // 只读属性 必须在声明时或构造函数里被初始化
       static e: string // 静态成员
       // 直接在构造函数中 使用访问限定符和类型声明 相当于在一个地方定义并初始化一个成员（非常方便）
@@ -127,14 +146,14 @@
         this.a = val
       }
     }
-    const c: C = new C('f') //  // 声明了一个类 实际上就是声明了一种类型 即类的实例类型 （正因为这样 接口才能继承类）
-    const Cla: typeof C = C // typeof C 根据实例类型获取 类的类型
+    const c: C = new C('f') // 在ts中声明一个类 同时会产生一个同名的实例类型（正因为这样 接口才能继承“类”（类的实例类型））
+    const Cla: typeof C = C // typeof 关键字用于获取一个变量的类型
 
     // 类 实现 接口（非同名 | 同名）
     interface CLifecycle { componentDidMount?(): void; }
     interface C extends CLifecycle { n: number; }
     class CC implements C { n = 1 } //（非同名）类 实现 接口 就要实现接口所有的属性和方法
-    class C { state = {} } //（同名）这个类不需要实现接口的属性和方法 因为这个类的实例类型 必然会与接口 声明合并!!!
+    class C { state = {} } //（同名）这个类不需要实现接口的属性和方法 （因为这个类的实例类型 必然会与接口 声明合并!!!）
     const c = new C(); console.log(c.state, c.n);
 
     // 抽象类 不能被实例化 （其抽象方法 不能有具体实现 继承的子类必须有具体实现）非抽象方法可以有具体实现并且能被子类继承
@@ -152,50 +171,46 @@
   ```
 ## 函数
   ```typescript
-    function fn1(x: number) {} // 函数的参数类型与返回值类型单独声明 (ts通过类型推断可以自动推断返回值类型 所以通常省略)
-    const fn2: (y: number) => void = fn1 // 完整的函数类型
-    function fn3(...args: Array<string>) {} // 剩余参数的类型
-    // 函数参数默认值
-    function fn4(x: number = 1) {} // x可传可不传 (注意 没有这种写法 (x?: number = 1) => {} )
-    function fn5(x?: number) { x = x ? x : 1 } // 很繁琐的写法
-    const fn6: (x?: number) => void = (x = 1) => {} // 依赖于fn5
-    function fn7(a:string, x: nuumber = 1, y?: number) {} // xy均为可选参数 可选参数必须在必填参数后面 可选参数的默认值可以通过传递undefinde触发
+    function fn1(...args: Array<string>) {} // 剩余参数的类型
     // 函数重载 (为同一个函数提供多个函数类型 函数调用时 ts会依次查找重载列表尝试重载定义 以确定当前函数的类型) 官方 建议将”精准“的重载 放到前面
-    // 函数重载复用性较强时“可能”考虑泛型 但泛型不能替代重载
-    function fn8(s: number, flag: boolean): boolean
-    function fn8(s: any[]): any[]
-    function fn8(s: number | any[], flag?: boolean) {
+    function fn2(s: number, flag: boolean): boolean
+    function fn2(s: string[]): string[]
+    function fn2(s: number | string[], flag?: boolean) {
       if (typeof s === 'number') return flag
       return s
     }
-    const n = fn8(1, true) // ok
-    const n = fn8([], false) // err
-    type FnType = typeof fn1 // 获取函数的类型 (一个class A 通过 typeof A 来获取类A的类型)
+    const res1 = fn2(1, true)
+    const res2 = fn2(['1'])
+    type FnType = typeof fn1 // 获取函数的类型
   ```
-## 泛型 (类型的“函数” 应用就2点 1.“动态”类型 只有在使用时确定类型 2.泛型用于类型推导 方便的很)
+## 泛型
   ```typescript
     // 泛型函数
-    function fn1<T>(arr: Array<T>) { return arr }
-    fn1<string>(['1']) // 直接使用<>来明确传入的类型
+    function fn1<T>(arg: T) { return arg }
+    fn1<string>('1') // “动态类型” 使用的时候在确定具体的类型
+    fn1<number>(1)
+    const res = fn1(1) // res类型为number 没有自定泛型 泛型类型推断会动态推到出返回的类型
     const arr = fn1(['1']) // 使用 类型推断 ts会直接认为此时 T类型为string[]
-    const fn2: { <U>(a: Array<U>): Array<U> } = fn1 // 使用带有调用签名的对象字面量来定义泛型函数 (像 内联的 接口)
+    // 泛型参数 有作用域 如闭包等
+    function Foo4 <T> () { return (arg: T) => arg }
+    const myFooStr = Foo4<string>() // (arg: string) => arg
     // 泛型接口
-    interface Fn1 { <T>(a: Array<T>): Array<T> }
-    const fn4: Fn1 = fn1
-    interface Fn2<T> { // 泛型参数当作接口的参数 接口内部能拿到泛型参数
+    interface Fn1 { <T>(arg: T): T }
+    const fn11: Fn1 = fn1
+    interface Fn2<T> { // 有 类型别名那味了...
       (a: Array<T>): Array<T>;
     }
-    const fn5: Fn2<string> = fn1
+    const fn22: Fn2<string> = fn1
     // 泛型类 泛型参数只能用于实例属性 不能用于静态属性
     class A<T> {
       constructor(public a: T) {}
     }
     new A<string>('1')
     // 泛型参数
-    const fn3: <U>(a: Array<U>) => Array<U> = fn1 // 泛型参数 也是形式参数
-    function fn7<T>(fn: { new(): T }): T { return fn() }
-    class A {}
-    const a: A = fn7(A)
+    function fn3<T>(fn: { new(): T }): T {
+      return fn()
+    }
+    const res = fn3(new class A {})
   ```
 ## 枚举 (大部分枚举在编译阶段会产生真实的对象)
   ```typescript
@@ -234,31 +249,27 @@
     function fn(x: { a: number }) {}
     fn(y)
   ```
-## 高级类型
+## 部分高级类型
   ```typescript
-    class A { a() {} } class B { b() {} }
-    // 1. 交叉类型 必须同时满足多个类型 是一种且的关系
-    const assign: A & B = Object.assign(new A(), new B())
-    // 2. 联合类型
-    const empty: null | undefined | string = null
-    const fn = (n): A | B => n < 0.5 ? new A() : new B()
-    fn(1).toString // 联合类型访问属性 只能访问共有属性
-    // 联合类型 所来带的问题 有些时候我们需要进一步的缩小类型的范围
-    const b = fn(1)
-    if ((b as B).b) { // 2.1 使用类型断言 （很繁琐 内部还需要使用 不通用）
-      (b as B).b()
-    }
-    function isB(a: any): a is B { // 2-2. 自定义类型保护 必须返回一个类型谓词 这里是 s is B
-      return (a as B).b !== undefined
-    }
-    if (isB(b)) { b.b() }
-    if (b instanceof B) { b.b() } // 2-3. 内置的类型保护 (instanceof typeof)
-    if (typeof empty === string) { empty.length }
-    const strnull: string = null // 类型检查器认为 null 与 undefined可以赋值给任何类型
-    strnull!.charAt(0) // !表 从类型中排除unll和undefined
-    // 3. 字符串字面量类型 数字字面量类型
+    // 字符串字面量类型 数字字面量类型
     const strnum: 1 | '2' = '2'
-    // 4. 可辨识联合
+    class A { a () {} }
+    class B { b () {} }
+    // 交叉类型
+    const assign: A & B = Object.assign(new A(), new B())
+    // 联合类型
+    const empty: null | undefined = null
+    // 联合类型 所来带的问题 只能访问共有属性 所以需要缩小类型的范围（如类型保护）
+    function fn1(arg: string | number) {
+      if (typeof arg === 'string') {
+        console.log(arg) // string
+      } else {
+        console.log(arg) // number
+      }
+    }
+    const strnull: string = null // 默认类型检查器认为 null 与 undefined可以赋值给任何类型 一般都会开启 strictNullChecks 来禁用这项行为
+    strnull!.charAt(0) // !表 从类型中排除unll和undefined
+    // 可辨识联合
     interface Square {
       k: 's'; // 具备普通的单例类型(特征属性)
       s: number;
@@ -273,33 +284,82 @@
           return 2 * Math.PI * shape.r
       }
     }
-    // 5. this类型 参考 https://github.com/Microsoft/TypeScript/pull/14141
+    // this类型 参考 https://github.com/Microsoft/TypeScript/pull/14141
+    const getInfo = () => Promise.resolve({ data: ['1'] })
     class Calculator {
-      constructor(private num: number = 0) {}
-      add (num: number): this {
-        this.num += num
-        return this
+      constructor (private total: number = 0) {}
+      getNum() {
+        return this.total
+      }
+      g = function * (this: Calculator) { // 对于 generator 指定 this 类型
+        type ReturnPromise<T> = T extends (...args: any[]) => Promise<infer R> ? R : any
+        const a: ReturnPromise<typeof getInfo>  = yield getInfo()
       }
     }
     new Calculator().add(1).add(2)
-    // 6. 索引类型 K extends keyof T (K类型是T类型的键(string)的联合 T[K][]类型是数组每一项是T[K])
-    function pluck<T, K extends keyof T>(obj: T, arr: K[]): T[K][] {
-      return arr.map(key => obj[key])
-    }
-    pluck({ a: 1 }, ['a'])
-    // 7. 映射类型
-    // 内置的条件类型
-    type Foo = Partial<{ a: string; b: string; }> // { a?: string; b?: string; }
-    type Foo = Readonly<{ a: string; b: string }> // 得到只读类型
-    type Foo = Pick<{ a: string; b: string; }, 'a'> // { a: string } Pick<T, U> 从T类型中挑选出 以 U类型 为键的 作为新的类型
-    type T0 = Omit<{ a: string; b: string; }, 'a'> // { b: string } Omit<T, U> 从T类型中忽略出 以 U类型 为键的 作为新的类型
-    type Foo = Exclude<string | number, string> // number
-    type T2 = Extract<string, string | number> // string Extract<T, U> 从联合类型T中 提取 可以赋值给U的类型
-    type T3 = NonNullable<string | null> // string NonNullable<T> 从T中剔除null和undefined
-    type T4 = ReturnType<{ (): void }> // void ReturnType<T> 获取函数返回值类型
-    type T5 = InstanceType<typeof C> // C InstanceType<T> 根据一个类的类型获取实例的类型
-    // 8. 条件类型
-    type Foo<T extends boolean> = T extends true ? string : number // 泛型参数T 如果T可以分配给true 则类型为string否则为number
+  ```
+## 类型映射（类型系统中定义函数）
+  ```typescript
+    // type interface 区别
+    // 1. interface 可以被使用 extends implements 2. type 本身就可以是 基本类型 联合类型 而且只有在type中才可以使用in等映射操作
+    // 在js中定一个函数
+    const fn = (a = 1) => a
+    // 在ts中定一个类型函数
+    type TypeMap<T extends number = 1> = A // 使用extends约束泛型参数类型 =默认值
+    // 条件判断（条件类型）
+    type Jud<T> = T extends string ? string : number
+    type R1 = Jud<string> // string
+    type R2 = Jud<true> // number
+    // 对联合类型做批量的映射操作
+    type Mp<T> = T extends any ? () => T : never
+    // never的"类型收窄" !!!
+    type R3 = string | never // string
+    type Exclude2<T, R> = R extends T ? R : never
+    // keyof 用于获取接口键的联合类型（类似js中 Object.keys）
+    interface Obj { a: string; b: number; }
+    type R4 = keyof Obj // 'a' | 'b'
+    type R5 = Obj[keyof Obj] // string' | number 获取键值的联合类型
+    type R6 = ['v', 'u'][number] // 'v' | 'u' 对于元组 由于number的索引类型 直接获取
+    // in 用于遍历联合类型
+    type R7 = { [K in 'v' | 'u']: string; } // { v: string; u: string; }
+    // infer 推断类型 参考 https://github.com/Microsoft/TypeScript/pull/21496
+    type ReturnPromiseType<T> =
+      T extends (...args: any[]) => Promise<infer U> ? U :
+      T extends Promise<infer U> ? U :
+      any;
+
+    // 获取一个对象的函数名的联合类型
+    type PickFunctionName<T> = {
+      [P in keyof T]: T[P] extends Function ? P : never;
+    }[keyof T];
+
+    // 部分内置类型及实现
+    // type Partial2<T> { [K in keyof T]?: T[P]; }
+    type R8 = Partial<{ a: string; b: string; }> // { a?: string; b?: string; }
+    // type Pick2<T, Ks extends keyof T> { [K in Ks]: T[K]; }
+    type R9 = Pick<{ a: string; b: string; }, 'a'> // { a: string }
+    type R10 = Exclude<string | number, string> // number
+    type R11 = Extract<string | number, string> // string
+    type R12 = NonNullable<string | null> // string
+    type R13 = Omit<{ a: string; b: string; }, 'a'> // { b: string }
+    type R14 = ReturnType<{ (): number }> // number
+    type R15 = InstanceType<typeof AA> // C InstanceType<T> 根据一个类的类型获取实例的类型
+
+    // 类型映射不支剩余参数 但可以变相实现
+    // 对元组操作（shift、pop、unshift、push）
+    type tuple = ['a', 'b', 'c']
+    type Res1 = Shift<tuple> // ['b', 'c']
+    type Res2 = Pop<tuple> // ['a', 'b']
+    
+    type Shift<T extends any[]> = ((...args: T) => any) extends (arg: any, ...args: infer R) => any ? R : never // 构造函数的剩余参数
+
+    // @ts-expect-error
+    type Cut<T, R> = { [K in keyof R]: T[K]; } // 根据第二个interface去第一个interface中截取值
+    type Res3 = Cut<[1, 2], [3]> // [1] 就相当于根据第二个元组的长度去截取第一个元组
+    type Pop<T extends any[]> = Cut<T, Shift<T>>
+
+    type Pop<T extends any[]> = Cut<T, Shift<T>>
+    type Push<T extends any[], E> = Cut<T & { [k: string]: E }, Unshift<T, any>>
   ```
 ## 模块 和 命名空间
   ```typescript
@@ -426,70 +486,6 @@
     export {} // 样板
     // 5. @ts-expect-error 注释 （使用场景：错误短期可修复 或者 明确改错误一定会修复）
     @ts-ignore （使用场景：错误不是短期就能得到解决的 或者其实你并“不想/不能”解决）
-  ```
-## TypeScript 高级
-  ```typescript
-    // type interface 区别
-    // interface 可以被使用 extends implements
-    // type 本身就可以是 基本类型 联合类型 而且只有在type中才可以使用in等映射操作
-
-    // keyof 可以用于获取 接口键的联合类型 与js中的Object.keys很像
-    interface A { a: string; b: true; c: () => 1; }
-    type Foo = keyof A // 'a' | 'b' | 'c'
-    // 获取 接口的值的联合类型
-    type Foo2 = A[keyof A] // string | true | () => 1
-
-    // 应用 泛型的类型推断
-    const obj = { a: 1, b: '2' }
-    // function getVal<T>(obj: T, key: keyof T) { // key的类型就是 keyof T
-    //   return obj[key]
-    // }
-    function getVal<T extends object, K extends keyof T>(obj: T, key: K) { //  key的类型就是范围 keyof T 还可以类型推断
-      return obj[key]
-    }
-    const val = getVal(obj, 'a') // number
-
-    // in 用于遍历联合类型
-    type Foo = { [key in 'vue' | 'react']: true } // { vue: true; react: true }
-
-    // Partial & Pick 实现
-    type Partial<T> = { [P in keyof T]?: T[P]; }
-    type Pick<T, K extends keyof T> = { [P in K]: T[P]; }
-
-    // infer 参考 https://github.com/Microsoft/TypeScript/pull/21496
-    type ReturnPromiseType<T> =
-      T extends (...args: any[]) => Promise<infer U> ? U :
-      T extends Promise<infer U> ? U :
-      any;
-    type Foo = ReturnPromiseType<Promise<number>> // number
-
-    // extends 可以用于约束泛型 和 条件类型
-    type Foo<T extends string = 'a'> = T
-    type Foo<T extends boolean> = T extends true ? string : number
-
-    
-
-    // never 代表空集 never用于联合类型会被过滤
-    type Exclude2<T, U> = T extends U ? never : T
-
-    // 对联合类型的map操作
-    type MapX<T> = T extends any ? () => T : never
-    type a = MapX<'vue' | 'react'> // (() => "vue") | (() => "react")
-
-    // 对元组 做类型映射 操作（push、pop、shift、unshift、concat）
-    // @ts-expect-error
-    type PickByObj<T extends any, Obj> = { [key in keyof Obj]: T[key] }
-    // 泛型 目前不支剩余参数 但可以变相实现
-    type Shift<T extends any[]> = ((...args: T) => void) extends ((arg: any, ...args: infer R) => void) ? R : never
-    type Unshift<T extends any[], B> = ((arg: B, ...args: T) => void) extends ((...args: infer R) => void) ? R : never
-    type Pop<T extends any[]> = PickByObj<T, Shift<T>>
-    type Push<T extends any[], E> = PickByObj<T & { [k: string]: E }, Unshift<T, any>>
-
-    type tuple = ['vue', 'react', 'angular']
-    type result1 = Shift<tuple> // ["react", "angular"]
-    type result2 = Unshift<tuple, 'jquery'> // ["jquery", "vue", "react", "angular"]
-    type result3 = Pop<tuple> // ["vue", "react"]
-    type result4 = Push<tuple, 'jquery'> // ["vue", "react", "angular", "jquery"]
   ```
 ## 声明文件 .d.ts
   ```typescript

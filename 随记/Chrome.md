@@ -8,3 +8,5 @@
 ## Chrome 截图 支持全屏
   command + shift + p
   输入 Capture full size screenshot 回车
+## Chrome 资源內部搜索
+  command + option + f
