@@ -1,0 +1,36 @@
+{
+  "getUserInfo": {
+    "code": 580200,
+    "data": {
+      "userId": "123",
+      "name": "zq",
+      "gender": 1,
+      "level": 2,
+      "createDate": 1576116000000
+    }
+  },
+  "getListInfo": {
+    "code": 580200,
+    "data": {
+      "list": [
+        {
+          "deductScore": -2,
+          "remainScore": 10,
+          "deductReason": "违规收费，诈骗风险，涉嫌传销（被举报的职位：XXXXXXXX）",
+          "violateLevel": 2,
+          "deductDate": "2019-01-12",
+          "status": 1
+        },
+        {
+          "deductScore": -2,
+          "remainScore": 10,
+          "deductReason": "违规收费，诈骗风险，涉嫌传销（被举报的职位：XXXXXXXX）",
+          "violateLevel": 0,
+          "deductDate": "2019-01-12",
+          "status": 0
+        }
+      ],
+      "totalCount": 41
+    }
+  }
+}

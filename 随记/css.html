@@ -585,3 +585,8 @@ iphoneX media
 @media only screen and (min-device-height: 750px) {}
 
 父盒子设置了 min-height: 100%; 子盒子在设置height: 100%是不会生效的
+
+一行代码实现深色模式
+html[theme='dark-mode'] {
+  filter: invert(1) hue-rotate(180deg);
+}
