@@ -33,3 +33,5 @@ const store = app._store
 store.subscribe(() => {
   console.log('最新的 state：', store.getState())
 })
+
+// TODO 1. loading 还没测试 2. 如果不重置 那qs怎么保证是正确的
