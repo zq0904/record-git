@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
 import classnames from 'classnames'
 import { State } from '../../../store'
-import { Actions, TODO_SET_STATE, FilterType } from '../../../types'
+import { Actions, TodoSetStateActionType, FilterType } from '../../../types'
 import './index.scss'
 
 /**
@@ -50,7 +50,7 @@ const TodoMain: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
                 checked={complete}
                 onChange={e => {
                   dispatch<Actions>({
-                    type: TODO_SET_STATE,
+                    type: TodoSetStateActionType,
                     payload: {
                       list: todoState.list.map(v => {
                         if (v.id === id) v.complete = e.target.checked
@@ -66,7 +66,7 @@ const TodoMain: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
               className={classnames(clsPrefix + '-item-text', { unfinished: complete })}
               onClick={() => {
                 dispatch<Actions>({
-                  type: TODO_SET_STATE,
+                  type: TodoSetStateActionType,
                   payload: {
                     list: todoState.list.map(v => {
                       if (v.id === id) v.complete = !v.complete
@@ -84,7 +84,7 @@ const TodoMain: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
               onClick={(e) => {
                 e.preventDefault()
                 dispatch<Actions>({
-                  type: TODO_SET_STATE,
+                  type: TodoSetStateActionType,
                   payload: {
                     list: todoState.list.filter(v => v.id !== id)
                   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Dispatch } from '../../../../store'
-import { TODO_SET_STATE, SAGA_GET_TODO_LIST } from '../../../../types'
+import { Dispatch } from '../../../store'
+import { TodoSetStateActionType, TodoGetInitialDataActionType } from '../../../types'
 import './index.scss'
 
 const clsPrefix = 'test-saga'
@@ -13,7 +13,7 @@ const TestSaga = () => {
   // 同步更新
   const handleClick = () => {
     dispatch({
-      type: TODO_SET_STATE,
+      type: TodoSetStateActionType,
       payload: {
         list: [{ id: 999, text: 'text', complete: false }]
       }
@@ -22,8 +22,7 @@ const TestSaga = () => {
 
   // 异步更新
   const handleClick2 = () => {
-    // @ts-ignore
-    dispatch({ type: SAGA_GET_TODO_LIST })
+    dispatch({ type: TodoGetInitialDataActionType })
   }
 
   return (

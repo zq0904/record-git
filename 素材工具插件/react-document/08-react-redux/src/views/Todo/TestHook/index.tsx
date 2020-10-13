@@ -1,8 +1,8 @@
 import React, { FC, memo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 // import { thunkCreateTodoListAction } from '../../../../actions'
-import { State, Dispatch } from '../../../../store'
-import { TODO_SET_STATE } from '../../../../types'
+import { State, Dispatch } from '../../../store'
+import { TodoSetStateActionType } from '../../../types'
 import './index.scss'
 
 const clsPrefix = 'test-hook'
@@ -23,7 +23,7 @@ const TestHook: FC = () => {
   // 同步更新
   const handleClick = () => {
     dispatch({
-      type: TODO_SET_STATE,
+      type: TodoSetStateActionType,
       payload: {
         list: [{ id: 999, text: 'text', complete: false }]
       }

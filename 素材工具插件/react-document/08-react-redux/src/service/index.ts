@@ -4,8 +4,7 @@ import { TodoList } from '../types'
 const request = (uri: string): any => new Promise(resolve => {
   setTimeout(() => {
     resolve({
-      flag: 1,
-      msg: '凉凉了',
+      code: 580200,
       data: {
         list: [{
           text: '测试1',
@@ -25,7 +24,7 @@ const request = (uri: string): any => new Promise(resolve => {
   }, 1000)
 })
 
-export interface GetTodoList {
-  (): Promise<{ flag: 0 | 1; msg?: string; data: { list: TodoList }; }>;
+interface GetTodoList {
+  (id: string): Promise<{ code: 580200; data: { list: TodoList }; }>;
 }
 export const getTodoList: GetTodoList = () => request(GET_TODO_LIST)

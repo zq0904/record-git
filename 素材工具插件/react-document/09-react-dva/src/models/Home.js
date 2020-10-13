@@ -35,6 +35,7 @@ export default {
   effects: {
     *getUserInfo (action, { call, put }) {
       try {
+        yield new Promise(resolve => setTimeout(resolve, 1000))
         const user = yield call(getUserInfo)
         yield put({
           type: 'setState',
@@ -60,10 +61,12 @@ export default {
 
     *getInitialData (action, { all, call, put }) {
       // 这里目前 测试使用的这种方式 来达到并发 互相不影响
+      console.time('1')
       yield all([
         yield put({ type: 'getListInfo' }),
         yield put({ type: 'getUserInfo' })
       ])
+      console.timeLog('1')
     },
   },
 

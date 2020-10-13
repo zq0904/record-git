@@ -1,25 +1,29 @@
-import { createStore, applyMiddleware } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import createSagaMiddleware from 'redux-saga'
+import {
+  createStore,
+  applyMiddleware,
+  Dispatch as SourceDispatch,
+} from 'redux'
+import { useDispatch as useSourceDispatch } from 'react-redux'
 import RootReducer from './reducer'
+import createSagaMiddleware from 'redux-saga'
 import rootSaga from './saga'
+import { Actions } from '../types'
 
 const sagaMiddleware = createSagaMiddleware() // 创建saga中间件
 
 const store = createStore(
   RootReducer,
   applyMiddleware(
-    thunkMiddleware,
     sagaMiddleware
   )
 )
 
-// 运行saga
+// 执行rootSaga
 sagaMiddleware.run(rootSaga)
 
-// TODO 正常的Dispatch类型是ok的 但是redux-thunk的dispatch类型不包括
-export type Dispatch = typeof store.dispatch
-
 export type State = ReturnType<typeof RootReducer>
+
+export type Dispatch = SourceDispatch<Actions>
+export const useDispatch = () => useSourceDispatch<Dispatch>()
 
 export default store

@@ -6,8 +6,12 @@ import TodoMain from './TodoMain'
 import TodoFooter from './TodoFooter'
 // import TestHook from './module/TestHook'
 // import TestSaga from './module/TestSaga'
-import { State } from '../../store'
-import { Actions, FilterType, TODO_SET_STATE } from '../../types'
+import { State, useDispatch } from '../../store'
+import {
+  FilterType,
+  TodoGetInitialDataActionType,
+  TodoSetStateActionType,
+} from '../../types'
 
 const mapStateToProps = (state: State) => ({
   todoState: state.todo,
@@ -19,32 +23,36 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 
 type TodoProps = RouteComponentProps<{ filterType?: FilterType }> & PropsFromRedux
 
-const Todo: FC<TodoProps> = ({ match, dispatch }) => {
+const Todo: FC<TodoProps> = ({ match, todoState }) => {
+  const dispatch = useDispatch()
 
   useEffect(() => {
     // 初始化数据
-    dispatch<Actions>({
-      type: TODO_SET_STATE,
+    dispatch({
+      type: TodoSetStateActionType,
       payload: {
         filterType: match.params.filterType ?? FilterType.All
       }
     })
-    // 本地缓存
   }, [match, dispatch])
+
+  useEffect(() => {
+    // 初始化数据
+    dispatch({ type: TodoGetInitialDataActionType })
+  }, [dispatch])
 
   return (
     <>
+    
       <TodoHeader />
       <TodoMain />
       <TodoFooter />
       {/* <TestHook /> */}
       {/* <TestSaga /> */}
+      <pre>todoState：{JSON.stringify(todoState, null, 2)}</pre>
     </>
   )
 }
 
 export default connector(Todo)
 
-// npm i redux react-redux @types/react-redux redux-thunk
-// npm i redux-saga
-// npm i @reduxjs/toolkit

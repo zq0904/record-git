@@ -1,7 +1,7 @@
 import React, { useState, FC, ChangeEvent, KeyboardEvent } from 'react'
 import { connect, ConnectedProps } from 'react-redux'
-import { State } from '../../../store'
-import { Actions, TODO_SET_STATE } from '../../../types'
+import { State, useDispatch  } from '../../../store'
+import { TodoSetStateActionType } from '../../../types'
 import './index.scss'
 
 const mapStateToProps = (state: State) => ({
@@ -9,20 +9,21 @@ const mapStateToProps = (state: State) => ({
 })
 
 const connector = connect(mapStateToProps)
-// TODO 关于dispatch的类型如何精简
+
 type PropsFromRedux = ConnectedProps<typeof connector> 
 
 const clsPrefix = 'todo-header'
 
-const TodoHeader: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
+const TodoHeader: FC<PropsFromRedux> = ({ todoState }) => {
+  const dispatch = useDispatch()
   const [val, setVal] = useState('')
 
   /**
    * 全选按钮change
    */
   const handleAllSelectChange = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch<Actions>({
-      type: TODO_SET_STATE,
+    dispatch({
+      type: TodoSetStateActionType,
       payload: {
         list: todoState.list.map(v => {
           v.complete = e.target.checked
@@ -39,8 +40,8 @@ const TodoHeader: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
     if (e.keyCode !== 13) return
     const text = val.trim()
     if (!text) return
-    dispatch<Actions>({
-      type: TODO_SET_STATE,
+    dispatch({
+      type: TodoSetStateActionType,
       payload: {
         list: [
           ...todoState.list,
@@ -53,19 +54,6 @@ const TodoHeader: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
       }
     })
     setVal('')
-  }
-
-  /**
-   * 发起一个异步请求
-   */
-  const handleSendAsyncRequest = () => {
-    // TODO 1. 尝试redux-thunk 2. 尝试saga
-    // dispatch((dispatch) => {
-    //   setTimeout(() => {
-    //     // Yay! Can invoke sync or async actions with `dispatch`
-    //     dispatch(increment());
-    //   }, 1000);
-    // })
   }
 
   return (
@@ -86,8 +74,7 @@ const TodoHeader: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
         value={val}
         onChange={e => setVal(e.target.value)}
         onKeyDown={handleKeyDown}
-      />&nbsp;&nbsp;
-      <button onClick={handleSendAsyncRequest}>发起一个异步请求</button>
+      />
     </div>
   )
 }

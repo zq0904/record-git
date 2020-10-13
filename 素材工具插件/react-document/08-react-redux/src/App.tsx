@@ -24,3 +24,8 @@ function App() {
 }
 
 export default App
+
+// npm i redux react-redux @types/react-redux
+// redux-thunk
+// npm i redux-saga
+// npm i @reduxjs/toolkit

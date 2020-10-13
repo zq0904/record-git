@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 import { connect, ConnectedProps } from 'react-redux'
 import classnames from 'classnames'
 import { State } from '../../../store'
-import { Actions, TODO_SET_STATE, FilterType } from '../../../types'
+import { Actions, TodoSetStateActionType, FilterType } from '../../../types'
 import './index.scss'
 
 const mapStateToProps = (state: State) => ({
@@ -34,7 +34,7 @@ const TodoFooter: FC<PropsFromRedux> = ({ dispatch, todoState }) => {
   // 清除完成的list项
   const handleClearComplete = () => {
     dispatch<Actions>({
-      type: TODO_SET_STATE,
+      type: TodoSetStateActionType,
       payload: {
         list: unfinishedListtodos
       }
