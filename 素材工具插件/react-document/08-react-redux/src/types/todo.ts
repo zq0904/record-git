@@ -18,11 +18,15 @@ export type TodoState = {
 
 // actionType
 export const TodoSetStateActionType = 'TodoSetStateActionType'
+export const TodoResetActionType = 'TodoResetActionType'
 
 // action
 export type TodoSetStateAction = {
   type: typeof TodoSetStateActionType;
   payload: Partial<TodoState>;
+}
+export type TodoResetAction = {
+  type: typeof TodoResetActionType;
 }
 
 // saga actionType
@@ -38,5 +42,6 @@ export type TodoGetInitialDataAction = {
 }
 
 export type TodoAction = TodoSetStateAction
+  | TodoResetAction
   | TodoGetTodoListAction
   | TodoGetInitialDataAction

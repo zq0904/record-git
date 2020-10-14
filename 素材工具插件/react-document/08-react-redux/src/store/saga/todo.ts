@@ -1,4 +1,4 @@
-import { call, put, select, all, takeEvery, takeLatest, take } from 'redux-saga/effects'
+import { call, put, select, all, takeEvery, takeLatest } from 'redux-saga/effects'
 import { getTodoList as getTodoListService } from '../../service'
 import { ReturnPromiseType } from '../../common/ts'
 import { State } from '../index'
@@ -15,16 +15,15 @@ import {
 
 // call apply cps 最终都是调用某个函数传递参数 但是先生成对象由saga调用
 // put 最终由dispatch去派发
-// takeEvery 相当于原有的 redux-thunk 任务是一直被注册了（或者说观测 有对应的action触发 就执行对应的函数）
-// takeLatest 自带一个防抖效果
-// take 只会注册一次 执行后就销毁
+// takeEvery（观测 有对应的action触发 就执行对应的函数）
+// takeLatest 对请求后相当于 自带一个防抖效果（并不是针对请求 请求还是并发的 只不过只针对最新的那个请求的数据 去更新后续逻辑）
 
 export function * getTodoList (action: TodoGetTodoListAction) {
-  const state: State = yield select()
-  console.log('getTodoList -> state', state)
+  // const state: State = yield select()
   const id = '1'
   try {
     const { data }: ReturnPromiseType<typeof getTodoListService> = yield call(getTodoListService, id)
+    console.log('666')
     yield put<Actions>({
       type: TodoSetStateActionType,
       payload: { list: data.list }
@@ -61,6 +60,6 @@ export function * getInitialData (action: TodoGetInitialDataAction) {
 // watcher saga
 export default [
   // takeEvery 观测有对应的action触发 就执行对应的函数
-  takeEvery(TodoGetTodoListActionType, getTodoList),
+  takeLatest(TodoGetTodoListActionType, getTodoList),
   takeEvery(TodoGetInitialDataActionType, getInitialData),
 ]
