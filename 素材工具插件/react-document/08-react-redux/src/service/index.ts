@@ -4,7 +4,6 @@ import { TodoList } from '../types'
 // 测试 请求
 const request = (uri: string): any => new Promise(resolve => {
   setTimeout(() => {
-    console.log('123')
     resolve({
       code: 580200,
       data: {

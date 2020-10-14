@@ -23,7 +23,6 @@ export function * getTodoList (action: TodoGetTodoListAction) {
   const id = '1'
   try {
     const { data }: ReturnPromiseType<typeof getTodoListService> = yield call(getTodoListService, id)
-    console.log('666')
     yield put<Actions>({
       type: TodoSetStateActionType,
       payload: { list: data.list }
