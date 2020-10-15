@@ -1,18 +1,19 @@
 import { matchPath } from 'dva/router'
 import { PATH_FOO } from '../router/path'
+import { Model, FooNamespace, FooState } from '../types'
 
-const defaultState = {
-  id: '', // appid
+const initialState: FooState = {
+  id: '',
 }
 
-export default {
+const model: Model = {
 
-  namespace: 'Foo',
+  namespace: FooNamespace,
 
-  state: defaultState,
+  state: initialState,
 
   reducers: {
-    setState (state, action) {
+    setState (state: FooState, action) {
       return { ...state, ...action.payload }
     },
   },
@@ -25,8 +26,9 @@ export default {
   subscriptions: {
     setup ({ dispatch, history }) {
       return history.listen(({ pathname }) => {
-        const match = matchPath(pathname, { path: PATH_FOO, exact: true  })
+        const match = matchPath<{ id: string; }>(pathname, { path: PATH_FOO, exact: true })
         if (match !== null) {
+          // 初始化本地数据
           const { params: { id } } = match
           dispatch({
             type: 'setState',
@@ -34,13 +36,15 @@ export default {
               id
             }
           })
-          // 初始化数据
+          // 初始化异步数据
           dispatch({ type: 'getInitialData' })
         } else {
           // 清空数据
           dispatch({
             type: 'setState',
-            payload: defaultState
+            payload: {
+              ...initialState
+            }
           })
         }
       })
@@ -48,3 +52,5 @@ export default {
   },
 
 }
+
+export default model
