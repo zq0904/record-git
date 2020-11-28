@@ -8,16 +8,16 @@ import {
   HomeState,
 } from '../types'
 
-const initialState: HomeState = {
+const initialState: () => HomeState = () => ({
   list: [], // 列表数据
   totalCount: 0,
-}
+})
 
 const model: Model = {
 
   namespace: HomeNamespace,
 
-  state: initialState,
+  state: initialState(),
 
   reducers: {
     setState (state: HomeState, action) {
@@ -55,16 +55,15 @@ const model: Model = {
       return history.listen(({ pathname }) => {
         const match = matchPath(pathname, { path: PATH_HOME, exact: true })
         if (match !== null) {
-          // 初始化数据
-          dispatch({ type: 'getInitialData' })
-        } else {
-          // 清空数据
+          // 初始化 重新 “new”
           dispatch({
             type: 'setState',
             payload: {
-              ...initialState
+              ...initialState()
             }
           })
+          // 初始化数据
+          dispatch({ type: 'getInitialData' })
         }
       })
     }

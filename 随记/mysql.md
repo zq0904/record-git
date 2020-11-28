@@ -46,10 +46,10 @@
 ## 表
 
 ```
-  show tables; // 显示某个数据库下的所有表
-  describe table_name; // show columns from table_name 显示表结构
-  alter table lod_name rename to new_name; // alter table lod_name rename as new_name 修改表名
-  drop table db_name; // 删除表
+  SHOW TABLES // 显示某个数据库下的所有表
+  DESC table_name // DESCRIBE table_name | SHOW COLUMNS FROM table_name 显示表结构 主要用于查看每个字段的类型等信息
+  ALTER TABLE lod_name RENAME TO new_name // ALTER TABLE lod_name RENAME AS new_name 修改表名
+  DROP TABLE db_name // 删除表
   // 创建表
   CREATE TABLE table_name (
     id int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -58,16 +58,69 @@
     modifytime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (id)
   ) COMMENT '人员表' ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  // 向已有表中添加字段
+  ALTER TABLE apps ADD isdel INT(11) DEFAULT 0
 ```
 
 ## CRUD 表
 
-```
-  insert into table_name(name,modifytime) values('小明','2019-05-17 14:05:38'),('小红','2019-05-17 14:05:38'); // 添加多个值
-  update table_name set name='小绿' where id='2'; // 更新值
-  select * from table_name where name='小绿' and id='1'; // 查询 select * from table_name 查所有
-  delete from user where id='2'; // 删除 delete from table_name 清空表
-```
+- 添加多个值
+  ```
+    INSERT INTO table_name (name, modifytime)
+    VALUES
+      ('小明', '2019-05-17 14:05:38'),
+      ('小红','2019-05-17 14:05:38')
+  ```
+- 更新值
+  ```
+    UPDATE table_name
+    SET name = '小绿'
+    WHERE id = '2'
+  ```
+- 根据条件判断更新值
+  ```
+    UPDATE rn_yewu
+    SET version_dev = 1234,
+    encrypt_url_online = CASE sys_type
+      WHEN 1 THEN 'iosxxx'
+      WHEN 0 THEN 'xxxx'
+      END,
+    url_online = CASE sys_type
+      WHEN 1 THEN ''
+      WHEN 0 THEN ''
+      END
+    WHERE appid = 6
+    AND bundle_id = 78
+  ```
+- 查询
+  ```
+    SELECT *
+    FROM users
+    WHERE id IN (140, 803)
+    SELECT * FROM table_name
+    WHERE name = '小绿'
+    AND id IN (140, 803) -- id 为 140 或 803 可以是多个值
+    ORDER BY modify DESC -- 排序 ASC 升序（默认） DESC 降序
+  ```
+- 查询（将一个sql的输出当成另一个sql的输入）
+  ```
+    SELECT *
+    FROM rn_yewu_info
+    WHERE appid = 6
+    AND rn_id = 78
+    AND version = (
+      SELECT MAX(version)
+      FROM rn_yewu_info
+      WHERE appid = 6
+      AND rn_id = 78
+      AND temp LIKE  '%test%' -- 模糊查询
+    )
+  ```
+- 删除 delete FROM table_name 清空表
+  ```
+    DELETE FROM user
+    WHERE id='2'
+  ```
 
 ## 导入导出
 

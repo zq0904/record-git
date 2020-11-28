@@ -1,3 +1,5 @@
+## Chrome插件 开发
+
 ## 关于Chrome 绝版拓展插件的安装
   1. 根据拓展插件的id 找到对应文件夹 /Users/zhaoqi/Library/Application\ Support/Google/Chrome/Default/Extensions/mciiogijehkdemklbdcbfkefimifhecn
   2. 复制 .../mciiogijehkdemklbdcbfkefimifhecn 到新电脑相应目录
