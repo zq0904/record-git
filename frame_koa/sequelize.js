@@ -37,41 +37,92 @@ const sequelize = new Sequelize(
     },
     define: {
       // freezeTableName: true, // 强制表名称等于模型名称
-    }
+    },
   }
 )
 
 // 定义映射数据库表模型
+const Busine = sequelize.define('Busine', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true, // 主键
+    autoIncrement: true, // 自增是不需要默认值 只有DataTypes.INTEGER可以自增
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false, // 必填项
+  },
+}, {
+  timestamps: false, // 默认不添加 createdAt和updatedAt
+})
+
 const User = sequelize.define('User', {
-  name: DataTypes.STRING,
-  isDel: DataTypes.BOOLEAN
+  id: {
+    type: DataTypes.STRING,
+    primaryKey: true, // 主键
+    // autoIncrement: true, // 自增 TODO string 不能设置自增吗？
+  },
+  bId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { // 外键
+      model: Busine,
+      key: 'id',
+    }
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false, // 必填项
+  },
+  email: { // 也应该是
+    type: DataTypes.STRING,
+    unique: true, // 创建惟一约束 存错 已经存在则报错
+    field: 'myEmail', // 数据库存储的字段名
+  },
+  isDel: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false, // 默认值
+  },
+  cTime: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW, // 默认时间等于 当前时间
+  },
+  uTime: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+  commentMe: {
+    type: DataTypes.INTEGER,
+    comment: '列 注释'
+  },
+}, {
+  timestamps: false, // 默认不添加 createdAt和updatedAt
 })
 
 ;(async () => {
   // 模型同步
   // await User.sync() // 如果表不存在，则会创建表
   // await User.sync({ force: true }) // 表已经存在，则将其首先删除
-  // await sequelize.sync() // 一次同步所有模型
+  await sequelize.sync({ force: true }) // 一次同步所有模型
   // 删除表
   // await User.drop()
   // 删除所有表
   // await sequelize.drop()
+
+  // build方法 创建一个实例 得到一个对象 调用save方法可以将其存储到数据库
+  // const busine = Busine.build({ name: '用户价值增长部' })
+  // toJSON 更友好的查看
+  // console.log(busine, busine.toJSON())
+  // await busine.save()
+  const busine = await Busine.create({ name: "房产" }) // create = build + save
+  // console.log(busine.toJSON())
+  // busine.name = '房产2'
+  // busine.save() // 修改
+  // busine.destroy() // 删除
+
+  const busines = await Busine.findAll({
+    attributes: [['id', 'bid'], 'name'], // 指定查询的列 嵌套数组用于重命名
+  })
+  console.log(JSON.stringify(busines, null, 2)) // 读取整个表
+
 })()
-
-// const Pet = sequelize.define('Pet', { // 这个实例化数据对象 它表示一个数据模型 称为 Model
-//   id: {
-//     type: Sequelize.,
-//     primaryKey: true // 是主键
-//   },
-//   name: Sequelize.STRING(100),
-//   gender: Sequelize.BOOLEAN,
-//   birth: Sequelize.STRING(10),
-//   createdAt: Sequelize.BIGINT,
-//   updatedAt: Sequelize.BIGINT,
-//   version: Sequelize.BIGINT,
-// }, {
-//   freezeTableName: true, 
-//   timestamps: false, // 关闭自动化功能
-// })
-
-// console.log(Pet === sequelize.models.Pet)

@@ -170,7 +170,7 @@
   vim .gitmodules // 删除相关子模块信息
   vim .git/config // 删除相关子模块信息
   rm .git/module/src/test-submodule // 删除git存储的子模块
-  git rm -f --cached './曾经的东西/Promise/node_modules/*' // 删除子模块的跟踪
+  git rm -f --cached src/test-submodule // 删除子模块的跟踪
   git add -A
   git commit -m del:删除子模块
   git push
@@ -180,7 +180,7 @@
 ```
 ## .gitignore文件 项目根目录新建.gitignore指定忽略的文件
 ```
-  git rm --cached <file_name> // 取消跟踪某个文件（如果之前就跟踪了某个文件 之后想通过.gitignore忽略它 默认git是不会忽略该文件的 必须执行该命令）
+  git rm -f --cached './曾经的东西/Promise/node_modules/*' // 取消跟踪某个文件（如果之前就跟踪了某个文件 之后想通过.gitignore忽略它 默认git是不会忽略该文件的 必须执行该命令）
 ```
 ## 使用SSH连接到GitHub git push等操作 免账号密码 (参考)[https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh]
 ```
