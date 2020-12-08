@@ -204,6 +204,8 @@
   PreferredAuthentications publickey
   User git
 
+  注意只有使用 ssh git@igit.58corp.com:wuxianfe/message-center-h5.git 才会走config http的方式需要输入账号密码
+
   ssh -T github.com // 检测连接 如成功 Hi zq0904! You've successfully authenticated, but GitHub does not provide shell access.
 
 ```

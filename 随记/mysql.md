@@ -46,10 +46,14 @@
 ## 表
 
 ```
-  SHOW TABLES // 显示某个数据库下的所有表
-  DESC table_name // DESCRIBE table_name | SHOW COLUMNS FROM table_name 显示表结构 主要用于查看每个字段的类型等信息
-  ALTER TABLE lod_name RENAME TO new_name // ALTER TABLE lod_name RENAME AS new_name 修改表名
-  DROP TABLE db_name // 删除表
+  // 显示某个数据库下的所有表
+  SHOW TABLES
+  // 显示表结构 主要用于查看每个字段的类型等信息
+  DESC table_name // DESCRIBE table_name | SHOW COLUMNS FROM table_name
+  // 修改表名
+  ALTER TABLE lod_name RENAME TO new_name // ALTER TABLE lod_name RENAME AS new_name
+  // 删除表
+  DROP TABLE db_name
   // 创建表
   CREATE TABLE table_name (
     id int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
@@ -58,8 +62,10 @@
     modifytime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
     PRIMARY KEY (id)
   ) COMMENT '人员表' ENGINE=InnoDB DEFAULT CHARSET=utf8;
-  // 向已有表中添加字段
+  // 向表中添加字段
   ALTER TABLE apps ADD isdel INT(11) DEFAULT 0
+  // 删除表中字段
+  ALTER TABLE rn_yewu_info DROP COLUMN description
 ```
 
 ## CRUD 表
