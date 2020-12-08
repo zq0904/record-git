@@ -4,27 +4,29 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
-    "start": "node start.js"
+    "start": "npm run dev",
+    "dev": "nodemon index.js",
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "koa": "^2.5.0",
-    "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.4.0",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0",
     "mime": "^2.2.2",
     "mysql": "^2.15.0",
-    "mysql2": "^1.5.3",
+    "mysql2": "^2.2.5",
     "mz": "^2.7.0",
     "nunjucks": "^3.1.2",
-    "sequelize": "^4.37.5",
+    "sequelize": "^6.3.5",
     "uuid": "^3.2.1",
     "ws": "^5.1.1"
   },
   "devDependencies": {
     "mocha": "^5.0.5",
+    "nodemon": "^2.0.6",
     "supertest": "^3.0.0"
   }
 }

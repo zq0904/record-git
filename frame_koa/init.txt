@@ -7,15 +7,14 @@ create database nodejs;
 
 use nodejs;
 
-create table pets (
-    id varchar(50) not null,
-    name varchar(100) not null,
-    gender bool not null,
-    birth varchar(10) not null,
-    createdAt bigint not null,
-    updatedAt bigint not null,
-    version bigint not null
-) engine=innodb;
+CREATE TABLE table_name (
+    id int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    name varchar(100) NOT NULL DEFAULT '' COMMENT '名字',
+    createtime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    modifytime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (id)
+  ) COMMENT '人员表' ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 create table user(
     id varchar(50) not null,
