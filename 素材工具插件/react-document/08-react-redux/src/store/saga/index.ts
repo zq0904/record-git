@@ -1,4 +1,3 @@
-import { resolve } from 'dns'
 import { all } from 'redux-saga/effects'
 import todo from './todo'
 

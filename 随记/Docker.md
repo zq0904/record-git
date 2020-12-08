@@ -44,7 +44,7 @@
 
 - Mac/Windows 安装包直接安装 [参考](https://hub.docker.com/?overlay=onboarding)
 
-## DOcker 国内镜像加速 [参考](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors)
+## Docker 国内镜像加速 [参考](https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors)
 
 - 主要是对 docker pull 拉取镜像的操作进行网络加速优化 （阿里云 专属镜像加速）
 
@@ -64,7 +64,7 @@ docker push qixiaoqi/ubuntu-v:0.1 // 将本地镜像推送至远程
 docker pull mysql:5.7 // 拉取 镜像:版本
 docker run -itd --name ubuntu1 ubuntu // run 创建并启动容器 -i 表交互 -t 表终端 -d 表后台运行 --name 起个名字
 docker run -itd --name nginx1 -v /Users:/use/share/nginx/html -p 8000:80 nginx // -v 表映射文件目录(类似软链接的形式)
-docker run -itd --name myslq1 -v /Users/zhaoqi/docker-mysql-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 8100:3306 mysql // -e 表设置环境变量(这里就是设置 root 用户的密码) -p 表映射端口(格式 宿主机端口:容器端口)
+docker run -itd --name mysql1 -v /Users/zhaoqi/docker-mysql-volume:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -p 8100:3306 mysql // -e 表设置环境变量(这里就是设置 root 用户的密码) -p 表映射端口(格式 宿主机端口:容器端口)
 docker exec -it [name|container id] /bin/bash // 进入这个容器
 docker commit [container id] mysql:1.0 // 在本地保存一个 tag
 docker run -itd --name mysql2 -v /Users/zhaoqi/docker-mysql-volume:/var/lib/mysql -p 8101:3306 mysql:1.0 // 直接使用本地的 tag 镜像去创建 数据库数据如果需要保留必须使用 -v 单独挂载出来（可以将 2 个 mysql 挂载同一个路径 但不能同时连接 必须先断掉一个）

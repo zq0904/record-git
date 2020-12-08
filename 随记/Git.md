@@ -45,7 +45,7 @@
   git commit --amend // 修改最近一次的提交信息 进入vi模式:wq保存退出就好
   git commit -am update:更新 // 将修改和删除的文件 自动推到暂存区后直接提交（新增的不会 不建议使用）
   // 重写（合并 删除 修改 commit）
-  git rebase -i aba0aac // -i 表直接进入vi模式（你可以编辑该commit_id之后的信息）
+  git rebase -i aba0aac // -i 表直接进入vi模式（可以编辑从 该commit_id（不包括） 到最新的commit 之间的信息）
   // vi模式这里是倒序 最近修改的commit在下面
 
   // pick aba0aac add1
@@ -170,7 +170,7 @@
   vim .gitmodules // 删除相关子模块信息
   vim .git/config // 删除相关子模块信息
   rm .git/module/src/test-submodule // 删除git存储的子模块
-  git rm --cached src/test-submodule // 删除子模块的跟踪
+  git rm -f --cached src/test-submodule // 删除子模块的跟踪
   git add -A
   git commit -m del:删除子模块
   git push
@@ -180,7 +180,7 @@
 ```
 ## .gitignore文件 项目根目录新建.gitignore指定忽略的文件
 ```
-  git rm --cached <file_name> // 取消跟踪某个文件（如果之前就跟踪了某个文件 之后想通过.gitignore忽略它 默认git是不会忽略该文件的 必须执行该命令）
+  git rm -f --cached './曾经的东西/Promise/node_modules/*' // 取消跟踪某个文件（如果之前就跟踪了某个文件 之后想通过.gitignore忽略它 默认git是不会忽略该文件的 必须执行该命令）
 ```
 ## 使用SSH连接到GitHub git push等操作 免账号密码 (参考)[https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh]
 ```
@@ -203,6 +203,8 @@
   IdentityFile ~/.ssh/zq_igit
   PreferredAuthentications publickey
   User git
+
+  注意只有使用 ssh git@igit.58corp.com:wuxianfe/message-center-h5.git 才会走config http的方式需要输入账号密码
 
   ssh -T github.com // 检测连接 如成功 Hi zq0904! You've successfully authenticated, but GitHub does not provide shell access.
 

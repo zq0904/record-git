@@ -1,147 +1,3 @@
-// const Koa = require('koa'); // koa2 导入的是一个 class 因此用大写表示
-// const app = new Koa(); // 创建一个Koa对象 表示web app本身
-// app.use(async (ctx, next) => { // 对于任何的请求 app将调用该异步函数处理
-//     // ctx 由koa封装了request 和 response
-//     // next 为下一个要处理的异步函数
-//     await next();
-//     ctx.response.type = 'text/html'; // 设置response 的 content-type 
-//     ctx.response.body = '<h1>今天给大家介绍一下</h1>'; // 设置resposne 的内容
-// }).listen(3000, function () {
-//     console.log('启动成功 3000端口访问')
-// })
-
-// koa middlware 中间件
-// 用 3个 middleware 组成处理链 依次打印日志 记录处理时间 输出HTML
-// const Koa = require('koa');
-// const app = new Koa();
-// app.use(async (ctx, next) => {
-//     console.log(`${ctx.request.method} ${ctx.request.url}`) // 打印日志 -> 打印请求(get post)和 url
-//     await next(); // 调用下一个middleware
-// });
-// app.use(async (ctx, next) => {
-//     const start = new Date().getTime();
-//     await next();
-//     const ms = new Date().getTime() - start;
-//     console.log(ms+'ms');
-// });
-// app.use(async (ctx, next) => {
-//     await next();
-//     console.log('next()调取下一个')
-//     ctx.response.type = 'text/html';
-//     ctx.response.body = '<h2>dblclick 666</h2>'
-// });
-// app.listen(3000, function () {
-//     console.log('启动成功 3000')
-// });
-
-// koa 有一些简单的写法
-// const Koa = require('koa')
-// const app = new Koa()
-// app.use(async (ctx, next) => {
-//     await next();
-//     console.log(ctx.method, ctx.url); // 等同于 ctx.request.method
-//     ctx.type = 'text/html'; // ctx.response.type 
-//     ctx.body = '<h2>呵呵哒</h2>';
-// }).listen(3000)
-
-// koa-router 集中处理url的中间件 它负责做url映射
-// const Koa = require('koa')
-// const router = require('koa-router')(); // require('koa-router') 获取到的是函数
-// const app = new Koa();
-// // 打印日志
-// app.use(async (ctx, next) => {
-//     console.log(ctx.method, ctx.url);
-//     await next();
-// });
-// // 添加路由
-// router.get('/hello/:name', async (ctx, next) => { // 请求路径中带有变量
-//     ctx.body = `<h2>${ctx.params.name}</h2>`; // 变量可以通过ctx.params.name拿到
-// });
-// router.get('/', async (ctx, next) => {
-//     ctx.body = '<p>index<p>'
-// });
-// app.use(router.routes()); // 添加路由中间件
-// app.listen(3000)
-// console.log(3000)
-
-// koa-bodyparser
-// 关于post请求 有个问题 post请求通常会发送一个表单 或者json 它会作为request 的body发送 node原生和koa都不具备解析request的body的功能
-// 所以，我们又需要引入另一个middleware来解析原始request请求，然后，把解析后的参数，绑定到ctx.request.body中
-// const Koa = require('koa')
-// const router = require('koa-router')()
-// const bodyparser = require('koa-bodyparser')
-// const app = new Koa();
-// app.use(async (ctx, next) => {
-//     console.log(`日志 ${ctx.method} ${ctx.url}`)
-//     await next();
-// });
-// app.use(bodyparser()) // 由于中间件 顺序 next严格 必须在 router之前 使用bodyparser
-// app.use(router.routes())
-// router.get('/', async (ctx, next) => {
-//     ctx.body = `
-//         <form action="/login" method="post">
-//             <p>账号: <input name="name" type="text"></p>
-//             <p>密码: <input name="password" type="password"></p>
-//             <p><input type="submit" value="提交"></p>
-//         </form>
-//     `
-// })
-// router.post('/login', async (ctx, next) => {
-//     const name = ctx.request.body.name || ''; // ctx.body是 ctx.response.body的缩写 ctx.request.body是解析post表单提交
-//     const password = ctx.request.body.password || ''
-//     if (name === 'zhaoqi' && password === '123456') {
-//         ctx.body = '<h2>登录成功</h2>'
-//     } else {
-//         ctx.body = `
-//             <h2>登录失败</h2>
-//             <a href="/">重新登录</a>
-//         `
-//     }
-// })
-// app.listen(3000)
-// console.log('启动成功 3000')
-
-// 重构
-// const fs = require('fs')
-// // 获取路径下的所有文件 数组
-// const files = fs.readdirSync(__dirname + '/controllers') // 这里可以使用sync是因为启动时只运行一次 不存在性能问题
-// // 过滤出js文件
-// var js_files = files.filter((f) => { // 数组过滤
-//     return f.endsWith('.js') // 判断字符串是否以.js结尾 是为true
-// })
-// // 处理每个js文件
-// for (var f of js_files) {
-//     let mapping = require(__dirname + '/controllers/' + f);
-//     for (var url in mapping) { // url module.exports导出的 字段
-//         if (url.startsWith('GET ')) { // 如果url类似"GET xxx"
-//             var path = url.substr(4);
-//             router.get(path, mapping[url]);
-//             console.log(`GET ${path}`, url)
-//         } else if (url.startsWith('POST ')) {
-//             var path = url.substr(5);
-//             router.post(path, mapping[url]);
-//             console.log(`POST ${path}`, url)
-//         } else {
-//             console.log(`无效 ${url}`)
-//         }
-//     }
-// }
-
-// 重构 强势的模块化
-// const Koa = require('koa')
-// const bodyparser = require('koa-bodyparser')
-// const controllers = require('./controllers')
-// const app = new Koa()
-// app.use(async (ctx, next) => {
-//     console.log(`打印日志 ${ctx.method} ${ctx.url}`)
-//     await next();
-// })
-// app.use(bodyparser())
-// app.use(controllers())
-
-// app.listen(3000)
-// console.log('启动成功 3000')
-
 // 使用Nunjucks 模板引擎
 // 注意的问题 1.转义 避免受到XSS攻击 2.格式化 3.简单逻辑
 // const nunjucks = require('nunjucks')
@@ -225,33 +81,59 @@
 // console.log('启动成功 3000')
 
 
+// CREATE TABLE IF NOT EXISTS pets (
+//   id int unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+//   name varchar(100) NOT NULL COMMENT '名字',
+//   gender tinyint(1) NOT NULL COMMENT '性别',
+//   birth timestamp NOT NULL COMMENT '出生日期',
+//   createtime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+//   modifytime timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+//   PRIMARY KEY (id)
+// ) COMMENT '宠物表' ENGINE = InnoDB DEFAULT CHARSET = utf8
+
 // // sequelize ORM技术 关系数据库的表结构映射到对象上 注意mysql mysql2这个包是驱动，我们不直接使用，但是sequelize会去调用
-// const Sequelize = require('sequelize')
+const { Sequelize, Model, DataTypes } = require('sequelize')
+DataTypes.in
 // const config = require('./config')
-// var sequelize = new Sequelize(config.database, config.username, config.password, {
-//     host: config.host,
-//     dialect: 'mysql',
-//     pool: {
-//         max: 5,
-//         min: 0,
-//         idle: 30000
-//     }
-// });
-// // 定义映射数据库表模型
-// var Pet = sequelize.define('pets', { // 这个实例化数据对象 它表示一个数据模型 称为 Model
-//     id: {
-//         type: Sequelize.STRING(50),
-//         primaryKey: true // 是主键
-//     },
-//     name: Sequelize.STRING(100),
-//     gender: Sequelize.BOOLEAN,
-//     birth: Sequelize.STRING(10),
-//     createdAt: Sequelize.BIGINT,
-//     updatedAt: Sequelize.BIGINT,
-//     version: Sequelize.BIGINT
-// }, {
-//     timestamps: false // 关闭自动化功能
-// });
+const config = {
+  dialect: 'mysql', // 语言
+  database: 'sequelize-ORM', // 使用哪个数据库
+  host: '127.0.0.1', // 主机
+  port: 3307, // 端口号 MySQL默认 3306
+  username: 'root', // 用户名
+  password: '123456', // 密码
+}
+
+const sequelize = new Sequelize(
+  config.database,
+  config.username,
+  config.password,
+  {
+    host: config.host,
+    dialect: config.dialect,
+    pool: {
+      max: 5,
+      min: 0,
+      idle: 30000
+    }
+  }
+)
+
+// 定义映射数据库表模型
+var Pet = sequelize.define('pets', { // 这个实例化数据对象 它表示一个数据模型 称为 Model
+  id: {
+    type: Sequelize.,
+    primaryKey: true // 是主键
+  },
+  name: Sequelize.STRING(100),
+  gender: Sequelize.BOOLEAN,
+  birth: Sequelize.STRING(10),
+  createdAt: Sequelize.BIGINT,
+  updatedAt: Sequelize.BIGINT,
+  version: Sequelize.BIGINT,
+}, {
+  timestamps: false, // 关闭自动化功能
+})
 
 
 // 向数据库中插入数据
@@ -420,41 +302,41 @@
 
 // 编写聊天室
 
-const Koa = require('koa');
-const bodyparser = require('koa-bodyparser');
-const controllers = require('./controllers');
-const templating = require('./templating');
-const { parseCookie, createWebSocketServer } = require('./creatWebSocket'); // 编写聊天室案例
+// const Koa = require('koa');
+// const bodyparser = require('koa-bodyparser');
+// const controllers = require('./controllers');
+// const templating = require('./templating');
+// const { parseCookie, createWebSocketServer } = require('./creatWebSocket'); // 编写聊天室案例
 
-// 生产环境上必须配置环境变量NODE_ENV = 'production'
-const isProduction = process.env.NODE_ENV === 'production';
-const app = new Koa();
-app.use(async (ctx, next) => {
-    // let startTime = Date.now();
-    await next();
-    // let differ = Date.now() - startTime;
-    // console.log(`打印日志: ${ctx.method} ${ctx.url} ${differ}ms`);
-    // ctx.response.set('X-Response-Time', differ);
-});
-// 只要通过路由就会把当前的cookie解码存入ctx中 方便路由判断
-app.use(async (ctx, next) => {
-    ctx.state.user = parseCookie(ctx.cookies.get('name') || '');
-    await next();
-});
-// 这是因为在生产环境下，静态文件是由部署在最前面的反向代理服务器（如Nginx）处理的，Node程序不需要处理静态文件。
-// 而在开发环境下，我们希望koa能顺带处理静态文件，否则，就必须手动配置一个反向代理服务器，这样会导致开发环境非常复杂。
-if (!isProduction) {
-    const staticFiles = require('./static-files');
-    app.use(staticFiles('/static/', __dirname + '/static'));
-}
-app.use(templating('views', {
-    noCache: !isProduction, // 缓存已读取的文件内容 上线要设置为false 缓存 性能优化
-    watch: !isProduction
-}));
-app.use(bodyparser());
-app.use(controllers());
-let server = app.listen(3000);
-app.wss = createWebSocketServer(server); // 使用 app.listen引用的http.Server来创建wws  目的为了吧wss绑定到同一个端口 相同的端口根据 http ws协议来区分
-console.log('服务器启动成功 端口3000');
+// // 生产环境上必须配置环境变量NODE_ENV = 'production'
+// const isProduction = process.env.NODE_ENV === 'production';
+// const app = new Koa();
+// app.use(async (ctx, next) => {
+//     // let startTime = Date.now();
+//     await next();
+//     // let differ = Date.now() - startTime;
+//     // console.log(`打印日志: ${ctx.method} ${ctx.url} ${differ}ms`);
+//     // ctx.response.set('X-Response-Time', differ);
+// });
+// // 只要通过路由就会把当前的cookie解码存入ctx中 方便路由判断
+// app.use(async (ctx, next) => {
+//     ctx.state.user = parseCookie(ctx.cookies.get('name') || '');
+//     await next();
+// });
+// // 这是因为在生产环境下，静态文件是由部署在最前面的反向代理服务器（如Nginx）处理的，Node程序不需要处理静态文件。
+// // 而在开发环境下，我们希望koa能顺带处理静态文件，否则，就必须手动配置一个反向代理服务器，这样会导致开发环境非常复杂。
+// if (!isProduction) {
+//     const staticFiles = require('./static-files');
+//     app.use(staticFiles('/static/', __dirname + '/static'));
+// }
+// app.use(templating('views', {
+//     noCache: !isProduction, // 缓存已读取的文件内容 上线要设置为false 缓存 性能优化
+//     watch: !isProduction
+// }));
+// app.use(bodyparser());
+// app.use(controllers());
+// let server = app.listen(3000);
+// app.wss = createWebSocketServer(server); // 使用 app.listen引用的http.Server来创建wws  目的为了吧wss绑定到同一个端口 相同的端口根据 http ws协议来区分
+// console.log('服务器启动成功 端口3000');
 
 

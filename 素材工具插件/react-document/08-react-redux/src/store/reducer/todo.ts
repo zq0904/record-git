@@ -4,6 +4,7 @@ import {
   TodoAction,
   FilterType,
   TodoSetStateActionType,
+  TodoResetActionType,
 } from '../../types'
 
 const lsTodoList = new LsHelp<TodoState['list']>('todo-list')
@@ -22,6 +23,10 @@ export default (state = initialTodo, action: TodoAction) => {
       return {
         ...state,
         ...action.payload,
+      }
+    case TodoResetActionType:
+      return {
+        ...initialTodo,
       }
     default:
       return state
