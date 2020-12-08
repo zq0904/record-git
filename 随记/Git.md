@@ -170,7 +170,7 @@
   vim .gitmodules // 删除相关子模块信息
   vim .git/config // 删除相关子模块信息
   rm .git/module/src/test-submodule // 删除git存储的子模块
-  git rm --cached src/test-submodule // 删除子模块的跟踪
+  git rm -f --cached './曾经的东西/Promise/node_modules/*' // 删除子模块的跟踪
   git add -A
   git commit -m del:删除子模块
   git push
