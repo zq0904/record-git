@@ -52,7 +52,14 @@
     "scripts": {},
     "deprecated": "This package is no longer maintained", // 弃用描述
     "dependencies": { // 该包所依赖的包 安装这个包时会自动安装包所对应的依赖
-      "jquery": "^1.12.4" // ~会对1.12.xx进行更新 ^会对1.xx.xx进行更新 *会对xx.xx.xx进行更新
+      "jquery": "^1.12.4" // ~会对1.12.xx进行更新 ^会对1.xx.xx进行更新 *会对xx.xx.xx进行更新 语义化版本(https://semver.org/lang/zh-CN/)
+    },
+    "peerDependencies": { // 同行依赖关系
+      "react-native": "0.57.8",
+      "metro-config": ">=0.48.0"
+    }
+    "publishConfig":{ // 强制其仅发布到内部注册表
+      "registry": "http://ires.58corp.com/repository/npm/"
     },
     "author": { // 作者信息
       "name": "qixiaoqi"
@@ -99,9 +106,16 @@
   npm list -g --depth 0 // 查看全局安装的包
 ```
 
+##.npmrc
+```
+  @w:registry = http://cnpm.58v5.cn # 指定某个组下的包的registry
+  registry = http://registry.npm.taobao.org # 默认的registry
+```
+
 ## 使用淘宝源加速
 
 ```code
+  // registry优先级 yarn.lock | package-lock.json > 命令行 > .npmrc > 本机设置registry
   npm config list // 查看配置信息 registry字段标识注册表地址指向
   npm config get registry // 当前注册表地址指向
   npm --registry https://registry.npm.taobao.org i express // 临时使用淘宝源 安装包

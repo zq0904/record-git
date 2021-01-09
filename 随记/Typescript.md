@@ -344,13 +344,24 @@
     type R13 = Omit<{ a: string; b: string; }, 'a'> // { b: string }
     type R14 = ReturnType<{ (): number }> // number
     type R15 = InstanceType<typeof AA> // C InstanceType<T> 根据一个类的类型获取实例的类型
+    type R16 = Uppercase<'asd'> // ASD
+    type R17 = Lowercase<'ASD'> // asd
+    type R18 = Capitalize<'asd'> // Asd
+    type R19 = Uncapitalize<'ASD'> // aSD
+
+    // 映射类型中的键映射 4.1新增 键为never 现在是可以被过滤掉的
+    type RuleOut<T, R extends string> = {
+      [k in keyof T as k extends R ? never : k]: T[k];
+    }
+    type B = RuleOut<{ a: string; b: number; }, 'a'> // { b: number }
+
 
     // 类型映射不支剩余参数 但可以变相实现
     // 对元组操作（shift、pop、unshift、push）
     type tuple = ['a', 'b', 'c']
     type Res1 = Shift<tuple> // ['b', 'c']
     type Res2 = Pop<tuple> // ['a', 'b']
-    
+
     type Shift<T extends any[]> = ((...args: T) => any) extends (arg: any, ...args: infer R) => any ? R : never // 构造函数的剩余参数
 
     // @ts-expect-error
@@ -486,6 +497,14 @@
     export {} // 样板
     // 5. @ts-expect-error 注释 （使用场景：错误短期可修复 或者 明确改错误一定会修复）
     @ts-ignore （使用场景：错误不是短期就能得到解决的 或者其实你并“不想/不能”解决）
+  ```
+## TypeScript 4.1 新增内容
+  ```typescript
+    // 模板文字类型
+    type H = 'top' | 'bottom'
+    type V = 'left' | 'right'
+
+    type D = `${H | V} direction` // 'left direction' | 'right direction' | 'top direction' | 'bottom direction'
   ```
 ## 声明文件 .d.ts
   ```typescript
