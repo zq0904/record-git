@@ -92,7 +92,7 @@
     }
     return new Blob([uint8array], { type: arr[0].split(':')[1] })
   }
-  function dataURL2file(base64) {
+  function dataURL2file(base64, fileName = Date.now()) {
     const arr = base64.split(';base64,')
     const res = window.atob(arr[1])
     const ab = new ArrayBuffer(res.length)
@@ -100,7 +100,7 @@
     for (let i = 0; i < res.length; i++) {
       uint8array[i] = res.charCodeAt(i)
     }
-    return new File([uint8array], 'fileName.' + arr[0].split(':')[1].split('/')[1], { type: arr[0].split(':')[1] })
+    return new File([uint8array], `${fileName}.${arr[0].split(':')[1].split('/')[1]}`, { type: arr[0].split(':')[1] })
   }
 
   const img = document.querySelector('#img')
