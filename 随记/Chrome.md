@@ -7,8 +7,11 @@
 ## Chrome 查看覆盖率
   command + shift + p
   键入 Show Coverage
-## Chrome 截图 支持全屏
+## Chrome 捕获快照
   command + shift + p
-  输入 Capture full size screenshot 回车
+  选择 Capture full size screenshot 捕获 全屏 快照
+  选择 Capture area screenshot 捕获 区域 快照
+  选中node 选择 Capture node screenshot 捕获 node节点 快照
+  选择 Capture screenshot 捕获 屏幕 快照
 ## Chrome 资源內部搜索
   command + option + f

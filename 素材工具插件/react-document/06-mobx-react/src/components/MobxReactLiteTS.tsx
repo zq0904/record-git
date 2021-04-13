@@ -42,7 +42,7 @@ const Example1 = inject('testState')(
     )
   })
 )
-var a = ''
+
 // 函数组件中 使用 全局store 支持ts类型
 const Example2: React.FC<{num: number}> = ({ num }) => {
   const { test1Store } = useStore()

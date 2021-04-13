@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>video</title>
+  </head>
+  <body>
+    <input id="file" type="file" />
+
+    <script>
+      // 参考数据转换
+      function dataURL2file(base64, fileName = Date.now()) {
+        const arr = base64.split(';base64,')
+        const res = window.atob(arr[1])
+        const ab = new ArrayBuffer(res.length)
+        const uint8array = new Uint8Array(ab)
+        for (let i = 0; i < res.length; i++) {
+          uint8array[i] = res.charCodeAt(i)
+        }
+        return new File(
+          [uint8array],
+          `${fileName}.${arr[0].split(':')[1].split('/')[1]}`,
+          { type: arr[0].split(':')[1] }
+        )
+      }
+
+      document.getElementById('file').addEventListener('change', function () {
+        const file = this.files[0]
+        const URL = window[window.webkitURL ? 'webkitURL' : 'URL']
+        const url = URL.createObjectURL(file)
+        const video = document.createElement('video')
+        // video autoplay属性失效 https://www.cnblogs.com/Syinho/p/13554254.html
+        video.setAttribute('muted', 'muted')
+        video.setAttribute('autoplay', 'autoplay')
+        video.setAttribute('src', url)
+        video.addEventListener('canplay', function () {
+          const canvas = document.createElement('canvas')
+          canvas.width = video.videoWidth
+          canvas.height = video.videoHeight
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+          const base64Url = canvas.toDataURL('image/png')
+
+          console.log('file', dataURL2file(base64Url))
+
+          // show img
+          const img = document.createElement('img')
+          img.width = 300
+          img.src = base64Url
+          document.body.appendChild(img)
+        })
+      })
+    </script>
+  </body>
+</html>

@@ -1,4 +1,4 @@
-# Lerna（依赖于git npm）[参考](https://sosout.github.io/2018/07/21/lerna-repo.html)
+# Lerna [参考](https://sosout.github.io/2018/07/21/lerna-repo.html)
 ## 优点
   1. 解决多个包之间严重依赖的发包流程（lerna add 发布时版本号统一变更）
   2. 通过lerna bootstrap 或 通过lerna add 都会使用”软连接“形式 减少资源占用 方便调试
@@ -16,18 +16,31 @@
 ```
 ## lerna.json配置
 ```
+  lerna.json
   {
     "version": "independent", // 固定模式为所有包的版本号 独立模式为independent
-    "packages": ["packages/*"], // 包所在的目录
-    "npmClient": "npm", // 指定命令使用的client 默认是npm 可以设置成yarn
+    "npmClient": "yarn", // 指定命令使用的client 默认是npm 可以设置成yarn
+    "useWorkspaces": true, // 启用与yarn Workspaces的集成 [参考](https://github.com/lerna/lerna/blob/main/commands/bootstrap/README.md#--use-workspaces)
+    "packages": ["packages/*"], // 包所在的目录 启用useWorkspaces 该项将被 package.json/workspaces 覆盖
     "command": {
       "publish": {
         "message": "chore(release): publish %v" // publish由于修改版本号所提交的commit信息
       },
       "bootstrap": {
-        "hoist": true // 安装的公共资源直接在根目录安装（如果你之后还会在根目录下安装的其他包会”冲掉“公共资源 所以你应该在根目录安装完包后执行npx lerna bootstrap）
+        "hoist": true // 尽可能提升公共资源包直接安装在根目录（如果你之后还会在根目录下安装的其他包会”冲掉“公共资源包 所以你应该在根目录安装完单独的新包后执行npx lerna bootstrap --hoist）
       }
     }
+  }
+  package.json
+  {
+    "private": true,
+    "scripts": {
+      "install": "yarn install" // 启用useWorkspaces 可以直接使用yarn install 不使用lerna bootstrap
+    },
+    "devDependencies": {
+      "lerna": "^2.2.0"
+    },
+    "workspaces": ["packages/*"]
   }
 ```
 ## 常用命令
