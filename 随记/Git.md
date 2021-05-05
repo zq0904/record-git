@@ -13,7 +13,7 @@
 ## 创建存储库
 ```
   git init <dir_name> // 初始化仓库 会在dir_name（默认是当前目录）中创建.git的隐藏目录
-  git remote add origin git@github.com:zq0904/public-test.git // 添加 别名
+  git remote add origin git@github.com:zq0904/public-test.git // 添加 别名 (如果存在多个别名 如何指定某个分支默认的远程 sourcetree -> 设置 -> 编辑配置文件 查看对应分支并修改remote的值)
   git push -u origin master // 把本地仓库推送到远程仓库 并 关联
   // 当用户直接 git pull 或 fetch 时 可以直接跟别名 不跟git默认取的是 关联的别名 地址
   // 可以实现同一个仓库向不同的地址push (如 git push o1  git push o2)(git push 走默认关联的地址)

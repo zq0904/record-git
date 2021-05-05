@@ -22,6 +22,7 @@ class Compile {
       entry: './src/index.js'
     }
     this.hooks = {
+      // 简单来说 同步异步影响的是 是否阻断构建流程 平行串行影响的是 每个插件注册的事件执行平行串行
       beforeAnalyse: new SyncHook(['complie']), // 每new一个就会产生一个事件队列 参数为Array<string> 表形参名字任意 但是这个参数没有 你订阅的回调中是接受不到参数的
       afterAnalyse: new SyncBailHook(['name']),
       beforeEmit: new AsyncParallelHook(['name']),

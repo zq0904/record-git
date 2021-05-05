@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npm run start",
     "start": "hs -o -p 3001 -c-1"
   },
   "keywords": [],

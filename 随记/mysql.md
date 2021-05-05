@@ -135,3 +135,12 @@
   source 将.sql文件直接拖拽至终端自动补全路径 // 导入.sql文件 （NP 右键连接 运行SQL文件 成功刷新）
   mysqldump -u root -p table_name > sql_name.sql // 导出导入.sql文件 （NP 右键数据库 存储SQL文件 1.结构+数据 2.仅结构）
 ```
+
+## 数据库迁移
+
+```
+  使用工具 Navicat Premium
+  选择数据库 右键 选择 打开数据库
+  选择数据库 右键 选择 转储SQL 导出.sql
+  在另一个数据库 右键 选择 运行SQL
+```
