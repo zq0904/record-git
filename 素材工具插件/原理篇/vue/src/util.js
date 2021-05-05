@@ -22,7 +22,7 @@ export const setValByExp = ($date, exp, value) => {
   const lastItem = arr.pop()
   let med = $date
   for (const v of arr) {
-    med = res[v]
+    med = med[v]
   }
   med[lastItem] = value
 }
