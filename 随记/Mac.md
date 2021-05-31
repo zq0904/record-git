@@ -84,7 +84,6 @@
   vim /lib/systemd/system/mongodb.service // 配置mongodb服务
 
   cat ~/.ssh/config | grep HostName // grep 再次过滤查找
-
   echo '文本' // 输出文本
   echo '文本' > 1.js // 将文本 输入到指定文件 如果文件存在则覆盖
   echo '文本' >> 1.js // 将文本 追加到指定文件

@@ -27,7 +27,8 @@
         "message": "chore(release): publish %v" // publish由于修改版本号所提交的commit信息
       },
       "bootstrap": {
-        "hoist": true // 尽可能提升公共资源包直接安装在根目录（如果你之后还会在根目录下安装的其他包会”冲掉“公共资源包 所以你应该在根目录安装完单独的新包后执行npx lerna bootstrap --hoist）
+        // https://classic.yarnpkg.com/blog/2017/08/02/introducing-workspaces/ 启用useWorkspaces 自带提升不能开启hoist
+        "hoist": false // true 尽可能提升公共资源包直接安装在根目录（如果你之后还会在根目录下安装的其他包会”冲掉“公共资源包 所以你应该在根目录安装完单独的新包后执行npx lerna bootstrap --hoist）
       }
     }
   }

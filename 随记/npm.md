@@ -38,7 +38,8 @@
 ```code
   // 需注册npm账号
   npm adduser // 第一次发布包 输入注册的 账号 密码 邮箱
-  npm login // 非第一次发布包 输入注册的 账号 Username: zhaoqi154809748 密码 邮箱
+  npm login // 非第一次发布包 输入注册的 账号 Username: zhaoqi154809748 密码xxx 邮箱154809748@qq.com
+  cat ~/.npmrc // 登录成功查看会多一条 //registry.npmjs.org/:_authToken=xxx 表示向registry.npmjs.org发包所使用的用户token
   npm publish // 在要发布的包的根目录执行 默认 --tag latest 发布正式版本
   npm publish --tag <tag_name> // 发布测试版本 alpha beta rc 分别表示 内测版本（bug较多） 公测版本（bug较少） 预览版本（很接近正式版了）
   // 常见问题
@@ -121,7 +122,7 @@
   npm --registry https://registry.npm.taobao.org i express // 临时使用淘宝源 安装包
   npm config set registry http://registry.npm.taobao.org // 全局设置淘宝源
   npm config set registry https://registry.npmjs.org // 还原
-  npm config set @w:registry http://cnpm.58v5.cn // @w/xxx 包 走http://cnpm.58v5.cn源
+  npm config set @w:registry http://ires.58corp.com/repository/58npm/ // @w/xxx 包 走相应的源
   npm config delete <key> // 删除key
   // 修改了npm registry yarn registry自动就会修改 用的一个
   // 不建议使用cnpm 只建议全局设置淘宝源

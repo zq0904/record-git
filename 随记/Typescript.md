@@ -355,6 +355,9 @@
     }
     type B = RuleOut<{ a: string; b: number; }, 'a'> // { b: number }
 
+    // 联合类型转化为交叉类型
+    type UnionToIntersection<T> = (T extends any ? (k: T) => any : never) extends (k: infer I) => any ? I : never;
+    type AND = UnionToIntersection<{ a: number } | {b: string }> // { a: numebr } & { b: string }
 
     // 类型映射不支剩余参数 但可以变相实现
     // 对元组操作（shift、pop、unshift、push）
