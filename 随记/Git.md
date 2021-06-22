@@ -31,6 +31,7 @@
 ## 克隆
 ```
   git clone git@github.com:zq0904/public-test.git <custom_dir_name>
+  git clone git@github.com:zq0904/rn-code-split-demo.git --depth 1 // 文档资料可以浅clone仅保留最近一次commit记录（下载速度会很快）可以在执行git fetch --unshallow获取完整历史记录的仓库
   // 克隆的项目 默认会添加 origin别名
   // origin	git@github.com:zq0904/public-test.git (fetch)
   // origin	git@github.com:zq0904/public-test.git (push)

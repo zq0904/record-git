@@ -20,7 +20,7 @@
     source .bash_profile
     chrome
     Password:
-  - mac右键含终端 系统偏好设置 -> 键盘 -> 快捷键 -> 服务 -> 勾选新建位于文件夹位置的终端窗口和标签页 （每次 选中文件夹右键->服务->）
+  - mac 右键含终端 系统偏好设置 -> 键盘 -> 快捷键 -> 服务 -> 勾选新建位于文件夹位置的终端窗口和标签页 （每次 选中文件夹右键->服务->）
   - mac npm全局安装一些包 有时需要权限 在使用命令前加 sudo
   - npm config get prefix // 获取npm所在目录的路径 一般为/usr/local
   - sudo chown -R 账号名 npm所在目录的路径/{lib/node_modules,bin,share} // chown全称为change owner（改变所有者即赋予权限）-R表示对指定目录下所有子目录和文件采取同种操作
@@ -31,6 +31,9 @@
     系统偏好设置 -> 蓝牙 勾选“在菜单栏中显示蓝牙”
     按住Shift + Option 点击蓝牙图标 点击“调试”选项 还原蓝牙模块
     如果不使用蓝牙及时关闭
+  - 如何更改文件的默认打开方式 右键文件 -> 显示简介 -> 打开方式 选择 -> 全部更改
+  - 截屏 shift + command + 4
+  - 录屏 shift + command + 5
 
 ## 常用操作
 ```
