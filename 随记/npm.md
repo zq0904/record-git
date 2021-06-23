@@ -122,10 +122,21 @@
   npm --registry https://registry.npm.taobao.org i express // 临时使用淘宝源 安装包
   npm config set registry http://registry.npm.taobao.org // 全局设置淘宝源
   npm config set registry https://registry.npmjs.org // 还原
-  npm config set @w:registry http://ires.58corp.com/repository/58npm/ // @w/xxx 包 走相应的源
+  npm config set @w:registry http://xxx // @w/xxx 包 走相应的源
   npm config delete <key> // 删除key
   // 修改了npm registry yarn registry自动就会修改 用的一个
   // 不建议使用cnpm 只建议全局设置淘宝源
+```
+
+## 多个源之间的维护
+
+```
+  cat ~/.npmrc
+
+  registry=https://registry.npmjs.org # 下载包使用的源地址
+  //registry.npmjs.org/:_authToken=xxx # 向registry.npmjs.org 发布 提交使用的账号Token
+  //ires.58corp.com/repository/npm/:_authToken=xxx # 向ires.58corp.com/repository/npm 发布 提交使用的账号Token
+
 ```
 
 ## npx
