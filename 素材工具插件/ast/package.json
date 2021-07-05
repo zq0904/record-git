@@ -7,7 +7,7 @@
     "dev:ast": "node src/ast.js",
     "dev:babel-code-api": "node src/babel-code-api.js",
     "dev:babel-plugin": "babel build -s --out-dir dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/index.js"
   },
   "keywords": [],
   "author": "",

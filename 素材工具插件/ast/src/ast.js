@@ -80,7 +80,7 @@ traverse(ast, { // 访问者模式
 
   BinaryExpression(nodePath) {
     if (nodePath.get('operator').node === '*') {
-      // nodePath.replaceWith( // 替换成一个node
+      // nodePath.replaceWith( // 修改 替换成一个node
       //   t.binaryExpression('-', nodePath.get('left').node, t.stringLiteral('2')) // 生成 node
       // )
       // nodePath.replaceWithMultiple([ // 替换成多个node
@@ -97,11 +97,11 @@ traverse(ast, { // 访问者模式
 })
 
 // 使用 template 准引用 大大减少手动构建大量 AST
-// 没有占位符 可以直接使用 template.ast
 const getAst = template(`
   var %%A%% = require(%%PACKAGE%%);
   var B = Date.now()
 `)
+// const Ast = template.ast(``) // 没有占位符 可以直接使用 template.ast
 const AST = t.program( // generate仅接收单个根 AST 节点
   getAst({
     A: t.identifier('a'),
